@@ -16,3 +16,12 @@ python3 build_report.py   # PDF    -> docs/concept/
 ```
 
 Scores live in `docs/concept/src/scoring.py`. The table, the chart and the sensitivity check all read from it.
+
+- [`docs/srs/Boaty_System_Requirements_Specification.pdf`](docs/srs/Boaty_System_Requirements_Specification.pdf): system requirements specification (BOATY-SRS-001), including the Concept of Operations and Concept of Use.
+
+The SRS is generated the same way. Requirements live in `docs/srs/src/requirements.py`, and `build_srs.py` checks IDs and traceability before rendering:
+
+```sh
+cd docs/srs/src
+python3 figures.py && python3 build_srs.py
+```
