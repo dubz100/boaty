@@ -154,8 +154,8 @@ def control_and_contents(history_rows, guidance):
 
 
 class Doc(BaseDocTemplate):
-    def __init__(self, path, doc_id, doc_title, issue):
-        super().__init__(str(path), pagesize=A4, leftMargin=20 * mm,
+    def __init__(self, path, doc_id, doc_title, issue, pagesize=A4):
+        super().__init__(str(path), pagesize=pagesize, leftMargin=20 * mm,
                          rightMargin=20 * mm, topMargin=18 * mm,
                          bottomMargin=22 * mm,
                          title=f"Boaty - {doc_title}", author="Project Boaty",
@@ -171,7 +171,7 @@ class Doc(BaseDocTemplate):
     def _cover(c, d):
         c.saveState()
         c.setFillColor(BLUE)
-        c.rect(0, 0, 8 * mm, A4[1], stroke=0, fill=1)
+        c.rect(0, 0, 8 * mm, d.pagesize[1], stroke=0, fill=1)
         c.restoreState()
 
     def _furniture(self, c, d):
@@ -179,10 +179,11 @@ class Doc(BaseDocTemplate):
         c.setFont("DV", 7.3)
         c.setFillColor(INK2)
         c.drawString(20 * mm, 12 * mm, self.footer)
-        c.drawRightString(190 * mm, 12 * mm, f"page {d.page}")
+        right = d.pagesize[0] - 20 * mm
+        c.drawRightString(right, 12 * mm, f"page {d.page}")
         c.setStrokeColor(RULE)
         c.setLineWidth(0.5)
-        c.line(20 * mm, 15 * mm, 190 * mm, 15 * mm)
+        c.line(20 * mm, 15 * mm, right, 15 * mm)
         c.restoreState()
 
     def afterFlowable(self, f):

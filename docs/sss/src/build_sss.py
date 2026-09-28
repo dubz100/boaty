@@ -209,12 +209,69 @@ def special_mcn():
 
 
 def special_sim():
-    return [H1("6. Failsafe scenario catalogue"),
-            table([["Req", "Scenario", "Injection", "Pass criterion"]] +
-                  [list(r) for r in SD.SIM_SCENARIOS], [16, 52, 46, 56]),
-            P("Injection parameter names are fixed per SITL version "
-              "(TBC-04) and kept in the scenario code, not here.",
-              "small")]
+    def tt(kind, ids=None):
+        rows = [["ID", "Test", "Injection / method", "Pass criterion",
+                 "Refs"]]
+        for t in SD.TESTS:
+            if t[1] == kind and (ids is None or t[0] in ids):
+                rows.append([f"<b>{t[0]}</b>", t[2], t[3], t[4],
+                             ", ".join(t[5])])
+        return table(rows, [14, 46, 40, 44, 26])
+
+    fs_ids = {f"SC-{i:02d}" for i in range(1, 14)}
+    fm_ids = {t[0] for t in SD.TESTS if t[1] == "SIM"} - fs_ids
+    earlier = [
+        ("FS-009 STOP ≤ 1 s", "BENCH / POOL", "L1-03 (to helm), L2-11 (to "
+         "motors stopped)", "On-water confirmation (POOL)"),
+        ("COM-003 telemetry and latency", "POOL", "L1-03, L1-05",
+         "Range effects (LAKE)"),
+        ("CAM-007 / MCP-D16 photo sync", "POOL", "L1-04", "-"),
+        ("MCN-D21 link quality display", "POOL", "L1-07", "-"),
+        ("MCN-D22 manual drive", "POOL", "L2 (motors follow the joystick)",
+         "Handling (POOL)"),
+        ("NAV-001 bidirectional thrust", "POOL", "L2-01, L3-01", "-"),
+        ("PRP-D02 thrust ≥ 4 N", "BENCH (estimate)", "L3-01 (measured)",
+         "-"),
+        ("PRP-D03/D04 cruise throttle and power", "POOL", "L3-03 (estimate "
+         "from data)", "Confirm (POOL)"),
+        ("PRP-D11 / ENV-005 weed", "LAKE", "L3-02 (real weed)", "Confirm "
+         "(LAKE)"),
+        ("FS-005/006 stuck and shedding", "POOL", "SC-05/06 + L3-02",
+         "Confirm (POOL)"),
+        ("FS-001 / FS-004 on real hardware", "SIM only", "L2-09, L2-03/04",
+         "-"),
+        ("REC-D03 beacon patterns", "LAKE", "L2-12 (patterns)",
+         "Visibility (LAKE)"),
+        ("PWR-010 thermal", "BENCH", "L1-09 under a real workload", "-"),
+    ]
+    return [H1("6. Test catalogue"),
+            P("Every test has an ID, which the FMEA (BOATY-FMEA-001) and "
+              "the test procedures reference. SC = simulator scenario; "
+              "L1/L2/L3 = rig tests; B = bench; R = rehearsal; P = pool. "
+              "Injection parameter names are fixed per SITL version "
+              "(TBC-04) and kept in the scenario code."),
+            H2("6.1 Failsafe scenarios (one per FS requirement)"),
+            tt("SIM", fs_ids),
+            H2("6.2 FMEA-derived simulator scenarios"),
+            tt("SIM", fm_ids),
+            H2("6.3 Rig L1: real computers, simulated boat"),
+            tt("L1"),
+            H2("6.4 Rig L2: iron bird"),
+            tt("L2"),
+            H2("6.5 Rig L3: water tank"),
+            tt("L3"),
+            H2("6.6 Bench, rehearsal and pool items referenced by the FMEA"),
+            table([["ID", "Kind", "Test", "Pass criterion", "Refs"]] +
+                  [[f"<b>{t[0]}</b>", t[1], t[2], t[4], ", ".join(t[5])]
+                   for t in SD.TESTS if t[1] in ("BENCH", "REHEARSAL",
+                                                 "POOL")],
+                  [14, 22, 50, 58, 26]),
+            H2("6.7 What the rigs verify earlier"),
+            table([["Item", "First verified (Issue A)", "Now also by",
+                    "Still needs"]] + [list(e) for e in earlier],
+                  [52, 34, 50, 34]),
+            P("The FMEA check (SIM-D24) confirms that every failure mode "
+              "with severity ≥ 8 has at least one test here.", "small")]
 
 
 SPECIALS = {"hul": special_hul, "prp": special_prp, "pwr": special_pwr,
@@ -234,18 +291,20 @@ def build_one(code):
         for t in d["trace"]:
             by_parent.setdefault(t, []).append(d["id"])
     doc_id = f"BOATY-SSS-{code}"
+    issue = ss.get("issue", ISSUE)
     pc = Counter(d["pri"] for d in derived)
 
     st = cover(f"Subsystem Specification<br/>{ss['title']}",
                ss["purpose"],
-               [["Document", doc_id], ["Issue", ISSUE], ["Date", DATE],
+               [["Document", doc_id], ["Issue", issue], ["Date", DATE],
                 ["Status", "For review by the project owner"],
                 ["Parents", "SRS Issue D, ADD Issue C, ICD Issue B"],
                 ["Content", f"{len(prim)} allocated SRS requirements → "
                  f"{len(derived)} subsystem requirements ({pc['M']} M, "
                  f"{pc['S']} S, {pc['C']} C)"]])
     st += control_and_contents(
-        [["A", DATE, "First issue, for review.", "Claude (drafted)"]],
+        [["A", DATE, "First issue, for review.", "Claude (drafted)"]] +
+        ss.get("history", []),
         "Review guidance: section 5 is what will be built and tested. Check "
         "that each requirement is right, sufficient and testable. Section 4 "
         "shows every parent requirement is covered (the build script "
@@ -359,7 +418,7 @@ def build_one(code):
                                            ss["open_items"]], [30, 140])]
 
     path = OUTDIR / f"{doc_id}_{ss['title'].replace(' & ', '_and_').replace(' ', '_')}.pdf"
-    doc = Doc(path, doc_id, f"Subsystem Specification: {ss['title']}", ISSUE)
+    doc = Doc(path, doc_id, f"Subsystem Specification: {ss['title']}", issue)
     doc.multiBuild(st)
     return path, len(derived), len(prim)
 

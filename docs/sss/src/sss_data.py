@@ -787,24 +787,49 @@ D(r, "REC-D08", "The flag staff shall be capped, and hoop and flag edges "
 # ======================================================================
 s = subsystem(
     "SIM", title="Simulation & test",
+    issue="Issue B (for review)",
+    history=[["B", "28 September 2026", "Hardware-in-the-loop rigs L1-L3 "
+              "added (SIM-D13 to D24). Test catalogue rebuilt with IDs and "
+              "extended with FMEA-derived scenarios (BOATY-FMEA-001).",
+              "Claude, owner request"]],
     purpose="Let the whole system be exercised, failed on purpose and "
-            "rehearsed at home, with the same Mission Control software as "
-            "on the bank.",
+            "rehearsed at home, first against a simulated boat and then "
+            "with more and more real hardware in the loop, with the same "
+            "software throughout.",
     inside=["ArduPilot SITL (Rover, boat frame)", "Camera stub (IF-03)",
             "Launch scripts", "Scenario runner and test suites", "CI "
-            "configuration"],
-    outside=["The software under test (MCN, MCP services)", "Hardware "
-             "tests (bench rigs are per-subsystem)"],
+            "configuration", "Rig L1: real computers + SITL",
+            "Rig L2: iron bird (real helm and power train)",
+            "Rig L3: water-tank thrust and weed rig"],
+    outside=["The software under test (MCN, MCP services)", "Pool and lake "
+             "trials (per-subsystem and system test procedures)"],
     breakdown=[("SIM-1 Simulator", "SITL + camera stub + launcher"),
-               ("SIM-2 Test suites", "Unit, contract, scenario, LLM "
-                "evaluation"), ("SIM-3 CI", "GitHub Actions workflows")],
+               ("SIM-2 Test suites", "Unit, contract, scenario, FMEA-"
+                "derived, LLM evaluation"),
+               ("SIM-3 CI", "GitHub Actions workflows"),
+               ("SIM-4 Rig L1", "Real Pi 5 panel, real Pi Zero + camera, "
+                "real Wi-Fi; SITL on a laptop, reaching the Pi Zero UART "
+                "through a USB-serial adapter"),
+               ("SIM-5 Rig L2 'iron bird'", "Real FC, firmware and "
+                "parameters, power board with key, ESCs and motors, GNSS, "
+                "beacon, on a board; driven by the real Mission Control"),
+               ("SIM-6 Rig L3 tank", "One pod in a water tub on a load cell, "
+                "with current logging and real pond weed")],
     constraints=["Same parameter file as the real helm, plus SIM_* "
-                 "overrides", "Runs on a laptop or the Pi 5"],
-    budget=[("Cost", "£0 (open-source tools); LLM evaluation runs cost "
-             "API credit, so they're capped"), ("Mass / power", "n/a")],
+                 "overrides", "Runs on a laptop or the Pi 5",
+                 "Rig L2 is run with props off, or in water with the tank "
+                 "covered. Removing the magnetic key is the emergency stop."],
+    budget=[("Cost", "£0 software (open source). Rig equipment, outside "
+             "the Mk1 BOM: USB-serial adapter £3, load cell + HX711 £6, "
+             "tub; bench power supply assumed owned."),
+            ("LLM evaluation", "API credit, capped per run"),
+            ("Mass / power", "n/a")],
     special="sim",
     open_items=[("TBC-03 / V-12", "SITL skid boat frame"),
-                ("TBC-04", "Fault injection parameters per scenario")],
+                ("TBC-04", "Fault injection parameters per scenario"),
+                ("SIM-OI-1", "Rig L2 needs the first parts order (FC, ESCs, "
+                 "motors, power parts). Rig L1 needs only a Pi Zero 2W and "
+                 "camera.")],
 )
 group(s, "Simulator")
 D(s, "SIM-D01", "SITL shall run the same ArduPilot version as the helm, "
@@ -820,18 +845,19 @@ D(s, "SIM-D05", "A rehearsal mode shall run the physical panel against "
   "the simulator for crew practice.", "S", "D", "SIM", ["OPS-012"])
 group(s, "Tests")
 D(s, "SIM-D06", "Each FS-001 to FS-013 requirement shall have an automated "
-  "scenario with explicit pass criteria (section 6). FS-008 is bench-only "
-  "and is marked as such.", "M", "T", "SIM", ["SWE-005"])
+  "scenario with explicit pass criteria (SC-01 to SC-13, section 6). "
+  "FS-008 is proven on rig L2.", "M", "T", "SIM", ["SWE-005"])
 D(s, "SIM-D07", "Fault injection shall use SITL simulation parameters and "
   "network impairment, mapped per scenario.", "M", "T", "SIM",
   ["SWE-005", "IF-21"])
 D(s, "SIM-D08", "Contract tests for IF-03 and IF-14 shall run against both "
   "the simulator and real hardware.", "M", "T", "SIM", ["IF-14", "IF-03"])
-D(s, "SIM-D09", "The validator's adversarial suite (≥ 50 cases) shall run "
-  "in CI.", "M", "T", "SIM", ["VAL-006"])
-D(s, "SIM-D10", "The LLM evaluation set (≥ 30 instructions) shall run on "
-  "demand with a per-run cost cap.", "S", "T", "SIM", ["NLI-003",
-                                                        "NLI-006"])
+D(s, "SIM-D09", "The validator's adversarial suite (≥ 50 cases) and a "
+  "property-based comparison against an independent geometry "
+  "implementation shall run in CI (SC-31).", "M", "T", "SIM", ["VAL-006"])
+D(s, "SIM-D10", "The LLM evaluation set (≥ 30 instructions, including "
+  "adversarial child phrasing) shall run on demand with a per-run cost "
+  "cap (SC-33).", "S", "T", "SIM", ["NLI-003", "NLI-006"])
 group(s, "CI and reproducibility")
 D(s, "SIM-D11", "Every push shall run ruff, mypy and unit tests. SITL "
   "scenarios shall run on pull requests and nightly.", "S", "I", "SIM",
@@ -839,6 +865,50 @@ D(s, "SIM-D11", "Every push shall run ruff, mypy and unit tests. SITL "
 D(s, "SIM-D12", "Tool and dependency versions (SITL commit, Python lock "
   "file) shall be pinned in the repository.", "M", "I", "SIM",
   ["SWE-006"])
+group(s, "Hardware-in-the-loop rigs (Issue B)")
+D(s, "SIM-D13", "Rig L1 shall connect SITL to the real Pi Zero 2W through "
+  "a 3.3 V USB-serial adapter at 115200 baud on the Pi's UART, so the "
+  "production router configuration is used unchanged. The real Pi 5 panel "
+  "and Wi-Fi are used.", "M", "D", "BENCH", ["SWE-004", "IF-04", "IF-01"])
+D(s, "SIM-D14", "Rig L1 shall timestamp STOP from button edge to the SITL "
+  "mode change with ≤ 10 ms resolution, over ≥ 100 trials (L1-03).", "M",
+  "T", "BENCH", ["FS-009", "COM-003"])
+D(s, "SIM-D15", "Rig L1 shall switch the Pi Zero's 5 V supply under script "
+  "control for power-cut endurance testing (L1-08).", "S", "T", "BENCH",
+  ["IF-08"])
+D(s, "SIM-D16", "Rig L1 shall allow the sealed box with the Pi Zero to be "
+  "heat-soaked at 30 °C (heat lamp or sun) while running a mission "
+  "(L1-09).", "S", "T", "BENCH", ["PWR-010"])
+D(s, "SIM-D17", "Rig L2 shall mount the real FC (flashed firmware and "
+  "controlled parameters), power board with fuse and magnetic key, ESCs, "
+  "motors, GNSS with sky view, and beacon, driven by the real Mission "
+  "Control over the real link.", "M", "D", "BENCH",
+  ["SAF-001", "IF-05", "IF-06", "IF-07", "IF-09"])
+D(s, "SIM-D18", "Rig L2 shall support physical fault injection: GNSS "
+  "unplug and data-line cut, AP off, bench-supply voltage ramp, ESC "
+  "signal cut, key removal, FC power-cycle, and thrust steps.", "M", "T",
+  "BENCH", ["FS-001", "FS-002", "FS-004", "FS-008", "MOD-003",
+            "PWR-005"])
+D(s, "SIM-D19", "Rig L2 shall record motor current, 5 V rails and ESC "
+  "signals (logic analyser or scope), and detect motor stop within 50 ms "
+  "(ESC telemetry or optical).", "M", "T", "BENCH", ["FS-008", "FS-009",
+                                                     "PWR-005"])
+D(s, "SIM-D20", "Rig L2 shall run with props removed in air, or with pods "
+  "submerged in a covered tank. Removing the key is the emergency stop, "
+  "and the adult-only rules apply.", "M", "I", "BENCH", ["OPS-007",
+                                                          "CHD-003"])
+D(s, "SIM-D21", "Rig L3 shall measure one pod's thrust (± 0.05 N) and "
+  "current, forward and astern, at 0-100% in 10% steps (L3-01).", "M", "T",
+  "BENCH", ["NAV-001", "ENV-002", "IF-06"])
+D(s, "SIM-D22", "Rig L3 shall introduce real pond weed at the inlet and "
+  "record whether the weed-shedding routine clears it (L3-02).", "S", "T",
+  "BENCH", ["ENV-005", "FS-006"])
+D(s, "SIM-D23", "Every rig test shall be recorded with date, software and "
+  "firmware versions, parameter hash and results, and committed to the "
+  "repository.", "M", "I", "BENCH", ["SWE-006"])
+D(s, "SIM-D24", "Every FMEA failure mode with severity ≥ 8 shall be "
+  "exercised by at least one SIM, rig or bench test in the catalogue. The "
+  "build checks this.", "M", "A", "SIM", ["SAF-006", "FS-013"])
 
 ORDER = ["HUL", "PRP", "PWR", "HLM", "MCP", "MCN", "REC", "SIM"]
 
@@ -890,33 +960,150 @@ HLM_PARAMS = [
     ("Mission end", "MIS_DONE_BEHAVE", "Hold (backstop)", "MOD-005", "V-04"),
 ]
 
-SIM_SCENARIOS = [
-    ("FS-001", "Battery drain to 35% then 15%", "Simulated battery "
-     "capacity/drain", "RTL at 35%; alarm at 15%; reaches home"),
-    ("FS-002", "Drop UDP 14550 in STEERING", "Network impairment",
-     "HOLD ≤ 2 s; RTL at 10 s (B4)"),
-    ("FS-003", "Drop UDP 14550 in AUTO", "Network impairment", "Mission "
-     "continues; RTL at 60 s (B4)"),
-    ("FS-004", "GNSS failure for 5 s then restore", "SITL GPS failure "
-     "parameter", "Motors stop ≤ 3 s; RTL after 10 s healthy (B6)"),
-    ("FS-005", "Heavy added drag, throttle ≥ 50%", "SITL drag/wind "
-     "parameters", "HOLD ≤ 5 s + event"),
-    ("FS-006", "As FS-005, drag released after burst 2", "SITL + B5",
-     "≤ 3 bursts; resumes mission"),
-    ("FS-007", "Kill all MCP services mid-mission", "Stop the camera stub "
-     "and B-services", "Mission completes; RTL; HOLD at home"),
-    ("FS-008", "Helm signal loss to ESCs", "<b>Bench only</b>",
-     "Motors stop ≤ 1 s (PRP-D07)"),
-    ("FS-009", "Press STOP (panel or API) in each state", "Panel "
-     "emulation", "Motors stop ≤ 1 s"),
-    ("FS-010", "Moisture flag set in the stub", "Stub health = moisture",
-     "RTL ≤ 2 s"),
-    ("FS-011", "GNSS loss during battery RTL", "Combined injections",
-     "Motors stop (HOLD) wins"),
-    ("FS-012", "All of the above", "Log inspection", "Every event logged "
-     "and announced ≤ 2 s"),
-    ("FS-013", "Sweep of single faults across mission phases", "Scripted "
-     "matrix", "Never leaves the inclusion fence under power"),
+# Test catalogue (SSS-SIM Issue B). kind: SIM, L1, L2, L3.
+# (id, kind, title, injection / method, pass criterion, refs)
+TESTS = [
+    ("SC-01", "SIM", "Battery drain to 35% then 15%", "Simulated battery "
+     "drain", "RTL at 35%; alarm at 15%; reaches home", ["FS-001"]),
+    ("SC-02", "SIM", "Link cut in STEERING", "Drop UDP 14550",
+     "HOLD ≤ 2 s; RTL at 10 s (B4)", ["FS-002"]),
+    ("SC-03", "SIM", "Link cut in AUTO", "Drop UDP 14550", "Mission "
+     "continues; RTL at 60 s (B4)", ["FS-003", "FM-31"]),
+    ("SC-04", "SIM", "GNSS failure 5 s then restore", "SITL GPS failure",
+     "Motors stop ≤ 3 s; RTL after 10 s healthy (B6)", ["FS-004", "FM-01",
+                                                       "FM-06"]),
+    ("SC-05", "SIM", "Heavy drag at throttle ≥ 50%", "SITL drag / wind",
+     "HOLD ≤ 5 s plus event", ["FS-005", "FM-16"]),
+    ("SC-06", "SIM", "Drag released after burst 2", "SITL + B5",
+     "≤ 3 bursts; resumes mission", ["FS-006", "FM-27"]),
+    ("SC-07", "SIM", "Kill all MCP services mid-mission", "Stop stub and "
+     "B-services", "Mission completes; RTL; HOLD at home", ["FS-007",
+                                                            "FM-26"]),
+    ("SC-08", "SIM", "Helm signal loss to ESCs", "Covered by L2-10",
+     "See L2-10", ["FS-008"]),
+    ("SC-09", "SIM", "STOP in every state", "Panel emulation",
+     "Motors stop ≤ 1 s", ["FS-009"]),
+    ("SC-10", "SIM", "Moisture flagged", "Stub health = moisture",
+     "RTL ≤ 2 s", ["FS-010", "FM-24"]),
+    ("SC-11", "SIM", "GNSS loss during battery RTL", "Combined",
+     "Motors-stopped (HOLD) wins", ["FS-011"]),
+    ("SC-12", "SIM", "Log and announce audit", "Log inspection over SC-01 "
+     "to SC-11", "Every event logged, announced ≤ 2 s", ["FS-012"]),
+    ("SC-13", "SIM", "Single-fault sweep across mission phases", "Scripted "
+     "matrix of SC-20 to SC-39 faults", "Never leaves the fence under "
+     "power", ["FS-013"]),
+    ("SC-20", "SIM", "GNSS glitch: 20-50 m jump for 2 s near the fence",
+     "SITL GPS glitch", "No uncommanded exit; glitch rejected or HOLD",
+     ["FM-02"]),
+    ("SC-21", "SIM", "GNSS frozen: stale position while moving", "SITL GPS "
+     "freeze", "Detected; motors stop ≤ 3 s", ["FM-03"]),
+    ("SC-22", "SIM", "Compass offset 30° and 90°", "SITL compass offset",
+     "Yaw fallback or HOLD; stays inside the fence", ["FM-04", "FM-05"]),
+    ("SC-23", "SIM", "Helm restart mid-mission", "Restart SITL process",
+     "Motors stop; boots disarmed; alarm at Mission Control", ["FM-07"]),
+    ("SC-24", "SIM", "Parameter differs from baseline", "Change one "
+     "failsafe parameter", "Arming blocked; difference shown", ["FM-09"]),
+    ("SC-25", "SIM", "Fence missing or disabled", "Skip the fence upload",
+     "Arming refused", ["FM-10"]),
+    ("SC-26", "SIM", "Site file lat/lon swapped; wrong site", "Corrupt the "
+     "site file", "Linter and pre-arm both refuse", ["FM-11"]),
+    ("SC-27", "SIM", "Breach on the far side of the island", "Push the "
+     "boat out with wind", "RTL path avoids the exclusion", ["FM-13"]),
+    ("SC-28", "SIM", "Persistent breach (wind pushing out)", "Strong "
+     "offshore wind", "Motors stop by 30 s / 10 m", ["FM-14"]),
+    ("SC-29", "SIM", "Single motor failure", "Zero one output", "Divergence "
+     "watchdog → HOLD ≤ 20 s", ["FM-17"]),
+    ("SC-30", "SIM", "Boat-service command fuzz", "Random forbidden "
+     "commands", "All blocked by the filter", ["FM-27"]),
+    ("SC-31", "SIM", "Validator adversarial + property-based", "Hypothesis "
+     "vs independent geometry", "No accepted mission crosses a boundary",
+     ["FM-34"]),
+    ("SC-32", "SIM", "Read-back corruption", "Alter one item in transfer",
+     "GO stays disabled", ["FM-35", "FM-47"]),
+    ("SC-33", "SIM", "LLM evaluation with adversarial phrasing", "Recorded "
+     "instruction set", "Schema-valid; must-decline declined", ["FM-36",
+                                                                "FM-37"]),
+    ("SC-34", "SIM", "Link degradation: 30/60/90% loss, 2 s latency",
+     "Network impairment", "FS-002/003 behaviour holds; STOP latency "
+     "logged", ["FM-39", "FM-40"]),
+    ("SC-35", "SIM", "Home sanity", "Arm with GNSS unsettled / far from "
+     "site home", "Refused or warned before GO", ["FM-46"]),
+    ("SC-36", "SIM", "Interrupted upload", "Drop the link mid-transfer",
+     "No partial mission accepted", ["FM-47"]),
+    ("SC-37", "SIM", "Foreign GCS heartbeat", "Second system-255 source",
+     "C7 refuses to operate; alarm", ["FM-41"]),
+    ("SC-38", "SIM", "First-motion heading check", "Compass reversed",
+     "HOLD ≤ 10 s after start", ["FM-05", "FM-18"]),
+    ("SC-39", "SIM", "Capacity overstated by 30%", "Wrong capacity "
+     "parameter", "Voltage backstop triggers RTL in time", ["FM-15"]),
+    ("L1-01", "L1", "End-to-end mission, real computers", "Voice → "
+     "captain's log over real Wi-Fi and UART", "Completes; all artefacts "
+     "logged", ["SWE-004"]),
+    ("L1-02", "L1", "Panel self-test and state × button table", "Real "
+     "buttons", "Matches ICD IF-12", ["FM-32", "FM-33"]),
+    ("L1-03", "L1", "STOP latency, 100 trials", "Button edge → SITL mode",
+     "P99 ≤ 0.5 s", ["FM-40", "FS-009"]),
+    ("L1-04", "L1", "Photo sync, 200 photos", "Real Wi-Fi at 10 m",
+     "≤ 5 min; hashes verified", ["CAM-007"]),
+    ("L1-05", "L1", "UART load", "Maximum telemetry + services", "GCS "
+     "heartbeat jitter < 0.5 s", ["FM-28"]),
+    ("L1-06", "L1", "Mission Control power pulled mid-mission", "Unplug "
+     "the Pi 5", "B4 RTL at 60 s", ["FM-31"]),
+    ("L1-07", "L1", "Range walk on land", "Walk the Pi Zero away", "RSSI "
+     "vs distance; flap behaviour as SC-34", ["FM-39"]),
+    ("L1-08", "L1", "Pi Zero power-cut ×50", "Switched 5 V", "No filesystem "
+     "damage", ["FM-26"]),
+    ("L1-09", "L1", "Sealed-box heat soak 30 °C", "Heat lamp", "No "
+     "throttling for 60 min", ["PWR-010"]),
+    ("L2-01", "L2", "Motor direction and channel map", "Props off",
+     "Left/right and sense correct", ["FM-18"]),
+    ("L2-02", "L2", "Arming gated on the key", "Key in/out", "Refused with "
+     "key out; rail < 0.5 V", ["FM-22", "MOD-003"]),
+    ("L2-03", "L2", "GNSS unplugged", "Pull connector", "EKF failsafe HOLD",
+     ["FM-01"]),
+    ("L2-04", "L2", "GNSS data line cut, power on", "Cut TX", "Detected ≤ "
+     "3 s", ["FM-03"]),
+    ("L2-05", "L2", "Compass vs motor current", "Motor-interference "
+     "calibration", "Interference ≤ 30%", ["FM-04"]),
+    ("L2-06", "L2", "Heading vs reference", "Known bearing", "Within 10°",
+     ["FM-05"]),
+    ("L2-07", "L2", "FC power-cycle with motors running", "Interrupt FC "
+     "supply", "Motors stop; boots disarmed", ["FM-07"]),
+    ("L2-08", "L2", "Thrust-step brownout", "Full reverse → forward",
+     "5 V rails in regulation", ["FM-08", "PWR-005"]),
+    ("L2-09", "L2", "Supply voltage ramp", "Bench supply", "Battery "
+     "failsafe at thresholds", ["FM-15"]),
+    ("L2-10", "L2", "ESC signal cut and restore", "Cut the signal lead",
+     "Stop ≤ 1 s; restart only from neutral", ["FM-19", "FM-20", "FS-008"]),
+    ("L2-11", "L2", "STOP to motors stopped", "Panel STOP", "≤ 1 s",
+     ["FS-009", "FM-40"]),
+    ("L2-12", "L2", "Beacon patterns", "Cycle states", "Each state "
+     "distinguishable", ["REC-004"]),
+    ("L2-13", "L2", "Key-switch short detection", "Bridge the MOSFET",
+     "Checklist rail test flags it", ["FM-22"]),
+    ("L3-01", "L3", "Thrust and current curves", "Load cell, 0-100%",
+     "≥ 2 N forward per pod; current ≤ 8 A", ["NAV-001", "IF-06"]),
+    ("L3-02", "L3", "Weed fouling trials", "Real pond weed", "Cleared in "
+     "≥ 2 of 3", ["FM-16", "ENV-005"]),
+    ("L3-03", "L3", "Cruise power estimate", "Thrust vs drag model",
+     "≤ 10 W at 1.0 m/s", ["PWR-009"]),
+    ("B-01", "BENCH", "Prop guard probe", "8 mm probe", "No blade contact",
+     ["FM-21", "FM-45"]),
+    ("B-02", "BENCH", "BMS protection", "Over-current and short on the "
+     "pack", "BMS trips; fuse intact", ["FM-23"]),
+    ("B-03", "BENCH", "Box dunk", "30 min at 0.3 m", "No ingress",
+     ["FM-24"]),
+    ("B-04", "BENCH", "Harness pull and connector", "Tug test", "No "
+     "disconnect", ["FM-25"]),
+    ("B-05", "BENCH", "Camera failure", "Unplug camera", "Health reports "
+     "fault; mission unaffected", ["FM-29"]),
+    ("B-06", "BENCH", "Clock without GNSS", "Boot offline", "Timestamps "
+     "flagged until GNSS time", ["FM-30"]),
+    ("R-01", "REHEARSAL", "Operator contingency rehearsal", "SIM rehearsal "
+     "mode", "All section 3.5 scenarios rehearsed", ["FM-42", "FM-43",
+                                                     "FM-44", "FM-12"]),
+    ("P-01", "POOL", "Internet absent", "Phone disconnected", "Templates "
+     "offered", ["FM-38"]),
 ]
 
 
@@ -949,6 +1136,8 @@ def check():
         prim = {k for k, (p, _) in alloc.items() if p == code}
         missing = prim - traced
         assert not missing, (code, sorted(missing))
+    ids = [t[0] for t in TESTS]
+    assert len(ids) == len(set(ids)), "duplicate test ids"
     return len(seen)
 
 
