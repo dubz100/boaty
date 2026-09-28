@@ -70,7 +70,10 @@ def pytest_runtest_makereport(item, call):
         return
     if rep.when == "call":
         rec["outcome"] = rep.outcome
-        if rep.failed:
+        if hasattr(rep, "wasxfail"):
+            rec["outcome"] = "xfail" if rep.skipped else "xpass"
+            rec["known_finding"] = rep.wasxfail.replace("reason: ", "")
+        if rep.failed or hasattr(rep, "wasxfail"):
             rec["failure"] = str(rep.longrepr.reprcrash.message
                                  if hasattr(rep.longrepr, "reprcrash")
                                  else rep.longrepr)[:600]
@@ -149,6 +152,13 @@ def companion(sim):
     c.close()
 
 
+def outputs_neutral(sim) -> bool:
+    """Truth: the helm commands both pods to neutral (or disables them)."""
+    pwm = sim.bridge.last_pwm
+    return not pwm or all(p == 0 or abs(p - 1500) <= 10
+                          for p in (pwm[0], pwm[3]))
+
+
 def motors_off(sim) -> bool:
     """Truth: both pod outputs at neutral (or disabled) and thrust decayed."""
     pwm = sim.bridge.last_pwm
@@ -166,3 +176,27 @@ def drive_for(h, sim, throttle: float, turn: float, sim_seconds: float,
     while sim.t < end:
         h.drive(throttle, turn)
         time.sleep(period)
+
+
+class Watch:
+    """Poll a truth predicate in the background and record the first
+    simulated time it holds. Use when the call under test blocks (e.g.
+    helm.stop() waits for confirmation) but the event happens during it."""
+
+    def __init__(self, sim, pred, poll: float = 0.002):
+        import threading
+        self.t = None
+        self._stop = threading.Event()
+
+        def run():
+            while not self._stop.is_set() and self.t is None:
+                if pred():
+                    self.t = sim.t
+                time.sleep(poll)
+        self._th = threading.Thread(target=run, daemon=True)
+        self._th.start()
+
+    def result(self, sim, timeout_sim: float = 5.0):
+        sim.wait_until(lambda: self.t is not None, timeout_sim)
+        self._stop.set()
+        return self.t

@@ -1,7 +1,77 @@
 {
-  "generated": "2026-09-28T21:24:08.908755+00:00",
+  "generated": "2026-09-28T22:24:22.793251+00:00",
   "speedup": 5,
   "records": [
+    {
+      "nodeid": "tests/sitl/test_failsafes.py::test_sc01_battery_drain",
+      "id": "SC-01",
+      "title": "Battery drain to 35% then 15%",
+      "refs": [
+        "FS-001",
+        "SC-01"
+      ],
+      "criterion": "RTL at 35% (+/- 2%); critical alarm at 15%; reaches home within 5 m",
+      "measured": {
+        "battery_pct_at_rtl": 35,
+        "distance_home_m": 2.895,
+        "texts": [
+          "Battery 1 is low 10.89V used 1626 mAh",
+          "Battery 1 is critical 10.43V used 2125 mAh"
+        ]
+      },
+      "notes": [
+        "Reduced speed at 15% is not native (see V-15); it belongs to the mission computer in slice 2."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_failsafes.py::test_sc02_link_cut_in_manual",
+      "id": "SC-02",
+      "title": "Link cut in STEERING",
+      "refs": [
+        "FS-002",
+        "SC-02"
+      ],
+      "criterion": "HOLD <= 2 s after the link is cut (the RTL at 10 s is B4, slice 2)",
+      "measured": {
+        "hold_after_cut_s": 3.108,
+        "native_minimum_s": "FS_GCS_TIMEOUT 2 + FS_TIMEOUT 1"
+      },
+      "notes": [],
+      "outcome": "xfail",
+      "known_finding": "Finding: native GCS failsafe floor is FS_GCS_TIMEOUT 2 s + FS_TIMEOUT 1 s = ~3 s; FS-002 asks 2 s.",
+      "failure": "AssertionError: HOLD after 3.1 s: Rover's GCS failsafe cannot be faster than FS_GCS_TIMEOUT (min 2 s) + FS_TIMEOUT (min 1 s)\nassert (51.50666666662794 - 48.39833333329744) <= 2.0"
+    },
+    {
+      "nodeid": "tests/sitl/test_failsafes.py::test_sc04_gnss_failure",
+      "id": "SC-04",
+      "title": "GNSS failure 5 s then restore",
+      "refs": [
+        "FS-004",
+        "SC-04",
+        "FM-01",
+        "FM-06"
+      ],
+      "criterion": "Motors stop <= 3 s after the fix is lost (the RTL after 10 s healthy is B6, slice 2)",
+      "measured": {
+        "motors_off_after_s": 9.026,
+        "modes": [
+          [
+            8.0,
+            "HOLD"
+          ]
+        ],
+        "texts": [
+          "EKF variance",
+          "EKF failsafe",
+          "EKF failsafe cleared"
+        ]
+      },
+      "notes": [],
+      "outcome": "xfail",
+      "known_finding": "Finding: EKF failsafe stops motors ~9 s after GNSS loss; FS-004 asks 3 s. Needs B6 fix-loss HOLD.",
+      "failure": "AssertionError: motors still running 3 s after GNSS loss\nassert (62.392499999951376 is not None and (62.392499999951376 - 53.36666666662625) <= 3.0)"
+    },
     {
       "nodeid": "tests/sitl/test_helm_contract.py::test_status_after_connect",
       "id": "IF-14-01",
@@ -31,7 +101,7 @@
       ],
       "criterion": "Every parameter in boaty-mk1.parm and sitl.parm exists on Rover 4.7.1 with the file's value",
       "measured": {
-        "parameters_in_baseline": 53,
+        "parameters_in_baseline": 57,
         "live_parameters": 1273,
         "differences": 0
       },
@@ -79,12 +149,11 @@
       ],
       "criterion": "After arm(): armed, SRS mode HOLD, motors off",
       "measured": {
-        "mode": "MANUAL",
-        "ardupilot_mode": 0
+        "mode": "HOLD",
+        "ardupilot_mode": 4
       },
       "notes": [],
-      "outcome": "failed",
-      "failure": "AssertionError: assert (True and <SrsMode.MANUAL: 'MANUAL'> is <SrsMode.HOLD: 'HOLD'>)\n +  where True = HelmStatus(t_utc=datetime.datetime(2026, 9, 28, 21, 23, 37, 701742, tzinfo=datetime.timezone.utc), link_ok=True, armed...48, gps_fix=6, sats=10, hdop=1.21, ekf_ok=True, fence_breached=False, mission_seq=0, mission_total=3, ardupilot_mode=0).armed\n +  and   <SrsMode.MANUAL: 'MANUAL'> = HelmStatus(t_utc=datetime.datetime(2026, 9, 28, 21, 23, 37, 701742, tzinfo=datetime.timezone.utc), link_ok=True, armed...48, gps_fix=6, sats=10, hdop=1.21, ekf_ok=True, fence_breached=False, mission_seq=0, miss"
+      "outcome": "passed"
     },
     {
       "nodeid": "tests/sitl/test_helm_contract.py::test_mode_commands_map_to_srs_modes",
@@ -114,7 +183,7 @@
       ],
       "criterion": "Throttle 0.6 for 5 s moves the boat > 2 m forward",
       "measured": {
-        "moved_m": 3.029
+        "moved_m": 3.033
       },
       "notes": [],
       "outcome": "passed"
@@ -127,11 +196,281 @@
         "FS-009",
         "IF-14"
       ],
-      "criterion": "Motors stop <= 1 s after stop(); helm disarmed; stop() is idempotent",
+      "criterion": "Helm commands the motors to neutral <= 1 s after stop(); helm disarmed; stop() is idempotent",
       "measured": {
-        "motors_off_s": 0.548
+        "outputs_neutral_s": 0.057,
+        "thrust_below_0_05N_s": 0.355
+      },
+      "notes": [
+        "Measured at 5x speed-up, so wall-clock latency in the test harness counts 5 times over; spin-down is the model's 0.1 s motor time constant."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v02_fence_enforced_in_manual",
+      "id": "V-02",
+      "title": "Fence is enforced in the mode used for MANUAL",
+      "refs": [
+        "FEN-004",
+        "V-02"
+      ],
+      "criterion": "Driving straight at the fence in STEERING for 60 s: the boat reaches the fence area but never gets more than 10 m outside",
+      "measured": {
+        "max_north_m": 22.478,
+        "fence_line_north_m": 25.0,
+        "worst_outside_m": 0.0,
+        "fence_action": "none needed",
+        "texts": []
+      },
+      "notes": [
+        "Rover's fence avoidance (AVOID_*) holds the boat short of the fence line in MANUAL, so the breach action is a second layer."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v03_gcs_failsafe_continues_auto",
+      "id": "V-03",
+      "title": "GCS failsafe can 'continue in AUTO'",
+      "refs": [
+        "FS-003",
+        "V-03"
+      ],
+      "criterion": "Link cut in AUTO for 20 s: mode stays AUTO and the mission keeps progressing",
+      "measured": {
+        "modes_during_cut": [
+          "AUTO (unchanged)"
+        ],
+        "progress_m": 19.734,
+        "failsafe_texts": [
+          "GCS Failsafe",
+          "Failsafe - Continuing Auto Mode"
+        ]
       },
       "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v04_holds_station_at_home_after_rtl",
+      "id": "V-04",
+      "title": "Boat loiters at home at the end of RTL",
+      "refs": [
+        "MOD-005",
+        "V-04"
+      ],
+      "criterion": "After arriving home in RTL, with a 4 m/s wind for 60 s, the boat stays within 5 m of home",
+      "measured": {
+        "max_drift_m": 2.182,
+        "mode_at_end": "RTL"
+      },
+      "notes": [
+        "ArduPilot stays in RTL and station-keeps for boats; Mission Control must show 'arrived' as HOLD (MOD-005)."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v05_crash_check_meets_fs005",
+      "id": "V-05",
+      "title": "Crash check can meet FS-005 (stuck detection)",
+      "refs": [
+        "FS-005",
+        "V-05",
+        "SC-05",
+        "FM-16"
+      ],
+      "criterion": "Heavy weed drag in AUTO: HOLD within 5 s of the boat being stuck (< 0.1 m/s)",
+      "measured": {
+        "stuck_after_weed_s": 0.032,
+        "hold_after_stuck_s": 4.897,
+        "crash_text": [
+          "Crash: Going to HOLD"
+        ]
+      },
+      "notes": [],
+      "outcome": "xpass",
+      "known_finding": "Finding: native crash check resets on any noisy GNSS speed sample; stuck-to-HOLD varies 4.9-20 s. Needs B7 second stuck detector (A-07).",
+      "failure": "None"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v06_only_mission_control_counts_as_gcs",
+      "id": "V-06",
+      "title": "Helm counts only Mission Control heartbeats as GCS",
+      "refs": [
+        "FS-002",
+        "V-06",
+        "IF-02"
+      ],
+      "criterion": "With Mission Control silent but the mission computer (1/191) heartbeating, the GCS failsafe still fires",
+      "measured": {
+        "failsafe_after_s": 2.779
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v06b_impostor_gcs_masks_failsafe",
+      "id": "V-06b",
+      "title": "A second system-255 heartbeat masks the GCS failsafe",
+      "refs": [
+        "FM-41",
+        "SC-37"
+      ],
+      "criterion": "Shows why C7 must refuse to operate when a foreign system-255 source appears",
+      "measured": {
+        "failsafe_fired": false
+      },
+      "notes": [
+        "Expected: the failsafe does NOT fire, because ArduPilot accepts any system-255 heartbeat. Mitigation is FM-41 / SC-37 in Mission Control (slice 3)."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v11_guided_stops_without_targets",
+      "id": "V-11",
+      "title": "GUIDED stops within 3 s if velocity targets stop",
+      "refs": [
+        "FS-006",
+        "V-11"
+      ],
+      "criterion": "After the last velocity target, motors are off within 3 s",
+      "measured": {
+        "speed_before_m_s": 0.999,
+        "motors_off_after_s": 3.905
+      },
+      "notes": [
+        "Rover 4.7.1 mode_guided.cpp: 3 s timeout, then a decelerating stop (ATC_DECEL_MAX)."
+      ],
+      "outcome": "xfail",
+      "known_finding": "Finding: GUIDED times out after 3 s then decelerates; motors off ~3.9 s.",
+      "failure": "assert (53.278333333293 is not None and (53.278333333293 - 49.37333333329655) <= 3.0)"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v12_skid_steer_boat_behaves",
+      "id": "V-12",
+      "title": "Skid-steer boat frame behaves plausibly",
+      "refs": [
+        "SWE-004",
+        "V-12",
+        "NAV-004",
+        "NAV-005"
+      ],
+      "criterion": "Flies the 30 m triangle: cross-track RMS <= 3 m, mean speed within 20% of 1.0 m/s",
+      "measured": {
+        "cross_track_rms_m": 0.157,
+        "cross_track_max_m": 0.341,
+        "mean_speed_m_s": 1.008,
+        "samples": 296
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v13_rail_voltage_gates_arming",
+      "id": "V-13",
+      "title": "Second voltage input gates arming (key in/out)",
+      "refs": [
+        "MOD-003",
+        "PRE-007",
+        "V-13"
+      ],
+      "criterion": "Rail reads < 9 V: arming refused with a battery-2 reason; rail restored: arming works",
+      "measured": {
+        "rail_v_key_out": 1.235,
+        "refusal": [
+          "Arm: Battery 2 below minimum arming voltage"
+        ],
+        "armed_with_key_in": true
+      },
+      "notes": [
+        "SITL cannot switch its second analogue input off, so key out is emulated by scaling BATT2_VOLT_MULT; the real switch is tested on L2 (L2-13)."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v14_persistent_breach",
+      "id": "V-14",
+      "title": "Native mechanism to stop motors on persistent breach",
+      "refs": [
+        "FEN-006",
+        "V-14",
+        "SC-28",
+        "FM-14"
+      ],
+      "criterion": "Offshore gale pushes the boat out: does ArduPilot itself stop the motors by 30 s / 10 m outside? (answer recorded)",
+      "measured": {
+        "outside_after_40s_m": 42.542,
+        "motors_running": true,
+        "mode": "RTL"
+      },
+      "notes": [
+        "Answer: NO native stop - ArduPilot keeps fighting in RTL. FEN-006 must be met by B7/B-services (slice 2)."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v15_rtl_speed_on_low_battery",
+      "id": "V-15",
+      "title": "Reduced speed during RTL on critical battery",
+      "refs": [
+        "FS-001",
+        "V-15"
+      ],
+      "criterion": "Answer recorded: RTL speed after the critical battery failsafe, compared with WP_SPEED (1.0 m/s)",
+      "measured": {
+        "rtl_speed_after_critical_m_s": 1.0,
+        "distance_home_m": 42.163,
+        "mode": "RTL",
+        "texts": [
+          "Battery 1 is low 10.89V used 1625 mAh",
+          "Battery 1 is critical 10.21V used 2125 mAh"
+        ]
+      },
+      "notes": [
+        "Answer: NO native speed reduction: FS-001's reduced speed at 15% must come from the mission computer (slice 2)."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v16_compass_fault_does_not_leave_fence",
+      "id": "V-16",
+      "title": "GNSS-velocity yaw fallback when the compass disagrees",
+      "refs": [
+        "NAV-008",
+        "V-16",
+        "SC-22",
+        "FM-04",
+        "FS-013"
+      ],
+      "criterion": "Single compass rotated 90 degrees mid-mission: the boat never leaves the fence (it may HOLD); heading error recorded",
+      "measured": {
+        "sim_mag1_orient": 2.0,
+        "worst_outside_m": 0.0,
+        "worst_heading_error_deg": 100.512,
+        "heading_error_last_20s_deg": 97.108,
+        "mission_seq_at_end": 3,
+        "mission_total": 3,
+        "texts": [],
+        "mode_at_end": "AUTO"
+      },
+      "notes": [
+        "Finding: with its only compass rotated, the EKF heading stays wrong (no GSF yaw reset, no message), yet the boat still tracks its mission on GNSS course. Heading-dependent outputs (photo tags, map arrow) would be wrong; B7's heading-vs-course check (A-03, SC-38) is what catches it."
+      ],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_v_items.py::test_v17_fence_change_while_armed",
+      "id": "V-17",
+      "title": "Does the helm refuse fence changes while armed?",
+      "refs": [
+        "FEN-007",
+        "V-17"
+      ],
+      "criterion": "Answer recorded; our helm API refuses regardless",
+      "measured": {
+        "ardupilot_native": "accepted"
+      },
+      "notes": [
+        "FEN-007 is enforced by C7 (NotAllowedWhileArmed) whatever ArduPilot does."
+      ],
       "outcome": "passed"
     }
   ]
