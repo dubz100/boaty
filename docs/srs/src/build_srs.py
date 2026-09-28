@@ -25,7 +25,7 @@ FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_System_Requirements_Specification.pdf"
 
 DOC_ID = "BOATY-SRS-001"
-ISSUE = "Issue B (for review)"
+ISSUE = "Issue C (for review)"
 DATE = "28 September 2026"
 
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
@@ -196,7 +196,7 @@ def build():
              "Control", "sub"),
            Spacer(1, 14 * mm),
            table([["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                  ["Status", "Issue B: owner decisions incorporated"],
+                  ["Status", "Issue C: owner decisions incorporated"],
                   ["Basis", "Concept Selection Report v1.1 (Concept G)"],
                   ["Includes", "System overview, ConOps, ConUse, requirements, "
                    "verification and traceability"],
@@ -217,6 +217,10 @@ def build():
                    "TBD-01 closed, SAF-005 marked not applicable, MC-014 "
                    "applies unconditionally. Failsafe thresholds and safety "
                    "numbers accepted as baseline (TBD-08 closed).",
+                   "Claude, owner decisions"],
+                  ["C", DATE, "CR-01 accepted: CON-001 cap raised to £160 "
+                   "(target £150). TBD-04 to TBD-07 closed by the "
+                   "architecture decisions (ADD DD-06 to DD-09).",
                    "Claude, owner decisions"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),

@@ -19,7 +19,7 @@ SRS = A.SRS
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Architecture_Design_Document.pdf"
 DOC_ID = "BOATY-ADD-001"
-ISSUE = "Issue A (for review)"
+ISSUE = "Issue B (for review)"
 DATE = "28 September 2026"
 
 
@@ -49,14 +49,18 @@ def build():
                "Mk1 system architecture: design-space exploration, selected "
                "architecture, interfaces and requirement allocation",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "For review by the project owner"],
+                ["Status", "AR-2 and CR-01 accepted by the owner"],
                 ["Inputs", "SRS BOATY-SRS-001 Issue B; Concept Selection "
                  "Report v1.1"],
                 ["Outcome", f"Architecture {chosen['id']} '{chosen['name']}': "
                  f"8 subsystems, {len(A.INTERFACES)} interfaces, "
                  f"{n_alloc} requirements allocated"]])
     st += control_and_contents(
-        [["A", DATE, "First issue, for review.", "Claude (drafted)"]],
+        [["A", DATE, "First issue, for review.", "Claude (drafted)"],
+         ["B", DATE, "Owner accepted AR-2 and CR-01 (cap £160, SRS Issue C). "
+          "Weed-shedding mechanism refined during ICD work (bounded GUIDED "
+          "velocity bursts); V-11 to V-13 added.", "Claude, owner "
+          "decisions"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "
@@ -210,11 +214,14 @@ def build():
                   A.COMPONENTS], [11, 30, 89, 40]),
            Spacer(1, 3 * mm),
            callout("<b>Rule for boat-side Python (B4-B6):</b> these services "
-                   "may only <i>request</i> safer states (HOLD, RTL, reverse "
-                   "bursts in HOLD) through MAVLink. They never arm, never "
-                   "change the fence or parameters, and never command AUTO "
-                   "or MANUAL. If they crash, nothing becomes less safe "
-                   "(FS-007, SAF-003).", ORANGE, ORANGE_T),
+                   "may only <i>request</i> safer states through MAVLink: "
+                   "HOLD, LOITER or RTL. The one exception is B5's "
+                   "weed-shedding. It may use GUIDED for bounded reverse "
+                   "bursts (at most 0.5 m/s astern, 2 s each, 3 in total), "
+                   "and must then hand back to HOLD. V-11 confirms the helm "
+                   "stops if B5 dies mid-burst. These services never arm, "
+                   "never change the fence or parameters, and never command "
+                   "AUTO or MANUAL (FS-007, SAF-003).", ORANGE, ORANGE_T),
            H2("4.4 Network and link"),
            P("The Pi 5 runs the Wi-Fi access point, using a USB adapter "
              "with an external antenna. The boat's Pi Zero joins it as a "
@@ -346,7 +353,7 @@ def build():
                   f"<b>{base}</b>"],
                  ["", "Boat only / bank only", f"{boat_bom} / {bank_bom}"],
                  ["", "If the pole kit (*) is needed", f"{base + deferred}"],
-                 ["", "SRS cap (CON-001) / target", "120 / 100"]]
+                 ["", "SRS cap (CON-001, Issue C) / target", "160 / 150"]]
     st += [H1("7. Budgets"),
            H2("7.1 Mass"),
            table([["Item", "g"]] + [[i, str(m)] for i, m in A.MASS] +
@@ -375,9 +382,11 @@ def build():
            H2("7.3 Cost"),
            table(bom_rows, [16, 130, 24]),
            Spacer(1, 3 * mm),
-           callout(f"<b>The architecture does not meet CON-001.</b> The "
-                   f"baseline is £{base} against the £120 cap (£{base - 120} "
-                   f"over), or £{base + deferred} if the pole kit is needed. "
+           callout(f"<b>CR-01 accepted (Issue B):</b> the CON-001 cap is now "
+                   f"£160, target £150 (SRS Issue C). The baseline of £{base}, "
+                   f"or £{base + deferred} with the pole kit, fits. As "
+                   "originally raised: the baseline was over the old £120 "
+                   "cap. "
                    "Compared with the concept estimate (£117 including the "
                    "Mission Control extras), the growth comes from five "
                    "decisions:<br/>"
@@ -390,7 +399,7 @@ def build():
                    "gives up the live photo pipeline. <b>Owner decision "
                    "CR-01:</b> (a) raise the CON-001 cap to £160, target "
                    "£150; or (b) keep £120 and adopt AR-3's action-camera "
-                   "photo path. I recommend (a).", ORANGE, ORANGE_T),
+                   "photo path. <b>Owner chose (a).</b>", ORANGE, ORANGE_T),
            PageBreak()]
 
     # ---------------- 8 decisions + 9 verification/risks
@@ -413,16 +422,17 @@ def build():
            Spacer(1, 6 * mm)]
 
     # ---------------- 10 next steps
-    st += [H1("10. Decisions needed and next documents"),
-           table([["#", "Decision for the owner", "Recommendation"],
+    st += [H1("10. Decisions and next documents"),
+           table([["#", "Decision", "Status"],
                   ["1", "Accept AR-2 'Smart bank' as the Mk1 architecture",
-                   "Accept"],
-                  ["2", "CR-01: cost cap (section 7.3)", "Raise the cap to "
-                   "£160, target £150"],
+                   "<b>Accepted</b> (owner, 28 Sep 2026)"],
+                  ["2", "CR-01: cost cap (section 7.3)", "<b>Accepted</b>: "
+                   "cap £160, target £150"],
                   ["3", "Pi Zero 2W instead of ESP32 on the boat (DD-03)",
-                   "Accept; required by SWE-001"],
+                   "<b>Accepted</b> as part of AR-2"],
                   ["4", "Order of work: prove V-01 to V-06 in SITL and on "
-                   "the bench before the main parts order", "Accept"]],
+                   "the bench before the main parts order",
+                   "Recommended; not yet confirmed"]],
                  [8, 100, 62]),
            Spacer(1, 4 * mm),
            P("Then, from this document:"),

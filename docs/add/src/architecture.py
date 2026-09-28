@@ -27,7 +27,7 @@ DRIVERS = [
      "display.", "Bank-side hardware"),
     ("CHD-*, MEC-007/009", "Tool-free chunky modules and a DUPLO deck for a "
      "4-year-old.", "Mechanical modularity"),
-    ("CON-001", "Mk1 bill of materials ≤ £120 (target £100).",
+    ("CON-001", "Mk1 bill of materials ≤ £160 (target £150; raised from £120 by CR-01).",
      "Pushes against everything above"),
 ]
 
@@ -331,8 +331,8 @@ COMPONENTS = [
      "CAM-007"),
     ("MCP", "B4", "Link watchdog", "No Mission Control heartbeat for 60 s "
      "in AUTO → command RTL", "FS-003"),
-    ("MCP", "B5", "Weed-shedding", "On stuck → up to 3 reverse bursts, "
-     "then resume or stay in HOLD", "FS-006"),
+    ("MCP", "B5", "Weed-shedding", "On stuck → up to 3 bounded GUIDED "
+     "reverse bursts, then resume or stay in HOLD", "FS-006"),
     ("MCP", "B6", "Health", "Moisture → RTL + alarm; temperature; storage",
      "FS-010, PWR-010, CAM-004"),
     ("HLM", "A1", "ArduPilot Rover", "Navigation, modes, fence, "
@@ -433,7 +433,7 @@ FS_ALLOC = [
      "Python"),
     ("FS-004", "Position loss", "HLM", "EKF failsafe → HOLD", "Native"),
     ("FS-005", "Stuck", "HLM", "Crash check → HOLD", "Native (V-05)"),
-    ("FS-006", "Weed-shedding", "MCP", "B5 reverse bursts via MAVLink",
+    ("FS-006", "Weed-shedding", "MCP", "B5 bounded GUIDED reverse bursts via MAVLink (V-11)",
      "Python"),
     ("FS-007", "Mission computer down", "HLM", "Mission continues; "
      "nothing depends on the companion", "By design"),
@@ -500,13 +500,20 @@ VERIFY_EARLY = [
      "FS-008"),
     ("V-10", "Pi Zero 2W in the sealed box at 30 °C for 60 min without "
      "throttling.", "Bench", "PWR-010"),
+    ("V-11", "In GUIDED, the helm stops within 3 s if velocity targets stop "
+     "arriving, so a B5 crash mid-burst is safe.", "SITL", "FS-006"),
+    ("V-12", "A skid-steer boat frame is available in SITL and behaves "
+     "plausibly.", "SITL", "SWE-004"),
+    ("V-13", "The second voltage input can gate arming on motor-rail "
+     "voltage (key in).", "SITL + bench", "MOD-003"),
 ]
 
 RISKS = [
     ("R-01", "F405 firmware lacks a needed feature", "Medium",
      "V-01 before purchase of other parts; H743 fallback (+£20-25)"),
-    ("R-02", "Bill of materials over the £120 cap", "High",
-     "Owner decision CR-01 (section 7.3); deferred items"),
+    ("R-02", "Bill of materials over the £160 cap (was High at £120; "
+     "CR-01 accepted)", "Low", "£12 headroom on baseline; pole kit only if "
+     "V-08 needs it"),
     ("R-03", "Wi-Fi range over water", "Medium",
      "Pole antenna; safety independent of the link"),
     ("R-04", "Pi Zero SD-card corruption on power loss", "Medium",

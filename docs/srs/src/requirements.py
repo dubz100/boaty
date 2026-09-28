@@ -642,9 +642,9 @@ R("OPS-012", "Before the first lake trial, the operator shall rehearse "
 
 # ---------------------------------------------------------------- constraints
 section("CON", "Cost and constraints", "")
-R("CON-001", "The Mk1 bill of materials shall not exceed £120, excluding "
-  "items already owned (Pi 5, printer, tools, charger). The target is "
-  "£100.", "M", "A", "BENCH", ["STK-05"])
+R("CON-001", "The Mk1 bill of materials shall not exceed £160, excluding "
+  "items already owned (Pi 5, printer, tools, charger, phone, power "
+  "bank). The target is £150.", "M", "A", "BENCH", ["STK-05"])
 R("CON-002", "The owned Raspberry Pi 5 and Ultimaker printer shall be "
   "used.", "M", "I", "BENCH", ["STK-05"])
 R("CON-003", "Purchased components shall be available from UK retailers "
@@ -696,14 +696,15 @@ TBDS = [
      "coordinates.", "OPS-006, FEN-002", "Site visit"),
     ("TBD-03", "Cambridge Sport Lakes Trust permission and conditions.",
      "OPS-002, OPS-003", "Email the Trust"),
-    ("TBD-04", "Wi-Fi setup between boat, Pi 5 and phone hotspot.",
-     "COM-001, COM-005", "Architecture"),
-    ("TBD-05", "Speech-to-text engine: on-device (Pi 5) or cloud.",
-     "NLI-002", "Architecture"),
-    ("TBD-06", "Display device: attached screen, tablet or phone.",
-     "MC-005, MC-006", "Architecture"),
-    ("TBD-07", "Battery: 3S Li-ion pack or 3S LiPo.", "PWR-001",
-     "Architecture"),
+    ("TBD-04", "<b>Closed (Issue C).</b> Pi 5 is the Wi-Fi AP; phone "
+     "USB-tethered for internet (ADD DD-06).", "COM-001, COM-005",
+     "ADD Issue B"),
+    ("TBD-05", "<b>Closed (Issue C).</b> On-device speech-to-text and "
+     "text-to-speech on the Pi 5 (ADD DD-07).", "NLI-002", "ADD Issue B"),
+    ("TBD-06", "<b>Closed (Issue C).</b> Web UI on phone or tablet "
+     "(ADD DD-08).", "MC-005, MC-006", "ADD Issue B"),
+    ("TBD-07", "<b>Closed (Issue C).</b> 3S Li-ion 18650 pack with BMS "
+     "(ADD DD-09).", "PWR-001", "ADD Issue B"),
     ("TBD-08", "<b>Closed (Issue B).</b> Failsafe thresholds, timings and "
      "safety numbers accepted as the baseline. Trials may propose "
      "changes via SRS revision.", "FS-001 to FS-013, OPS-004/006, "
