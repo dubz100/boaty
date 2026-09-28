@@ -286,7 +286,7 @@ SUBSYSTEMS = [
      "health."),
     ("MCN", "Mission Control", "Bank",
      "Raspberry Pi 5, USB Wi-Fi adapter (pole-mountable), GO / COME HOME / "
-     "STOP buttons, adult key switch, USB mic, speaker, status LEDs, power "
+     "STOP / TALK buttons, adult key switch, USB mic, speaker, status LEDs, power "
      "bank, case, phone/tablet display. Python application: session "
      "manager, web UI, voice, planner, validator, helm interface, photo "
      "sync, captain's log, site store, logger."),
@@ -375,7 +375,7 @@ INTERFACES = [
      "HTTPS, Messages API with tool use", "Instruction + site context → "
      "intent JSON; photos → captions (opt-in)", "NLI-003/004, LOG-004"),
     ("IF-12", "Crew & operator panel", "MCN", "EXT-US", "HMI",
-     "3 buttons, key switch, LEDs, mic, speaker, web UI",
+     "4 buttons, key switch, LEDs, mic, speaker, web UI",
      "Commands, approvals, announcements", "MC-002..008, CHD-005"),
     ("IF-13", "Mission format", "MCN", "MCN", "Software",
      "JSON schema v1 (intent → mission → MAVLink items)",
@@ -553,7 +553,7 @@ BOM = [
     ("Boat", "Foam, hi-vis, LED beacon", 5),
     ("Boat", "5 V 3 A buck", 3),
     ("Boat", "Reed switch + MOSFET switch module (arming key)", 4),
-    ("Bank", "3 arcade buttons, key switch", 7),
+    ("Bank", "4 arcade buttons (incl. TALK), key switch", 9),
     ("Bank", "USB mic + small speaker", 8),
     ("Bank", "USB Wi-Fi adapter with antenna", 12),
     ("Bank*", "2 m pole + 3 m USB extension (only if V-08 needs it)", 8),

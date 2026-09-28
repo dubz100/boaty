@@ -25,7 +25,7 @@ FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_System_Requirements_Specification.pdf"
 
 DOC_ID = "BOATY-SRS-001"
-ISSUE = "Issue C (for review)"
+ISSUE = "Issue D (for review)"
 DATE = "28 September 2026"
 
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
@@ -196,7 +196,7 @@ def build():
              "Control", "sub"),
            Spacer(1, 14 * mm),
            table([["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                  ["Status", "Issue C: owner decisions incorporated"],
+                  ["Status", "Issue D: owner decisions incorporated"],
                   ["Basis", "Concept Selection Report v1.1 (Concept G)"],
                   ["Includes", "System overview, ConOps, ConUse, requirements, "
                    "verification and traceability"],
@@ -221,7 +221,10 @@ def build():
                   ["C", DATE, "CR-01 accepted: CON-001 cap raised to £160 "
                    "(target £150). TBD-04 to TBD-07 closed by the "
                    "architecture decisions (ADD DD-06 to DD-09).",
-                   "Claude, owner decisions"]],
+                   "Claude, owner decisions"],
+                  ["D", DATE, "Fourth crew button TALK (blue, microphone) "
+                   "added for push-to-talk: MC-002, NLI-002, CHD-005 and "
+                   "ConUse updated (ICD TBC-10).", "Claude, owner decision"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),
            table([["Role", "Name", "Signature / date"],
@@ -390,7 +393,7 @@ def build():
                    "supervises the crew and the boat, commands recovery, "
                    "and never lets the child near the water unsupervised."],
                   ["Crew", "Son, age 4", "Builds and customises the boat, "
-                   "gives the orders, presses GO / COME HOME / STOP, spots "
+                   "gives the orders with TALK, presses GO / COME HOME / STOP, spots "
                    "the boat, reviews photos."],
                   ["Maintainer", "Parent", "Software, configuration, "
                    "charging, repairs, spares, logs and FMEA upkeep."],
@@ -546,7 +549,7 @@ def build():
                    "mode", "\"Coming home!\"", "RTL stays inside the fence"],
                   ["<b>STOP</b> (red, ■)", "Motors off, boat drifts",
                    "Any time", "\"Stopping!\"", "Removes energy"],
-                  ["<b>Voice</b> (push-to-talk)", "Asks for a mission plan",
+                  ["<b>TALK</b> (blue, mic)", "Hold to speak an order",
                    "DISARMED or HOLD", "Plan shown on the map and spoken",
                    "Validator plus adult approval"],
                   ["<b>DUPLO deck</b>", "Crew, cargo, lookout", "Boat "

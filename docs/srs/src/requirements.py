@@ -258,7 +258,7 @@ section("NLI", "Natural-language instructions", "")
 R("NLI-001", "Mission Control shall accept instructions as typed text.",
   "M", "D", "SIM", ["STK-02"])
 R("NLI-002", "Mission Control shall accept spoken instructions through a "
-  "microphone, using push-to-talk.", "S", "D", "SIM", ["STK-02", "STK-04"])
+  "microphone, using push-to-talk on the TALK button.", "S", "D", "SIM", ["STK-02", "STK-04"])
 R("NLI-003", "Instructions shall be turned into a mission through the "
   "Claude API. The request shall include the site context: fence, "
   "exclusion zones, home, battery state, time and energy limits, and the "
@@ -360,9 +360,9 @@ section("MC", "Mission Control (bank station)",
 R("MC-001", "Mission Control shall run on the owned Raspberry Pi 5 and "
   "operate for at least 2.5 h from a USB-C power bank.", "M", "T", "BENCH",
   ["STK-05"])
-R("MC-002", "It shall have three physical push buttons, each at least "
+R("MC-002", "It shall have four physical push buttons, each at least "
   "30 mm across, in distinct colours with icons: GO (green), COME HOME "
-  "(yellow), STOP (red).", "M", "I", "BENCH", ["STK-04", "STK-06"])
+  "(yellow), STOP (red) and TALK (blue, microphone).", "M", "I", "BENCH", ["STK-04", "STK-06"])
 R("MC-003", "STOP and COME HOME shall always be active while armed. GO "
   "shall be active only when a validated, approved and verified mission is "
   "loaded and the boat is armed in HOLD.", "M", "T", "SIM",
@@ -588,7 +588,7 @@ R("CHD-003", "The battery, electronics and propellers shall not be "
 R("CHD-004", "'Child tier' assembly (hull segments, pods, deck, flag) "
   "shall need no tools and be doable with small hands.", "M", "D", "BENCH",
   ["STK-04"])
-R("CHD-005", "The crew controls (GO, COME HOME, STOP) shall be usable "
+R("CHD-005", "The crew controls (GO, COME HOME, STOP, TALK) shall be usable "
   "without reading, by colour and icon alone.", "M", "D", "BENCH",
   ["STK-04"])
 R("CHD-006", "No child-accessible surface shall exceed 48 °C.", "S", "T",
@@ -717,8 +717,8 @@ GLOSSARY = [
      "guardian (Route B)."),
     ("Mission computer", "The on-boat companion computer: camera, photos, "
      "link bridge, higher-level behaviour."),
-    ("Mission Control", "The Raspberry Pi 5 bank station with GO, COME HOME "
-     "and STOP buttons."),
+    ("Mission Control", "The Raspberry Pi 5 bank station with GO, COME HOME, "
+     "STOP and TALK buttons."),
     ("Guardian", "Route B only: an independent MicroPython microcontroller "
      "that gates motor commands."),
     ("Geofence", "An inclusion polygon the boat must stay inside, plus "

@@ -34,7 +34,7 @@ S["code"] = ParagraphStyle("code", fontName="DVM", fontSize=6.9, leading=8.9,
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Interface_Control_Document.pdf"
 DOC_ID = "BOATY-ICD-001"
-ISSUE = "Issue A (for review)"
+ISSUE = "Issue B (for review)"
 DATE = "28 September 2026"
 
 IFS = {i[0]: i for i in A.INTERFACES}
@@ -50,8 +50,12 @@ TBC = []          # filled as sections are built: (id, text, interface)
 VERIF = []        # (interface, method, stage, evidence)
 
 
-def tbc(iface, text):
+def tbc(iface, text, closed=None):
+    """Register a to-be-confirmed item. Closed items keep their number."""
     tid = f"TBC-{len(TBC) + 1:02d}"
+    if closed:
+        TBC.append((tid, f"<b>Closed.</b> {closed} (was: {text})", iface))
+        return f'<font color="#9a998f">({tid} closed)</font>'
     TBC.append((tid, text, iface))
     return f'<font color="#eb6834"><b>[{tid}]</b></font>'
 
@@ -840,7 +844,9 @@ def section_hmi():
                   ["TALK (blue, mic) " + tbc(
                       "IF-12", "Owner to confirm a fourth 'TALK' button: "
                       "MC-002 names three, but push-to-talk (NLI-002) needs "
-                      "a trigger a 4-year-old can find."),
+                      "a trigger a 4-year-old can find.",
+                      closed="Owner approved the TALK button; MC-002 now "
+                      "names four buttons (SRS Issue D)"),
                    "24 (18)", "Input, pull-up", "Hold to talk, release to "
                    "send (NLI-002)"],
                   ["Adult key switch", "23 (16)", "Input, pull-up",
@@ -1012,17 +1018,19 @@ def build():
                "handling and verification",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
                 ["Status", "For review by the project owner"],
-                ["Parent", "BOATY-ADD-001 Issue B (interface register, "
+                ["Parent", "BOATY-ADD-001 Issue C (interface register, "
                  "section 5)"],
                 ["Content", f"{len(A.INTERFACES)} interfaces, "
-                 f"{len(VERIF)} verification entries, {len(TBC)} items to "
-                 "be confirmed"]])
+                 f"{len(VERIF)} verification entries, "
+                 f"{sum(1 for t in TBC if 'Closed' not in t[1])} open items "
+                 "to be confirmed"]])
     st += control_and_contents(
-        [["A", DATE, "First issue, for review.", "Claude (drafted)"]],
+        [["A", DATE, "First issue, for review.", "Claude (drafted)"],
+         ["B", DATE, "TBC-10 closed: TALK button approved and defined in "
+          "IF-12.", "Claude, owner decision"]],
         "Review guidance: check that each interface is complete enough to "
         "build and test against. Items marked [TBC-nn] are known gaps with "
-        "an owner; they're listed in section 9. The one decision needed "
-        "from you is TBC on the TALK button (IF-12).")
+        "an owner; they're listed in section 9.")
 
     # ---- 1-3
     rows = [["ID", "Interface", "Between", "Type", "Owner", "Section"]]
@@ -1060,7 +1068,7 @@ def build():
              "verification is re-run."),
            H2("1.3 References"),
            table([["Ref", "Document"],
-                  ["[1]", "BOATY-SRS-001 Issue C; BOATY-ADD-001 Issue B"],
+                  ["[1]", "BOATY-SRS-001 Issue D; BOATY-ADD-001 Issue C"],
                   ["[2]", "MAVLink common message set and mission protocol "
                    "(mavlink.io)"],
                   ["[3]", "ArduPilot Rover documentation: modes, failsafes, "

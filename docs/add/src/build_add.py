@@ -19,7 +19,7 @@ SRS = A.SRS
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Architecture_Design_Document.pdf"
 DOC_ID = "BOATY-ADD-001"
-ISSUE = "Issue B (for review)"
+ISSUE = "Issue C (for review)"
 DATE = "28 September 2026"
 
 
@@ -50,7 +50,7 @@ def build():
                "architecture, interfaces and requirement allocation",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
                 ["Status", "AR-2 and CR-01 accepted by the owner"],
-                ["Inputs", "SRS BOATY-SRS-001 Issue B; Concept Selection "
+                ["Inputs", "SRS BOATY-SRS-001 Issue D; Concept Selection "
                  "Report v1.1"],
                 ["Outcome", f"Architecture {chosen['id']} '{chosen['name']}': "
                  f"8 subsystems, {len(A.INTERFACES)} interfaces, "
@@ -60,7 +60,10 @@ def build():
          ["B", DATE, "Owner accepted AR-2 and CR-01 (cap £160, SRS Issue C). "
           "Weed-shedding mechanism refined during ICD work (bounded GUIDED "
           "velocity bursts); V-11 to V-13 added.", "Claude, owner "
-          "decisions"]],
+          "decisions"],
+         ["C", DATE, "TALK button added (ICD TBC-10 closed, SRS Issue D): "
+          "BOM +£2, MCN and IF-12 descriptions updated.", "Claude, owner "
+          "decision"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "
@@ -388,13 +391,14 @@ def build():
                    "originally raised: the baseline was over the old £120 "
                    "cap. "
                    "Compared with the concept estimate (£117 including the "
-                   "Mission Control extras), the growth comes from five "
-                   "decisions:<br/>"
+                   "Mission Control extras), the growth comes from six "
+                   "changes:<br/>"
                    "• Python on the boat (Pi Zero instead of ESP32): +£9<br/>"
                    "• Bank radio (USB adapter + antenna): +£12<br/>"
                    "• Independent motor-power interlock: +£4<br/>"
                    "• Dedicated 5 V supply: +£3<br/>"
                    "• Adult key switch on the panel: +£3<br/>"
+                   "• TALK button (added in Issue C): +£2<br/>"
                    "The cheapest candidate, AR-3, would fit the cap, but it "
                    "gives up the live photo pipeline. <b>Owner decision "
                    "CR-01:</b> (a) raise the CON-001 cap to £160, target "

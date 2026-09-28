@@ -216,7 +216,7 @@ def fig_phases():
 def fig_panel():
     from matplotlib.patches import Circle, Polygon
     fig, ax = plt.subplots(figsize=(6.4, 3.3))
-    ax.add_patch(FancyBboxPatch((0, 0), 10, 5.2,
+    ax.add_patch(FancyBboxPatch((0, 0), 10.6, 5.2,
                                 boxstyle="round,pad=0,rounding_size=0.4",
                                 facecolor="#f2f1ec", edgecolor=INK, lw=1.2))
     # screen
@@ -234,32 +234,35 @@ def fig_panel():
     ax.text(3.1, 0.75, "Screen: map, plan, status (tablet or display)",
             ha="center", fontsize=6.5, color=INK2)
     # buttons
-    btn = [(7.2, 3.9, AQUA, "GO", "hold 1 s"),
-           (7.2, 2.35, YELLOW, "COME HOME", ""),
-           (7.2, 0.85, RED, "STOP", "")]
+    btn = [(7.2, 4.35, BLUE, "TALK", "hold to speak"),
+           (7.2, 3.1, AQUA, "GO", "hold 1 s"),
+           (7.2, 1.85, YELLOW, "COME HOME", ""),
+           (7.2, 0.6, RED, "STOP", "")]
     for x, y, c, t, sub in btn:
-        ax.add_patch(Circle((x, y), 0.6, facecolor=c, edgecolor=INK, lw=1))
+        ax.add_patch(Circle((x, y), 0.5, facecolor=c, edgecolor=INK, lw=1))
         ax.text(x + 0.85, y + 0.08, t, fontsize=8, fontweight="bold",
                 va="center")
         if sub:
             ax.text(x + 0.85, y - 0.3, sub, fontsize=6.3, color=INK2,
                     va="center")
-    ax.add_patch(Polygon([(7.0, 3.6), (7.0, 4.2), (7.5, 3.9)],
+    ax.add_patch(Rectangle((7.08, 4.3), 0.24, 0.35, facecolor="white"))
+    ax.add_patch(Rectangle((7.17, 4.05), 0.06, 0.25, facecolor="white"))
+    ax.add_patch(Polygon([(7.03, 2.85), (7.03, 3.35), (7.45, 3.1)],
                          facecolor="white"))
-    ax.add_patch(Polygon([(6.85, 2.3), (7.2, 2.65), (7.55, 2.3)],
+    ax.add_patch(Polygon([(6.9, 1.83), (7.2, 2.13), (7.5, 1.83)],
                          facecolor="white"))
-    ax.add_patch(Rectangle((6.98, 2.0), 0.44, 0.32, facecolor="white"))
-    ax.add_patch(Rectangle((6.95, 0.6), 0.5, 0.5, facecolor="white"))
+    ax.add_patch(Rectangle((7.02, 1.57), 0.36, 0.27, facecolor="white"))
+    ax.add_patch(Rectangle((7.0, 0.4), 0.4, 0.4, facecolor="white"))
     # adult + mic + speaker
-    ax.add_patch(Circle((9.35, 4.6), 0.2, facecolor=INK2))
-    ax.text(9.35, 4.15, "mic", ha="center", fontsize=6, color=INK2)
+    ax.add_patch(Circle((10.0, 4.6), 0.2, facecolor=INK2))
+    ax.text(10.0, 4.15, "mic", ha="center", fontsize=6, color=INK2)
     for k in range(3):
-        ax.add_patch(Circle((9.35, 3.75 - k * 0.22), 0.06, facecolor=INK2))
-    ax.text(9.35, 3.05, "speaker", ha="center", fontsize=6, color=INK2)
-    ax.add_patch(Rectangle((9.1, 1.0), 0.5, 0.7, facecolor="white",
+        ax.add_patch(Circle((10.0, 3.75 - k * 0.22), 0.06, facecolor=INK2))
+    ax.text(10.0, 3.05, "speaker", ha="center", fontsize=6, color=INK2)
+    ax.add_patch(Rectangle((9.75, 1.0), 0.5, 0.7, facecolor="white",
                            edgecolor=INK, lw=0.8))
-    ax.text(9.35, 0.7, "adult key", ha="center", fontsize=6, color=INK2)
-    ax.set_xlim(-0.1, 10.1)
+    ax.text(10.0, 0.7, "adult key", ha="center", fontsize=6, color=INK2)
+    ax.set_xlim(-0.1, 10.7)
     ax.set_ylim(-0.1, 5.3)
     ax.set_aspect("equal")
     ax.axis("off")
