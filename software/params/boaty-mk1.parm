@@ -1,0 +1,80 @@
+# Boaty Mk1 helm parameter baseline: vehicle behaviour.
+#
+# Controlled file (SAF-007). Loaded on the real helm AND in simulation, so the
+# simulator flies the same failsafes as the boat. Board wiring lives in
+# boaty-mk1-speedybee.parm; simulator-only settings in sitl.parm.
+#
+# Source: SSS-HLM HLM_PARAMS, updated by BOATY-KCL-001 section 7 (CR-04).
+# Firmware: ArduPilot Rover 4.7.1. Parameter names checked against the running
+# firmware by tools/check_params.py.
+
+# --- Vehicle -----------------------------------------------------------
+FRAME_CLASS         2       # Boat (MOD-001, V-01)
+
+# --- Motors: skid steer, outputs 1 and 4 (KCL section 7) -----------------
+SERVO1_FUNCTION     73      # ThrottleLeft
+SERVO2_FUNCTION     0
+SERVO3_FUNCTION     0
+SERVO4_FUNCTION     74      # ThrottleRight
+MOT_THR_MAX         100     # model top speed ~1.5 m/s (NAV-003); re-tune in pool
+MOT_THST_ASYM       2.67    # 2.0 N ahead / 0.75 N astern per pod (PRP-D02)
+MOT_REV_DELAY       0.2     # s, ESC reversal pause (KCL KC-03; tune on L2)
+MOT_BAT_WATT_TC     2       # s, power-limit time constant
+
+# --- Speeds and navigation -----------------------------------------------
+CRUISE_SPEED        1.0     # m/s (NAV-002)
+CRUISE_THROTTLE     70      # % for 1.0 m/s in the model; measure in the pool
+WP_SPEED            1.0     # m/s (NAV-004)
+WP_RADIUS           3       # m
+RTL_SPEED           0       # 0 = WP_SPEED (NAV-007)
+LOIT_RADIUS         2       # m (NAV-006)
+MIS_DONE_BEHAVE     0       # Hold at mission end (MOD-005 backstop)
+INITIAL_MODE        4       # arm into HOLD, never MANUAL (found in SITL)
+MODE_CH             0       # no RC mode switch: it overrode INITIAL_MODE
+RC_OPTIONS          1       # ignore any RC receiver: none is fitted (IF-02)
+
+# --- Identity (IF-02) ------------------------------------------------------
+MAV_SYSID           1
+MAV_GCS_SYSID       255     # only Mission Control counts as the GCS (V-06)
+
+# --- Fence (FEN-001, FEN-005) ----------------------------------------------
+FENCE_ENABLE        1
+FENCE_TYPE          6       # circle (2) + polygon (4)
+FENCE_ACTION        1       # RTL or Hold
+FENCE_RADIUS        100     # m backstop circle (OPS-006)
+FENCE_MARGIN        3       # m
+
+# --- Battery (FS-001, PRE-003) --------------------------------------------
+BATT_MONITOR        4       # analogue voltage + current
+BATT_CAPACITY       2500    # mAh; PWR-D20 minimum, replace with measured
+BATT_LOW_MAH        875     # 35% remaining -> RTL
+BATT_CRT_MAH        375     # 15% remaining -> RTL
+BATT_FS_LOW_ACT     1       # RTL
+BATT_FS_CRT_ACT     1       # RTL
+BATT_ARM_MAH        2000    # 80% needed to arm (PRE-003)
+BATT_LOW_VOLT       10.2    # V, voltage backstop (HLM-D40)
+BATT_CRT_VOLT       9.6     # V
+BATT_FS_VOLTSRC     1       # sag-compensated voltage (KCL KF-01)
+BATT_WATT_MAX       70      # W, keeps the rail above 7.5 V near empty (KF-02)
+
+# --- Motor-rail sense: arming key (MOD-003, PRE-007, V-13) ------------------
+BATT2_MONITOR       3       # analogue voltage only
+BATT2_VOLT_PIN      15      # AIRSPD pad on the SpeedyBee; voltage2 in SITL
+BATT2_ARM_VOLT      9.0     # V: no arming with the key out
+
+# --- Failsafes ---------------------------------------------------------------
+FS_GCS_ENABLE       2       # enabled, continue mission in AUTO (FS-002/003)
+FS_GCS_TIMEOUT      2       # s without a system-255 heartbeat (minimum 2)
+FS_TIMEOUT          1       # s the failsafe must persist (minimum 1).
+                            # Total ~3 s: FS-002 asks for 2 s (see SC-02).
+FS_ACTION           2       # Hold
+FS_THR_ENABLE       0       # no RC receiver fitted (manual is via IF-02)
+FS_EKF_ACTION       1       # Hold (FS-004)
+FS_CRASH_CHECK      1       # Hold (FS-005)
+CRASH_THR_MIN       50      # % throttle ...
+CRASH_VEL_MIN       0.08    # ... with speed below this ...
+CRASH_TIMEOUT       5       # ... for this long -> Hold (FS-005: <= 5 s)
+EK3_GLITCH_RAD      25      # m (FS-004, HLM-D39)
+
+# --- Arming ------------------------------------------------------------------
+ARMING_SKIPCHK      64      # skip only the RC-channels check: no RC receiver

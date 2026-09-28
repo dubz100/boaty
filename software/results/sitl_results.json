@@ -1,0 +1,138 @@
+{
+  "generated": "2026-09-28T21:24:08.908755+00:00",
+  "speedup": 5,
+  "records": [
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_status_after_connect",
+      "id": "IF-14-01",
+      "title": "Status snapshot after connect",
+      "refs": [
+        "IF-14",
+        "IF-02"
+      ],
+      "criterion": "Link up, disarmed, 3D fix, EKF healthy, home set",
+      "measured": {
+        "mode": "DISARMED",
+        "fix": 6,
+        "sats": 10,
+        "battery_v": 12.48,
+        "rail_v": 12.48
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_parameter_baseline_is_loaded",
+      "id": "IF-14-02",
+      "title": "Parameter baseline matches the controlled file",
+      "refs": [
+        "SAF-007",
+        "SC-24"
+      ],
+      "criterion": "Every parameter in boaty-mk1.parm and sitl.parm exists on Rover 4.7.1 with the file's value",
+      "measured": {
+        "parameters_in_baseline": 53,
+        "live_parameters": 1273,
+        "differences": 0
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_fence_and_mission_round_trip",
+      "id": "IF-14-03",
+      "title": "Fence and mission upload, read-back and verify",
+      "refs": [
+        "IF-14",
+        "VAL-010",
+        "SC-32"
+      ],
+      "criterion": "Read-back equals what was sent; verify() rejects a different mission",
+      "measured": {
+        "fence_vertices": 4,
+        "mission_items": 3
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_uploads_refused_while_armed",
+      "id": "IF-14-04",
+      "title": "Uploads refused while armed",
+      "refs": [
+        "IF-14",
+        "FEN-007",
+        "SAF-003"
+      ],
+      "criterion": "upload_fence/upload_mission/set_param raise NotAllowedWhileArmed",
+      "measured": {},
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_arms_into_hold",
+      "id": "IF-14-05",
+      "title": "Arming lands in HOLD, never MANUAL",
+      "refs": [
+        "MOD-003",
+        "INITIAL_MODE"
+      ],
+      "criterion": "After arm(): armed, SRS mode HOLD, motors off",
+      "measured": {
+        "mode": "MANUAL",
+        "ardupilot_mode": 0
+      },
+      "notes": [],
+      "outcome": "failed",
+      "failure": "AssertionError: assert (True and <SrsMode.MANUAL: 'MANUAL'> is <SrsMode.HOLD: 'HOLD'>)\n +  where True = HelmStatus(t_utc=datetime.datetime(2026, 9, 28, 21, 23, 37, 701742, tzinfo=datetime.timezone.utc), link_ok=True, armed...48, gps_fix=6, sats=10, hdop=1.21, ekf_ok=True, fence_breached=False, mission_seq=0, mission_total=3, ardupilot_mode=0).armed\n +  and   <SrsMode.MANUAL: 'MANUAL'> = HelmStatus(t_utc=datetime.datetime(2026, 9, 28, 21, 23, 37, 701742, tzinfo=datetime.timezone.utc), link_ok=True, armed...48, gps_fix=6, sats=10, hdop=1.21, ekf_ok=True, fence_breached=False, mission_seq=0, miss"
+    },
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_mode_commands_map_to_srs_modes",
+      "id": "IF-14-06",
+      "title": "hold/return_home/manual/start_mission map to the IF-02 mode table",
+      "refs": [
+        "IF-02",
+        "IF-14"
+      ],
+      "criterion": "Each call reaches the right ArduPilot and SRS mode",
+      "measured": {
+        "start_mission": "10/AUTO",
+        "hold": "5/HOLD",
+        "return_home": "11/RTL",
+        "manual": "3/MANUAL"
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_manual_drive_moves_the_boat",
+      "id": "IF-14-07",
+      "title": "drive() moves the boat in MANUAL",
+      "refs": [
+        "IF-02",
+        "MC-008"
+      ],
+      "criterion": "Throttle 0.6 for 5 s moves the boat > 2 m forward",
+      "measured": {
+        "moved_m": 3.029
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_helm_contract.py::test_stop_stops_motors_within_one_second",
+      "id": "SC-09a",
+      "title": "STOP from AUTO: motors off and disarmed",
+      "refs": [
+        "FS-009",
+        "IF-14"
+      ],
+      "criterion": "Motors stop <= 1 s after stop(); helm disarmed; stop() is idempotent",
+      "measured": {
+        "motors_off_s": 0.548
+      },
+      "notes": [],
+      "outcome": "passed"
+    }
+  ]
+}

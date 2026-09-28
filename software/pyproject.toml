@@ -1,0 +1,15 @@
+[project]
+name = "boaty"
+version = "0.1.0"
+description = "Boaty Mk1: mission control, boat services and simulator"
+requires-python = ">=3.11"
+dependencies = ["pymavlink>=2.4.40"]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "sitl: needs a built ArduPilot SITL binary (set ARDUPILOT_HOME or BOATY_ARDUROVER)",
+]

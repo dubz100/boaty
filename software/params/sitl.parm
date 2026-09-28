@@ -1,0 +1,9 @@
+# Simulator-only parameters (IF-21). Loaded after boaty-mk1.parm.
+#
+# SITL fakes the analogue battery inputs: pin 13/12 for BATT and pin 15 at a
+# quarter of the pack voltage for BATT2, so the multipliers differ from the
+# board. The boat physics supplies battery voltage and current over JSON.
+
+BATT_VOLT_MULT      10.1
+BATT_AMP_PERVLT     17
+BATT2_VOLT_MULT     40.4    # 4 x 10.1: BATT2 reads the pack voltage (key in)
