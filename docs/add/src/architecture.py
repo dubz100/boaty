@@ -286,7 +286,7 @@ SUBSYSTEMS = [
      "health."),
     ("MCN", "Mission Control", "Bank",
      "Raspberry Pi 5, USB Wi-Fi adapter (pole-mountable), GO / COME HOME / "
-     "STOP / TALK buttons, adult key switch, USB mic, speaker, status LEDs, power "
+     "STOP / TALK buttons, adult PIN on the web UI, USB mic, speaker, status LEDs, power "
      "bank, case, phone/tablet display. Python application: session "
      "manager, web UI, voice, planner, validator, helm interface, photo "
      "sync, captain's log, site store, logger."),
@@ -305,7 +305,7 @@ COMPONENTS = [
     # (subsystem, id, name, responsibility, key reqs)
     ("MCN", "C1", "Session manager", "Session state machine; gates GO; "
      "checklist; arming sequence", "MC-003, VAL-008/009, PRE-006"),
-    ("MCN", "C2", "Panel I/O", "GPIO buttons, key switch, LEDs, "
+    ("MCN", "C2", "Panel I/O", "GPIO buttons, LEDs, adult PIN unlock, "
      "press-and-hold", "MC-002/004/008"),
     ("MCN", "C3", "Web UI", "Map, plan preview, status, checklist, "
      "fence editor, photo review", "MC-005/006/009/015, FEN-002"),
@@ -378,7 +378,7 @@ INTERFACES = [
      "HTTPS, Messages API with tool use", "Instruction + site context → "
      "intent JSON; photos → captions (opt-in)", "NLI-003/004, LOG-004"),
     ("IF-12", "Crew & operator panel", "MCN", "EXT-US", "HMI",
-     "4 buttons, key switch, LEDs, mic, speaker, web UI",
+     "4 buttons, LEDs, mic, speaker, web UI (adult PIN)",
      "Commands, approvals, announcements", "MC-002..008, CHD-005"),
     ("IF-13", "Mission format", "MCN", "MCN", "Software",
      "JSON schema v1 (intent → mission → MAVLink items)",
@@ -484,6 +484,11 @@ DECISIONS = [
      "for the helm", "CR-02", "+£10 (estimate)"),
     ("DD-16", "Boat-side navigation monitor B7 (HOLD-only) from FMEA "
      "actions", "FMEA A-03/07/08", "No hardware cost"),
+    ("DD-17", "Adult functions unlocked by a PIN on the web UI instead of a "
+     "panel key switch; the magnetic arming key still gates motor power",
+     "CR-03", "−£3"),
+    ("DD-18", "Tested salvaged 18650 cells, accepted only against PWR-D20 "
+     "tests", "CR-03", "−£8"),
 ]
 
 VERIFY_EARLY = [
@@ -526,8 +531,9 @@ VERIFY_EARLY = [
 RISKS = [
     ("R-01", "F405 firmware lacks a needed feature", "Medium",
      "V-01 before purchase of other parts; H743 fallback (+£20-25)"),
-    ("R-02", "Bill of materials over the £160 cap (Issue D: £166 "
-     "baseline)", "High", "Owner decision CR-03 (section 7.3)"),
+    ("R-02", "Bill of materials over the £185 cap (Issue E baseline "
+     "£182)", "Medium", "£3 headroom; the pole kit (+£8) would exceed the "
+     "cap, so it needs a saving elsewhere if V-08 requires it"),
     ("R-03", "Wi-Fi range over water", "Medium",
      "Pole antenna; safety independent of the link"),
     ("R-04", "Pi Zero SD-card corruption on power loss", "Medium",
@@ -555,21 +561,21 @@ POWER_BANK = [("Raspberry Pi 5 (average; peaks ~8 W during STT)", 5.0),
               ("USB Wi-Fi adapter", 1.0), ("Speaker, mic, LEDs", 0.5)]
 
 BOM = [
-    ("Boat", "F405-class flight controller with microSD logging (CR-02; estimate)", 35),
+    ("Boat", "F405 flight controller with microSD, Matek F405-TE class (UK retail £61-66, CR-03)", 62),
     ("Boat", "M10 GNSS + compass", 14),
     ("Boat", "Pi Zero 2W", 15),
     ("Boat", "5 MP camera (OV5647-class) + Zero cable", 8),
     ("Boat", "microSD 32 GB", 4),
     ("Boat", "2 × brushless motor", 12),
     ("Boat", "2 × bidirectional ESC", 10),
-    ("Boat", "3 × 18650 + 3S BMS", 15),
+    ("Boat", "3 × tested salvaged 18650 + 3S BMS (CR-03, PWR-D20)", 7),
     ("Boat", "Box, PG7 glands, fuse", 6),
     ("Boat", "Foam, hi-vis, LED beacon", 5),
     ("Boat", "5 V 3 A buck", 3),
     ("Boat", "Reed switch + MOSFET switch module (arming key)", 4),
     ("Boat", "IP67 main power switch (added in Issue C)", 4),
     ("Boat", "Box temperature sensor, DS18B20 (FMEA A-11, Issue D)", 2),
-    ("Bank", "4 arcade buttons (incl. TALK), key switch", 9),
+    ("Bank", "4 arcade buttons (incl. TALK); adult unlock by PIN (CR-03)", 6),
     ("Bank", "USB mic + small speaker", 8),
     ("Bank", "USB Wi-Fi adapter with antenna", 12),
     ("Bank*", "2 m pole + 3 m USB extension (only if V-08 needs it)", 8),

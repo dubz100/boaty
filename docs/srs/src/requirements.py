@@ -642,9 +642,9 @@ R("OPS-012", "Before the first lake trial, the operator shall rehearse "
 
 # ---------------------------------------------------------------- constraints
 section("CON", "Cost and constraints", "")
-R("CON-001", "The Mk1 bill of materials shall not exceed £160, excluding "
+R("CON-001", "The Mk1 bill of materials shall not exceed £185, excluding "
   "items already owned (Pi 5, printer, tools, charger, phone, power "
-  "bank). The target is £150.", "M", "A", "BENCH", ["STK-05"])
+  "bank). The target is £180.", "M", "A", "BENCH", ["STK-05"])
 R("CON-002", "The owned Raspberry Pi 5 and Ultimaker printer shall be "
   "used.", "M", "I", "BENCH", ["STK-05"])
 R("CON-003", "Purchased components shall be available from UK retailers "

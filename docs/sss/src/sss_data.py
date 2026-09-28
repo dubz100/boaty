@@ -223,6 +223,11 @@ D(p, "PRP-D15", "Motors are consumables: rinse and dry after each session. "
 # ======================================================================
 w = subsystem(
     "PWR", title="Power",
+    issue="Issue B (for review)",
+    parents="SRS Issue E, ADD Issue E, ICD Issue D, FMEA Issue C",
+    history=[["B", "28 September 2026", "CR-03: tested salvaged 18650 "
+              "cells (ADD DD-18) with acceptance tests PWR-D20 and records "
+              "PWR-D21.", "Claude, owner decision"]],
     purpose="Store and distribute energy safely. Give motor power only when "
             "an adult has inserted the magnetic key. Measure what's used.",
     inside=["3S Li-ion 18650 pack with BMS", "Main fuse and main switch",
@@ -231,7 +236,7 @@ w = subsystem(
             "Harness and connectors"],
     outside=["Battery charger (owned; off-boat)", "Helm battery monitoring "
              "configuration (HLM)"],
-    breakdown=[("PWR-1 Battery pack", "3 × 18650 ≥ 3000 mAh, 3S BMS, "
+    breakdown=[("PWR-1 Battery pack", "3 × tested salvaged 18650, 3S BMS, "
                 "XT60"), ("PWR-2 Protection & switching", "20 A fuse, IP67 "
                                                           "main switch, key "
                                                           "switch"),
@@ -242,7 +247,7 @@ w = subsystem(
                  "key removes motor power independently of software",
                  "Charging only off-boat (PWR-007)"],
     budget=[("Mass allocation", "≤ 260 g (estimate 250 g)"),
-            ("Cost allocation", "£31 (cells + BMS £15, fuse/box share £2, "
+            ("Cost allocation", "£23 (salvaged cells + BMS £7, fuse/box share £2, "
              "buck £3, key switch £4, IP67 main switch £4, sensing/wiring "
              "£3)"),
             ("Energy", "≈ 32 Wh nominal, ≈ 26 Wh usable")],
@@ -254,15 +259,25 @@ w = subsystem(
                                           "(Issue C)")],
 )
 group(w, "Energy storage")
-D(w, "PWR-D01", "The battery shall be 3S1P Li-ion 18650. Cells ≥ 3000 mAh "
-  "and ≥ 10 A continuous; 30-36 Wh nominal.", "M", "I", "BENCH",
-  ["PWR-001"])
+D(w, "PWR-D01", "The battery shall be 3S1P Li-ion 18650. Cells rated "
+  "≥ 10 A continuous, measured capacity ≥ 2500 mAh; 27-36 Wh nominal.", "M",
+  "I", "BENCH", ["PWR-001"])
 D(w, "PWR-D02", "A 3S BMS shall provide over-discharge (2.5-2.8 V/cell), "
   "over-current (trip ≤ 25 A), short-circuit and balance protection.", "M",
   "T", "BENCH", ["PWR-002"])
 D(w, "PWR-D03", "The pack shall be in a rigid sleeve with XT60 and a balance "
   "lead, removable from the box by an adult in < 30 s without tools.", "M",
   "D", "BENCH", ["PWR-007"])
+D(w, "PWR-D20", "Salvaged cells shall be accepted only if each: has a "
+  "known source and no dents, wrapper damage or leakage; holds ≥ 3.6 V "
+  "after 7 days' rest from full (self-discharge ≤ 0.1 V); has a measured "
+  "capacity ≥ 2500 mAh at 1 A; and has internal resistance ≤ 60 mΩ. The "
+  "three cells shall match within 5% capacity and 10 mΩ. Anything else is "
+  "rejected.", "M", "T", "BENCH", ["PWR-001", "PWR-002", "DD-18", "FM-23",
+                                    "A-20"])
+D(w, "PWR-D21", "Each accepted cell shall be labelled with an ID, and its "
+  "test results recorded in the repository. The pack's capacity shall be "
+  "re-measured each season.", "M", "I", "BENCH", ["PWR-001", "A-20"])
 D(w, "PWR-D04", "The boat shall have no charging port. Charging is by "
   "external balance charger only.", "M", "I", "BENCH", ["PWR-007"])
 group(w, "Protection and switching")
@@ -316,12 +331,15 @@ D(w, "PWR-D19", "The battery shall sit ≥ 30 mm from the ESCs. Box internal "
 # ======================================================================
 m = subsystem(
     "HLM", title="Helm",
-    issue="Issue B (for review)",
-    parents="SRS Issue D, ADD Issue D, ICD Issue C, FMEA Issue B",
+    issue="Issue C (for review)",
+    parents="SRS Issue E, ADD Issue E, ICD Issue D, FMEA Issue C",
     history=[["B", "28 September 2026", "CR-02: microSD logging (HLM-D02). FMEA actions A-01, A-02, "
               "A-06, A-18: HLM-D24 formalised; HLM-D39 to D41 added; "
               "parameter baseline extended.", "Claude, owner decisions "
-              "(CR-02, FMEA actions)"]],
+              "(CR-02, FMEA actions)"],
+             ["C", "28 September 2026", "CR-03: board class and real price "
+              "(Matek F405-TE class, £62) in budget and HLM-D02.",
+              "Claude, owner decision"]],
 
     purpose="Navigate, enforce the fence and run every native failsafe on "
             "an independent RTOS processor, whatever else has failed.",
@@ -341,7 +359,8 @@ m = subsystem(
                  "Lua; Python on the MCP covers Lua-type behaviours",
                  "No project-written code on the FC (SAF-001)"],
     budget=[("Mass allocation", "≤ 40 g (estimate 32 g)"),
-            ("Cost allocation", "£49 (FC with microSD £35 est., GNSS £14)"),
+            ("Cost allocation", "£76 (Matek F405-TE-class FC with microSD £62, "
+             "GNSS £14)"),
             ("Power", "≈ 0.8 W including GNSS")],
     special="hlm",
     open_items=[("V-01", "Firmware feature check for the chosen board, "
@@ -366,7 +385,8 @@ D(m, "HLM-D01", "The helm shall run a pinned ArduPilot Rover stable release "
 D(m, "HLM-D02", "The flight controller shall provide: ≥ 2 free UARTs (GNSS, "
   "companion), ≥ 3 DShot-capable outputs, ≥ 2 analogue battery inputs, I2C, "
   "IMU and baro, and a microSD slot (≥ 8 GB card) for logging "
-  "(CR-02).", "M", "I", "BENCH", ["SAF-001", "PRE-008", "V-01", "DD-15"])
+  "(CR-02). Baseline candidate: Matek F405-TE class (6 UARTs, 8 DShot "
+  "outputs, microSD), subject to V-01.", "M", "I", "BENCH", ["SAF-001", "PRE-008", "V-01", "DD-15"])
 D(m, "HLM-D03", "No project-written code (including Lua) shall run on the "
   "flight controller. It runs ChibiOS only.", "M", "I", "BENCH",
   ["SAF-001", "DD-13"])
@@ -611,16 +631,19 @@ D(c, "MCP-D27", "B7 thresholds shall be configuration, version-"
 # ======================================================================
 n = subsystem(
     "MCN", title="Mission Control",
-    issue="Issue B (for review)",
-    parents="SRS Issue D, ADD Issue D, ICD Issue C, FMEA Issue B",
+    issue="Issue C (for review)",
+    parents="SRS Issue E, ADD Issue E, ICD Issue D, FMEA Issue C",
     history=[["B", "28 September 2026", "FMEA actions A-03, A-04, A-10, A-13, A-15, A-16, A-18, A-19: "
               "MCN-D53 to D60 added.", "Claude, owner decisions "
-              "(CR-02, FMEA actions)"]],
+              "(CR-02, FMEA actions)"],
+             ["C", "28 September 2026", "CR-03: adult PIN on the web UI "
+              "replaces the panel key switch (MCN-D02, D14, D60, D61).",
+              "Claude, owner decision"]],
 
     purpose="Be the only place people interact with Boaty: turn words into "
             "safe, approved missions, and show, say and record what the "
             "boat is doing.",
-    inside=["Raspberry Pi 5, case and panel (4 buttons, key switch, LEDs)",
+    inside=["Raspberry Pi 5, case and panel (4 buttons, LEDs)",
             "USB Wi-Fi adapter and antenna (pole kit if needed)",
             "USB mic and speaker", "Application components C1-C10",
             "Site files, logs, captain's logs"],
@@ -638,7 +661,7 @@ n = subsystem(
                  "returns intent; Python makes geometry", "ADD DD-06/07/08: "
                  "Pi 5 AP, on-device speech, web UI"],
     budget=[("Mass", "Not constrained (bank)"),
-            ("Cost allocation", "£29 (buttons/key £9, mic/speaker £8, "
+            ("Cost allocation", "£26 (buttons £6, mic/speaker £8, "
              "adapter £12) + £8 pole kit if needed"),
             ("Power", "≈ 6.5 W average from a USB-C PD bank")],
     special="mcn",
@@ -651,7 +674,8 @@ D(n, "MCN-D01", "Mission Control shall be a Pi 5 (≥ 4 GB) with an active "
   "cooler in a printed splash-resistant case with drip edges. ≥ 2.5 h on a "
   "20,000 mAh USB-C PD bank.", "M", "T", "BENCH", ["MC-001", "MC-013"])
 D(n, "MCN-D02", "The panel shall have TALK, GO, COME HOME and STOP buttons "
-  "(≥ 30 mm, colour + icon, LEDs) and an adult key switch, per IF-12.", "M",
+  "(≥ 30 mm, colour + icon, LEDs), per IF-12. There is no panel key "
+  "switch.", "M",
   "I", "BENCH", ["MC-002", "CHD-005", "IF-12"])
 D(n, "MCN-D03", "The radio shall be a USB adapter with an RP-SMA antenna, "
   "acting as AP per IF-01 (country GB, per-site channel, WPA2+, "
@@ -685,8 +709,9 @@ D(n, "MCN-D13", "The checklist shall hold every OPS-001 item and record "
   "who signed it off, and when. Arming is blocked until it's done.", "M",
   "D", "SIM", ["PRE-006", "MC-010"])
 D(n, "MCN-D14", "Arming, approval, fence editing, parameter changes, "
-  "manual drive and the cloud toggle shall need the adult key switch "
-  "(PIN fallback).", "M", "T", "SIM", ["MC-008"])
+  "manual drive and the cloud toggle shall need the adult PIN (IF-12: 6 "
+  "digits, 10 min unlock, lockout after 5 failures).", "M", "T", "SIM",
+  ["MC-008", "DD-17"])
 D(n, "MCN-D15", "Before arming, Mission Control shall also check ≥ 8 "
   "satellites, a verified mission and ≥ 1 GB free locally.", "M", "T", "SIM",
   ["PRE-005", "PRE-001", "PRE-008"])
@@ -819,8 +844,11 @@ D(n, "MCN-D59", "C1 shall command HOLD if a fence breach persists > 30 s "
   "or the boat is > 10 m outside (interim path of HLM-D24).", "M", "S",
   "SIM", ["FEN-006", "A-18", "FM-14"])
 D(n, "MCN-D60", "Navigation-monitor holds (B7) shall be shown and spoken "
-  "with the reason. Resuming requires the adult key.", "M", "D", "SIM",
+  "with the reason. Resuming requires the adult PIN.", "M", "D", "SIM",
   ["MOD-007", "A-03", "A-08"])
+D(n, "MCN-D61", "The PIN shall be entered only on the adult's device, "
+  "never shown or spoken, and changeable in Settings. The owner changes it "
+  "at the start of each season.", "M", "I", "SIM", ["MC-008", "FM-48"])
 
 # ======================================================================
 # REC  Recovery & signalling
@@ -876,11 +904,14 @@ D(r, "REC-D08", "The flag staff shall be capped, and hoop and flag edges "
 # ======================================================================
 s = subsystem(
     "SIM", title="Simulation & test",
-    issue="Issue B (for review)",
+    issue="Issue C (for review)",
     history=[["B", "28 September 2026", "Hardware-in-the-loop rigs L1-L3 "
               "added (SIM-D13 to D24). Test catalogue rebuilt with IDs and "
               "extended with FMEA-derived scenarios (BOATY-FMEA-001).",
-              "Claude, owner request"]],
+              "Claude, owner request"],
+             ["C", "28 September 2026", "L1-10 (adult PIN) and B-07 (cell "
+              "acceptance) added for FMEA FM-48 and A-20.", "Claude, "
+              "owner decision (CR-03)"]],
     purpose="Let the whole system be exercised, failed on purpose and "
             "rehearsed at home, first against a simulated boat and then "
             "with more and more real hardware in the loop, with the same "
@@ -1190,6 +1221,11 @@ TESTS = [
      "disconnect", ["FM-25"]),
     ("B-05", "BENCH", "Camera failure", "Unplug camera", "Health reports "
      "fault; mission unaffected", ["FM-29"]),
+    ("L1-10", "L1", "Adult PIN: unlock, timeout, lockout", "Web UI",
+     "10 min unlock; 5 failures → 5 min lockout; motors still need the "
+     "key", ["FM-48", "MC-008"]),
+    ("B-07", "BENCH", "Salvaged cell acceptance", "PWR-D20 tests",
+     "Only compliant cells accepted and recorded", ["FM-23"]),
     ("B-06", "BENCH", "Clock without GNSS", "Boot offline", "Timestamps "
      "flagged until GNSS time", ["FM-30"]),
     ("R-01", "REHEARSAL", "Operator contingency rehearsal", "SIM rehearsal "

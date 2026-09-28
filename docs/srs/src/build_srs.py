@@ -25,7 +25,7 @@ FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_System_Requirements_Specification.pdf"
 
 DOC_ID = "BOATY-SRS-001"
-ISSUE = "Issue D (for review)"
+ISSUE = "Issue E (for review)"
 DATE = "28 September 2026"
 
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
@@ -196,7 +196,7 @@ def build():
              "Control", "sub"),
            Spacer(1, 14 * mm),
            table([["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                  ["Status", "Issue D: owner decisions incorporated"],
+                  ["Status", "Issue E: owner decisions incorporated"],
                   ["Basis", "Concept Selection Report v1.1 (Concept G)"],
                   ["Includes", "System overview, ConOps, ConUse, requirements, "
                    "verification and traceability"],
@@ -224,7 +224,10 @@ def build():
                    "Claude, owner decisions"],
                   ["D", DATE, "Fourth crew button TALK (blue, microphone) "
                    "added for push-to-talk: MC-002, NLI-002, CHD-005 and "
-                   "ConUse updated (ICD TBC-10).", "Claude, owner decision"]],
+                   "ConUse updated (ICD TBC-10).", "Claude, owner decision"],
+                  ["E", DATE, "CR-03: CON-001 cap raised to £185 (target £180) "
+                   "after real UK prices for a microSD flight controller "
+                   "(ADD Issue E).", "Claude, owner decision"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),
            table([["Role", "Name", "Signature / date"],

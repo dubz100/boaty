@@ -26,7 +26,7 @@ OUT = HERE.parent / "Boaty_Design_FMEA.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-FMEA-001"
-ISSUE = "Issue B (for review)"
+ISSUE = "Issue C (for review)"
 DATE = "28 September 2026"
 W = 257  # usable width in mm (landscape A4 minus margins)
 
@@ -87,7 +87,11 @@ def build():
          ["B", DATE, "Actions carried into SSS-HLM/MCP/MCN Issue B, ICD "
           "Issue C and ADD Issue D; status and post-action ratings added. "
           "A-05, A-09, A-17 await the operations manual.",
-          "Claude, owner request"]],
+          "Claude, owner request"],
+         ["C", DATE, "CR-03: salvaged cells (FM-23 O 1 → 2; A-20 cell "
+          "acceptance) and adult PIN (new FM-48). Operations manual "
+          "BOATY-OPS-001 closes A-05, A-09, A-11, A-17, A-19.",
+          "Claude, owner decision"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "
         "missing failure modes: an FMEA is only as good as its "
@@ -186,16 +190,17 @@ def build():
                "catalogue only covered the failsafes we'd already "
                "designed.",
            ]),
-           H2("4.2 After Issue B"),
-           P("With the incorporated actions, the top risks that remain are "
-             "procedural: fence-vs-shore offset (FM-12), other water users "
-             "(FM-43) and guard handling (FM-21/45). All three wait on the "
-             "operations manual (A-05, A-17, A-09). FM-02 (GNSS glitch) "
-             "stays at RPN 108 because of its severity; it has direct "
-             "simulator tests (SC-20) and HLM-D39. Highest RPNs after "
-             "Issue B: " + ", ".join(f"{r[0]} {F.rpn_after(r)}" for r in
-                                     sorted(F.ROWS, key=F.rpn_after,
-                                            reverse=True)[:6]) + "."),
+           H2("4.2 After Issues B and C"),
+           P("Every action is now incorporated: in the subsystem specs "
+             "(Issue B/C) or in the operations manual (BOATY-OPS-001). The "
+             "one row still above the action threshold is FM-43 (other "
+             "water users near the boat, RPN 126 after actions). It's a "
+             "severity-9 hazard with no sensor to detect it, so detection "
+             "relies on the lookout procedure (OP-10). It remains an "
+             "accepted residual risk (section 6). Highest RPNs now: " +
+             ", ".join(f"{r[0]} {F.rpn_after(r)}" for r in
+                       sorted(F.ROWS, key=F.rpn_after, reverse=True)[:6]) +
+             "."),
            PageBreak(),
            H1("5. Actions"),
            table([["ID", "Action", "Owner", "Failure modes", "Status (Issue "

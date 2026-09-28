@@ -170,7 +170,7 @@ def fig_physical():
          "beams, DUPLO deck,\nbox saddle, mast", edge=MUTED)
     # bank
     rbox(ax, 7.3, 3.4, 3.4, 2.4, "MCN  Mission Control", "Raspberry Pi 5\n"
-         "GO / COME HOME / STOP / TALK\nkey switch, mic, speaker\nUSB Wi-Fi "
+         "GO / COME HOME / STOP / TALK\nadult PIN, mic, speaker\nUSB Wi-Fi "
          "(pole if needed)\nPython application", edge=AQUA, lw=1.8)
     rbox(ax, 7.3, 1.8, 1.6, 1.1, "Phone", "USB tether\n+ web UI", ts=7)
     rbox(ax, 9.1, 1.8, 1.6, 1.1, "Claude API", "HTTPS", ts=7)

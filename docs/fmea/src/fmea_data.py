@@ -131,9 +131,9 @@ ROWS = [
      2, "Rated part", "Checklist rail test (A-10)", 5, ["L2-02", "L2-13"],
      ["A-10"]),
     ("FM-23", "PWR", "Battery", "Thermal runaway or fire in the box",
-     "Fire, injury", 10, "Cell damage, short, BMS fault", 1, "BMS, fuse, "
-     "hard cells, off-boat charging", "None in operation", 7, ["B-02"],
-     ["A-11"]),
+     "Fire, injury", 10, "Cell damage, short, BMS fault; salvaged cells "
+     "(Issue C: O 1 → 2)", 2, "BMS, fuse, hard cells, off-boat charging",
+     "None in operation", 7, ["B-02", "B-07"], ["A-11", "A-20"]),
     ("FM-24", "HUL", "Box sealing", "Water ingress", "Shorts: sudden stop "
      "or erratic behaviour", 7, "Gland or lid seal", 4, "Glands, dunk test",
      "Moisture sensor → RTL", 3, ["SC-10", "B-03"], []),
@@ -210,6 +210,11 @@ ROWS = [
     ("FM-46", "MCN", "Home", "Home set wrongly", "RTL goes to the wrong "
      "place", 6, "Armed before GNSS settled", 3, "Home shown before GO",
      "Map", 3, ["SC-35"], []),
+    ("FM-48", "MCN", "Adult unlock", "Child learns or guesses the PIN "
+     "(Issue C)", "Could arm or approve without an adult. Motors still need "
+     "the magnetic key.", 6, "PIN seen or shared", 3, "6 digits, lockout, "
+     "never shown or spoken; the magnetic key physically gates the motors",
+     "Checklist; approval log", 3, ["L1-10"], []),
     ("FM-47", "MCN", "Mission upload", "Upload interrupted (partial "
      "mission)", "Wrong mission executed", 6, "Link drop mid-transfer", 4,
      "Transfer protocol", "Read-back (VAL-010)", 2, ["SC-36", "SC-32"], []),
@@ -265,6 +270,10 @@ ACTIONS.append(
      "direction; the checklist asks 'is the wind blowing towards us?' and "
      "suggests the launch point", "MCN / OPS", "SSS-MCN Issue B; "
      "operations manual", ["FM-42"]))
+ACTIONS.append(
+    ("A-20", "Salvaged-cell acceptance tests and records (capacity, "
+     "internal resistance, self-discharge, matching, visual)", "PWR",
+     "SSS-PWR Issue B", ["FM-23"]))
 # A-12 intentionally unused (merged into A-13 during review).
 
 RESIDUAL = [
@@ -334,29 +343,29 @@ STATUS = {
     "A-02": ("Incorporated", ["HLM-D41"]),
     "A-03": ("Incorporated", ["MCP-D22", "MCN-D60"]),
     "A-04": ("Incorporated", ["MCN-D53"]),
-    "A-05": ("Open: operations manual", []),
+    "A-05": ("Incorporated", ["OP-01"]),
     "A-06": ("Incorporated", ["HLM-D40"]),
     "A-07": ("Incorporated", ["MCP-D23"]),
     "A-08": ("Incorporated", ["MCP-D24"]),
-    "A-09": ("Open: operations manual", []),
+    "A-09": ("Incorporated", ["OP-05", "OP-09", "OP-11", "CL-09"]),
     "A-10": ("Incorporated", ["MCN-D54"]),
-    "A-11": ("Incorporated (sensor); inspection → operations manual",
-             ["MCP-D26"]),
+    "A-11": ("Incorporated", ["MCP-D26", "OP-04", "CL-07"]),
     "A-13": ("Incorporated", ["MCN-D55"]),
     "A-14": ("Incorporated", ["SIM-D09"]),
     "A-15": ("Incorporated", ["MCN-D56"]),
     "A-16": ("Incorporated", ["MCN-D57"]),
-    "A-17": ("Open: operations manual", []),
+    "A-17": ("Incorporated", ["OP-10", "CL-03", "CL-17", "K-06"]),
     "A-18": ("Incorporated; V-14 still open", ["HLM-D24", "MCN-D59"]),
-    "A-19": ("Incorporated (software); briefing → operations manual",
-             ["MCN-D58"]),
+    "A-19": ("Incorporated", ["MCN-D58", "OP-06", "CL-06"]),
+    "A-20": ("Incorporated", ["PWR-D20", "PWR-D21"]),
 }
 # FM id -> (O, D) after incorporated actions (S unchanged)
 POST = {
     "FM-02": (4, 3), "FM-03": (2, 3), "FM-04": (4, 3), "FM-05": (2, 3),
     "FM-11": (2, 3), "FM-14": (3, 3), "FM-15": (2, 3), "FM-16": (4, 3),
     "FM-17": (4, 3), "FM-18": (3, 2), "FM-22": (2, 3), "FM-23": (1, 5),
-    "FM-32": (1, 3), "FM-36": (3, 5), "FM-41": (3, 2), "FM-42": (2, 5),
+    "FM-32": (1, 3), "FM-12": (2, 5), "FM-21": (1, 5), "FM-45": (1, 5),
+    "FM-43": (2, 7), "FM-36": (3, 5), "FM-41": (3, 2), "FM-42": (2, 5),
 }
 
 
@@ -368,6 +377,9 @@ def rpn_after(r):
 def check_b():
     derived = {d["id"] for ss in SD.SUBSYSTEMS.values()
                for d in SD.all_derived(ss)}
+    sys.path.insert(0, str(DOCS / "ops" / "src"))
+    import ops_data as OPS  # noqa: E402
+    derived |= OPS.ids()
     assert set(STATUS) == {a[0] for a in ACTIONS}
     for a, (st, ids) in STATUS.items():
         for i in ids:

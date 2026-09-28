@@ -19,7 +19,7 @@ SRS = A.SRS
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Architecture_Design_Document.pdf"
 DOC_ID = "BOATY-ADD-001"
-ISSUE = "Issue D (for review)"
+ISSUE = "Issue E (for review)"
 DATE = "28 September 2026"
 
 
@@ -69,7 +69,10 @@ def build():
          ["D", DATE, "CR-02 accepted: flight controller with microSD "
           "(DD-15, +£10 est.). FMEA actions: navigation monitor B7 "
           "(DD-16) and box temperature sensor (+£2). Baseline now over "
-          "the cap: CR-03 raised.", "Claude, owner decision"]],
+          "the cap: CR-03 raised.", "Claude, owner decision"],
+         ["E", DATE, "CR-03 closed: real flight-controller price £62; tested "
+          "salvaged cells (DD-18); PIN replaces the panel key switch (DD-17); "
+          "cap £185 (SRS Issue E).", "Claude, owner decision"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "
@@ -391,36 +394,19 @@ def build():
            H2("7.3 Cost"),
            table(bom_rows, [16, 130, 24]),
            Spacer(1, 3 * mm),
-           callout(f"<b>CR-01 accepted (Issue B):</b> the CON-001 cap is now "
-                   f"£160, target £150 (SRS Issue C). <b>Issue D position:</b> "
-                   f"the baseline is £{base}, <b>£{base - 160} over the "
-                   f"cap</b> (£{base + deferred} with the pole kit). This "
-                   "follows the microSD flight controller (CR-02, +£10 "
-                   "estimate) and the FMEA box temperature sensor (+£2). "
-                   "<b>Owner decision CR-03:</b> (a) raise the cap to £170; "
-                   "(b) use tested salvaged 18650 cells (−£8) and a PIN "
-                   "instead of the panel key switch (−£3), giving "
-                   f"£{base - 11}; or (c) confirm real prices first, since "
-                   "the £35 flight controller is an estimate. As "
-                   "originally raised: the baseline was over the old £120 "
-                   "cap. "
-                   "Compared with the concept estimate (£117 including the "
-                   "Mission Control extras), the growth comes from nine "
-                   "changes:<br/>"
-                   "• Python on the boat (Pi Zero instead of ESP32): +£9<br/>"
-                   "• Bank radio (USB adapter + antenna): +£12<br/>"
-                   "• Independent motor-power interlock: +£4<br/>"
-                   "• Dedicated 5 V supply: +£3<br/>"
-                   "• Adult key switch on the panel: +£3<br/>"
-                   "• TALK button (added in Issue C): +£2<br/>"
-                   "• IP67 main switch (omitted before Issue C): +£4<br/>"
-                   "• microSD flight controller (CR-02): +£10 (est.)<br/>"
-                   "• Box temperature sensor (FMEA A-11): +£2<br/>"
-                   "The cheapest candidate, AR-3, would fit the cap, but it "
-                   "gives up the live photo pipeline. <b>Owner decision "
-                   "CR-01:</b> (a) raise the CON-001 cap to £160, target "
-                   "£150; or (b) keep £120 and adopt AR-3's action-camera "
-                   "photo path. <b>Owner chose (a).</b>", ORANGE, ORANGE_T),
+           callout(f"<b>Cost position (Issue E).</b> Baseline "
+                   f"<b>£{base}</b> against the CON-001 cap of £185 (target "
+                   f"£180; SRS Issue E). £{185 - base} headroom. The pole "
+                   f"kit, if V-08 needs it, would make £{base + deferred}: "
+                   "over the cap, so it would need a saving elsewhere.<br/>"
+                   "<b>History:</b> CR-01 raised the cap from £120 to £160 "
+                   "(AR-2's Pi Zero, bank radio, interlock, 5 V supply, "
+                   "panel extras). CR-02 chose a microSD flight controller "
+                   "for helm logging, estimated at £35. The real UK price is "
+                   "£61-66 (Matek F405-TE class). CR-03: the owner chose to "
+                   "keep microSD, apply the savings (tested salvaged cells "
+                   "−£8; PIN instead of the panel key switch −£3) and raise "
+                   "the cap to £185.", ORANGE, ORANGE_T),
            PageBreak()]
 
     # ---------------- 8 decisions + 9 verification/risks
@@ -457,7 +443,8 @@ def build():
                   ["5", "CR-02: helm log storage", "<b>Accepted</b>: "
                    "microSD flight controller (DD-15)"],
                   ["6", "CR-03: cost cap after CR-02 and the FMEA actions "
-                   "(section 7.3)", "<b>Open</b>: recommend (c) then (b)"]],
+                   "(section 7.3)", "<b>Accepted</b>: prices checked, "
+                   "savings applied, cap £185"]],
                  [8, 100, 62]),
            Spacer(1, 4 * mm),
            P("Then, from this document:"),

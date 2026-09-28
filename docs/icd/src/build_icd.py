@@ -34,7 +34,7 @@ S["code"] = ParagraphStyle("code", fontName="DVM", fontSize=6.9, leading=8.9,
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Interface_Control_Document.pdf"
 DOC_ID = "BOATY-ICD-001"
-ISSUE = "Issue C (for review)"
+ISSUE = "Issue D (for review)"
 DATE = "28 September 2026"
 
 IFS = {i[0]: i for i in A.INTERFACES}
@@ -217,7 +217,7 @@ def section_network():
            table([["Action", "Message / command", "Parameters", "Allowed "
                    "when"],
                   ["Arm", "COMMAND_LONG: COMPONENT_ARM_DISARM (400)",
-                   "p1 = 1", "State APPROVED, adult key on, pre-arm OK"],
+                   "p1 = 1", "State APPROVED, adult PIN unlocked, pre-arm OK"],
                   ["Disarm", "COMMAND_LONG 400", "p1 = 0", "HOLD at home or "
                    "after STOP"],
                   ["Force disarm", "COMMAND_LONG 400", "p1 = 0, p2 = 21196",
@@ -859,8 +859,8 @@ def section_hmi():
                       "names four buttons (SRS Issue D)"),
                    "24 (18)", "Input, pull-up", "Hold to talk, release to "
                    "send (NLI-002)"],
-                  ["Adult key switch", "23 (16)", "Input, pull-up",
-                   "On = adult functions unlocked (MC-008)"],
+                  ["(GPIO 23 spare)", "23 (16)", "-", "Was the adult key "
+                   "switch; replaced by the web-UI PIN (Issue D, ADD DD-17)"],
                   ["Button LEDs (4)", "5, 6, 13, 19 (29, 31, 33, 35)",
                    "Output via N-MOSFET to 5 V LEDs", "Lit = available now"]],
                  [42, 30, 44, 54]),
@@ -908,8 +908,12 @@ def section_hmi():
                "on the usb0 address (phone). The address is spoken at "
                "start-up.",
                "Pages: Map (live), Plan (preview and approval), Checklist, "
-               "Fence editor, Photos, Settings. Adult pages need the key "
-               "switch on.",
+               "Fence editor, Photos, Settings. Adult pages need the PIN.",
+               "<b>Adult PIN (MC-008):</b> 6 digits, set by the owner. "
+               "Unlock lasts 10 min or until the session ends. After 5 wrong "
+               "entries, locked out for 5 min. The PIN is entered on the "
+               "adult's device and never spoken. It unlocks software only: "
+               "motor power still needs the magnetic arming key.",
                "State pushed to the browser over a WebSocket at ≥ 1 Hz "
                "(MC-005).",
            ])]
@@ -1028,7 +1032,7 @@ def build():
                "handling and verification",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
                 ["Status", "For review by the project owner"],
-                ["Parent", "BOATY-ADD-001 Issue D (interface register, "
+                ["Parent", "BOATY-ADD-001 Issue E (interface register, "
                  "section 5)"],
                 ["Content", f"{len(A.INTERFACES)} interfaces, "
                  f"{len(VERIF)} verification entries, "
@@ -1041,7 +1045,9 @@ def build():
          ["C", DATE, "FMEA actions: B7 navigation monitor added to the "
           "IF-04 allowed-commands table; box_temp_c added to IF-03 "
           "Health; B6 over-temperature trigger; IF-15 'launch' role with "
-          "wind sectors.", "Claude, FMEA Issue B"]],
+          "wind sectors.", "Claude, FMEA Issue B"],
+         ["D", DATE, "Adult unlock by PIN on the web UI replaces the panel "
+          "key switch (ADD DD-17, CR-03).", "Claude, owner decision"]],
         "Review guidance: check that each interface is complete enough to "
         "build and test against. Items marked [TBC-nn] are known gaps with "
         "an owner; they're listed in section 9.")
