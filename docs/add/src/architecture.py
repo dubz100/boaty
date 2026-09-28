@@ -506,14 +506,22 @@ VERIFY_EARLY = [
      "plausibly.", "SITL", "SWE-004"),
     ("V-13", "The second voltage input can gate arming on motor-rail "
      "voltage (key in).", "SITL + bench", "MOD-003"),
+    ("V-14", "Native mechanism to stop motors on persistent fence breach "
+     "(FEN-006).", "SITL", "FEN-006"),
+    ("V-15", "Reduced speed during RTL on critical battery (FS-001).",
+     "SITL", "FS-001"),
+    ("V-16", "GNSS-velocity yaw fallback when the compass disagrees "
+     "(NAV-008).", "SITL", "NAV-008"),
+    ("V-17", "Whether the helm refuses fence changes while armed "
+     "(FEN-007).", "SITL", "FEN-007"),
 ]
 
 RISKS = [
     ("R-01", "F405 firmware lacks a needed feature", "Medium",
      "V-01 before purchase of other parts; H743 fallback (+£20-25)"),
     ("R-02", "Bill of materials over the £160 cap (was High at £120; "
-     "CR-01 accepted)", "Low", "£12 headroom on baseline; pole kit only if "
-     "V-08 needs it"),
+     "CR-01 accepted)", "Medium", "£6 headroom on the £154 baseline; the "
+     "pole kit only if V-08 needs it, offset by cost-down levers"),
     ("R-03", "Wi-Fi range over water", "Medium",
      "Pole antenna; safety independent of the link"),
     ("R-04", "Pi Zero SD-card corruption on power loss", "Medium",
@@ -553,6 +561,7 @@ BOM = [
     ("Boat", "Foam, hi-vis, LED beacon", 5),
     ("Boat", "5 V 3 A buck", 3),
     ("Boat", "Reed switch + MOSFET switch module (arming key)", 4),
+    ("Boat", "IP67 main power switch (added in Issue C)", 4),
     ("Bank", "4 arcade buttons (incl. TALK), key switch", 9),
     ("Bank", "USB mic + small speaker", 8),
     ("Bank", "USB Wi-Fi adapter with antenna", 12),
