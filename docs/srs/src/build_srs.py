@@ -25,7 +25,7 @@ FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_System_Requirements_Specification.pdf"
 
 DOC_ID = "BOATY-SRS-001"
-ISSUE = "Issue A (draft for review)"
+ISSUE = "Issue B (for review)"
 DATE = "28 September 2026"
 
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
@@ -196,7 +196,7 @@ def build():
              "Control", "sub"),
            Spacer(1, 14 * mm),
            table([["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                  ["Status", "For review by the project owner"],
+                  ["Status", "Issue B: owner decisions incorporated"],
                   ["Basis", "Concept Selection Report v1.1 (Concept G)"],
                   ["Includes", "System overview, ConOps, ConUse, requirements, "
                    "verification and traceability"],
@@ -212,7 +212,12 @@ def build():
            table([["Issue", "Date", "Change", "By"],
                   ["A", DATE, "First issue, for review. Includes the Concept of "
                    "Operations (section 3) and Concept of Use (section 4).",
-                   "Claude (drafted)"]],
+                   "Claude (drafted)"],
+                  ["B", DATE, "Owner review: ArduPilot (Route A) selected, "
+                   "TBD-01 closed, SAF-005 marked not applicable, MC-014 "
+                   "applies unconditionally. Failsafe thresholds and safety "
+                   "numbers accepted as baseline (TBD-08 closed).",
+                   "Claude, owner decisions"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),
            table([["Role", "Name", "Signature / date"],
@@ -309,11 +314,10 @@ def build():
                "Two brains: fence and failsafes run on an independent "
                "processor (SAF-001). Everything the project writes is Python "
                "(SWE-001).",
-               "<b>Software route is still open (TBD-01).</b> Route A: "
-               "ArduPilot helm, with Python above it. Route B: pure-Python "
-               "helm plus a MicroPython guardian. The requirements are "
-               "written to hold for either route. Route-specific requirements "
-               "are marked (SAF-005, MC-014).",
+               "<b>Software route decided (Issue B): Route A.</b> ArduPilot "
+               "Rover is the helm, and everything the project writes sits "
+               "above it in Python. SWE-003 keeps the helm interface open "
+               "for a possible Mk2 Python helm. SAF-005 would then apply.",
            ]),
            H2("2.5 Assumptions and dependencies"),
            *bullets([
@@ -726,12 +730,10 @@ def build():
            table([["ID", "Open item", "Affects", "Resolved by"]] +
                  [list(t) for t in REQ.TBDS], [16, 86, 38, 30]),
            Spacer(1, 5 * mm),
-           callout("<b>After review:</b> I'll fold in your comments as "
-                   "Issue B. Once TBD-01 (software route) is decided, the "
-                   "architecture design allocates every requirement to a "
-                   "component (boat hardware, helm, mission computer, "
-                   "Mission Control, procedures) and adds interface "
-                   "specifications."),
+           callout("<b>Next:</b> the Architecture Design Document "
+                   "(BOATY-ADD-001) allocates every requirement to a "
+                   "subsystem, closes TBD-04 to TBD-07, and defines the "
+                   "interfaces for the ICD and subsystem specifications."),
            Spacer(1, 6 * mm),
            H1("Appendix A. Glossary"),
            table([["Term", "Meaning"]] +

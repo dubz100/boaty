@@ -156,7 +156,8 @@ R("FEN-007", "Fence and exclusion zones shall not be changed while the "
 section("FS", "Failsafes",
         "Automatic responses to faults, summarised in the table at the "
         "end of this section. "
-        "Thresholds are initial values, to be tuned in trials (TBD-08).")
+        "Thresholds are the accepted baseline (Issue B). They change only "
+        "through an SRS revision backed by trial evidence.")
 R("FS-001", "Low battery: when estimated state of charge falls to 35%, the "
   "boat shall enter RTL. At 15% it shall continue RTL at reduced speed and "
   "sound an alarm.", "M", "S,T", "SIM", ["STK-01"])
@@ -220,7 +221,8 @@ R("SAF-005", "Route B only: a MicroPython guardian with its own GNSS shall "
   "(under 0.5 s) and the boat is inside the fence. Otherwise it shall stop "
   "the motors or run its own return-home routine.", "M", "T", "BENCH",
   ["STK-01", "STK-08"],
-  note="Applies only if Route B is chosen (TBD-01).")
+  note="Not applicable from Issue B: Route A (ArduPilot) selected. "
+       "Retained for a possible Mk2 Python helm.")
 R("SAF-006", "A failure modes and effects analysis (FMEA) shall be done "
   "before the first lake trial and updated after any change to hardware "
   "or safety software.", "M", "A", "SIM", ["STK-01", "STK-06"])
@@ -395,7 +397,7 @@ R("MC-013", "The Mission Control case shall resist splashes (IPX4 "
 R("MC-015", "Mission Control shall have a photo-review mode the crew can "
   "use: large thumbnails, stepped through with the buttons, and ducks "
   "highlighted.", "S", "D", "SIM", ["STK-03", "STK-04"])
-R("MC-014", "Route A only: QGroundControl or MAVProxy shall be usable as a "
+R("MC-014", "QGroundControl or MAVProxy shall be usable as a "
   "backup ground station.", "S", "D", "SIM", ["STK-01"])
 
 # ---------------------------------------------------------------- comms
@@ -687,9 +689,9 @@ FAILSAFES = [
 ]
 
 TBDS = [
-    ("TBD-01", "Software route: A (Python on ArduPilot) or B (pure-Python "
-     "helm + MicroPython guardian).", "SAF-005, SWE-003, MC-014",
-     "Parent decision"),
+    ("TBD-01", "<b>Closed (Issue B).</b> Software route A selected: "
+     "ArduPilot Rover helm, with Python above it.", "SAF-005, SWE-003, "
+     "MC-014", "Owner, 28 Sep 2026"),
     ("TBD-02", "Which Milton lake, the launch point and home-bay "
      "coordinates.", "OPS-006, FEN-002", "Site visit"),
     ("TBD-03", "Cambridge Sport Lakes Trust permission and conditions.",
@@ -702,8 +704,10 @@ TBDS = [
      "MC-005, MC-006", "Architecture"),
     ("TBD-07", "Battery: 3S Li-ion pack or 3S LiPo.", "PWR-001",
      "Architecture"),
-    ("TBD-08", "Failsafe thresholds and timings: tune in simulation and "
-     "pool trials.", "FS-001 to FS-006", "Trials"),
+    ("TBD-08", "<b>Closed (Issue B).</b> Failsafe thresholds, timings and "
+     "safety numbers accepted as the baseline. Trials may propose "
+     "changes via SRS revision.", "FS-001 to FS-013, OPS-004/006, "
+     "MEC-010", "Owner, 28 Sep 2026"),
 ]
 
 GLOSSARY = [
