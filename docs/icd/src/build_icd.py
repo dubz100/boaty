@@ -34,7 +34,7 @@ S["code"] = ParagraphStyle("code", fontName="DVM", fontSize=6.9, leading=8.9,
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Interface_Control_Document.pdf"
 DOC_ID = "BOATY-ICD-001"
-ISSUE = "Issue B (for review)"
+ISSUE = "Issue C (for review)"
 DATE = "28 September 2026"
 
 IFS = {i[0]: i for i in A.INTERFACES}
@@ -343,7 +343,12 @@ Port = 14560
                    "≤ 0.5 m/s astern, ≤ 2 s per burst, ≤ 3 bursts, targets "
                    "at 10 Hz. Relies on V-11."],
                   ["B6 health", "DO_SET_MODE → RTL (11); STATUSTEXT",
-                   "Moisture detected"],
+                   "Moisture detected, or box temperature > 60 °C"],
+                  ["B7 navigation monitor", "DO_SET_MODE → HOLD (4); "
+                   "STATUSTEXT", "First-motion heading error > 45°; "
+                   "no progress along track at high throttle for 10 s; "
+                   "cross-track > 10 m or heading error > 60° for 20 s "
+                   "(FMEA A-03/07/08)"],
                   ["B2 camera", "None (listens only)", "Reads "
                    "GLOBAL_POSITION_INT, MISSION_ITEM_REACHED, SYSTEM_TIME"],
                   ["All", "Never: arm/disarm, PARAM_SET, fence or mission "
@@ -389,7 +394,8 @@ Port = 14560
 Health  = {"status": "ok"|"degraded"|"fault", "uptime_s": int,
            "cpu_temp_c": float, "throttled": bool, "storage_free_mb": int,
            "photos_unsynced": int, "moisture": bool, "camera_ok": bool,
-           "mavlink_ok": bool, "rssi_dbm": int, "sw_version": str}
+           "mavlink_ok": bool, "rssi_dbm": int, "box_temp_c": float,
+           "sw_version": str}
 Session = {"mission_id": uuid, "interval_s": 0 | 2..30,
            "photo_points": [{"seq": int, "burst_n": 1..10}]}
 Photo   = {"id": str, "mission_id": uuid, "taken_utc": str,
@@ -655,7 +661,11 @@ Exceptions: HelmError > {NoResponse, CommandRejected(code, text), PreArmFailed(r
                    "inside the inclusion"],
                   ["landmark", "Point or Polygon", "name, aliases[], "
                    "keep_out_m", "e.g. 'the island' with keep_out_m = 10; "
-                   "photo stops are placed at ≥ keep_out_m"]],
+                   "photo stops are placed at ≥ keep_out_m"],
+                  ["launch", "Point", "name, good_wind_from[] (compass "
+                   "sectors, e.g. ['W', 'SW'])", "Issue C (FMEA A-19): the "
+                   "checklist suggests a launch point whose wind blows "
+                   "towards the bank"]],
                  [26, 26, 38, 80]),
            Spacer(1, 2 * mm),
            code("""
@@ -1018,7 +1028,7 @@ def build():
                "handling and verification",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
                 ["Status", "For review by the project owner"],
-                ["Parent", "BOATY-ADD-001 Issue C (interface register, "
+                ["Parent", "BOATY-ADD-001 Issue D (interface register, "
                  "section 5)"],
                 ["Content", f"{len(A.INTERFACES)} interfaces, "
                  f"{len(VERIF)} verification entries, "
@@ -1027,7 +1037,11 @@ def build():
     st += control_and_contents(
         [["A", DATE, "First issue, for review.", "Claude (drafted)"],
          ["B", DATE, "TBC-10 closed: TALK button approved and defined in "
-          "IF-12.", "Claude, owner decision"]],
+          "IF-12.", "Claude, owner decision"],
+         ["C", DATE, "FMEA actions: B7 navigation monitor added to the "
+          "IF-04 allowed-commands table; box_temp_c added to IF-03 "
+          "Health; B6 over-temperature trigger; IF-15 'launch' role with "
+          "wind sectors.", "Claude, FMEA Issue B"]],
         "Review guidance: check that each interface is complete enough to "
         "build and test against. Items marked [TBC-nn] are known gaps with "
         "an owner; they're listed in section 9.")
@@ -1068,7 +1082,8 @@ def build():
              "verification is re-run."),
            H2("1.3 References"),
            table([["Ref", "Document"],
-                  ["[1]", "BOATY-SRS-001 Issue D; BOATY-ADD-001 Issue C"],
+                  ["[1]", "BOATY-SRS-001 Issue D; BOATY-ADD-001 Issue D; "
+                   "BOATY-FMEA-001 Issue B"],
                   ["[2]", "MAVLink common message set and mission protocol "
                    "(mavlink.io)"],
                   ["[3]", "ArduPilot Rover documentation: modes, failsafes, "

@@ -12,6 +12,7 @@ from pathlib import Path
 
 DOCS = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(DOCS / "add" / "src"))
+sys.path.insert(0, str(DOCS / "fmea" / "src"))
 import architecture as A  # noqa: E402
 
 SRS = A.SRS
@@ -315,6 +316,13 @@ D(w, "PWR-D19", "The battery shall sit ≥ 30 mm from the ESCs. Box internal "
 # ======================================================================
 m = subsystem(
     "HLM", title="Helm",
+    issue="Issue B (for review)",
+    parents="SRS Issue D, ADD Issue D, ICD Issue C, FMEA Issue B",
+    history=[["B", "28 September 2026", "CR-02: microSD logging (HLM-D02). FMEA actions A-01, A-02, "
+              "A-06, A-18: HLM-D24 formalised; HLM-D39 to D41 added; "
+              "parameter baseline extended.", "Claude, owner decisions "
+              "(CR-02, FMEA actions)"]],
+
     purpose="Navigate, enforce the fence and run every native failsafe on "
             "an independent RTOS processor, whatever else has failed.",
     inside=["Flight controller hardware (F405-class)", "ArduPilot Rover "
@@ -333,7 +341,7 @@ m = subsystem(
                  "Lua; Python on the MCP covers Lua-type behaviours",
                  "No project-written code on the FC (SAF-001)"],
     budget=[("Mass allocation", "≤ 40 g (estimate 32 g)"),
-            ("Cost allocation", "£39 (FC £25, GNSS £14)"),
+            ("Cost allocation", "£49 (FC with microSD £35 est., GNSS £14)"),
             ("Power", "≈ 0.8 W including GNSS")],
     special="hlm",
     open_items=[("V-01", "Firmware feature check for the chosen board, "
@@ -346,10 +354,10 @@ m = subsystem(
                 ("V-16", "GNSS-velocity yaw fallback behaviour (NAV-008)"),
                 ("V-17", "Whether the helm itself refuses fence changes "
                  "while armed"),
-                ("HLM-OI-1 / CR-02", "PRE-008 asks for ≥ 1 GB free on the "
-                 "helm. Many F405 boards log to 16 MB dataflash. Either "
-                 "choose a board with microSD, or relax PRE-008 for the helm "
-                 "(owner decision)")],
+                ("HLM-OI-1 / CR-02", "Closed: owner chose a flight "
+                 "controller with microSD (ADD DD-15)"),
+                ("A-18", "Interim persistent-breach path formalised in "
+                 "HLM-D24 until V-14 is resolved")],
 )
 group(m, "Hardware and firmware")
 D(m, "HLM-D01", "The helm shall run a pinned ArduPilot Rover stable release "
@@ -357,9 +365,8 @@ D(m, "HLM-D01", "The helm shall run a pinned ArduPilot Rover stable release "
   "repository.", "M", "I", "BENCH", ["SAF-001", "SWE-006"])
 D(m, "HLM-D02", "The flight controller shall provide: ≥ 2 free UARTs (GNSS, "
   "companion), ≥ 3 DShot-capable outputs, ≥ 2 analogue battery inputs, I2C, "
-  "IMU and baro, and log storage for ≥ 2 h at the configured rate "
-  "(microSD preferred; see HLM-OI-1).", "M", "I", "BENCH",
-  ["SAF-001", "PRE-008", "V-01"])
+  "IMU and baro, and a microSD slot (≥ 8 GB card) for logging "
+  "(CR-02).", "M", "I", "BENCH", ["SAF-001", "PRE-008", "V-01", "DD-15"])
 D(m, "HLM-D03", "No project-written code (including Lua) shall run on the "
   "flight controller. It runs ChibiOS only.", "M", "I", "BENCH",
   ["SAF-001", "DD-13"])
@@ -419,9 +426,11 @@ D(m, "HLM-D22", "The fence shall be enforced in every armed mode used.",
 D(m, "HLM-D23", "A breach shall trigger RTL within 1 s.", "M", "S", "SIM",
   ["FEN-005"])
 D(m, "HLM-D24", "Persistent breach (> 30 s or > 10 m outside) shall stop "
-  "the motors. Native mechanism to be confirmed (V-14). Interim: Mission "
-  "Control and the MCP both command HOLD.", "M", "S", "SIM",
-  ["FEN-006", "V-14"])
+  "the motors. If V-14 finds no native mechanism, Mission Control "
+  "(MCN-D59) and the MCP (B7) shall each independently command HOLD on "
+  "that condition, and either suffices. The helm's fence RTL stays the "
+  "primary response.", "M", "S", "SIM", ["FEN-006", "V-14", "A-18",
+                                         "FM-14"])
 D(m, "HLM-D25", "Fence changes while armed shall be refused by every "
   "sender (IF-14, IF-04 filter) and by the helm if supported (V-17).", "M",
   "S", "SIM", ["FEN-007", "V-17"])
@@ -461,12 +470,32 @@ D(m, "HLM-D37", "A spare UART shall be kept for an optional ExpressLRS "
   ["COM-007"])
 D(m, "HLM-D38", "The beacon output shall be configured per IF-09.", "S",
   "T", "BENCH", ["IF-09", "REC-004"])
+group(m, "FMEA-driven (Issue B)")
+D(m, "HLM-D39", "GNSS glitch rejection (EKF3, glitch radius ≤ 25 m) and "
+  "GNSS data-timeout detection shall be enabled. A glitch or frozen "
+  "position shall not produce an uncommanded exit from the fence (SC-20, "
+  "SC-21, L2-04).", "M", "S", "SIM", ["FS-004", "FS-013", "A-01", "FM-02",
+                                      "FM-03"])
+D(m, "HLM-D40", "Voltage thresholds shall back up the mAh battery "
+  "failsafe: low 10.2 V and critical 9.6 V under load for ≥ 10 s, with "
+  "the same actions. Whichever triggers first applies.", "M", "T", "BENCH",
+  ["FS-001", "A-06", "FM-15"])
+D(m, "HLM-D41", "Compass interference shall be measured on rig L2 at full "
+  "thrust before the hull layout is frozen. Above 30%, wiring or mast "
+  "height changes before build.", "M", "T", "BENCH", ["MEC-013", "A-02",
+                                                      "FM-04"])
 
 # ======================================================================
 # MCP  Mission computer
 # ======================================================================
 c = subsystem(
     "MCP", title="Mission computer",
+    issue="Issue B (for review)",
+    parents="SRS Issue D, ADD Issue D, ICD Issue C, FMEA Issue B",
+    history=[["B", "28 September 2026", "FMEA actions A-03, A-07, A-08, A-11: navigation monitor B7 "
+              "(MCP-D22 to D25, D27) and box temperature (MCP-D26).", "Claude, owner decisions "
+              "(CR-02, FMEA actions)"]],
+
     purpose="Take and geotag photos, relay MAVLink to the bank, and run the "
             "small boat-side watchdogs, without ever being needed for "
             "safety.",
@@ -477,14 +506,17 @@ c = subsystem(
     breakdown=[("MCP-1 Computer", "Pi Zero 2W, 32 GB A1/U3 microSD, "
                 "heatsink"), ("MCP-2 Camera", "OV5647-class 5 MP, ≤ 62° "
                               "HFOV"),
-               ("MCP-3 Sensors", "Moisture traces at the box low point"),
+               ("MCP-3 Sensors", "Moisture traces at the box low point; "
+                "DS18B20 box temperature sensor"),
                ("MCP-4 Software", "B1 router, B2 camera, B3 photo server, "
-                "B4 link watchdog, B5 weed-shedding, B6 health")],
+                "B4 link watchdog, B5 weed-shedding, B6 health, "
+                "B7 navigation monitor")],
     constraints=["ADD DD-03 / T4: Pi Zero 2W (Python)", "ADD section 4.3 "
                  "rule: may request only safer states; B5 bounded GUIDED",
                  "SWE-001: Python services"],
     budget=[("Mass allocation", "≤ 35 g (estimate 30 g)"),
-            ("Cost allocation", "£27 (Pi £15, camera £8, SD £4)"),
+            ("Cost allocation", "£29 (Pi £15, camera £8, SD £4, "
+             "temperature sensor £2)"),
             ("Power", "≤ 2.0 W average, ≤ 3.0 W peak")],
     special="mcp",
     open_items=[("V-10", "Thermal in the sealed box"),
@@ -551,12 +583,40 @@ D(c, "MCP-D20", "An upgrade may run an on-device bird detector at ≥ 2 fps "
 D(c, "MCP-D21", "'Pause and look' shall only request LOITER (≤ 20 s) and "
   "then resume. It shall never steer towards the detection.", "M", "S",
   "SIM", ["DET-004"], "Applies only if MCP-D20 is implemented.")
+group(c, "Navigation monitor B7 and box temperature (Issue B)")
+D(c, "MCP-D22", "First-motion heading check: in the first 10 s of AUTO, "
+  "RTL or STEERING, once above 0.3 m/s, a GNSS-course vs heading "
+  "difference > 45° for 3 s shall request HOLD and raise an alarm.", "M",
+  "S", "SIM", ["FS-013", "A-03", "FM-05", "FM-18"])
+D(c, "MCP-D23", "Second stuck detector: throttle ≥ 50% and progress along "
+  "the active leg < 0.1 m/s for 10 s in AUTO or RTL shall request HOLD and "
+  "raise a stuck event, which B5 acts on.", "S", "S", "SIM",
+  ["FS-005", "A-07", "FM-16"])
+D(c, "MCP-D24", "Divergence watchdog: in AUTO or RTL, cross-track error "
+  "> 10 m or heading error to target > 60° for 20 s shall request HOLD and "
+  "raise an alarm.", "M", "S", "SIM", ["FS-013", "A-08", "FM-17"])
+D(c, "MCP-D25", "B7 shall only request HOLD, through the IF-04 filter. It "
+  "shall never resume, arm or change mode otherwise. Resuming is an adult "
+  "decision at Mission Control.", "M", "T", "SIM", ["SAF-003", "IF-04"])
+D(c, "MCP-D26", "A DS18B20 at the top of the box interior shall be read at "
+  "1 Hz. Above 60 °C, B6 requests RTL and raises an alarm. The value is "
+  "reported as box_temp_c (IF-03).", "M", "T", "BENCH",
+  ["PWR-010", "IF-03", "A-11", "FM-23"])
+D(c, "MCP-D27", "B7 thresholds shall be configuration, version-"
+  "controlled, and exercised by SC-05, SC-29 and SC-38.", "M", "I", "SIM",
+  ["SAF-007", "A-03", "A-07", "A-08"])
 
 # ======================================================================
 # MCN  Mission Control
 # ======================================================================
 n = subsystem(
     "MCN", title="Mission Control",
+    issue="Issue B (for review)",
+    parents="SRS Issue D, ADD Issue D, ICD Issue C, FMEA Issue B",
+    history=[["B", "28 September 2026", "FMEA actions A-03, A-04, A-10, A-13, A-15, A-16, A-18, A-19: "
+              "MCN-D53 to D60 added.", "Claude, owner decisions "
+              "(CR-02, FMEA actions)"]],
+
     purpose="Be the only place people interact with Boaty: turn words into "
             "safe, approved missions, and show, say and record what the "
             "boat is doing.",
@@ -732,6 +792,35 @@ D(n, "MCN-D51", "After each session the helm log shall be downloaded. A "
   ["LOG-003"])
 D(n, "MCN-D52", "Sessions may sync to a home computer when on the home "
   "network, kept ≥ 12 months.", "C", "D", "SIM", ["LOG-005"])
+group(n, "FMEA-driven (Issue B)")
+D(n, "MCN-D53", "The site linter shall check the IF-15 rules, plus: every "
+  "home is inside the inclusion fence; the site is within 1 km of its "
+  "configured reference; coordinates are in [lon, lat] order and inside a "
+  "UK bounding box. It runs on save and at session start, and a failure "
+  "blocks arming.", "M", "T", "SIM", ["FEN-002", "IF-15", "A-04",
+                                      "FM-11"])
+D(n, "MCN-D54", "Checklist rail test: key out → motor rail < 0.5 V shown; "
+  "key in → rail ≈ battery. Failure shows 'key switch fault' and blocks "
+  "arming.", "M", "T", "BENCH", ["MOD-003", "MC-010", "A-10", "FM-22"])
+D(n, "MCN-D55", "Checklist button test: TALK, GO, COME HOME and STOP each "
+  "pressed, with LED and sound confirming. Failure blocks arming.", "M",
+  "T", "BENCH", ["MC-002", "MC-010", "A-13", "FM-32"])
+D(n, "MCN-D56", "The plan preview shall show duration, distance, photo "
+  "count and furthest point from home, prominently and before the approve "
+  "control.", "S", "D", "SIM", ["VAL-008", "A-15", "FM-36"])
+D(n, "MCN-D57", "C7 shall detect any other system-255 heartbeat on the "
+  "link. It then refuses to command the helm and raises an alarm until the "
+  "other source goes.", "M", "T", "SIM", ["MC-014", "A-16", "FM-41"])
+D(n, "MCN-D58", "Site files list launch points with suitable wind "
+  "directions (IF-15). The checklist asks 'Is the wind blowing towards "
+  "us?' and suggests a launch point. 'No' blocks arming.", "S", "D", "SIM",
+  ["OPS-001", "IF-15", "A-19", "FM-42"])
+D(n, "MCN-D59", "C1 shall command HOLD if a fence breach persists > 30 s "
+  "or the boat is > 10 m outside (interim path of HLM-D24).", "M", "S",
+  "SIM", ["FEN-006", "A-18", "FM-14"])
+D(n, "MCN-D60", "Navigation-monitor holds (B7) shall be shown and spoken "
+  "with the reason. Resuming requires the adult key.", "M", "D", "SIM",
+  ["MOD-007", "A-03", "A-08"])
 
 # ======================================================================
 # REC  Recovery & signalling
@@ -958,6 +1047,10 @@ HLM_PARAMS = [
     ("Logging", "LOG_BACKEND_TYPE / LOG_BITMASK", "File / default + ≥ 5 Hz",
      "LOG-001", "Bench"),
     ("Mission end", "MIS_DONE_BEHAVE", "Hold (backstop)", "MOD-005", "V-04"),
+    ("Battery backstop", "BATT_LOW_VOLT / BATT_CRT_VOLT", "10.2 V / 9.6 V",
+     "FS-001 (HLM-D40)", "L2-09"),
+    ("GNSS glitch", "EK3_GLITCH_RAD", "25 m (default; confirm)",
+     "FS-004 (HLM-D39)", "SC-20"),
 ]
 
 # Test catalogue (SSS-SIM Issue B). kind: SIM, L1, L2, L3.
@@ -1119,6 +1212,8 @@ def check():
     v_ids = {v[0] for v in A.VERIFY_EARLY} | {"V-14", "V-15", "V-16",
                                              "V-17"}
     dd_ids = {d[0] for d in A.DECISIONS}
+    import fmea_data as FM  # noqa: E402  (imports this module)
+    dd_ids |= {r[0] for r in FM.ROWS} | {a[0] for a in FM.ACTIONS}
     alloc = A.allocation()
     seen = set()
     for code in ORDER:

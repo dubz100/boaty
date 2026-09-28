@@ -220,9 +220,11 @@ def fig_software():
         col = ORANGE if k == "C6" else (BLUE if k == "C7" else AQUA)
         rbox(ax, x, y, W, H, f"{k} {comp[k][2]}", edge=col, ts=6.6)
     bpos = {"B1": (7.8, 4.4), "B6": (9.5, 4.4), "B2": (7.8, 3.1),
-            "B4": (9.5, 3.1), "B3": (7.8, 1.7), "B5": (9.5, 1.7)}
+            "B4": (9.5, 3.1), "B3": (7.8, 1.7), "B5": (9.5, 1.7),
+            "B7": (8.4, 0.45)}
     for k, (x, y) in bpos.items():
-        rbox(ax, x, y, 1.55, 0.75, f"{k}\n{comp[k][2]}", edge=AQUA, ts=6.0)
+        rbox(ax, x, y, 2.1 if k == "B7" else 1.55, 0.75,
+             f"{k}\n{comp[k][2]}", edge=AQUA, ts=6.0)
     rbox(ax, 7.8, 5.55, 3.25, 1.0, "A1 ArduPilot Rover (FC)",
          "modes · fence · failsafes · AUTO", edge=BLUE, lw=1.8, ts=6.8)
     # flows

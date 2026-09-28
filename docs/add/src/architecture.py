@@ -333,8 +333,11 @@ COMPONENTS = [
      "in AUTO → command RTL", "FS-003"),
     ("MCP", "B5", "Weed-shedding", "On stuck → up to 3 bounded GUIDED "
      "reverse bursts, then resume or stay in HOLD", "FS-006"),
-    ("MCP", "B6", "Health", "Moisture → RTL + alarm; temperature; storage",
-     "FS-010, PWR-010, CAM-004"),
+    ("MCP", "B6", "Health", "Moisture → RTL + alarm; box temperature "
+     "> 60 °C → RTL + alarm; storage", "FS-010, PWR-010, CAM-004"),
+    ("MCP", "B7", "Navigation monitor", "First-motion heading check, second "
+     "stuck detector, divergence watchdog → HOLD + alarm (FMEA A-03/07/08)",
+     "FS-005, FS-013"),
     ("HLM", "A1", "ArduPilot Rover", "Navigation, modes, fence, "
      "failsafes, logging (third-party firmware + our parameters)",
      "NAV-*, FEN-*, FS-*, LOG-001"),
@@ -477,6 +480,10 @@ DECISIONS = [
      "T3", "FS-003/006/010"),
     ("DD-14", "Printed foam-filled hull segments; PVC pontoons as fallback",
      "T5", "-"),
+    ("DD-15", "Flight controller with microSD logging, so PRE-008 holds "
+     "for the helm", "CR-02", "+£10 (estimate)"),
+    ("DD-16", "Boat-side navigation monitor B7 (HOLD-only) from FMEA "
+     "actions", "FMEA A-03/07/08", "No hardware cost"),
 ]
 
 VERIFY_EARLY = [
@@ -519,9 +526,8 @@ VERIFY_EARLY = [
 RISKS = [
     ("R-01", "F405 firmware lacks a needed feature", "Medium",
      "V-01 before purchase of other parts; H743 fallback (+£20-25)"),
-    ("R-02", "Bill of materials over the £160 cap (was High at £120; "
-     "CR-01 accepted)", "Medium", "£6 headroom on the £154 baseline; the "
-     "pole kit only if V-08 needs it, offset by cost-down levers"),
+    ("R-02", "Bill of materials over the £160 cap (Issue D: £166 "
+     "baseline)", "High", "Owner decision CR-03 (section 7.3)"),
     ("R-03", "Wi-Fi range over water", "Medium",
      "Pole antenna; safety independent of the link"),
     ("R-04", "Pi Zero SD-card corruption on power loss", "Medium",
@@ -549,7 +555,7 @@ POWER_BANK = [("Raspberry Pi 5 (average; peaks ~8 W during STT)", 5.0),
               ("USB Wi-Fi adapter", 1.0), ("Speaker, mic, LEDs", 0.5)]
 
 BOM = [
-    ("Boat", "F405-class flight controller", 25),
+    ("Boat", "F405-class flight controller with microSD logging (CR-02; estimate)", 35),
     ("Boat", "M10 GNSS + compass", 14),
     ("Boat", "Pi Zero 2W", 15),
     ("Boat", "5 MP camera (OV5647-class) + Zero cable", 8),
@@ -562,6 +568,7 @@ BOM = [
     ("Boat", "5 V 3 A buck", 3),
     ("Boat", "Reed switch + MOSFET switch module (arming key)", 4),
     ("Boat", "IP67 main power switch (added in Issue C)", 4),
+    ("Boat", "Box temperature sensor, DS18B20 (FMEA A-11, Issue D)", 2),
     ("Bank", "4 arcade buttons (incl. TALK), key switch", 9),
     ("Bank", "USB mic + small speaker", 8),
     ("Bank", "USB Wi-Fi adapter with antenna", 12),

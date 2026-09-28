@@ -26,7 +26,7 @@ OUT = HERE.parent / "Boaty_Design_FMEA.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-FMEA-001"
-ISSUE = "Issue A (for review)"
+ISSUE = "Issue B (for review)"
 DATE = "28 September 2026"
 W = 257  # usable width in mm (landscape A4 minus margins)
 
@@ -63,6 +63,7 @@ def pareto():
 
 def build():
     n = F.check()
+    F.check_b()
     SD.check()
     pareto()
     tests = {t[0]: t for t in SD.TESTS}
@@ -82,7 +83,11 @@ def build():
                           f"actions, {len(SD.TESTS)} catalogued tests"]])
     st += control_and_contents(
         [["A", DATE, "First issue: design FMEA at architecture level.",
-          "Claude (drafted)"]],
+          "Claude (drafted)"],
+         ["B", DATE, "Actions carried into SSS-HLM/MCP/MCN Issue B, ICD "
+          "Issue C and ADD Issue D; status and post-action ratings added. "
+          "A-05, A-09, A-17 await the operations manual.",
+          "Claude, owner request"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "
         "missing failure modes: an FMEA is only as good as its "
@@ -128,23 +133,28 @@ def build():
     # 3 worksheet
     rows = [["ID", "Item / function", "Failure mode", "Effect", "S",
              "Cause", "O", "Controls: prevent / detect in use", "D", "RPN",
-             "Tests", "Actions"]]
+             "After", "Tests", "Actions"]]
     style = []
     for i, r in enumerate(F.ROWS, start=1):
         rows.append([f"<b>{r[0]}</b><br/>{r[1]}", r[2], r[3], r[4],
                      f"<b>{r[5]}</b>", r[6], str(r[7]),
                      f"{r[8]} / {r[9]}", str(r[10]), f"<b>{F.rpn(r)}</b>",
+                     (f"<b>{F.rpn_after(r)}</b>" if r[0] in F.POST
+                      else "-"),
                      ", ".join(r[11]), ", ".join(r[12]) or "-"])
         if r[5] >= 9:
             style.append(("BACKGROUND", (4, i), (4, i),
                           colors.HexColor("#cfe1f6")))
         if F.rpn(r) >= 100:
             style.append(("BACKGROUND", (9, i), (9, i), ORANGE_T))
+        if r[0] in F.POST and F.rpn_after(r) >= 100:
+            style.append(("BACKGROUND", (10, i), (10, i), ORANGE_T))
     st += [H1("3. FMEA worksheet"),
            P("Blue S cell = severity ≥ 9. Orange RPN cell = at or above "
-             "the action threshold. Test IDs are defined in SSS-SIM "
-             "Issue B, section 6.", "small"),
-           table(rows, [16, 22, 30, 32, 7, 26, 7, 42, 7, 10, 30, 18],
+             "the action threshold. 'After' = RPN once the incorporated "
+             "actions are in (Issue B); '-' = unchanged. Test IDs are "
+             "defined in SSS-SIM Issue B, section 6.", "small"),
+           table(rows, [16, 22, 29, 31, 7, 25, 7, 40, 7, 10, 11, 29, 17],
                  style_extra=style),
            PageBreak()]
 
@@ -176,11 +186,23 @@ def build():
                "catalogue only covered the failsafes we'd already "
                "designed.",
            ]),
+           H2("4.2 After Issue B"),
+           P("With the incorporated actions, the top risks that remain are "
+             "procedural: fence-vs-shore offset (FM-12), other water users "
+             "(FM-43) and guard handling (FM-21/45). All three wait on the "
+             "operations manual (A-05, A-17, A-09). FM-02 (GNSS glitch) "
+             "stays at RPN 108 because of its severity; it has direct "
+             "simulator tests (SC-20) and HLM-D39. Highest RPNs after "
+             "Issue B: " + ", ".join(f"{r[0]} {F.rpn_after(r)}" for r in
+                                     sorted(F.ROWS, key=F.rpn_after,
+                                            reverse=True)[:6]) + "."),
            PageBreak(),
            H1("5. Actions"),
-           table([["ID", "Action", "Owner", "Goes into", "Failure modes"]] +
-                 [[f"<b>{a[0]}</b>", a[1], a[2], a[3], ", ".join(a[4])]
-                  for a in F.ACTIONS], [14, 140, 22, 45, 36]),
+           table([["ID", "Action", "Owner", "Failure modes", "Status (Issue "
+                   "B)", "Carried by"]] +
+                 [[f"<b>{a[0]}</b>", a[1], a[2], ", ".join(a[4]),
+                   F.STATUS[a[0]][0], ", ".join(F.STATUS[a[0]][1]) or "-"]
+                  for a in F.ACTIONS], [14, 110, 20, 30, 45, 38]),
            P("A-12 is unused: it was merged into A-13 during drafting. "
              "Actions going into 'SSS-x Issue B' are carried into those "
              "specification issues next.", "small"),

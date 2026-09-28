@@ -19,7 +19,7 @@ SRS = A.SRS
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Architecture_Design_Document.pdf"
 DOC_ID = "BOATY-ADD-001"
-ISSUE = "Issue C (for review)"
+ISSUE = "Issue D (for review)"
 DATE = "28 September 2026"
 
 
@@ -65,7 +65,11 @@ def build():
           "BOM +£2, MCN and IF-12 descriptions updated. From subsystem "
           "specification work: IP67 main switch added to BOM (+£4, "
           "previously omitted); V-14 to V-17 added.", "Claude, owner "
-          "decision"]],
+          "decision"],
+         ["D", DATE, "CR-02 accepted: flight controller with microSD "
+          "(DD-15, +£10 est.). FMEA actions: navigation monitor B7 "
+          "(DD-16) and box temperature sensor (+£2). Baseline now over "
+          "the cap: CR-03 raised.", "Claude, owner decision"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "
@@ -388,17 +392,20 @@ def build():
            table(bom_rows, [16, 130, 24]),
            Spacer(1, 3 * mm),
            callout(f"<b>CR-01 accepted (Issue B):</b> the CON-001 cap is now "
-                   f"£160, target £150 (SRS Issue C). <b>Issue C position:</b> "
-                   f"the baseline is £{base}, within the cap but "
-                   f"£{base - 150} over the target. With the pole kit it "
-                   f"would be £{base + deferred}, £{base + deferred - 160} "
-                   "over the cap, so the pole is bought only if V-08 shows "
-                   "it's needed, and paid for by the cost-down levers "
-                   "(cheaper F405 clone, salvaged cells). As "
+                   f"£160, target £150 (SRS Issue C). <b>Issue D position:</b> "
+                   f"the baseline is £{base}, <b>£{base - 160} over the "
+                   f"cap</b> (£{base + deferred} with the pole kit). This "
+                   "follows the microSD flight controller (CR-02, +£10 "
+                   "estimate) and the FMEA box temperature sensor (+£2). "
+                   "<b>Owner decision CR-03:</b> (a) raise the cap to £170; "
+                   "(b) use tested salvaged 18650 cells (−£8) and a PIN "
+                   "instead of the panel key switch (−£3), giving "
+                   f"£{base - 11}; or (c) confirm real prices first, since "
+                   "the £35 flight controller is an estimate. As "
                    "originally raised: the baseline was over the old £120 "
                    "cap. "
                    "Compared with the concept estimate (£117 including the "
-                   "Mission Control extras), the growth comes from seven "
+                   "Mission Control extras), the growth comes from nine "
                    "changes:<br/>"
                    "• Python on the boat (Pi Zero instead of ESP32): +£9<br/>"
                    "• Bank radio (USB adapter + antenna): +£12<br/>"
@@ -407,6 +414,8 @@ def build():
                    "• Adult key switch on the panel: +£3<br/>"
                    "• TALK button (added in Issue C): +£2<br/>"
                    "• IP67 main switch (omitted before Issue C): +£4<br/>"
+                   "• microSD flight controller (CR-02): +£10 (est.)<br/>"
+                   "• Box temperature sensor (FMEA A-11): +£2<br/>"
                    "The cheapest candidate, AR-3, would fit the cap, but it "
                    "gives up the live photo pipeline. <b>Owner decision "
                    "CR-01:</b> (a) raise the CON-001 cap to £160, target "
@@ -444,7 +453,11 @@ def build():
                    "<b>Accepted</b> as part of AR-2"],
                   ["4", "Order of work: prove V-01 to V-06 in SITL and on "
                    "the bench before the main parts order",
-                   "Recommended; not yet confirmed"]],
+                   "Recommended; not yet confirmed"],
+                  ["5", "CR-02: helm log storage", "<b>Accepted</b>: "
+                   "microSD flight controller (DD-15)"],
+                  ["6", "CR-03: cost cap after CR-02 and the FMEA actions "
+                   "(section 7.3)", "<b>Open</b>: recommend (c) then (b)"]],
                  [8, 100, 62]),
            Spacer(1, 4 * mm),
            P("Then, from this document:"),

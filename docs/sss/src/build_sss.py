@@ -298,7 +298,8 @@ def build_one(code):
                ss["purpose"],
                [["Document", doc_id], ["Issue", issue], ["Date", DATE],
                 ["Status", "For review by the project owner"],
-                ["Parents", "SRS Issue D, ADD Issue C, ICD Issue B"],
+                ["Parents", ss.get("parents", "SRS Issue D, ADD Issue C, "
+                                   "ICD Issue B")],
                 ["Content", f"{len(prim)} allocated SRS requirements → "
                  f"{len(derived)} subsystem requirements ({pc['M']} M, "
                  f"{pc['S']} S, {pc['C']} C)"]])
@@ -324,10 +325,15 @@ def build_one(code):
            H2("2. Applicable documents"),
            table([["Document", "Use"],
                   ["BOATY-SRS-001 Issue D", "Parent requirements"],
-                  ["BOATY-ADD-001 Issue C", "Allocation, decisions, "
+                  ["BOATY-ADD-001 " + ("Issue D" if ss.get("parents") else
+                                       "Issue C"), "Allocation, decisions, "
                    "budgets, early verification items"],
-                  ["BOATY-ICD-001 Issue B", "Interface definitions (all "
-                   "listed in section 3 apply in full)"]], [55, 115])]
+                  ["BOATY-ICD-001 " + ("Issue C" if ss.get("parents") else
+                                       "Issue B"), "Interface definitions "
+                   "(all listed in section 3 apply in full)"]] +
+                 ([["BOATY-FMEA-001 Issue B", "Failure modes and actions "
+                    "carried into this issue"]] if ss.get("parents") else []),
+                 [55, 115])]
 
     # 3 interfaces
     rows = [["Interface", "Other end", "Role", "ICD"]]

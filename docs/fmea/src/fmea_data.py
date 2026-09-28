@@ -325,3 +325,53 @@ if __name__ == "__main__":
     print(check(), "failure modes OK")
     for r in sorted(ROWS, key=rpn, reverse=True)[:10]:
         print(r[0], r[5], r[7], r[10], rpn(r))
+
+
+# ---------------------------------------------------------------- Issue B
+# Where each action went, and ratings after the incorporated actions.
+STATUS = {
+    "A-01": ("Incorporated", ["HLM-D39"]),
+    "A-02": ("Incorporated", ["HLM-D41"]),
+    "A-03": ("Incorporated", ["MCP-D22", "MCN-D60"]),
+    "A-04": ("Incorporated", ["MCN-D53"]),
+    "A-05": ("Open: operations manual", []),
+    "A-06": ("Incorporated", ["HLM-D40"]),
+    "A-07": ("Incorporated", ["MCP-D23"]),
+    "A-08": ("Incorporated", ["MCP-D24"]),
+    "A-09": ("Open: operations manual", []),
+    "A-10": ("Incorporated", ["MCN-D54"]),
+    "A-11": ("Incorporated (sensor); inspection → operations manual",
+             ["MCP-D26"]),
+    "A-13": ("Incorporated", ["MCN-D55"]),
+    "A-14": ("Incorporated", ["SIM-D09"]),
+    "A-15": ("Incorporated", ["MCN-D56"]),
+    "A-16": ("Incorporated", ["MCN-D57"]),
+    "A-17": ("Open: operations manual", []),
+    "A-18": ("Incorporated; V-14 still open", ["HLM-D24", "MCN-D59"]),
+    "A-19": ("Incorporated (software); briefing → operations manual",
+             ["MCN-D58"]),
+}
+# FM id -> (O, D) after incorporated actions (S unchanged)
+POST = {
+    "FM-02": (4, 3), "FM-03": (2, 3), "FM-04": (4, 3), "FM-05": (2, 3),
+    "FM-11": (2, 3), "FM-14": (3, 3), "FM-15": (2, 3), "FM-16": (4, 3),
+    "FM-17": (4, 3), "FM-18": (3, 2), "FM-22": (2, 3), "FM-23": (1, 5),
+    "FM-32": (1, 3), "FM-36": (3, 5), "FM-41": (3, 2), "FM-42": (2, 5),
+}
+
+
+def rpn_after(r):
+    o, d = POST.get(r[0], (r[7], r[10]))
+    return r[5] * o * d
+
+
+def check_b():
+    derived = {d["id"] for ss in SD.SUBSYSTEMS.values()
+               for d in SD.all_derived(ss)}
+    assert set(STATUS) == {a[0] for a in ACTIONS}
+    for a, (st, ids) in STATUS.items():
+        for i in ids:
+            assert i in derived, (a, i)
+        if st.startswith("Incorporated"):
+            assert ids, a
+    return True
