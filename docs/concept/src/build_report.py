@@ -35,7 +35,7 @@ BLUE = colors.HexColor("#2a78d6")
 BLUE_T = colors.HexColor("#e8f1fb")
 ORANGE = colors.HexColor("#eb6834")
 
-VERSION = "v1.0 - 28 September 2026"
+VERSION = "v1.1 - 28 September 2026"
 
 # ------------------------------------------------------------------ styles
 S = {}
@@ -198,10 +198,17 @@ def build():
                "the boat home, and a small <b>camera 'mission brain'</b> that "
                "takes the photos. Instructions like <i>\"explore the pond, "
                "photograph some ducks, then come back\"</i> are turned into a "
-               "checked mission on the laptop before launch. Estimated cash "
+               "checked mission on the bank before launch. Estimated cash "
                f"spend <b>≈£{core_total}</b> (≈£{core_total - batt} if you "
                "already own a 3S battery)."),
-           Spacer(1, 60 * mm),
+           Spacer(1, 5 * mm),
+           callout("<b>New in v1.1:</b> your review answers are folded in. "
+                   "Site: Milton Country Park. Crew: age 4. A LEGO DUPLO-"
+                   "compatible deck and a big-button 'Mission Control' box "
+                   "built on your Raspberry Pi 5. Two routes to a "
+                   "Python-first software stack. See <b>section 9</b>.",
+                   ORANGE, colors.HexColor("#fdf0ea")),
+           Spacer(1, 40 * mm),
            P(f"Prepared for: Project Boaty (father and son)<br/>"
              f"Status: for review<br/>Version: {VERSION}", "small"),
            PageBreak()]
@@ -230,9 +237,10 @@ def build():
                "autopilot to do things, and the autopilot still enforces the "
                "fence. Bugs in our own code cannot take the boat out of the "
                "pond.",
-               "<b>Modular mechanical build.</b> Printed hull segments, "
-               "clip-on thruster pods, a mast kit and an M3-grid 'Meccano "
-               "rail' deck. Your son can design and swap his own modules.",
+               "<b>Modular mechanical build.</b> Printed hull segments with "
+               "big thumb-screws, clip-on thruster pods, a mast kit, and a "
+               "LEGO DUPLO-compatible deck so your son can build his own crew "
+               "and cargo on top.",
                "<b>Unsinkable by construction.</b> Foam-filled hulls float "
                "even if everything leaks, and a catamaran is very hard to "
                "capsize.",
@@ -376,7 +384,8 @@ def build():
                 "≤200 mm long to fit common print beds. PETG, 3 perimeters. "
                 "Filled with closed-cell foam so buoyancy never depends on "
                 "being watertight.",
-                "Bolted flanges, M3 heat-set inserts, silicone bead"],
+                "Flanges joined by large printed thumb-screws a small child "
+                "can turn"],
                ["Crossbeams (×2)",
                 "Printed or aluminium box section with a 10 mm M3 hole grid "
                 "along the top (the 'Meccano rail'). Anything can bolt on "
@@ -395,10 +404,12 @@ def build():
                 "GPS/compass on top, flag, recovery hoop, LED beacon. "
                 "Printed sockets on a carbon or aluminium tube.",
                 "Socket on rail"],
-               ["Payload bay",
-                "Free rail space for your son's own modules: a lookout "
-                "figure, a second camera, a water thermometer, a crane...",
-                "M3 grid"],
+               ["DUPLO deck",
+                "Printed plate with LEGO DUPLO-compatible studs on top of the "
+                "box lid. Your son builds his own crew, lookout tower and "
+                "cargo from bricks he already knows. The boat is sized to "
+                "carry about 300 g of bricks.",
+                "Clips onto the rail"],
            ], [30, 100, 40]),
            Spacer(1, 3 * mm),
            P("Why submerged motors? Brushless outrunners run happily under "
@@ -542,36 +553,43 @@ def build():
                ["0  Simulator",
                 "Run ArduPilot SITL + QGroundControl on the laptop, using the "
                 "real pond from satellite imagery.",
-                "Draws the fence, plans missions, 'crashes' the virtual boat "
-                "on purpose to watch failsafes fire.",
+                "Points at the map to say where the boat should go, and "
+                "watches the virtual boat come home.",
                 "Virtual boat completes a mission and returns home."],
                ["1  Hulls",
                 "Print hull segments, foam-fill, bath float test, measure "
                 "draft and add ballast.",
-                "Archimedes experiment: predict the draft, then measure it. "
-                "Paints the livery.",
+                "Picks the colours, pushes the foam in, and does the bath "
+                "test ('will it float?') with toy passengers.",
                 "Floats level at predicted draft with test weights."],
                ["2  Power & drive",
                 "Thruster pods, ESCs, battery, flight controller. Driven "
                 "manually from the phone.",
-                "Assembles pods, tests clip-on/clip-off, first drive in a "
-                "paddling pool.",
+                "Clips the pods on and off, turns the thumb-screws, and "
+                "drives in the paddling pool with you.",
                 "Drives, turns on the spot, reverses."],
                ["3  Autonomy",
                 "GPS, compass calibration, fence, failsafes. Small-pond "
                 "trials with deliberate failsafe tests.",
-                "Mission commander: runs the pre-launch checklist.",
+                "Mission commander: presses the big GO and COME HOME "
+                "buttons, and spots the boat with binoculars.",
                 "Every failsafe in section 5.5 demonstrated on the water."],
                ["4  Camera & AI",
                 "ESP32 photo capture, natural-language mission app, "
                 "captain's log.",
-                "Gives the orders, reviews photos, names the ducks.",
+                "Says the orders out loud, finds the ducks in the photos, "
+                "names them.",
                 "\"Explore, photograph ducks, come back\" works end to end."],
                ["5  His module",
-                "Open-ended: he designs a module for the rail.",
-                "Designer: sketch, Tinkercad, print, fit.",
-                "His module sails."],
+                "DUPLO deck: open-ended building on the boat.",
+                "Builds crew, lookout tower and cargo; you print any special "
+                "parts he draws.",
+                "His crew sails."],
            ], [22, 55, 50, 43]),
+           P("<b>Adult-only zone:</b> battery and charging, soldering, the "
+             "electronics box, and anything near the propellers. Printed "
+             "parts meant for little hands are large (no parts small enough "
+             "to swallow) and have rounded edges.", "small"),
            Spacer(1, 4 * mm),
            P("7. Risks and mitigations", "h1"),
            table([
@@ -603,10 +621,10 @@ def build():
     # ---------------- 8 rules
     st += [P("8. Rules, wildlife and good manners", "h1"),
            *bullets([
-               "<b>Permission.</b> Many park and council ponds have byelaws "
-               "on model boats, and some have a model-boat club with set "
-               "times. Check who owns the water and ask first. A friendly "
-               "local club is also a great place for trials.",
+               "<b>Permission (Milton Country Park).</b> The park and its "
+               "lakes are managed by the charity Cambridge Sport Lakes Trust. "
+               "I couldn't find a published model-boat policy, so ask the "
+               "Trust before launching. Section 9.1 has what to ask.",
                "<b>Wildlife.</b> The Wildlife and Countryside Act 1981 "
                "protects wild birds and their nests. The mission design "
                "never chases birds, keeps well clear of islands and reed "
@@ -621,35 +639,160 @@ def build():
                "Adult supervision at the bank at all times.",
            ]),
            Spacer(1, 3 * mm),
-           P("9. Decisions and inputs needed before architecture design", "h1"),
-           P("To make the architecture concrete, it would help to know:"),
+           Spacer(1, 4 * mm),
+           P("9. Review inputs and what they change (v1.1)", "h1"),
            table([
-               ["#", "Question", "Why it matters"],
-               ["1", "Which pond(s)? Rough size, weed, islands, launch "
-                "points, and whether model boats are allowed.",
-                "Sets fence geometry, range needs, propulsion choice "
-                "(submerged vs airboat pod)."],
-               ["2", "Your son's age and what he's most excited by (building, "
-                "driving, coding, photos?).",
-                "Tunes the module split and which parts he designs himself."],
-               ["3", "Existing kit: 3S battery and charger, RC transmitter, "
-                "Raspberry Pi, print bed size?",
-                "Changes the budget and the link design."],
-               ["4", "OK to use the Claude API from a laptop for mission "
-                "planning (needs internet on the bank, e.g. phone hotspot), or "
-                "prefer offline planning at home?",
-                "Decides the ground-side software architecture."],
-               ["5", "Happy with ArduPilot as the safety core?",
-                "It's the backbone of the reliability argument. The "
-                "alternative is concept C."],
-           ], [8, 92, 70]),
-           Spacer(1, 6 * mm),
-           callout("<b>Next step: architecture design.</b> Detailed "
-                   "electrical schematic and power budget; MAVLink interfaces "
-                   "between the brains; ArduPilot parameter set (fence, "
-                   "failsafes, skid-steer tuning); CAD layout and hull lines; "
-                   "the mission-planner app and its validator; and a test "
-                   "plan for each failsafe."),
+               ["#", "Question", "Answer", "Impact"],
+               ["1", "Which pond?", "A lake in Milton Country Park, Cambridge.",
+                "Shared, busy water, bigger than the example pond. Permission "
+                "needed. Mk1 uses a 'home bay' fence (9.1)."],
+               ["2", "Son's age and interest", "4, and he wants to build.",
+                "DUPLO-compatible deck, big thumb-screws, big-button Mission "
+                "Control. Electronics stay adult-only (9.2)."],
+               ["3", "Existing kit", "Raspberry Pi 5, Ultimaker printer.",
+                "The Pi 5 becomes the bank-side Mission Control box. Hull "
+                "segments ≤200 mm suit the Ultimaker bed (9.3)."],
+               ["4", "Claude API on the bank?", "Yes.",
+                "Mission planning runs live on the bank via a phone hotspot."],
+               ["5", "ArduPilot as safety core?",
+                "Probably, but a pure Python stack is preferred.",
+                "Two Python-first routes compared; recommendation in 9.4."],
+           ], [8, 36, 50, 76]),
+           P("9.1 Site: Milton Country Park", "h2"),
+           P("The park is run by the charity Cambridge Sport Lakes Trust. Its "
+             "two main lakes, Todd's Pit (by the visitor centre) and "
+             "Dickerson's Pit, are shared with club anglers, paddleboard, "
+             "canoe and kayak courses, and open-water swimming. That changes "
+             "the plan:"),
+           *bullets([
+               "<b>Ask first.</b> Email the Trust. Explain it is a slow "
+               "(walking pace), 600 mm, electric, geofenced boat with prop "
+               "guards, supervised from the bank. Ask which lake, which "
+               "area and what times they'd accept. Offer to show them the "
+               "fence on a map.",
+               "<b>Stay away from people.</b> Never launch during swim "
+               "sessions or watersports courses. The fence keeps well clear "
+               "of fishing swims: angling lines and our props don't mix, and "
+               "it's their water too.",
+               "<b>Use a 'home bay' fence.</b> The lakes are bigger than our "
+               "Wi-Fi range and casting reach, so Mk1 missions use a fenced "
+               "bay of roughly 100 m around the launch point, not the whole "
+               "lake. The fence grows only once the boat has earned it.",
+               "<b>Blue-green algae.</b> Todd's Pit has had algae warnings "
+               "before. Don't launch when a notice is up. Rinse the boat "
+               "and wash hands after every session.",
+               "<b>Rehearse at home first.</b> Paddling pool, then a small "
+               "private pond if one is available. Milton comes once the "
+               "failsafes are proven.",
+           ]),
+           P("9.2 Designing for a 4-year-old crew member", "h2"),
+           P("At 4, 'building something' means big chunky parts, bright "
+             "colours, things that click together, and a boat that is "
+             "<i>his</i>. So the modular kit is split into two tiers:"),
+           *bullets([
+               "<b>His tier:</b> hull segments joined with big printed "
+               "thumb-screws, clip-on thruster pods, a DUPLO-compatible deck "
+               "for his own crew and cargo, choosing the colours (two-colour "
+               "prints if your Ultimaker is dual-extrusion), stickers, and "
+               "naming the boat.",
+               "<b>Your tier:</b> electronics, wiring, battery, props, "
+               "firmware and code.",
+               "<b>Mission Control with big buttons</b> (9.3). He says the "
+               "order out loud, watches the plan appear on the map, and "
+               "presses GO. When photos come back, he finds the ducks.",
+               "Keep sessions short, about 20 minutes on the water. Always "
+               "end with a win: the boat comes home and there are photos.",
+           ]),
+           P("9.3 Raspberry Pi 5: the bank-side 'Mission Control' box", "h2"),
+           P("The Pi 5 isn't a good fit <i>on</i> the boat. It draws 3-7 W, "
+             "which would roughly double the electronics power budget, and "
+             "it runs hot inside a sealed box. It is ideal <b>on the bank</b> "
+             "as the ground station:"),
+           *bullets([
+               "A printed case with three big arcade buttons: <b>GO</b>, "
+               "<b>COME HOME</b> and <b>STOP</b>. Plus a small screen or "
+               "tablet showing the map.",
+               "A USB microphone for his spoken order (\"go and find the "
+               "ducks\"): speech to text, then Claude writes the mission, "
+               "our Python validator checks it, you approve it on screen, "
+               "and he presses GO.",
+               "A little speaker so the boat 'talks' (\"I can see ducks!\", "
+               "\"Coming home\").",
+               "Powered by a USB-C power bank. It runs all the ground-side "
+               "Python: MAVLink link, mission planner, validator, photo "
+               "download and the captain's log.",
+               "Extra cost ≈£12 (buttons, mic, speaker), assuming you have a "
+               "power bank. How the Pi, phone hotspot and boat share Wi-Fi "
+               "is an architecture-phase decision.",
+           ]),
+           P("9.4 Python-first software: two routes", "h2"),
+           P("Everything <i>we</i> write can be Python either way. The real "
+             "question is whether the lowest level, the 'helm' that steers "
+             "and enforces the fence, is ArduPilot or our own Python."),
+           table([
+               ["", "Route A: Python on top of ArduPilot",
+                "Route B: pure Python helm + MicroPython guardian"],
+               ["On the boat",
+                "ArduPilot firmware on the F405, configured by parameters "
+                "only. Companion: ESP32 camera, or a Pi Zero 2W if you want "
+                "Python on board too.",
+                "Pi Zero 2W running our Python autopilot: GPS, BNO085 "
+                "heading sensor, heading/speed PID, waypoints, fence, RTL. "
+                "An RP2040 'guardian' in MicroPython sits between the Pi and "
+                "the ESCs."],
+               ["What we write",
+                "All ground-side code and mission logic in Python "
+                "(pymavlink). We don't write or maintain any safety code.",
+                "Everything: navigation, fence, failsafes, a Python boat "
+                "simulator to test them, and the guardian."],
+               ["Safety case",
+                "Mature, widely used fence and failsafes. SITL simulator "
+                "out of the box.",
+                "The guardian has its own GPS and a hard-coded fence. It "
+                "passes motor commands through only while the Pi's "
+                "heartbeat is fresh and the boat is inside the fence. "
+                "Otherwise it stops the motors or runs a simple 'go home'. "
+                "We must prove all of it."],
+               ["Extra cost", "£0 (as budgeted)",
+                "≈+£20 (Pi Zero 2W, BNO085, RP2040, second GPS, minus the "
+                "F405 and ESP32)"],
+               ["First autonomous run", "Weeks", "Months"],
+               ["Best for", "Getting a 4-year-old a working boat soon",
+                "Your own learning and satisfaction"],
+           ], [26, 70, 74]),
+           Spacer(1, 3 * mm),
+           callout("<b>Recommendation: start with Route A, and design for "
+                   "Route B.</b> Put all our code behind a small Python "
+                   "'helm' interface (goto, hold, return home, status). In "
+                   "Mk1 that interface talks MAVLink to ArduPilot. Your pure "
+                   "Python helm then becomes a Mk2 project: develop it in "
+                   "simulation, check it against ArduPilot's logs from real "
+                   "Mk1 trips, then swap it in behind the same interface, "
+                   "with the MicroPython guardian underneath. Whichever "
+                   "route you take, <b>no Python helm goes on the water "
+                   "without an independent guardian.</b> A crashed Linux "
+                   "process must never be what stands between the boat and "
+                   "the far bank."),
+           Spacer(1, 3 * mm),
+           P("9.5 Budget after the review", "h2"),
+           table([
+               ["Item", "£"],
+               ["Core Mk1 (section 5.6)", f"≈{core_total}"],
+               ["Mission Control box extras (Pi 5 already owned)", "≈12"],
+               ["<b>Mk1 total, Route A</b>", f"<b>≈{core_total + 12}</b>"],
+               ["If you already own a 3S battery", f"≈{core_total + 12 - batt}"],
+               ["Route B from day one (instead of A)", f"≈{core_total + 12 + 20}"],
+           ], [140, 30]),
+           Spacer(1, 5 * mm),
+           callout("<b>Next step: architecture design.</b> Please confirm "
+                   "Route A (Python on top of ArduPilot, designed for a Mk2 "
+                   "Python helm) or Route B. Then: the electrical schematic "
+                   "and power budget; the helm interface and MAVLink "
+                   "messages; the ArduPilot parameter set; the Wi-Fi setup "
+                   "between boat, Pi 5 and phone hotspot; CAD layout and "
+                   "hull lines; Mission Control software and validator; "
+                   "and a test plan for each failsafe. In parallel: email "
+                   "Cambridge Sport Lakes Trust."),
            ]
 
     doc = SimpleDocTemplate(str(OUT), pagesize=A4, leftMargin=20 * mm,
