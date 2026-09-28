@@ -25,3 +25,5 @@ The SRS is generated the same way. Requirements live in `docs/srs/src/requiremen
 cd docs/srs/src
 python3 figures.py && python3 build_srs.py
 ```
+
+- [`docs/add/Boaty_Architecture_Design_Document.pdf`](docs/add/Boaty_Architecture_Design_Document.pdf): architecture design (BOATY-ADD-001): design-space exploration, selected architecture, interfaces, requirement allocation and budgets. Source in `docs/add/src/` (`architecture.py` holds the data; the build checks every SRS requirement is allocated). Shared PDF styling lives in `docs/common/pdfdoc.py`.
