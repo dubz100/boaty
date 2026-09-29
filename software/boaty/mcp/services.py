@@ -2,10 +2,12 @@
 
     B4 link watchdog      MCP-D12  RTL after 60 s link loss in AUTO, or 10 s
                                    after a MANUAL link loss (FS-002/003)
-    B5 weed-shedding      MCP-D18  up to 3 astern bursts after a stuck event,
-                                   then resume or HOLD + alarm (FS-006)
+    B5 weed-shedding      MCP-D18/34  up to 3 astern bursts after a stuck
+                                   event, then resume if moving forward, else
+                                   HOLD + alarm; > 3 episodes in 2 min: HOLD
+                                   (FS-006)
     B6 health             MCP-D15/26  moisture / box heat -> RTL; position
-                                   loss 3 s -> HOLD, 10 s healthy -> RTL
+                                   loss 1 s -> HOLD, 10 s healthy -> RTL
                                    (FS-004); critical battery -> slow RTL
                                    (FS-001)
     B7 navigation monitor MCP-D22..25  first-motion heading check, second
@@ -329,6 +331,9 @@ class WeedShedder(Service):
         self.active = False
         self.seen_until = 0.0
         self.bursts = 0
+        self.why = ""
+        self.watch_log: list[dict] = []
+        self.episodes: list[float] = []
 
     def _triggers(self, since: float) -> list[float]:
         out = []
@@ -346,6 +351,18 @@ class WeedShedder(Service):
         trig = self._triggers(self.seen_until)
         self.seen_until = now
         if trig and self.v.armed:
+            win = self.cfg["episode_window_s"]
+            self.episodes = [t for t in self.episodes if now - t < win]
+            self.episodes.append(now)
+            if len(self.episodes) > self.cfg["max_episodes"]:
+                # Stuck again and again (e.g. a dead motor that looks like
+                # weed): stop, and let B7 / the adult take over.
+                self.episodes.clear()
+                self.actions.append((now, "repeatedly stuck", True))
+                self.c.set_mode(HOLD)
+                self.c.event("B5 REPEATEDLY STUCK: HOLD",
+                             mav.MAV_SEVERITY_CRITICAL)
+                return
             self.active = True
             threading.Thread(target=self._shed, args=(trig[0],),
                              daemon=True).start()
@@ -369,6 +386,27 @@ class WeedShedder(Service):
             self.clock.sleep(0.05)
         return False
 
+    def _forward_speed(self) -> float:
+        """Velocity along the heading (m/s); negative when going astern."""
+        v = self.v
+        if v.heading is None:
+            return 0.0
+        h = math.radians(v.heading)
+        return v.vn * math.cos(h) + v.ve * math.sin(h)
+
+    def _take_control(self, tries: int = 2) -> bool:
+        """Switch to GUIDED and see it in the heartbeat. A refused or
+        unconfirmed switch is not a burst: retry once, and if it still
+        fails say so, rather than report the weed as 'still stuck'."""
+        for i in range(tries):
+            ok = self.c.set_mode(GUIDED)
+            if ok and self._await_mode(GUIDED):
+                return True
+            self.why = (f"mode {self.v.mode} after "
+                        f"{'ACK' if ok else 'no/refused ACK'}")
+            self.clock.sleep(1.0)
+        return False
+
     def _shed(self, t_trigger: float) -> None:
         c, v, clk = self.cfg, self.v, self.clock
         try:
@@ -380,8 +418,12 @@ class WeedShedder(Service):
             for burst in range(1, c["max_bursts"] + 1):
                 self.bursts = burst
                 self.actions.append((clk.now(), f"burst {burst}", True))
-                if not self.c.set_mode(GUIDED) or not self._await_mode(GUIDED):
-                    break
+                if not self._take_control():
+                    self.actions.append((clk.now(), "no control", False))
+                    self.c.event(f"B5 NO CONTROL ({self.why}): HOLD",
+                                 mav.MAV_SEVERITY_CRITICAL)
+                    self.c.set_mode(HOLD)
+                    return
                 for _ in range(int(c["burst_s"] * c["target_hz"])):
                     self.c.astern(c["astern_fraction"])
                     clk.sleep(1.0 / c["target_hz"])
@@ -390,15 +432,32 @@ class WeedShedder(Service):
                 self.c.filter.grant_resume(prev)
                 ok = self.c.set_mode(prev)
                 self.c.filter.grant_resume(None)
-                end = clk.now() + c["watch_after_resume_s"]
+                t_res = clk.now()
+                end = t_res + c["watch_after_resume_s"]
                 free = False
+                peak, why = 0.0, "timeout"
+                fwd_since = None
                 while ok and clk.now() < end:
-                    if v.mode == prev and v.groundspeed > c["free_speed_mps"]:
-                        free = True
-                        break
+                    # Forward speed, not ground speed: the burst leaves
+                    # the boat drifting astern, and that is not "free".
+                    fwd = self._forward_speed()
+                    peak = max(peak, fwd)
+                    if v.mode == prev and fwd > c["free_speed_mps"]:
+                        if fwd_since is None:
+                            fwd_since = clk.now()
+                        if clk.now() - fwd_since >= c["free_hold_s"]:
+                            free, why = True, "moving forward"
+                            break
+                    else:
+                        fwd_since = None
                     if v.mode == HOLD:
+                        why = "helm HOLD"
                         break
                     clk.sleep(0.1)
+                self.watch_log.append(dict(burst=burst, resume_ack=ok,
+                                           mode=v.mode, peak_mps=round(peak, 2),
+                                           after_s=round(clk.now() - t_res, 1),
+                                           ended=why if ok else "no resume"))
                 if free:
                     self.actions.append((clk.now(), "free", True))
                     self.c.event(f"B5 FREE AFTER {burst}: RESUMED")

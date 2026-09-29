@@ -145,6 +145,7 @@ def test_sc06_weed_released_after_burst_two(helm, sim, services, companion,
     sim.wait_until(lambda: any(a[1] == "free" for a in b5.actions), 40)
     sim.wait(5)
     mode = companion.mode_at(sim.t)
+    evidence.measure(watch=b5.watch_log)
     evidence.measure(bursts=b5.bursts, min_speed_during_burst_m_s=min(astern),
                      mode_after=RoverMode(mode[1]).name,
                      speed_after_m_s=sim.boat.speed(),
@@ -270,7 +271,7 @@ def test_sc29_single_motor_failure(helm, sim, services, companion, evidence):
     end = sim.t + 150
     while sim.t < end:
         worst = max(worst, outside_by(sim, 60))
-        if any("STILL STUCK" in e or "OFF COURSE" in e
+        if any("STILL STUCK" in e or "OFF COURSE" in e or "REPEATEDLY" in e
                for e in boaty_events(companion, t0)):
             break
         time.sleep(0.05 / SPEEDUP)

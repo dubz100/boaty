@@ -11,8 +11,12 @@
     "burst_s": 2.0,
     "astern_fraction": 0.5,
     "target_hz": 10,
-    "free_speed_mps": 0.3,
-    "watch_after_resume_s": 6.0
+    "free_speed_mps": 0.2,
+    "watch_after_resume_s": 8.0,
+    "_free_note": "SC-06 root cause: the free test used ground-speed magnitude, and the burst leaves the boat drifting astern (0.4 m/s seen), so 'free' depended on residual drift. Free now means forward speed (along the heading) > 0.2 m/s held for 1 s within 8 s of resuming. More than 3 episodes in 120 s means something else is wrong (a dead motor looks like weed): HOLD + alarm.",
+    "free_hold_s": 1.0,
+    "max_episodes": 3,
+    "episode_window_s": 120
   },
   "b6_health": {
     "_refs": "FS-004, FS-010, FS-001, MCP-D15, MCP-D26, SC-04, SC-10",

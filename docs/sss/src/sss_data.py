@@ -566,8 +566,8 @@ D(m, "HLM-D44", "The helm shall have exactly one MAVLink command path: "
 # ======================================================================
 c = subsystem(
     "MCP", title="Mission computer",
-    issue="Issue C (for review)",
-    parents="SRS Issue F, ADD Issue F, ICD Issue E, FMEA Issue D",
+    issue="Issue D (for review)",
+    parents="SRS Issue F, ADD Issue F, ICD Issue F, FMEA Issue E",
     history=[["B", "28 September 2026", "FMEA actions A-03, A-07, A-08, A-11: navigation monitor B7 "
               "(MCP-D22 to D25, D27) and box temperature (MCP-D26).", "Claude, owner decisions "
               "(CR-02, FMEA actions)"],
@@ -577,7 +577,11 @@ c = subsystem(
               "(MCP-D18, ICD IF-04 correction); MCP-D31 to D33 from "
               "integration. All SIM requirements now have passing "
               "scenarios (software/results).", "Claude, owner decision "
-              "(slice 2)"]],
+              "(slice 2)"],
+             ["D", "29 September 2026", "SC-06 intermittent failure traced "
+              "to B5's free test (astern drift counted as moving): MCP-D34 "
+              "added (FMEA FM-58, A-29).",
+              "Claude"]],
 
     purpose="Take and geotag photos, relay MAVLink to the bank, and run the "
             "small boat-side watchdogs, without ever being needed for "
@@ -662,8 +666,8 @@ D(c, "MCP-D17", "Optional live view: 320 × 240 MJPEG at 2 fps when "
 group(c, "Weed-shedding and command filter (B5)")
 D(c, "MCP-D18", "B5 shall act only on a stuck event (helm crash check or "
   "B7). Up to 3 GUIDED astern bursts (≤ 0.5 m/s, ≤ 2 s, commands at 10 "
-  "Hz), then resume the previous mode if ground speed > 0.3 m/s is "
-  "regained, else HOLD + alarm. Bursts use SET_ATTITUDE_TARGET thrust with "
+  "Hz), then resume the previous mode; keep it if the boat is free "
+  "(MCP-D34), else HOLD + alarm. Bursts use SET_ATTITUDE_TARGET thrust with "
   "zero yaw rate: a negative velocity target makes Rover turn round "
   "instead (ICD IF-04, Issue E).", "S", "S", "SIM", ["FS-006", "V-11"])
 D(c, "MCP-D19", "All services shall send MAVLink only through a shared "
@@ -724,20 +728,31 @@ D(c, "MCP-D32", "A service shall not send mode-dependent commands until the "
 D(c, "MCP-D33", "All MAVLink shall be version 2 from the first packet "
   "(IF-02). MAVLink 1 silently drops extension fields such as "
   "mission_type.", "M", "I", "SIM", ["IF-02"])
+D(c, "MCP-D34", "B5 shall judge the boat free only on forward speed (along "
+  "the heading) above 0.2 m/s held for 1 s within 8 s of resuming: the "
+  "burst leaves the boat drifting astern, which ground speed counts as "
+  "moving (SC-06). More than 3 episodes in 120 s means HOLD and a "
+  "'repeatedly stuck' alarm (a dead motor looks like weed). A refused or "
+  "unconfirmed GUIDED switch is retried once, then reported as 'no "
+  "control', never as 'still stuck'. Each watch is logged.", "M", "T", "SIM", ["FS-006", "FM-58"])
 
 # ======================================================================
 # MCN  Mission Control
 # ======================================================================
 n = subsystem(
     "MCN", title="Mission Control",
-    issue="Issue C (for review)",
-    parents="SRS Issue E, ADD Issue E, ICD Issue D, FMEA Issue C",
+    issue="Issue D (for review)",
+    parents="SRS Issue F, ADD Issue F, ICD Issue F, FMEA Issue E",
     history=[["B", "28 September 2026", "FMEA actions A-03, A-04, A-10, A-13, A-15, A-16, A-18, A-19: "
               "MCN-D53 to D60 added.", "Claude, owner decisions "
               "(CR-02, FMEA actions)"],
              ["C", "28 September 2026", "CR-03: adult PIN on the web UI "
               "replaces the panel key switch (MCN-D02, D14, D60, D61).",
-              "Claude, owner decision"]],
+              "Claude, owner decision"],
+             ["D", "29 September 2026", "Simulator slice 3 (Mission "
+              "Control built and flown on SITL): MCN-D29, D39, D45, D57 and "
+              "D60 clarified from the evidence; MCN-D62 to D64 added.",
+              "Claude"]],
 
     purpose="Be the only place people interact with Boaty: turn words into "
             "safe, approved missions, and show, say and record what the "
@@ -851,7 +866,9 @@ D(n, "MCN-D28", "Requests shall follow IF-11 and include site context "
   "(names, sizes, battery, limits). No coordinates.", "M", "T", "SIM",
   ["NLI-003", "IF-11"])
 D(n, "MCN-D29", "Replies shall be validated against Intent v1. On failure, "
-  "retry ≤ 2 times, then offer templates.", "M", "T", "SIM",
+  "retry once with the problem passed back as data (≤ 2 allowed), then "
+  "offer templates. Planner and validator failures count the same way.",
+  "M", "T", "SIM",
   ["NLI-004"])
 D(n, "MCN-D30", "The plan shall be drawn on the map, and its "
   "summary_for_child shown and spoken.", "M", "D", "SIM", ["NLI-005"])
@@ -878,7 +895,10 @@ D(n, "MCN-D38", "helm.upload_mission shall accept only a ValidatedMission "
   "type that only the validator can create (type-level single path).", "M",
   "T", "SIM", ["VAL-001", "SAF-004"])
 D(n, "MCN-D39", "The validator shall implement VAL-002 to VAL-005 in local "
-  "ENU metres, sampling legs every ≤ 1 m.", "M", "T", "SIM",
+  "ENU metres, sampling legs every ≤ 1 m, including the final straight "
+  "leg home. Each leg's ends are checked against the fence first, and only "
+  "legs with both ends inside are sampled (a waypoint at 0° N 0° E once "
+  "cost 56 s of sampling).", "M", "T", "SIM",
   ["VAL-002", "VAL-003", "VAL-004", "VAL-005"])
 D(n, "MCN-D40", "The validator shall do no I/O and be deterministic, with "
   "≥ 95% branch coverage and ≥ 50 adversarial cases.", "M", "T", "SIM",
@@ -893,7 +913,9 @@ D(n, "MCN-D44", "C7 shall implement the IF-14 Helm protocol "
   "(ArduPilotHelm, pymavlink), selected by configuration.", "M", "T", "SIM",
   ["SWE-002", "SWE-003", "IF-14"])
 D(n, "MCN-D45", "On connect, C7 shall compare helm parameters with the "
-  "committed file. A mismatch blocks arming and shows the difference.", "S",
+  "committed file. A mismatch blocks arming and shows the difference. "
+  "Values the parameter stream drops are fetched again by index, so link "
+  "loss never shows as a false difference.", "S",
   "T", "SIM", ["SAF-007"])
 D(n, "MCN-D46", "Telemetry ≥ 1 Hz and command latency ≤ 1 s (P95) shall be "
   "measured and logged every session.", "M", "T", "POOL", ["COM-003"])
@@ -933,8 +955,10 @@ D(n, "MCN-D56", "The plan preview shall show duration, distance, photo "
   "count and furthest point from home, prominently and before the approve "
   "control.", "S", "D", "SIM", ["VAL-008", "A-15", "FM-36"])
 D(n, "MCN-D57", "C7 shall detect any other system-255 heartbeat on the "
-  "link. It then refuses to command the helm and raises an alarm until the "
-  "other source goes.", "M", "T", "SIM", ["MC-014", "A-16", "FM-41"])
+  "link. Until the other source goes it refuses every command that starts "
+  "or continues motion (arm, upload, GO, manual, drive) and raises an "
+  "alarm. STOP, HOLD and come home stay available.", "M", "T", "SIM",
+  ["MC-014", "A-16", "FM-41"])
 D(n, "MCN-D58", "Site files list launch points with suitable wind "
   "directions (IF-15). The checklist asks 'Is the wind blowing towards "
   "us?' and suggests a launch point. 'No' blocks arming.", "S", "D", "SIM",
@@ -942,12 +966,28 @@ D(n, "MCN-D58", "Site files list launch points with suitable wind "
 D(n, "MCN-D59", "C1 shall command HOLD if a fence breach persists > 30 s "
   "or the boat is > 10 m outside (interim path of HLM-D24).", "M", "S",
   "SIM", ["FEN-006", "A-18", "FM-14"])
-D(n, "MCN-D60", "Navigation-monitor holds (B7) shall be shown and spoken "
-  "with the reason. Resuming requires the adult PIN.", "M", "D", "SIM",
+D(n, "MCN-D60", "Boat-service holds (B5, B6, B7) shall be shown and spoken "
+  "with the reason, which comes from the service's event text (the mode "
+  "change can arrive first). A HOLD nothing explains is announced after "
+  "1 s. Weed-shedding is spoken once per episode. Resuming requires the "
+  "adult PIN.", "M", "T", "SIM",
   ["MOD-007", "A-03", "A-08"])
 D(n, "MCN-D61", "The PIN shall be entered only on the adult's device, "
   "never shown or spoken, and changeable in Settings. The owner changes it "
   "at the start of each season.", "M", "I", "SIM", ["MC-008", "FM-48"])
+group(n, "From the simulator (Issue D)")
+D(n, "MCN-D62", "C1 shall follow mission progress by item sequence: the "
+  "final return-home item runs inside AUTO, so 'coming home' and photo "
+  "points are announced from the sequence and position, not the mode. "
+  "RTL mode during a mission means a failsafe or an adult command.", "M",
+  "T", "SIM", ["MOD-007", "MC-007", "IF-13"])
+D(n, "MCN-D63", "C1 shall stop the motors with the boat still armed "
+  "(IF-14 halt()) for MCN-D59, so an adult can still bring it home.", "M",
+  "T", "SIM", ["FEN-006", "IF-14"])
+D(n, "MCN-D64", "VAL-010 shall compare the helm view of the mission "
+  "(kind, position, hold, speed; ICD IF-13 Issue F). Photo counts go to "
+  "the camera service and are not in the read-back.", "M", "T", "SIM",
+  ["VAL-010", "IF-13"])
 
 # ======================================================================
 # REC  Recovery & signalling
@@ -1003,7 +1043,7 @@ D(r, "REC-D08", "The flag staff shall be capped, and hoop and flag edges "
 # ======================================================================
 s = subsystem(
     "SIM", title="Simulation & test",
-    issue="Issue D (for review)",
+    issue="Issue E (for review)",
     history=[["B", "28 September 2026", "Hardware-in-the-loop rigs L1-L3 "
               "added (SIM-D13 to D24). Test catalogue rebuilt with IDs and "
               "extended with FMEA-derived scenarios (BOATY-FMEA-001).",
@@ -1016,7 +1056,10 @@ s = subsystem(
               "B1 router topology, real services on a simulated Pi Zero. "
               "SIM-D01/02/07 updated; SIM-D25 to D28 added; test results "
               "shown against the catalogue; SC-02 at 3 s (CR-05).",
-              "Claude, owner decisions"]],
+              "Claude, owner decisions"],
+             ["E", "29 September 2026", "Slice 3: Mission Control in the "
+              "loop. SC-41 to SC-43 added; SIM-D29 and D30 added; SC-31 "
+              "and SC-33 evidence sources named.", "Claude"]],
     purpose="Let the whole system be exercised, failed on purpose and "
             "rehearsed at home, first against a simulated boat and then "
             "with more and more real hardware in the loop, with the same "
@@ -1116,6 +1159,15 @@ D(s, "SIM-D28", "Each run shall write per-scenario evidence (measured "
   "values against the criterion) and a report (software/results). Known "
   "native gaps are marked as such, never hidden.", "M", "I", "SIM",
   ["SWE-005", "SAF-007"])
+D(s, "SIM-D29", "Mission Control shall run in the simulator as it runs on "
+  "the Pi 5 (same code, simulated time), with Claude's replies from a "
+  "stand-in client that produces the API's response format. The live API "
+  "is exercised separately by the recorded evaluation set (SC-33).", "M",
+  "I", "SIM", ["SWE-004", "IF-11"])
+D(s, "SIM-D30", "Evidence that needs no simulator (validator coverage, "
+  "property-based runs) shall be written to software/results/"
+  "unit_evidence.json and reported with the SITL results.", "S", "I",
+  "SIM", ["VAL-006", "SWE-005"])
 group(s, "Hardware-in-the-loop rigs (Issue B)")
 D(s, "SIM-D13", "Rig L1 shall connect SITL to the real Pi Zero 2W through "
   "a 3.3 V USB-serial adapter at 115200 baud on the Pi's UART, so the "
@@ -1204,7 +1256,10 @@ def load_param_baseline():
 HLM_PARAMS = load_param_baseline()
 
 RESULTS_JSON = DOCS.parent / "software" / "results" / "sitl_results.json"
-UNIT_EVIDENCE = {"SC-30": "Pass (unit fuzz, 6,000 cases)"}
+UNIT_EVIDENCE = {"SC-30": "Pass (unit fuzz, 6,000 cases)",
+                 "SC-33": "Not run: needs the API key (tools/nli_eval.py, "
+                          "33 cases ready)"}
+UNIT_JSON = RESULTS_JSON.with_name("unit_evidence.json")
 
 
 def load_sim_results() -> dict:
@@ -1214,6 +1269,14 @@ def load_sim_results() -> dict:
     import json
     import re
     out = dict(UNIT_EVIDENCE)
+    if UNIT_JSON.exists():
+        u = json.loads(UNIT_JSON.read_text())["items"]
+        p = u.get("SC-31 property-based validator check")
+        if p:
+            out["SC-31"] = (f"Pass ({p['missions']} generated, "
+                            f"{p['accepted']} accepted, closest "
+                            f"{p['closest_accepted_route_to_a_boundary_m']:.3f}"
+                            " m)")
     if not RESULTS_JSON.exists():
         return out
     by_id: dict = {}
@@ -1230,11 +1293,12 @@ def load_sim_results() -> dict:
             out[tid] = "FAIL"
     if "V-05" in out:
         out["SC-05"] = out["V-05"] + " (via V-05; B7 backs up at 10 s)"
-    for rec_id, tid in (("IF-14-05", "SC-40"),):
+    for rec_id, tid in (("IF-14-05", "SC-40"), ("MC-E2E", "SC-41"),
+                        ("MCN-D59", "SC-42"), ("MCN-D60", "SC-43")):
         if rec_id in by_id:
             out[tid] = "Pass" if "passed" in by_id[rec_id] else "FAIL"
     if out.get("SC-09") == "Pass":
-        out["SC-09"] = "Pass (helm part; panel in slice 3)"
+        out["SC-09"] = "Pass (panel emulation, 4 armed states)"
     return out
 
 
@@ -1318,6 +1382,15 @@ TESTS = [
      "parameter", "Voltage backstop triggers RTL in time", ["FM-15"]),
     ("SC-40", "SIM", "Arm lands in HOLD", "Arm with default RC input "
      "present", "Armed in HOLD, motors off", ["FM-53"]),
+    ("SC-41", "SIM", "Instruction to captain's log", "Typed instruction, "
+     "stand-in Claude reply, full Mission Control", "Validated, read back "
+     "equal, flown inside the fence, home, auto-disarm at 60 s, photos "
+     "sha256-verified before ack", ["SWE-004", "VAL-010", "MCN-D47"]),
+    ("SC-42", "SIM", "Persistent breach with B7 absent", "Gale; boat "
+     "services not running", "C1 stops motors before 30 s or 10 m outside",
+     ["FM-14", "MCN-D59"]),
+    ("SC-43", "SIM", "Boat stops itself", "Dead motor mid-mission",
+     "Reason spoken ≤ 2 s after HOLD; resume needs the PIN", ["MCN-D60"]),
     ("L1-01", "L1", "End-to-end mission, real computers", "Voice → "
      "captain's log over real Wi-Fi and UART", "Completes; all artefacts "
      "logged", ["SWE-004"]),

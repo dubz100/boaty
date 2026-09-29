@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-29T09:23:26.397310+00:00",
+  "generated": "2026-09-29T12:04:29.586458+00:00",
   "speedup": 5,
   "records": [
     {
@@ -14,10 +14,10 @@
       ],
       "criterion": "HOLD <= 3 s (helm), then RTL 10 s (+/- 1 s) after the link is cut (B4), and the boat heads home",
       "measured": {
-        "hold_after_s": 3.122,
-        "rtl_after_s": 10.087,
-        "dist_home_at_cut_m": 9.512,
-        "dist_home_15s_after_rtl_m": 6.402,
+        "hold_after_s": 3.117,
+        "rtl_after_s": 9.161,
+        "dist_home_at_cut_m": 9.549,
+        "dist_home_15s_after_rtl_m": 5.454,
         "events": [
           "BOATY B4 LINK LOST IN MANUAL: RTL"
         ]
@@ -38,10 +38,8 @@
       "criterion": "Mission continues; RTL 60 s (+/- 1 s) after the link is cut (B4)",
       "measured": {
         "mode_30s_after_cut": "AUTO",
-        "rtl_after_s": 59.737,
-        "events": [
-          "BOATY B4 LINK LOST 60S: RTL"
-        ]
+        "rtl_after_s": 59.785,
+        "events": []
       },
       "notes": [],
       "outcome": "passed"
@@ -59,9 +57,9 @@
       ],
       "criterion": "Motors stop <= 3 s after the fix is lost (B6 HOLD); RTL once the position has been healthy for 10 s",
       "measured": {
-        "outputs_neutral_after_s": 2.506,
-        "thrust_gone_after_s": 2.597,
-        "rtl_after_restore_s": 10.71,
+        "outputs_neutral_after_s": 2.545,
+        "thrust_gone_after_s": 2.65,
+        "rtl_after_restore_s": 10.623,
         "events": [
           "BOATY B6 POSITION LOST: HOLD",
           "BOATY B6 POSITION OK: RTL"
@@ -84,19 +82,44 @@
       ],
       "criterion": "Stuck -> HOLD; B5 astern bursts (<= 0.5 m/s, <= 2 s); weed clears during burst 2; mission resumes; <= 3 bursts",
       "measured": {
-        "bursts": 1,
-        "min_speed_during_burst_m_s": 0.0,
-        "mode_after": "HOLD",
-        "speed_after_m_s": 0.0,
+        "watch": [
+          {
+            "burst": 1,
+            "resume_ack": true,
+            "mode": 4,
+            "peak_mps": 0.0,
+            "after_s": 8.0,
+            "ended": "helm HOLD"
+          },
+          {
+            "burst": 2,
+            "resume_ack": true,
+            "mode": 4,
+            "peak_mps": 0.01,
+            "after_s": 0.0,
+            "ended": "helm HOLD"
+          },
+          {
+            "burst": 3,
+            "resume_ack": true,
+            "mode": 10,
+            "peak_mps": 0.68,
+            "after_s": 3.0,
+            "ended": "moving forward"
+          }
+        ],
+        "bursts": 3,
+        "min_speed_during_burst_m_s": 0.013,
+        "mode_after": "AUTO",
+        "speed_after_m_s": 1.001,
         "events": [
           "BOATY B5 SHED START",
-          "BOATY B5 STILL STUCK: HOLD",
+          "BOATY B5 FREE AFTER 3: RESUMED",
           "BOATY B5 SHED END"
         ]
       },
       "notes": [],
-      "outcome": "failed",
-      "failure": "assert False\n +  where False = any(<generator object test_sc06_weed_released_after_burst_two.<locals>.<genexpr> at 0x7f32f4aa1490>)"
+      "outcome": "passed"
     },
     {
       "nodeid": "tests/sitl/test_boat_services.py::test_sc06b_weed_never_clears",
@@ -113,7 +136,6 @@
         "mode": "HOLD",
         "motors_off": true,
         "events": [
-          "BOATY B7 STUCK",
           "BOATY B5 SHED START",
           "BOATY B5 STILL STUCK: HOLD",
           "BOATY B5 SHED END"
@@ -134,8 +156,8 @@
       ],
       "criterion": "With B1-B7 dead (and so the bank link), the helm completes the mission, returns and holds within 5 m of home",
       "measured": {
-        "home_after_s": 243.769,
-        "final_distance_m": 1.281
+        "home_after_s": 244.602,
+        "final_distance_m": 1.274
       },
       "notes": [],
       "outcome": "passed"
@@ -152,7 +174,7 @@
       ],
       "criterion": "RTL <= 2 s after the moisture sensor trips; alarm raised; IF-03 health shows fault",
       "measured": {
-        "rtl_after_s": 0.107,
+        "rtl_after_s": 0.071,
         "health_status": "fault",
         "events": [
           "BOATY B6 WATER IN BOX: RTL"
@@ -173,10 +195,10 @@
       ],
       "criterion": "Offshore gale: B7 stops the motors before 30 s outside or 10 m outside, and they stay stopped (detector recorded)",
       "measured": {
-        "hold_after_breach_s": 6.942,
-        "outside_at_hold_m": 7.667,
+        "hold_after_breach_s": 6.86,
+        "outside_at_hold_m": 7.597,
         "detector": "B7 HEADING CHECK FAILED: HOLD",
-        "motors_running_in_next_30s_s": 1.05,
+        "motors_running_in_next_30s_s": 0.95,
         "b7_actions": [
           "B7 HEADING CHECK FAILED: HOLD"
         ],
@@ -201,11 +223,14 @@
       ],
       "criterion": "Right motor dead mid-leg: HOLD within 20 s (from whichever detector fires first), the boat stays inside the fence and ends in HOLD with an alarm",
       "measured": {
-        "first_hold_after_s": 8.858,
+        "first_hold_after_s": 8.931,
         "first_detector": "helm crash check",
         "worst_outside_m": 0.0,
         "final_mode": "HOLD",
         "events": [
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 1: RESUMED",
+          "BOATY B5 SHED END",
           "BOATY B5 SHED START",
           "BOATY B5 STILL STUCK: HOLD",
           "BOATY B5 SHED END"
@@ -229,7 +254,7 @@
       ],
       "criterion": "Compass reversed before the start: HOLD <= 10 s after AUTO begins; the boat stays inside the fence",
       "measured": {
-        "hold_after_s": 9.521,
+        "hold_after_s": 9.602,
         "detector": "B7 HEADING CHECK FAILED: HOLD",
         "worst_outside_m": 0.0,
         "events": [
@@ -274,8 +299,8 @@
         "photos": 21,
         "burst": 3,
         "interval": 18,
-        "first_burst_after_reached_s": 0.001,
-        "worst_geotag_error_m": 0.242,
+        "first_burst_after_reached_s": 0.002,
+        "worst_geotag_error_m": 0.272,
         "untagged": 0
       },
       "notes": [],
@@ -292,7 +317,7 @@
       "criterion": "RTL at 35% (+/- 2%); critical alarm at 15%; reaches home within 5 m",
       "measured": {
         "battery_pct_at_rtl": 35,
-        "distance_home_m": 2.938,
+        "distance_home_m": 2.995,
         "texts": [
           "Battery 1 is low 10.89V used 1625 mAh",
           "Battery 1 is critical 10.43V used 2126 mAh"
@@ -314,7 +339,7 @@
       ],
       "criterion": "HOLD <= 3 s after the link is cut (FS-002 relaxed to 3 s by CR-05; the RTL at 10 s is B4: SC-02b)",
       "measured": {
-        "hold_after_cut_s": 3.067,
+        "hold_after_cut_s": 3.092,
         "native_minimum_s": "FS_GCS_TIMEOUT 2 + FS_TIMEOUT 1"
       },
       "notes": [],
@@ -332,7 +357,7 @@
       ],
       "criterion": "Motors stop <= 3 s after the fix is lost (the RTL after 10 s healthy is B6, slice 2)",
       "measured": {
-        "motors_off_after_s": 9.192,
+        "motors_off_after_s": 9.227,
         "modes": [
           [
             8.2,
@@ -348,7 +373,7 @@
       "notes": [],
       "outcome": "xfail",
       "known_finding": "Finding: EKF failsafe stops motors ~9 s after GNSS loss; FS-004 asks 3 s. Needs B6 fix-loss HOLD.",
-      "failure": "AssertionError: motors still running 3 s after GNSS loss\nassert (62.62666666661783 is not None and (62.62666666661783 - 53.43499999995952) <= 3.0)"
+      "failure": "AssertionError: motors still running 3 s after GNSS loss\nassert (62.88499999995093 is not None and (62.88499999995093 - 53.65833333329265) <= 3.0)"
     },
     {
       "nodeid": "tests/sitl/test_helm_contract.py::test_status_after_connect",
@@ -461,7 +486,7 @@
       ],
       "criterion": "Throttle 0.6 for 5 s moves the boat > 2 m forward",
       "measured": {
-        "moved_m": 3.586
+        "moved_m": 3.605
       },
       "notes": [],
       "outcome": "passed"
@@ -476,8 +501,8 @@
       ],
       "criterion": "Helm commands the motors to neutral <= 1 s after stop(); helm disarmed; stop() is idempotent",
       "measured": {
-        "outputs_neutral_s": 0.06,
-        "thrust_below_0_05N_s": 0.354
+        "outputs_neutral_s": 0.342,
+        "thrust_below_0_05N_s": 0.598
       },
       "notes": [
         "Measured at 5x speed-up, so wall-clock latency in the test harness counts 5 times over; spin-down is the model's 0.1 s motor time constant."
@@ -505,17 +530,17 @@
       "measured": {
         "items": 5,
         "planned_s": 249,
-        "flown_s": 166.777,
-        "total_s": 272.817,
+        "flown_s": 166.582,
+        "total_s": 272.592,
         "readback_checksum_equal": true,
-        "min_fence_clearance_m": 8.794,
-        "min_zone_clearance_m": 5.276,
+        "min_fence_clearance_m": 8.783,
+        "min_zone_clearance_m": 5.265,
         "photos": 30,
         "photo_point_photos": 3,
         "synced": 30,
         "acked": 30,
         "bad_hash": 0,
-        "home_to_disarm_s": 61.472,
+        "home_to_disarm_s": 61.122,
         "captains_log": true,
         "llm_logged": 1,
         "spoken": [
@@ -551,19 +576,19 @@
         },
         "MISSION": {
           "edge_to_call_ms": 0.0,
-          "outputs_neutral_s": 0.25999999999976353,
+          "outputs_neutral_s": 0.3324999999996976,
           "disarmed": true,
           "after": "DEBRIEF"
         },
         "RETURNING": {
           "edge_to_call_ms": 0.0,
-          "outputs_neutral_s": 0.046666666666624224,
+          "outputs_neutral_s": 0.048333333333289374,
           "disarmed": true,
           "after": "DEBRIEF"
         },
         "MANUAL": {
           "edge_to_call_ms": 0.0,
-          "outputs_neutral_s": 0.3124999999997158,
+          "outputs_neutral_s": 0.32666666666636957,
           "disarmed": true,
           "after": "DEBRIEF"
         }
@@ -698,11 +723,11 @@
       ],
       "criterion": "Second system-255 source: C7 detects it within 3 s, refuses arming and GO, alarms; STOP still works; clears when it goes",
       "measured": {
-        "detect_s": 0.307,
+        "detect_s": 0.682,
         "go_refused": true,
         "alarm": true,
         "spoken": true,
-        "clear_s": 2.98,
+        "clear_s": 2.123,
         "go_after_clear": true
       },
       "notes": [],
@@ -720,9 +745,9 @@
       ],
       "criterion": "Boat services not running (no B7). Gale pushes the boat out of the site fence: C1 commands HOLD before 30 s or 10 m outside; motors stay off",
       "measured": {
-        "halt_after_s": 11.057,
-        "outside_at_halt_m": 10.397,
-        "motors_running_next_20s": 0.85,
+        "halt_after_s": 11.194,
+        "outside_at_halt_m": 10.308,
+        "motors_running_next_20s": 0.8,
         "spoken": true,
         "helm_mode": "HOLD"
       },
@@ -741,23 +766,32 @@
       ],
       "criterion": "Dead motor mid-mission: the boat stops itself; Mission Control says why within 2 s of the helm reporting it; resume refused without the PIN, accepted with it",
       "measured": {
-        "held_after_s": 37.497,
-        "final_helm_hold_after_s": 37.367,
-        "said_after_final_hold_s": 0.111,
+        "held_after_s": 70.688,
+        "final_helm_hold_after_s": 70.426,
+        "said_after_final_hold_s": 0.212,
         "spoken": [
+          "I'm stuck in some weed, trying to wiggle free.",
+          "I'm stuck in some weed, trying to wiggle free.",
           "I'm stuck in some weed, trying to wiggle free.",
           "I've stopped. A grown-up needs to check me."
         ],
-        "reason": "BOATY B5 STILL STUCK: HOLD",
+        "reason": "BOATY B5 REPEATEDLY STUCK: HOLD",
         "alerts": [
-          "The boat stopped itself: BOATY B5 STILL STUCK: HOLD. Check it, then Resume (PIN) or Come home."
+          "The boat stopped itself: BOATY B5 REPEATEDLY STUCK: HOLD. Check it, then Resume (PIN) or Come home."
         ],
         "resumed": true,
         "mode_after_resume": "AUTO",
         "events": [
           "BOATY B5 SHED START",
-          "BOATY B5 STILL STUCK: HOLD",
-          "BOATY B5 SHED END"
+          "BOATY B5 FREE AFTER 1: RESUMED",
+          "BOATY B5 SHED END",
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 2: RESUMED",
+          "BOATY B5 SHED END",
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 2: RESUMED",
+          "BOATY B5 SHED END",
+          "BOATY B5 REPEATEDLY STUCK: HOLD"
         ]
       },
       "notes": [],
@@ -773,7 +807,7 @@
       ],
       "criterion": "Driving straight at the fence in STEERING for 60 s: the boat reaches the fence area but never gets more than 10 m outside",
       "measured": {
-        "max_north_m": 22.563,
+        "max_north_m": 22.561,
         "fence_line_north_m": 25.0,
         "worst_outside_m": 0.0,
         "fence_action": "none needed",
@@ -797,7 +831,7 @@
         "modes_during_cut": [
           "AUTO (unchanged)"
         ],
-        "progress_m": 19.859,
+        "progress_m": 19.87,
         "failsafe_texts": [
           "GCS Failsafe",
           "Failsafe - Continuing Auto Mode"
@@ -816,7 +850,7 @@
       ],
       "criterion": "After arriving home in RTL, with a 4 m/s wind for 60 s, the boat stays within 5 m of home",
       "measured": {
-        "max_drift_m": 1.829,
+        "max_drift_m": 1.844,
         "mode_at_end": "RTL"
       },
       "notes": [
@@ -836,16 +870,16 @@
       ],
       "criterion": "Heavy weed drag in AUTO: HOLD within 5 s of the boat being stuck (< 0.1 m/s)",
       "measured": {
-        "stuck_after_weed_s": 0.059,
-        "hold_after_stuck_s": 15.092,
+        "stuck_after_weed_s": 0.067,
+        "hold_after_stuck_s": 4.907,
         "crash_text": [
           "Crash: Going to HOLD"
         ]
       },
       "notes": [],
-      "outcome": "xfail",
+      "outcome": "xpass",
       "known_finding": "Finding: native crash check resets on any noisy GNSS speed sample; stuck-to-HOLD varies 4.9-20 s. Needs B7 second stuck detector (A-07).",
-      "failure": "assert (68.51499999994581 - 53.42333333329287) <= (5.0 + 1.0)"
+      "failure": "None"
     },
     {
       "nodeid": "tests/sitl/test_v_items.py::test_v06_only_mission_control_counts_as_gcs",
@@ -858,7 +892,7 @@
       ],
       "criterion": "With Mission Control silent but the mission computer (1/191) heartbeating, the GCS failsafe still fires",
       "measured": {
-        "failsafe_after_s": 2.16
+        "failsafe_after_s": 2.918
       },
       "notes": [],
       "outcome": "passed"
@@ -891,14 +925,14 @@
       "criterion": "After the last velocity target, motors are off within 3 s",
       "measured": {
         "speed_before_m_s": 1.028,
-        "motors_off_after_s": 3.899
+        "motors_off_after_s": 3.945
       },
       "notes": [
         "Rover 4.7.1 mode_guided.cpp: 3 s timeout, then a decelerating stop (ATC_DECEL_MAX)."
       ],
       "outcome": "xfail",
       "known_finding": "Finding: GUIDED times out after 3 s then decelerates; motors off ~3.9 s.",
-      "failure": "assert (53.00166666662658 is not None and (53.00166666662658 - 49.10249999996346) <= 3.0)"
+      "failure": "assert (53.32999999995962 is not None and (53.32999999995962 - 49.384999999963206) <= 3.0)"
     },
     {
       "nodeid": "tests/sitl/test_v_items.py::test_v12_skid_steer_boat_behaves",
@@ -913,7 +947,7 @@
       "criterion": "Flies the 30 m triangle: cross-track RMS <= 3 m, mean speed within 20% of 1.0 m/s",
       "measured": {
         "cross_track_rms_m": 0.157,
-        "cross_track_max_m": 0.407,
+        "cross_track_max_m": 0.406,
         "mean_speed_m_s": 1.008,
         "samples": 296
       },
@@ -954,7 +988,7 @@
       ],
       "criterion": "Offshore gale pushes the boat out: does ArduPilot itself stop the motors by 30 s / 10 m outside? (answer recorded)",
       "measured": {
-        "outside_after_40s_m": 41.806,
+        "outside_after_40s_m": 41.847,
         "motors_running": true,
         "mode": "RTL"
       },
@@ -973,8 +1007,8 @@
       ],
       "criterion": "Answer recorded: RTL speed after the critical battery failsafe, compared with WP_SPEED (1.0 m/s)",
       "measured": {
-        "rtl_speed_after_critical_m_s": 0.999,
-        "distance_home_m": 41.342,
+        "rtl_speed_after_critical_m_s": 1.0,
+        "distance_home_m": 41.464,
         "mode": "RTL",
         "texts": [
           "Battery 1 is low 10.89V used 1625 mAh",
@@ -1001,8 +1035,8 @@
       "measured": {
         "sim_mag1_orient": 2.0,
         "worst_outside_m": 0.0,
-        "worst_heading_error_deg": 101.626,
-        "heading_error_last_20s_deg": 100.295,
+        "worst_heading_error_deg": 101.309,
+        "heading_error_last_20s_deg": 98.381,
         "mission_seq_at_end": 3,
         "mission_total": 3,
         "texts": [],

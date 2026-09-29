@@ -281,8 +281,10 @@ CHECKLIST = [
     ("CL-11", "Boat", "Key-out rail test passed", "Automatic", ["MCN-D54"]),
     ("CL-12", "Bank", "Button test passed (TALK, GO, COME HOME, STOP)",
      "Automatic", ["MCN-D55"]),
-    ("CL-13", "System", "Fence and exclusions reviewed; home in the right "
-     "place", "Operator", ["OPS-001", "PRE-002"]),
+    ("CL-13", "System", "Fence and exclusions reviewed; boat at the jetty "
+     "when armed (the helm takes home from where it is armed; Mission "
+     "Control refuses a plan more than 10 m from the site's home)",
+     "Operator", ["OPS-001", "PRE-002", "VAL-004"]),
     ("CL-14", "System", "Parameters match baseline; ≥ 8 satellites; link "
      "good", "Automatic", ["SAF-007", "PRE-001"]),
     ("CL-15", "Recovery", "Recovery kit on the bank (pole and net, casting "
@@ -291,6 +293,9 @@ CHECKLIST = [
      ["OPS-011"]),
     ("CL-17", "People", "Adult operator present and acting as lookout; crew "
      "briefed", "Operator", ["OPS-007", "A-17"]),
+    ("CL-18", "System", "Anything else talking to the boat closed "
+     "(QGroundControl, a second tablet): Mission Control refuses to arm "
+     "while it hears one", "Operator", ["MCN-D57"]),
 ]
 
 # ---------------------------------------------------------------- contingencies

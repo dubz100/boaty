@@ -29,7 +29,7 @@ OUT = HERE.parent / "Boaty_Operations_Manual.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-OPS-001"
-ISSUE = "Issue B (for review)"
+ISSUE = "Issue C (for review)"
 DATE = "29 September 2026"
 PREV = "28 September 2026"
 BOX = "☐"
@@ -101,7 +101,10 @@ def build():
          ["B", DATE, "Simulator findings: K-03 (a dead motor looks like "
           "weed), K-05 (the boat stops itself 30 s or 10 m outside the "
           "fence), K-11 (a heading alarm in strong wind may be wind drift).",
-          "Claude, from simulator slice 2"]],
+          "Claude, from simulator slice 2"],
+         ["C", DATE, "Mission Control findings: CL-13 (arm at the jetty: "
+          "home is taken where the boat is armed) and CL-18 (close any "
+          "other ground station) added.", "Claude, from simulator slice 3"]],
         "Review guidance: read it as if it's your first lake session. "
         "Anything you wouldn't actually do, or that's missing, is a finding. "
         "Sections 7 and 8 are meant to be printed and laminated.")

@@ -39,16 +39,18 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
   file's fence round-trips through the helm exactly.
 - **Home sanity (SC-35):** a boat 30 m from the site's home cannot get a
   plan approved (VAL-004).
-- **Foreign ground station (SC-37):** detected 0.9 s after it appears. GO
-  and arming are refused, an alarm is shown and spoken, and STOP still
-  works. It clears 3 s after the other source goes (V-06b mitigated).
+- **Foreign ground station (SC-37):** detected 0.7-0.9 s after it appears
+  (two runs). GO and arming are refused, an alarm is shown and spoken, and
+  STOP still works. It clears 2-3 s after the other source goes (V-06b
+  mitigated).
 - **Persistent breach with B7 absent (MCN-D59):** a gale pushed the boat
-  out of the fence; C1 stopped the motors 10.8 s later, when it was 10.2 m
-  outside, and they stayed off.
+  out of the fence; C1 stopped the motors 10.8-11.2 s later, when it was
+  10.2-10.3 m outside, and they stayed off.
 - **Boat stops itself (MCN-D60):** with a dead motor, each weed-shedding
   episode is announced once. The final stop is spoken 0.2 s after the
-  helm's HOLD, with the reason on the adult's screen. Resume is refused
-  without the PIN and accepted with it.
+  helm's HOLD, with the reason on the adult's screen. In the last run that
+  reason was B5's new "repeatedly stuck" cap (see SC-06 below). Resume is
+  refused without the PIN and accepted with it.
 - **Validator (VAL-006, MCN-D40, SC-31):**
   - 91 adversarial cases pass, with 100 % branch coverage.
   - Of 400 generated missions, 112 were accepted. An independent geometry
@@ -114,16 +116,28 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
     (`fallbacks: "default"`, beta `server-side-fallback-2026-07-01`). A
     refusal that survives the fallback offers the templates.
 
-## Open: SC-06 is intermittent in the full suite
+## SC-06 intermittency: root cause found and fixed
 
-- SC-06 is "weed clears during burst 2, the mission resumes".
-- The test used to release the weed at the end of burst 2, which raced
-  B5's decision. It now releases half-way through the burst. Run on its
-  own, it then freed after exactly burst 2 in 4 runs out of 4.
-- In the full suite it still failed once: B5 never reported "free".
-- The root cause is not found yet. Suspects are B5's free-speed test
-  (0.3 m/s over `watch_after_resume_s`) and host load.
-- This is not caused by slice 3: nothing in that path changed.
+- **Symptom:** "Weed clears during burst 2" failed now and then in the
+  full suite. B5 did its bursts and then reported "still stuck" with the
+  weed gone.
+- **Diagnosis:** a log of each post-resume watch (resume ACK, peak
+  speed, time, why it ended) showed the problem. B5's "free" test used
+  ground-speed *magnitude*. The astern burst leaves the boat drifting
+  backwards at up to 0.4 m/s, and that drift counted as moving. So the
+  outcome depended on how much drift was left when B5 sampled.
+- **What made it worse:** lowering the threshold let a boat with a dead
+  motor be "freed" 10 times in a row without ever stopping (MCN-D60).
+- **Fix (MCP-D34, FMEA FM-58 / A-29):**
+  - "Free" now means *forward* speed, along the heading, above 0.2 m/s
+    held for 1 s within 8 s. A freed boat reached 0.72-0.76 m/s forward
+    2.5-3 s after resuming; a stuck one peaked at 0.04 m/s.
+  - More than 3 episodes in 2 minutes stops the boat with a "repeatedly
+    stuck" alarm.
+  - A GUIDED switch that fails is retried once, then reported as "no
+    control", not as "still stuck".
+- **Test fix:** the test also released the weed at the *end* of burst 2,
+  not during it. It now releases half-way through.
 
 ## Not yet verified (needs the API key or hardware)
 

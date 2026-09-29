@@ -34,7 +34,7 @@ S["code"] = ParagraphStyle("code", fontName="DVM", fontSize=6.9, leading=8.9,
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Interface_Control_Document.pdf"
 DOC_ID = "BOATY-ICD-001"
-ISSUE = "Issue E (for review)"
+ISSUE = "Issue F (for review)"
 DATE = "29 September 2026"
 PREV = "28 September 2026"
 
@@ -479,12 +479,16 @@ Error   = {"error": "bad_request"|"not_found"|"busy"|"storage_full",
            table([["Field", "Mission intent request", "Photo log request "
                    "(opt-in)"],
                   ["Endpoint", "POST /v1/messages", "POST /v1/messages"],
-                  ["Model", "claude-opus-5", "claude-opus-5"],
+                  ["Model", "claude-opus-5-5 (current model; Issue E "
+                   "named claude-opus-5)", "claude-opus-5-5"],
                   ["Thinking / effort", "adaptive / medium "
                    "(tune against NLI-007)", "adaptive / medium"],
                   ["max_tokens", "16000", "16000"],
                   ["Output", "output_config.format = JSON schema of Intent "
-                   "v1 (IF-13)", "JSON schema of PhotoLog v1"],
+                   "v1 (IF-13). Structured outputs don't carry numeric "
+                   "ranges or string lengths, so those go in field "
+                   "descriptions and pydantic re-checks them",
+                   "JSON schema of PhotoLog v1"],
                   ["System prompt", "Fixed, versioned, cached "
                    "(cache_control). Role, the intent vocabulary, safety "
                    "rules, child-friendly summary style.", "Fixed, versioned, "
@@ -503,8 +507,9 @@ Error   = {"error": "bad_request"|"not_found"|"busy"|"storage_full",
            table([["Outcome", "Action"],
                   ["stop_reason = end_turn", "Parse JSON, validate against "
                    "Intent v1 (pydantic), pass to the planner"],
-                  ["Schema or planner failure", "Retry once, with the error "
-                   "appended as data; then offer templates (NLI-004)"],
+                  ["Schema, planner or validator failure", "Retry once, "
+                   "with the problem appended as data (meets MCN-D29's 'at "
+                   "most 2'); then offer templates (NLI-004)"],
                   ["stop_reason = refusal (after fallbacks)", "Say 'I can't "
                    "plan that one - shall we pick an adventure?' and offer "
                    "templates"],
@@ -594,6 +599,16 @@ def section_software():
              "2 decimal places. The checksum is its SHA-256. The helm "
              "interface computes the same form from the read-back items "
              "(VAL-010).", "small"),
+           P("<b>Read-back form (Issue F):</b> the helm does not store photo "
+             "counts or our item numbers (photo counts go to the camera "
+             "service, IF-03 Session). VAL-010 therefore compares the "
+             "SHA-256 of the <i>helm view</i> of each item: kind; lat/lon "
+             "×1e7 for waypoint and photo_point; hold_s for photo_point; "
+             "speed_mps (2 dp) for speed. The same form is computed from "
+             "the read-back items. The final <font name='DVM'>rtl</font> "
+             "item runs inside AUTO: the helm does not change to RTL mode "
+             "for it, so Mission Control follows the mission sequence to "
+             "know the boat is heading home.", "small"),
            sub("ValidationResult v1: produced by the validator"),
            code("""
 {"schema": "boaty.validation/1", "mission_id": uuid, "ok": bool,
@@ -628,6 +643,7 @@ class Helm(Protocol):
     def disarm(self, force: bool = False) -> None
     def start_mission(self) -> None                   # AUTO
     def hold(self) -> None                            # LOITER: station-keeping
+    def halt(self) -> None                            # HOLD: motors off, stays armed
     def stop(self) -> None                            # HOLD (motors off), then disarm
     def return_home(self) -> None                     # RTL
     def manual(self) -> None                          # STEERING; adult only
@@ -653,6 +669,14 @@ Exceptions: HelmError > {NoResponse, CommandRejected(code, text), PreArmFailed(r
                "pre-empts any call in progress.",
                "Upload and parameter calls raise NotAllowedWhileArmed when "
                "armed.",
+               "halt() (Issue F) stops the motors but keeps the boat armed, "
+               "so an adult can still bring it home: FEN-006 and MCN-D59 "
+               "need it; stop() disarms.",
+               "Parameter reads (Issue F): after PARAM_REQUEST_LIST, any "
+               "index the stream dropped is fetched with "
+               "PARAM_REQUEST_READ. On a busy link a few of the ~1,300 "
+               "values go missing, which otherwise shows as false "
+               "baseline differences (MCN-D45).",
                "SrsMode maps from ArduPilot modes as in the IF-02 table. "
                "GUIDED appears only during weed-shedding and is shown as "
                "HOLD.",
@@ -1082,7 +1106,7 @@ def build():
                "handling and verification",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
                 ["Status", "For review by the project owner"],
-                ["Parent", "BOATY-ADD-001 Issue E (interface register, "
+                ["Parent", "BOATY-ADD-001 Issue F (interface register, "
                  "section 5)"],
                 ["Content", f"{len(A.INTERFACES)} interfaces, "
                  f"{len(VERIF)} verification entries, "
@@ -1104,7 +1128,12 @@ def build():
           "B7 FEN-006); IF-05 outputs 1 and 4, AM32 3D; IF-06 high-side key "
           "switch and AIRSPD-pad sense; IF-21 rewritten for the JSON boat "
           "model. TBC-01, 02, 03, 04, 05, 07 and 09 closed.",
-          "Claude, owner decisions"]],
+          "Claude, owner decisions"],
+         ["F", DATE, "Mission Control simulator evidence (slice 3): IF-11 "
+          "model claude-opus-5-5, schema ranges re-checked by pydantic, one "
+          "retry; IF-13 read-back 'helm view' checksum and the RTL item "
+          "running in AUTO; IF-14 halt() and parameter re-request.",
+          "Claude"]],
         "Review guidance: check that each interface is complete enough to "
         "build and test against. Items marked [TBC-nn] are known gaps with "
         "an owner; they're listed in section 9.")

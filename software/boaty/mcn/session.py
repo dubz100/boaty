@@ -637,7 +637,8 @@ class Session:
                 self._shedding = True
             elif "B5 SHED END" in u:
                 self._shedding = False
-            if "STILL STUCK" in u or u.startswith("BOATY B7") or \
+            if "STILL STUCK" in u or "REPEATEDLY STUCK" in u or \
+                    "NO CONTROL" in u or u.startswith("BOATY B7") or \
                     ("BOATY B6" in u and "HOLD" in u):
                 self._shedding = False
                 self._declare_held(t)

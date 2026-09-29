@@ -245,6 +245,31 @@ ROWS = [
      "adult", 5, "RC mode switch overrides INITIAL_MODE (firmware "
      "defaults)", 8, "-", "Mode shown at Mission Control", 3, ["SC-40"],
      ["A-24"]),
+    # ---------------- Issue E: Mission Control in the simulator (slice 3)
+    ("FM-54", "MCN", "Validator", "A far-away waypoint stalls validation",
+     "Planning hangs for about a minute; no plan shown", 3, "Legs sampled "
+     "every 1 m regardless of length (0° N 0° E: 5,800 km)", 5, "-",
+     "Unit test found it", 3, ["SC-31"], ["A-25"]),
+    ("FM-55", "MCN", "Helm interface", "Parameter values lost in transfer",
+     "False baseline differences block arming on a good boat", 3, "A few "
+     "of ~1,300 PARAM_VALUE messages dropped on a busy link", 6, "-",
+     "Arming refused with a list of names", 2, ["SC-24"], ["A-26"]),
+    ("FM-56", "MCN", "Session", "A boat-service stop is announced wrongly "
+     "or not at all", "Adult not told why the boat stopped; child hears "
+     "'stuck in weed' repeatedly", 5, "The mode change arrives before the "
+     "service's reason text", 6, "-", "Map shows HOLD", 5, ["SC-43"],
+     ["A-27"]),
+    ("FM-57", "MCN", "Session", "Return home not recognised", "No 'coming "
+     "home' or 'I'm back', no auto-disarm at home", 4, "The final RTL item "
+     "runs in AUTO; the mode never becomes RTL", 10, "-", "Seen in the "
+     "first end-to-end run", 3, ["SC-41"], ["A-28"]),
+    ("FM-58", "MCP", "B5 weed-shedding", "Free test misjudges the boat",
+     "Freed boat held with a 'still stuck' alarm; or a boat with a dead "
+     "motor 'freed' again and again and never stopped", 6, "Free test used "
+     "ground-speed magnitude, so astern drift left by the burst counted as "
+     "moving; no limit on repeat episodes", 6, "-", "Found by SC-06 "
+     "intermittency and MCN-D60", 4, ["SC-06", "SC-29", "SC-43"],
+     ["A-29"]),
 ]
 
 ACTIONS = [
@@ -312,6 +337,19 @@ ACTIONS += [
      "Issue E", ["FM-52"]),
     ("A-24", "Boot and arm into HOLD; no RC mode switch; RC receiver "
      "ignored", "HLM", "SSS-HLM Issue D", ["FM-53"]),
+    ("A-25", "Validator checks each leg's ends before sampling it",
+     "MCN", "SSS-MCN Issue D", ["FM-54"]),
+    ("A-26", "Fetch dropped parameters again by index before comparing",
+     "MCN", "SSS-MCN Issue D; ICD Issue F", ["FM-55"]),
+    ("A-27", "Take the reason from the service event; announce an "
+     "unexplained HOLD after 1 s; weed once per episode", "MCN",
+     "SSS-MCN Issue D", ["FM-56"]),
+    ("A-28", "Follow mission progress by item sequence", "MCN",
+     "SSS-MCN Issue D; ICD Issue F", ["FM-57"]),
+    ("A-29", "Free = forward speed along the heading > 0.2 m/s for 1 s "
+     "within 8 s; more than 3 episodes in 2 min: HOLD + 'repeatedly "
+     "stuck'; a failed mode switch is reported as 'no control'", "MCP",
+     "SSS-MCP Issue D", ["FM-58"]),
 ]
 # A-12 intentionally unused (merged into A-13 during review).
 
@@ -402,6 +440,11 @@ STATUS = {
     "A-22": ("Incorporated", ["MCP-D32"]),
     "A-23": ("Incorporated", ["MCP-D18", "MCP-D19"]),
     "A-24": ("Incorporated", ["HLM-D05"]),
+    "A-25": ("Incorporated", ["MCN-D39"]),
+    "A-26": ("Incorporated", ["MCN-D45"]),
+    "A-27": ("Incorporated", ["MCN-D60"]),
+    "A-28": ("Incorporated", ["MCN-D62"]),
+    "A-29": ("Incorporated", ["MCP-D34"]),
 }
 # FM id -> (O, D) after incorporated actions (S unchanged)
 POST = {
@@ -409,9 +452,13 @@ POST = {
     "FM-11": (2, 3), "FM-14": (3, 2), "FM-15": (2, 3), "FM-16": (4, 3),
     "FM-17": (4, 2), "FM-18": (3, 2), "FM-22": (2, 3), "FM-23": (1, 5),
     "FM-32": (1, 3), "FM-12": (2, 5), "FM-21": (1, 5), "FM-45": (1, 5),
-    "FM-43": (2, 7), "FM-36": (3, 5), "FM-41": (3, 2), "FM-42": (2, 5),
+    "FM-43": (2, 7), "FM-36": (3, 5), "FM-41": (3, 1), "FM-42": (2, 5),
     # Issue D: simulator evidence and slice-2 fixes
     "FM-08": (1, 3), "FM-51": (1, 2), "FM-52": (1, 2), "FM-53": (1, 2),
+    # Issue E: Mission Control scenarios pass (slice 3)
+    "FM-09": (4, 1), "FM-10": (3, 1), "FM-34": (1, 2), "FM-35": (2, 1),
+    "FM-54": (1, 2), "FM-55": (1, 2), "FM-56": (2, 2), "FM-57": (1, 2),
+    "FM-58": (2, 3),
 }
 
 
