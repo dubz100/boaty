@@ -18,6 +18,9 @@ SERVO3_FUNCTION     0
 SERVO4_FUNCTION     74      # ThrottleRight
 MOT_THR_MAX         100     # model top speed ~1.5 m/s (NAV-003); re-tune in pool
 MOT_THST_ASYM       2.67    # 2.0 N ahead / 0.75 N astern per pod (PRP-D02)
+MOT_THST_EXPO       1.0     # props: thrust ~ throttle^2. At 0 a 180 deg pivot
+                            # took 20 s in SITL, at 1.0 it takes 6 s.
+                            # Re-tune from thrust-stand data (KCL DS-09).
 MOT_REV_DELAY       0.2     # s, ESC reversal pause (KCL KC-03; tune on L2)
 MOT_BAT_WATT_TC     2       # s, power-limit time constant
 
@@ -66,7 +69,7 @@ BATT2_ARM_VOLT      9.0     # V: no arming with the key out
 FS_GCS_ENABLE       2       # enabled, continue mission in AUTO (FS-002/003)
 FS_GCS_TIMEOUT      2       # s without a system-255 heartbeat (minimum 2)
 FS_TIMEOUT          1       # s the failsafe must persist (minimum 1).
-                            # Total ~3 s: FS-002 asks for 2 s (see SC-02).
+                            # Total ~3 s: FS-002 relaxed to 3 s (CR-05).
 FS_ACTION           2       # Hold
 FS_THR_ENABLE       0       # no RC receiver fitted (manual is via IF-02)
 FS_EKF_ACTION       1       # Hold (FS-004)

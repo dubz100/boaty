@@ -200,3 +200,32 @@ class Watch:
         sim.wait_until(lambda: self.t is not None, timeout_sim)
         self._stop.set()
         return self.t
+
+
+@pytest.fixture
+def services(sim, tmp_path):
+    """B2-B7 on the simulated Pi Zero, on simulated time."""
+    from boaty.mcp.camera import CameraService, PhotoStore, SimCamera
+    from boaty.mcp.client import ServiceClient
+    from boaty.mcp.clock import SimClock
+    from boaty.mcp.photo_api import PhotoApi
+    from boaty.mcp.services import ServiceHost
+
+    clock = SimClock(lambda: sim.t, SPEEDUP)
+    url = f"udpout:127.0.0.1:{sim.cfg.companion_port}"
+    host = ServiceHost(clock, url).start()
+    cam_client = ServiceClient("B2", url, clock).start(request_streams=False)
+    cam = CameraService(cam_client, PhotoStore(tmp_path / "photos"),
+                        SimCamera((648, 486))).start()
+    api = PhotoApi(cam, "test-token", health=host["B6"], host="127.0.0.1",
+                   port=0).start()
+    host.camera, host.api, host.cam_client = cam, api, cam_client
+    yield host
+    api.stop()
+    cam.stop()
+    cam_client.stop()
+    host.stop()
+
+
+def boaty_events(companion, since: float = 0.0) -> list[str]:
+    return [x for x in companion.texts_after(since) if x.startswith("BOATY")]

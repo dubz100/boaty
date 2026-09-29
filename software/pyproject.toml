@@ -3,7 +3,7 @@ name = "boaty"
 version = "0.1.0"
 description = "Boaty Mk1: mission control, boat services and simulator"
 requires-python = ">=3.11"
-dependencies = ["pymavlink>=2.4.40"]
+dependencies = ["pymavlink>=2.4.40", "Pillow>=10"]
 
 [project.optional-dependencies]
 test = ["pytest>=8"]

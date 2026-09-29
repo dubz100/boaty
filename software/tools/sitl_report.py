@@ -25,7 +25,7 @@ def main() -> int:
     recs = sorted(data["records"], key=lambda r: (r["id"] or "zz"))
     n = {k: sum(1 for r in recs if r["outcome"] == k)
          for k in ("passed", "failed", "error", "xfail", "xpass")}
-    out = ["# Boaty simulator results (slice 1)", "",
+    out = ["# Boaty simulator results (slices 1-2)", "",
            f"Generated {data['generated']} from `results/sitl_results.json`. "
            f"ArduPilot Rover 4.7.1 SITL on the Boaty boat model, "
            f"speed-up {data['speedup']}x.", "",

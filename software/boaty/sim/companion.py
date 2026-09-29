@@ -18,9 +18,13 @@ class CompanionPort:
                  compid: int = mav.MAV_COMP_ID_ONBOARD_COMPUTER,
                  time_scale: float = 1.0):
         self.clock = clock                      # callable -> sim seconds
+        # A client of the B1 router's local endpoint, like any service.
         self.conn = mavutil.mavlink_connection(
-            f"udpin:127.0.0.1:{port}", source_system=sysid,
+            f"udpout:127.0.0.1:{port}", source_system=sysid,
             source_component=compid, dialect="ardupilotmega")
+        self.conn.mav.heartbeat_send(mav.MAV_TYPE_ONBOARD_CONTROLLER,
+                                     mav.MAV_AUTOPILOT_INVALID, 0, 0,
+                                     mav.MAV_STATE_ACTIVE)   # register
         self.time_scale = time_scale
         self.modes: list[tuple[float, bool, int]] = []   # (t, armed, mode)
         self.texts: list[tuple[float, str]] = []
@@ -40,21 +44,24 @@ class CompanionPort:
     def _rx(self) -> None:
         while not self._stop.is_set():
             m = self.conn.recv_match(blocking=True, timeout=0.1)
-            if m is None or m.get_srcSystem() != 1 or m.get_srcComponent() != 1:
+            if m is None or m.get_srcSystem() != 1:
                 continue
             t = m.get_type()
+            if t == "STATUSTEXT":             # helm (1) and services (191)
+                self.texts.append((self.clock(), m.text))
+                continue
+            if m.get_srcComponent() != 1:
+                continue
             if t == "HEARTBEAT":
                 armed = bool(m.base_mode & mav.MAV_MODE_FLAG_SAFETY_ARMED)
                 cur = (armed, m.custom_mode)
                 if not self.modes or self.modes[-1][1:] != cur:
                     self.modes.append((self.clock(), *cur))
-            elif t == "STATUSTEXT":
-                self.texts.append((self.clock(), m.text))
 
     def _tx(self) -> None:
         while not self._stop.is_set():
-            if self.heartbeat_as is not None:
-                sysid, compid = self.heartbeat_as
+            if self.heartbeat_as is not None or not self.modes:
+                sysid, compid = self.heartbeat_as or (1, 191)
                 self.conn.mav.srcSystem, self.conn.mav.srcComponent = \
                     sysid, compid
                 kind = mav.MAV_TYPE_GCS if sysid == 255 else \

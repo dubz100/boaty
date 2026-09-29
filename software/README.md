@@ -4,7 +4,8 @@ The Python code for Boaty Mk1: the helm interface Mission Control uses, the
 simulator that flies the real ArduPilot firmware on a model of our boat, and
 the tests that check the system against its requirements.
 
-Slice 1 of 4 (see the simulator plan): autopilot in the loop.
+Slices 1 and 2 of 4: autopilot in the loop, and the boat services on the
+simulated Pi Zero.
 
 ```
 boaty/
@@ -16,10 +17,21 @@ boaty/
   sim/link.py         simulated radio link: cut, loss, latency (IF-01)
   sim/sitl.py         start/stop physics + SITL + link as one "boat"
   sim/companion.py    listener on the companion port (IF-04) for tests
+  sim/router.py       stand-in for B1 (mavlink-router) in simulation
+  mcp/policy.py       IF-04 command filter, default-deny (MCP-D19)
+  mcp/client.py       the filtered MAVLink client every service uses
+  mcp/view.py         the services' view of the helm (telemetry)
+  mcp/services.py     B4 link watchdog, B5 weed-shedding, B6 health,
+                      B7 navigation monitor, and the host that runs them
+  mcp/camera.py       B2 camera, photo store, EXIF geotags, thumbnails
+  mcp/photo_api.py    B3 photo and health HTTP API (IF-03)
+  mcp/sensors.py      moisture and DS18B20 (Pi) or settable stand-ins (sim)
+  mcp/clock.py        system clock on the Pi, physics clock in simulation
 params/
   boaty-mk1.parm            vehicle behaviour: loaded on the boat AND in SITL
   boaty-mk1-speedybee.parm  board wiring (hardware only, CR-04)
   sitl.parm                 simulator-only settings
+  boat-services.json        B4-B7 thresholds (MCP-D27), controlled like params
 tests/unit/           fast tests of the boat model and bridge (no SITL)
 tests/sitl/           scenarios flown on ArduPilot SITL
 tools/sitl_report.py  results/sitl_results.json -> results/SITL_REPORT.md

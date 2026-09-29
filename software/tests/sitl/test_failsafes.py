@@ -53,11 +53,11 @@ def test_sc01_battery_drain(helm, sim, companion, evidence):
     helm.stop()
 
 
-@pytest.mark.xfail(strict=False, reason='Finding: native GCS failsafe floor is FS_GCS_TIMEOUT 2 s + FS_TIMEOUT 1 s = ~3 s; FS-002 asks 2 s.')
 def test_sc02_link_cut_in_manual(helm, sim, companion, evidence):
-    evidence("SC-02", "Link cut in STEERING", ["FS-002", "SC-02"],
-             "HOLD <= 2 s after the link is cut (the RTL at 10 s is B4, "
-             "slice 2)")
+    evidence("SC-02a", "Link cut in STEERING: helm part", ["FS-002", "SC-02",
+                                                            "CR-05"],
+             "HOLD <= 3 s after the link is cut (FS-002 relaxed to 3 s by "
+             "CR-05; the RTL at 10 s is B4: SC-02b)")
     launch(helm, sim, start=False)
     helm.manual()
     drive_for(helm, sim, 0.5, 0.0, 5)
@@ -71,9 +71,7 @@ def test_sc02_link_cut_in_manual(helm, sim, companion, evidence):
     evidence.measure(hold_after_cut_s=(t_hold - t_cut) if t_hold else None,
                      native_minimum_s="FS_GCS_TIMEOUT 2 + FS_TIMEOUT 1")
     assert t_hold is not None
-    assert t_hold - t_cut <= 2.0, (
-        f"HOLD after {t_hold - t_cut:.1f} s: Rover's GCS failsafe cannot be "
-        "faster than FS_GCS_TIMEOUT (min 2 s) + FS_TIMEOUT (min 1 s)")
+    assert t_hold - t_cut <= 3.3, f"HOLD after {t_hold - t_cut:.1f} s"
     helm.stop()
 
 

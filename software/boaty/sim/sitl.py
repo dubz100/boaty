@@ -1,7 +1,9 @@
 """Start and stop a complete simulated boat (ICD IF-21, proposed DD-19).
 
     physics (JsonBridge, UDP 9002)  <->  ArduPilot SITL (ardurover --model JSON)
-    SITL telemetry (serial0)  ->  LinkRelay (IF-01)  ->  Mission Control :14550
+    SITL serial0 (the FC's companion UART, IF-04)  <->  Router (B1, Pi Zero)
+    Router  <->  LinkRelay (radio, IF-01)  <->  Mission Control :14550
+    Router  <->  local services B2-B7 on 127.0.0.1:14560
 
 The helm runs the same controlled parameter file as the real boat
 (params/boaty-mk1.parm) plus params/sitl.parm.
@@ -19,6 +21,7 @@ from pathlib import Path
 from .boat import Boat, BoatParams
 from .bridge import JsonBridge
 from .link import LinkRelay
+from .router import Router
 
 SOFTWARE = Path(__file__).resolve().parents[2]
 PARAMS = SOFTWARE / "params"
@@ -46,7 +49,8 @@ class SimConfig:
     home: tuple = MILTON_HOME
     gcs_port: int = 14550
     link_port: int = 14551
-    companion_port: int = 14560       # SERIAL1: the mission computer (IF-04)
+    companion_port: int = 14560       # B1 local endpoint for services
+    helm_port: int = 14570            # B1 endpoint for the FC's UART
     json_port: int = 9002
     instance: int = 0
     speedup: int = 1
@@ -66,6 +70,7 @@ class SimulatedBoat:
         self.workdir: Path | None = None
         self.bridge: JsonBridge | None = None
         self.link: LinkRelay | None = None
+        self.router: Router | None = None
 
     @property
     def boat(self) -> Boat:
@@ -88,12 +93,14 @@ class SimulatedBoat:
                                  port=c.json_port).start()
         self.link = LinkRelay(boat_port=c.link_port,
                               gcs_addr=("127.0.0.1", c.gcs_port)).start()
+        self.router = Router(helm_port=c.helm_port,
+                             local_port=c.companion_port,
+                             mc_addr=("127.0.0.1", c.link_port)).start()
         home = ",".join(str(x) for x in c.home)
         cmd = [str(exe), "--model", "JSON:127.0.0.1", "--speedup",
                str(c.speedup), "--home", home, "--defaults", str(defaults),
                "--wipe", "-I", str(c.instance),
-               "--serial0", f"udpclient:127.0.0.1:{c.link_port}",
-               "--serial1", f"udpclient:127.0.0.1:{c.companion_port}"]
+               "--serial0", f"udpclient:127.0.0.1:{c.helm_port}"]
         self.log = open(self.workdir / "sitl.log", "w")
         self.proc = subprocess.Popen(cmd, cwd=self.workdir, stdout=self.log,
                                      stderr=subprocess.STDOUT)
@@ -110,6 +117,8 @@ class SimulatedBoat:
                 self.proc.wait(timeout=5)
             except subprocess.TimeoutExpired:
                 self.proc.kill()
+        if self.router and self.router.running:
+            self.router.stop()
         if self.link:
             self.link.stop()
         if self.bridge:

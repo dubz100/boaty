@@ -1,0 +1,45 @@
+{
+  "_comment": "Boat-service thresholds (MCP-D27). Controlled like the helm parameters: changes are reviewed and re-run through the SITL scenarios named against each block.",
+  "b4_link_watchdog": {
+    "_refs": "FS-002 (relaxed to 3 s, CR-05), FS-003, MCP-D12, SC-02, SC-03",
+    "auto_rtl_after_s": 60,
+    "manual_rtl_after_s": 10
+  },
+  "b5_weed_shedding": {
+    "_refs": "FS-006, MCP-D18, SC-06",
+    "max_bursts": 3,
+    "burst_s": 2.0,
+    "astern_fraction": 0.5,
+    "target_hz": 10,
+    "free_speed_mps": 0.3,
+    "watch_after_resume_s": 6.0
+  },
+  "b6_health": {
+    "_refs": "FS-004, FS-010, FS-001, MCP-D15, MCP-D26, SC-04, SC-10",
+    "_position_note": "The helm takes ~1.5 s to report a lost fix, so 1.0 s here meets FS-004's 3 s from the loss itself (SC-04).",
+    "moisture_rtl": true,
+    "box_temp_rtl_c": 60.0,
+    "position_bad_hold_s": 1.0,
+    "max_hdop": 2.5,
+    "position_good_rtl_s": 10.0,
+    "critical_battery_pct": 15,
+    "critical_rtl_speed_mps": 0.6
+  },
+  "b7_nav_monitor": {
+    "_refs": "FS-005, FS-013, FEN-006, MCP-D22..25, A-03, A-07, A-08, SC-05, SC-28, SC-29, SC-38",
+    "first_motion_window_s": 10.0,
+    "first_motion_min_speed_mps": 0.3,
+    "first_motion_max_error_deg": 45.0,
+    "first_motion_dwell_s": 3.0,
+    "stuck_min_throttle_pct": 50,
+    "stuck_max_progress_mps": 0.1,
+    "stuck_dwell_s": 10.0,
+    "divergence_xtrack_m": 10.0,
+    "divergence_heading_deg": 60.0,
+    "divergence_window_s": 20.0,
+    "divergence_fraction": 0.75,
+    "near_target_m": 5.0,
+    "breach_max_s": 30.0,
+    "breach_max_outside_m": 10.0
+  }
+}
