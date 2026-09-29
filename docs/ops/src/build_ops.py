@@ -29,8 +29,9 @@ OUT = HERE.parent / "Boaty_Operations_Manual.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-OPS-001"
-ISSUE = "Issue A (for review)"
-DATE = "28 September 2026"
+ISSUE = "Issue B (for review)"
+DATE = "29 September 2026"
+PREV = "28 September 2026"
 BOX = "☐"
 
 
@@ -90,13 +91,17 @@ def build():
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
                 ["Status", "For review by the project owner (who is also "
                  "its main user)"],
-                ["Basis", "SRS Issue E (OPS-001 to OPS-012), ConOps/ConUse, "
-                 "FMEA Issue C actions A-05, A-09, A-11, A-17, A-19"],
+                ["Basis", "SRS Issue F (OPS-001 to OPS-012), ConOps/ConUse, "
+                 "FMEA Issue D actions A-05, A-09, A-11, A-17, A-19"],
                 ["Content", f"{len(O.PROCEDURES)} procedures, "
                  f"{len(O.CHECKLIST)}-item checklist, {len(O.CONTINGENCY)} "
                  "contingency cards"]])
     st += control_and_contents(
-        [["A", DATE, "First issue.", "Claude (drafted)"]],
+        [["A", PREV, "First issue.", "Claude (drafted)"],
+         ["B", DATE, "Simulator findings: K-03 (a dead motor looks like "
+          "weed), K-05 (the boat stops itself 30 s or 10 m outside the "
+          "fence), K-11 (a heading alarm in strong wind may be wind drift).",
+          "Claude, from simulator slice 2"]],
         "Review guidance: read it as if it's your first lake session. "
         "Anything you wouldn't actually do, or that's missing, is a finding. "
         "Sections 7 and 8 are meant to be printed and laminated.")

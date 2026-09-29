@@ -75,9 +75,11 @@ ROWS = [
      "mid-mission", "Outputs stop; boots disarmed; drifts", 7, "Firmware "
      "fault", 2, "Pinned stable release", "Heartbeat loss alarm", 5,
      ["SC-23", "L2-07"], []),
-    ("FM-08", "HLM", "Flight controller supply", "Brownout on thrust step",
-     "Reboot as FM-07", 7, "Inadequate supply design", 3, "PWR-D10/D12",
-     "Logs", 3, ["L2-08"], []),
+    ("FM-08", "HLM", "Flight controller supply", "Brownout on a thrust step "
+     "or near empty", "Reboot as FM-07, during the very RTL the battery "
+     "failsafe started", 7, "Pack sag below the FC's minimum input (Issue "
+     "D: the F405-TE's 9 V floor, KCL KF-01; O 3 → 5)", 5, "PWR-D10/D12",
+     "Logs", 3, ["L2-08", "L2-09"], ["A-21"]),
     ("FM-09", "HLM", "Configuration", "Parameters differ from baseline",
      "A failsafe doesn't fire as specified", 9, "Stale or edited "
      "parameters", 4, "Baseline file (SAF-007)", "Mismatch blocks arming "
@@ -218,6 +220,31 @@ ROWS = [
     ("FM-47", "MCN", "Mission upload", "Upload interrupted (partial "
      "mission)", "Wrong mission executed", 6, "Link drop mid-transfer", 4,
      "Transfer protocol", "Read-back (VAL-010)", 2, ["SC-36", "SC-32"], []),
+    # ---------------- found in simulation (Issue D)
+    ("FM-49", "MCP", "B7 heading check", "Wind drift read as a reversed "
+     "compass", "Nuisance HOLD with a wrong diagnosis; boat drifts downwind",
+     5, "Wind stronger than the boat's thrust blows it backwards at RTL "
+     "start (far beyond ENV-002)", 2, "Wind limit and launch-point "
+     "procedure (A-19)", "Alarm names the check", 3, ["SC-28"], []),
+    ("FM-50", "MCP", "B5 weed-shedding", "Dead motor treated as weed",
+     "Futile astern bursts, then HOLD with a 'stuck' alarm instead of "
+     "'motor fault'", 4, "The crash check cannot tell weed from a dead "
+     "motor", 4, "Ends in HOLD + alarm either way", "Adult inspects on "
+     "recovery", 3, ["SC-29"], []),
+    ("FM-51", "MCP", "Boat services", "Command sent before the helm "
+     "reports the mode", "Filter refuses it: the first second of each "
+     "weed burst is lost", 4, "Heartbeat (1 Hz) lags the mode change", 8,
+     "-", "Filter refusal log", 2, ["SC-06"], ["A-22"]),
+    ("FM-52", "MCP", "B5 astern burst", "Boat pivots instead of backing "
+     "out", "Turns into the weed; may foul the second pod", 6, "Negative "
+     "body-frame velocity target: Rover turns round and drives forwards "
+     "(specification error, ICD Issue D)", 10, "-", "None before "
+     "simulation", 7, ["SC-06"], ["A-23"]),
+    ("FM-53", "HLM", "Modes", "Arms into MANUAL instead of HOLD", "The "
+     "boat is armed in a mode that obeys stick input; surprise for the "
+     "adult", 5, "RC mode switch overrides INITIAL_MODE (firmware "
+     "defaults)", 8, "-", "Mode shown at Mission Control", 3, ["SC-40"],
+     ["A-24"]),
 ]
 
 ACTIONS = [
@@ -274,6 +301,18 @@ ACTIONS.append(
     ("A-20", "Salvaged-cell acceptance tests and records (capacity, "
      "internal resistance, self-discharge, matching, visual)", "PWR",
      "SSS-PWR Issue B", ["FM-23"]))
+ACTIONS += [
+    ("A-21", "Flight controller that runs from 7 V (CR-04) and a motor "
+     "power limit so sag near empty cannot brown out any supply", "HLM / "
+     "PWR", "SSS-HLM/PWR Issue C-D", ["FM-08"]),
+    ("A-22", "Services wait until the helm reports the mode before sending "
+     "mode-dependent commands", "MCP", "SSS-MCP Issue C", ["FM-51"]),
+    ("A-23", "Astern bursts by SET_ATTITUDE_TARGET thrust with zero yaw "
+     "rate; the filter allows only that form", "MCP", "SSS-MCP Issue C; ICD "
+     "Issue E", ["FM-52"]),
+    ("A-24", "Boot and arm into HOLD; no RC mode switch; RC receiver "
+     "ignored", "HLM", "SSS-HLM Issue D", ["FM-53"]),
+]
 # A-12 intentionally unused (merged into A-13 during review).
 
 RESIDUAL = [
@@ -355,17 +394,24 @@ STATUS = {
     "A-15": ("Incorporated", ["MCN-D56"]),
     "A-16": ("Incorporated", ["MCN-D57"]),
     "A-17": ("Incorporated", ["OP-10", "CL-03", "CL-17", "K-06"]),
-    "A-18": ("Incorporated; V-14 still open", ["HLM-D24", "MCN-D59"]),
+    "A-18": ("Incorporated; V-14 answered (no native mechanism)",
+             ["HLM-D24", "MCN-D59", "MCP-D30"]),
     "A-19": ("Incorporated", ["MCN-D58", "OP-06", "CL-06"]),
     "A-20": ("Incorporated", ["PWR-D20", "PWR-D21"]),
+    "A-21": ("Incorporated", ["HLM-D02", "HLM-D43", "PWR-D22"]),
+    "A-22": ("Incorporated", ["MCP-D32"]),
+    "A-23": ("Incorporated", ["MCP-D18", "MCP-D19"]),
+    "A-24": ("Incorporated", ["HLM-D05"]),
 }
 # FM id -> (O, D) after incorporated actions (S unchanged)
 POST = {
-    "FM-02": (4, 3), "FM-03": (2, 3), "FM-04": (4, 3), "FM-05": (2, 3),
-    "FM-11": (2, 3), "FM-14": (3, 3), "FM-15": (2, 3), "FM-16": (4, 3),
-    "FM-17": (4, 3), "FM-18": (3, 2), "FM-22": (2, 3), "FM-23": (1, 5),
+    "FM-02": (4, 3), "FM-03": (2, 3), "FM-04": (4, 3), "FM-05": (2, 2),
+    "FM-11": (2, 3), "FM-14": (3, 2), "FM-15": (2, 3), "FM-16": (4, 3),
+    "FM-17": (4, 2), "FM-18": (3, 2), "FM-22": (2, 3), "FM-23": (1, 5),
     "FM-32": (1, 3), "FM-12": (2, 5), "FM-21": (1, 5), "FM-45": (1, 5),
     "FM-43": (2, 7), "FM-36": (3, 5), "FM-41": (3, 2), "FM-42": (2, 5),
+    # Issue D: simulator evidence and slice-2 fixes
+    "FM-08": (1, 3), "FM-51": (1, 2), "FM-52": (1, 2), "FM-53": (1, 2),
 }
 
 

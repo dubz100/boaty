@@ -15,7 +15,7 @@ sys.path.insert(0, str(DOCS / "common"))
 sys.path.insert(0, str(DOCS / "icd" / "src"))
 
 import sss_data as SD  # noqa: E402
-from pdfdoc import (BLUE_T, ORANGE, ORANGE_T, H1, H2, P, TINT,  # noqa: E402
+from pdfdoc import (BLUE_T, GREEN_T, ORANGE, ORANGE_T, H1, H2, P, TINT,  # noqa: E402
                     Doc, KeepTogether, PageBreak, Paragraph, S, Spacer,
                     bullets, callout, colors, control_and_contents, cover, mm,
                     table)
@@ -139,35 +139,37 @@ def special_pwr():
 
 def special_hlm():
     return [H1("6. Controlled parameter baseline"),
-            P("The baseline configuration that implements the "
-              "requirements above. <b>The authoritative list is "
-              "params/boaty-mk1.parm in the repository.</b> Names and "
-              "values are confirmed against the flashed firmware version in "
-              "SITL before the file is frozen (HLM-D01). 'Confirm' shows "
-              "where each is proven."),
-            table([["Function", "Parameter(s)", "Baseline", "Satisfies",
-                    "Confirm"]] + [list(r) for r in SD.HLM_PARAMS],
-                  [22, 50, 42, 30, 26]),
+            P("The configuration that implements the requirements above. "
+              "<b>This table is generated from software/params/"
+              "boaty-mk1.parm (behaviour, also flown in the simulator) and "
+              "boaty-mk1-speedybee.parm (board wiring)</b>, so it is always "
+              "the file that is flashed. Every behaviour parameter was "
+              "checked against Rover 4.7.1 in SITL (IF-14-02)."),
+            table([["Group", "Parameter", "Value", "Why"]] +
+                  [list(r) for r in SD.HLM_PARAMS], [30, 44, 16, 80]),
             Spacer(1, 3 * mm),
             H2("6.1 Where each failsafe step lives"),
             table([["Requirement", "Helm (native)", "Boat Python (MCP)",
                     "Mission Control"],
-                   ["FS-001", "RTL at 35%; RTL + alarm at 15%", "-",
-                    "Announce; reduce speed if V-15 shows no native way"],
-                   ["FS-002", "HOLD at 2 s", "RTL at 10 s (B4)",
+                   ["FS-001", "RTL at 35%; RTL + alarm at 15%",
+                    "Slow RTL to 0.6 m/s at 15% (B6)", "Announce"],
+                   ["FS-002", "HOLD at 3 s (CR-05)", "RTL at 10 s (B4)",
                     "Show 'link lost'"],
                    ["FS-003", "Continue in AUTO", "RTL at 60 s (B4)", "-"],
-                   ["FS-004", "HOLD (motors stop)", "RTL after 10 s healthy "
-                    "(B6)", "Announce"],
-                   ["FS-005/006", "HOLD on stuck", "≤ 3 astern bursts (B5)",
+                   ["FS-004", "EKF failsafe HOLD (backstop, ~9 s)",
+                    "HOLD within 3 s; RTL after 10 s healthy (B6)",
                     "Announce"],
-                   ["FEN-005/006", "RTL on breach; persistent → stop (V-14)",
-                    "HOLD if persistent (interim)", "HOLD if persistent "
-                    "(interim)"]],
+                   ["FS-005/006", "HOLD on stuck (crash check)", "Second "
+                    "detector at 10 s (B7); ≤ 3 astern bursts (B5)",
+                    "Announce"],
+                   ["FEN-005/006", "RTL on breach", "HOLD at 30 s or 10 m "
+                    "outside (B7)", "HOLD if persistent (MCN-D59)"]],
                   [24, 50, 48, 48]),
-            P("Rule: nothing outside the helm is the last line of defence. "
-              "Boat Python and Mission Control only add later, safer "
-              "steps.", "small")]
+            P("Rule: nothing outside the helm is the last line of defence "
+              "for an action the helm can take. Where the helm cannot "
+              "(FS-001 speed, FS-004 timing, FEN-006) the boat services "
+              "add the step, and each is proven in simulation "
+              "(software/results).", "small")]
 
 
 def special_mcp():
@@ -211,12 +213,20 @@ def special_mcn():
 def special_sim():
     def tt(kind, ids=None):
         rows = [["ID", "Test", "Injection / method", "Pass criterion",
-                 "Refs"]]
+                 "Refs", "Result"]]
+        style = []
         for t in SD.TESTS:
             if t[1] == kind and (ids is None or t[0] in ids):
+                res = SD.SIM_RESULTS.get(t[0], "-") if kind == "SIM" else "-"
                 rows.append([f"<b>{t[0]}</b>", t[2], t[3], t[4],
-                             ", ".join(t[5])])
-        return table(rows, [14, 46, 40, 44, 26])
+                             ", ".join(t[5]), res])
+                if res.startswith("Pass"):
+                    style.append(("BACKGROUND", (5, len(rows) - 1),
+                                  (5, len(rows) - 1), GREEN_T))
+                elif res != "-":
+                    style.append(("BACKGROUND", (5, len(rows) - 1),
+                                  (5, len(rows) - 1), ORANGE_T))
+        return table(rows, [13, 40, 36, 40, 23, 18], style_extra=style)
 
     fs_ids = {f"SC-{i:02d}" for i in range(1, 14)}
     fm_ids = {t[0] for t in SD.TESTS if t[1] == "SIM"} - fs_ids
@@ -249,7 +259,9 @@ def special_sim():
               "the test procedures reference. SC = simulator scenario; "
               "L1/L2/L3 = rig tests; B = bench; R = rehearsal; P = pool. "
               "Injection parameter names are fixed per SITL version "
-              "(TBC-04) and kept in the scenario code."),
+              "and kept in the scenario code. <b>Result</b> is read from "
+              "software/results/sitl_results.json (slices 1-2); '-' means "
+              "not yet built (mostly slice 3, Mission Control)."),
             H2("6.1 Failsafe scenarios (one per FS requirement)"),
             tt("SIM", fs_ids),
             H2("6.2 FMEA-derived simulator scenarios"),
@@ -296,7 +308,8 @@ def build_one(code):
 
     st = cover(f"Subsystem Specification<br/>{ss['title']}",
                ss["purpose"],
-               [["Document", doc_id], ["Issue", issue], ["Date", DATE],
+               [["Document", doc_id], ["Issue", issue],
+                ["Date", (ss.get("history") or [[None, DATE]])[-1][1]],
                 ["Status", "For review by the project owner"],
                 ["Parents", ss.get("parents", "SRS Issue D, ADD Issue C, "
                                    "ICD Issue B")],

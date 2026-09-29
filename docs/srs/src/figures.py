@@ -119,7 +119,7 @@ def fig_modes():
     L((1.65, 2.2), (3.05, 2.2), "arm: adult ×2,\npre-arm OK", toff=(0, 0.33))
     L((3.05, 2.0), (1.65, 2.0), "disarm", toff=(0, -0.2))
     L((3.65, 2.43), (3.65, 3.57), "adult", toff=(-0.35, 0))
-    L((3.95, 3.57), (3.95, 2.43), "link lost 2 s,\nor adult", toff=(0.6, 0))
+    L((3.95, 3.57), (3.95, 2.43), "link lost 3 s,\nor adult", toff=(0.6, 0))
     L((4.55, 3.9), (6.45, 3.9), "link lost 10 s, fence breach,\nCOME HOME",
       toff=(0, 0.3))
     L((4.4, 1.77), (6.45, 0.6), "GO (approved,\nverified mission)",

@@ -277,7 +277,8 @@ SUBSYSTEMS = [
      "arming key and motor-rail MOSFET switch, power module (V/I sense), "
      "5 V buck for the mission computer, harness."),
     ("HLM", "Helm", "Boat",
-     "F405-class flight controller running ArduPilot Rover (boat frame), "
+     "SpeedyBee F405 WING APP flight controller (CR-04) running ArduPilot "
+     "Rover 4.7.1 (boat frame), "
      "M10 GNSS + compass on the mast, controlled parameter set, fence and "
      "mission storage, notify-LED output for the beacon."),
     ("MCP", "Mission computer", "Boat",
@@ -295,8 +296,10 @@ SUBSYSTEMS = [
      "found' label, bank recovery kit (pole + net, casting rod), optional "
      "tracker tag."),
     ("SIM", "Simulation & test", "Home",
-     "ArduPilot SITL (Rover, boat), simulated mission computer (camera "
-     "stub serving test images), scenario runner (pytest), CI on push."),
+     "ArduPilot SITL (Rover 4.7.1) driven by our own Python boat and "
+     "battery model through SITL's JSON interface (DD-20); the real "
+     "mission-computer services on a simulated Pi Zero; simulated radio "
+     "link; scenario runner (pytest)."),
 ]
 EXTRA_ALLOC = [("SYS", "System level", "Verified on the integrated system"),
                ("OPS", "Operations", "Procedures, checklists, manual")]
@@ -330,14 +333,17 @@ COMPONENTS = [
     ("MCP", "B3", "Photo server", "Photo index and download over HTTP",
      "CAM-007"),
     ("MCP", "B4", "Link watchdog", "No Mission Control heartbeat for 60 s "
-     "in AUTO → command RTL", "FS-003"),
+     "in AUTO, or 10 s after a MANUAL link loss → command RTL",
+     "FS-002, FS-003"),
     ("MCP", "B5", "Weed-shedding", "On stuck → up to 3 bounded GUIDED "
-     "reverse bursts, then resume or stay in HOLD", "FS-006"),
-    ("MCP", "B6", "Health", "Moisture → RTL + alarm; box temperature "
-     "> 60 °C → RTL + alarm; storage", "FS-010, PWR-010, CAM-004"),
+     "astern bursts (thrust command, not velocity: ICD IF-04), then resume "
+     "or stay in HOLD", "FS-006"),
+    ("MCP", "B6", "Health", "Moisture or box > 60 °C → RTL + alarm; "
+     "position loss → HOLD, healthy 10 s → RTL; critical battery → slow "
+     "RTL (DD-21)", "FS-001, FS-004, FS-010, PWR-010"),
     ("MCP", "B7", "Navigation monitor", "First-motion heading check, second "
-     "stuck detector, divergence watchdog → HOLD + alarm (FMEA A-03/07/08)",
-     "FS-005, FS-013"),
+     "stuck detector, divergence watchdog, persistent fence breach → HOLD "
+     "+ alarm (FMEA A-03/07/08; DD-21)", "FS-005, FS-013, FEN-006"),
     ("HLM", "A1", "ArduPilot Rover", "Navigation, modes, fence, "
      "failsafes, logging (third-party firmware + our parameters)",
      "NAV-*, FEN-*, FS-*, LOG-001"),
@@ -428,14 +434,20 @@ MODE_MAP = [
 ]
 
 FS_ALLOC = [
-    ("FS-001", "Low / critical battery", "HLM", "Battery failsafe "
-     "(two thresholds)", "Native"),
-    ("FS-002", "Link loss, MANUAL", "HLM", "GCS failsafe", "Native (V-03)"),
+    ("FS-001", "Low / critical battery", "HLM + MCP", "Battery failsafe "
+     "(two thresholds); B6 slows RTL at critical (no native reduction, "
+     "V-15)", "Native + Python"),
+    ("FS-002", "Link loss, MANUAL", "HLM + MCP", "GCS failsafe HOLD at 3 s "
+     "(CR-05); B4 RTL at 10 s", "Native + Python"),
     ("FS-003", "Link loss, AUTO", "HLM + MCP", "GCS failsafe set to "
      "continue in AUTO; B4 watchdog commands RTL at 60 s", "Native + "
      "Python"),
-    ("FS-004", "Position loss", "HLM", "EKF failsafe → HOLD", "Native"),
-    ("FS-005", "Stuck", "HLM", "Crash check → HOLD", "Native (V-05)"),
+    ("FS-004", "Position loss", "MCP + HLM", "B6 HOLD within 3 s (the EKF "
+     "failsafe alone took 9 s); EKF failsafe as backstop", "Python + "
+     "native"),
+    ("FS-005", "Stuck", "HLM + MCP", "Crash check → HOLD; B7 second "
+     "detector at 10 s (crash check is noise-sensitive, V-05)", "Native + "
+     "Python"),
     ("FS-006", "Weed-shedding", "MCP", "B5 bounded GUIDED reverse bursts via MAVLink (V-11)",
      "Python"),
     ("FS-007", "Mission computer down", "HLM", "Mission continues; "
@@ -489,7 +501,45 @@ DECISIONS = [
      "CR-03", "−£3"),
     ("DD-18", "Tested salvaged 18650 cells, accepted only against PWR-D20 "
      "tests", "CR-03", "−£8"),
+    ("DD-19", "SpeedyBee F405 WING APP replaces the Matek F405-TE: the "
+     "F405-TE's 9 V minimum browns out on a sagging 3S pack near empty",
+     "CR-04, KCL KF-01", "−£17 (BOM £181)"),
+    ("DD-20", "The simulator runs the real ArduPilot firmware against our "
+     "own Python boat model (SITL JSON), because SITL's built-in motorboat "
+     "is sized for 50 N of thrust", "KCL KF-07", "No hardware cost"),
+    ("DD-21", "Gaps the autopilot cannot close natively go to the boat "
+     "services: B6 position-loss HOLD (FS-004) and slow RTL (FS-001); B7 "
+     "persistent-breach stop (FEN-006); B4 RTL after MANUAL link loss",
+     "Simulator slices 1-2", "No hardware cost"),
+    ("DD-22", "FS-002 link-loss HOLD relaxed to 3 s, the autopilot's native "
+     "minimum", "CR-05", "SRS Issue F"),
 ]
+
+# Results of the early checks (simulator slices 1-2, software/results).
+V_RESULTS = {
+    "V-01": "Firmware and board file for the SpeedyBee checked in source "
+            "(KCL); bench test remains",
+    "V-02": "Met: fence avoidance stopped the boat 2.5 m short of the line "
+            "in MANUAL",
+    "V-03": "Met: mission continues on link loss. Timeout is FS_GCS_TIMEOUT "
+            "2 s + FS_TIMEOUT 1 s = 3 s (CR-05)",
+    "V-04": "Met: stays in RTL and station-keeps within 2.2 m in 4 m/s wind",
+    "V-05": "Partly: usually 4.9 s, but 15-20 s in 1 run in 3 (GNSS speed "
+            "noise). B7 backs it up at 10 s",
+    "V-06": "Met: only system-255 heartbeats count. A second 255 masks the "
+            "failsafe (C7 must detect it, SC-37)",
+    "V-11": "Close: stops 3.9 s after the last target (3 s timeout + "
+            "deceleration). Accepted",
+    "V-12": "Met with our own boat model (DD-20): 0.16 m RMS cross-track",
+    "V-13": "Met in SITL: 'Battery 2 below minimum arming voltage'; bench "
+            "test of the real switch remains",
+    "V-14": "No native mechanism: B7 does it (DD-21)",
+    "V-15": "No native reduction: B6 does it (DD-21)",
+    "V-16": "No: with its only compass rotated 90° the EKF heading stays "
+            "wrong. B7's first-motion check catches a reversed compass",
+    "V-17": "No: ArduPilot accepts fence changes while armed. C7 enforces "
+            "FEN-007",
+}
 
 VERIFY_EARLY = [
     ("V-01", "Chosen F405 board's ArduPilot Rover firmware includes: polygon "
@@ -529,10 +579,11 @@ VERIFY_EARLY = [
 ]
 
 RISKS = [
-    ("R-01", "F405 firmware lacks a needed feature", "Medium",
-     "V-01 before purchase of other parts; H743 fallback (+£20-25)"),
-    ("R-02", "Bill of materials over the £185 cap (Issue E baseline "
-     "£182)", "Medium", "£3 headroom; the pole kit (+£8) would exceed the "
+    ("R-01", "Flight-controller firmware lacks a needed feature", "Low",
+     "Simulator slices 1-2 exercised every feature we rely on in Rover "
+     "4.7.1; V-01 bench check of the SpeedyBee remains"),
+    ("R-02", "Bill of materials over the £185 cap (Issue F baseline "
+     "£181, estimated prices)", "Medium", "£4 headroom; the pole kit (+£8) would exceed the "
      "cap, so it needs a saving elsewhere if V-08 requires it"),
     ("R-03", "Wi-Fi range over water", "Medium",
      "Pole antenna; safety independent of the link"),
@@ -548,7 +599,7 @@ RISKS = [
 
 MASS = [("Hull segments + foam (6)", 500), ("Crossbeams (2)", 120),
         ("DUPLO deck plate", 60), ("Electronics box, tray, glands", 150),
-        ("Mast, GNSS, flag, hoop, beacon", 110), ("Flight controller", 12),
+        ("Mast, GNSS, flag, hoop, beacon", 110), ("Flight controller + PDB", 25),
         ("Pi Zero 2W + camera + SD", 30), ("ESCs (2)", 30),
         ("Thruster pods (2)", 150), ("Battery 3S 18650 + BMS", 160),
         ("Power module, buck, key switch", 30), ("Wiring and connectors", 60),
@@ -561,23 +612,23 @@ POWER_BANK = [("Raspberry Pi 5 (average; peaks ~8 W during STT)", 5.0),
               ("USB Wi-Fi adapter", 1.0), ("Speaker, mic, LEDs", 0.5)]
 
 BOM = [
-    ("Boat", "F405 flight controller with microSD, Matek F405-TE class (UK retail £61-66, CR-03)", 62),
-    ("Boat", "M10 GNSS + compass", 14),
+    ("Boat", "SpeedyBee F405 WING APP flight controller + PDB, microSD (CR-04; KCL KC-01)", 45),
+    ("Boat", "M10 GNSS + QMC5883L compass (KC-02)", 14),
     ("Boat", "Pi Zero 2W", 15),
     ("Boat", "5 MP camera (OV5647-class) + Zero cable", 8),
-    ("Boat", "microSD 32 GB", 4),
+    ("Boat", "microSD 32 GB × 2: Pi Zero + flight controller (KCL KF-05)", 8),
     ("Boat", "2 × brushless motor", 12),
-    ("Boat", "2 × bidirectional ESC", 10),
+    ("Boat", "2 × AM32 20 A ESC, DShot 3D (KC-03)", 22),
     ("Boat", "3 × tested salvaged 18650 + 3S BMS (CR-03, PWR-D20)", 7),
     ("Boat", "Box, PG7 glands, fuse", 6),
     ("Boat", "Foam, hi-vis, LED beacon", 5),
     ("Boat", "5 V 3 A buck", 3),
-    ("Boat", "Reed switch + MOSFET switch module (arming key)", 4),
+    ("Boat", "Reed switch + high-side P-MOSFET switch (arming key; KF-03)", 4),
     ("Boat", "IP67 main power switch (added in Issue C)", 4),
     ("Boat", "Box temperature sensor, DS18B20 (FMEA A-11, Issue D)", 2),
     ("Bank", "4 arcade buttons (incl. TALK); adult unlock by PIN (CR-03)", 6),
-    ("Bank", "USB mic + small speaker", 8),
-    ("Bank", "USB Wi-Fi adapter with antenna", 12),
+    ("Bank", "USB mic + USB speaker (the Pi 5 has no analogue audio)", 8),
+    ("Bank", "USB Wi-Fi adapter, MT7610U/MT7612U, 2.4 GHz AP (KC-15)", 12),
     ("Bank*", "2 m pole + 3 m USB extension (only if V-08 needs it)", 8),
 ]
 
@@ -603,8 +654,10 @@ OVERRIDE = {
     "NAV-001": ("PRP", ["HLM"]), "NAV-002": ("HLM", ["PRP"]),
     "NAV-003": ("HLM", ["PRP"]),
     "FEN-002": ("MCN", []), "FEN-003": ("MCN", []),
-    "FEN-007": ("HLM", ["MCN"]),
-    "FS-003": ("HLM", ["MCP"]), "FS-006": ("MCP", ["PRP"]),
+    "FEN-006": ("MCP", ["HLM"]), "FEN-007": ("HLM", ["MCN"]),
+    "FS-001": ("HLM", ["MCP"]), "FS-002": ("HLM", ["MCP"]),
+    "FS-003": ("HLM", ["MCP"]), "FS-004": ("MCP", ["HLM"]),
+    "FS-005": ("HLM", ["MCP"]), "FS-006": ("MCP", ["PRP"]),
     "FS-007": ("HLM", ["MCP"]), "FS-008": ("PRP", ["HLM"]),
     "FS-009": ("MCN", ["HLM"]), "FS-010": ("MCP", ["HLM"]),
     "FS-012": ("HLM", ["MCN"]), "FS-013": ("SYS", []),

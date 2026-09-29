@@ -149,6 +149,12 @@ D(h, "HUL-D25", "The crew's assembly steps (segments, pods, deck, flag) "
 # ======================================================================
 p = subsystem(
     "PRP", title="Propulsion",
+    issue="Issue B (for review)",
+    parents="SRS Issue F, ADD Issue F, ICD Issue E, KCL Issue B",
+    history=[["B", "29 September 2026", "ESC chosen: AM32 20 A, DShot 3D "
+              "set by the helm (PRP-D06); ESC configuration PRP-D16; cost "
+              "from the Key Component List.", "Claude, owner decision "
+              "(CR-04)"]],
     purpose="Turn helm commands into bidirectional thrust on two clip-on "
             "pods, quietly, safely and without being defeated by weed.",
     inside=["Two thruster pods (motor, prop, shroud/guard, strut, "
@@ -164,7 +170,7 @@ p = subsystem(
                  "rudder", "Airboat pod is a future swap-in module (same "
                  "IF-17)"],
     budget=[("Mass allocation", "≤ 200 g (estimate 180 g)"),
-            ("Cost allocation", "£22 (motors £12, ESCs £10)"),
+            ("Cost allocation", "£34 (motors £12, 2 × AM32 ESC £22)"),
             ("Power", "≈ 8 W at cruise (estimate); ≤ 16 A total "
              "continuous")],
     special="prp",
@@ -187,7 +193,8 @@ D(p, "PRP-D04", "Combined electrical input at 1.0 m/s cruise shall be "
 D(p, "PRP-D05", "Continuous current shall be ≤ 8 A per ESC at full "
   "throttle, measured.", "M", "T", "BENCH", ["IF-06"])
 group(p, "Control interface and failure behaviour")
-D(p, "PRP-D06", "The ESCs shall accept commands per IF-05 (DShot300, 3D "
+D(p, "PRP-D06", "The ESCs (AM32 20 A, KCL KC-03) shall accept commands per "
+  "IF-05 (DShot300, 3D "
   "mode; PWM fallback).", "M", "T", "BENCH", ["IF-05", "NAV-001"])
 D(p, "PRP-D07", "Each ESC shall stop its motor ≤ 1 s after command pulses "
   "stop.", "M", "T", "BENCH", ["FS-008", "V-09"])
@@ -214,6 +221,12 @@ D(p, "PRP-D14", "Pod shells and latches are child-handled parts "
   "(HUL-D22/D23 apply). The prop shall not be reachable while the pod is "
   "fitted or unfitted.", "M", "I", "BENCH", ["CHD-001", "CHD-002",
                                               "CHD-003"])
+D(p, "PRP-D16", "ESC configuration: 3D mode set by the helm at boot "
+  "(SERVO_BLH_3DMASK); low-voltage cut-off disabled, because battery "
+  "protection belongs to the helm and BMS; BEC output left unconnected. "
+  "AM32 stops the motor 0.5 s after signal loss and needs > 1 s of zero "
+  "command to re-arm (firmware source, confirmed on the bench).", "M", "I",
+  "BENCH", ["IF-05", "FS-008", "V-09"])
 D(p, "PRP-D15", "Motors are consumables: rinse and dry after each session. "
   "Expected life ≥ 10 h submerged before replacement.", "S", "A", "LAKE",
   ["NAV-001"])
@@ -223,11 +236,16 @@ D(p, "PRP-D15", "Motors are consumables: rinse and dry after each session. "
 # ======================================================================
 w = subsystem(
     "PWR", title="Power",
-    issue="Issue B (for review)",
-    parents="SRS Issue E, ADD Issue E, ICD Issue D, FMEA Issue C",
+    issue="Issue C (for review)",
+    parents="SRS Issue F, ADD Issue F, ICD Issue E, FMEA Issue D, KCL "
+            "Issue B",
     history=[["B", "28 September 2026", "CR-03: tested salvaged 18650 "
               "cells (ADD DD-18) with acceptance tests PWR-D20 and records "
-              "PWR-D21.", "Claude, owner decision"]],
+              "PWR-D21.", "Claude, owner decision"],
+             ["C", "29 September 2026", "Key Component List and CR-04: the "
+              "key switch is a high-side P-MOSFET (PWR-D07); supplies must "
+              "tolerate pack sag near empty (PWR-D22).", "Claude, owner "
+              "decision"]],
     purpose="Store and distribute energy safely. Give motor power only when "
             "an adult has inserted the magnetic key. Measure what's used.",
     inside=["3S Li-ion 18650 pack with BMS", "Main fuse and main switch",
@@ -287,8 +305,16 @@ D(w, "PWR-D06", "The main switch shall be IP67, outside the box, and "
   "either rated ≥ 20 A or control a solid-state switch rated ≥ 30 A.", "M",
   "I", "BENCH", ["PWR-004"])
 D(w, "PWR-D07", "The motor rail shall be switched by the magnetic key per "
-  "IF-06: reed switch + MOSFET, off when the key is absent.", "M", "T",
-  "BENCH", ["MOD-003", "IF-06"])
+  "IF-06: reed switch driving a high-side P-MOSFET in the positive feed, "
+  "off when the key is absent, with a soft-start gate. Low-side switching "
+  "is not allowed (ESC current would return through signal grounds).",
+  "M", "T", "BENCH", ["MOD-003", "IF-06"])
+D(w, "PWR-D22", "Every supply on the pack (flight controller, ESCs, 5 V "
+  "buck) shall work down to 7.5 V, the rail voltage at the critical "
+  "battery threshold (9.6 V resting) under the helm's power limit "
+  "(HLM-D43) with acceptance-limit cells (0.22 Ω pack). The Matek F405-TE "
+  "(9 V minimum) failed this analysis, hence CR-04.", "M", "A", "BENCH",
+  ["PWR-005", "DD-19"])
 D(w, "PWR-D08", "Motor-rail voltage shall be divided to the helm's second "
   "voltage input so arming is refused below 9.0 V.", "M", "T", "BENCH",
   ["MOD-003", "PRE-007", "V-13"])
@@ -331,62 +357,69 @@ D(w, "PWR-D19", "The battery shall sit ≥ 30 mm from the ESCs. Box internal "
 # ======================================================================
 m = subsystem(
     "HLM", title="Helm",
-    issue="Issue C (for review)",
-    parents="SRS Issue E, ADD Issue E, ICD Issue D, FMEA Issue C",
+    issue="Issue D (for review)",
+    parents="SRS Issue F, ADD Issue F, ICD Issue E, FMEA Issue D, KCL "
+            "Issue B",
     history=[["B", "28 September 2026", "CR-02: microSD logging (HLM-D02). FMEA actions A-01, A-02, "
               "A-06, A-18: HLM-D24 formalised; HLM-D39 to D41 added; "
               "parameter baseline extended.", "Claude, owner decisions "
               "(CR-02, FMEA actions)"],
              ["C", "28 September 2026", "CR-03: board class and real price "
               "(Matek F405-TE class, £62) in budget and HLM-D02.",
-              "Claude, owner decision"]],
+              "Claude, owner decision"],
+             ["D", "29 September 2026", "CR-04: SpeedyBee F405 WING APP "
+              "(HLM-D02). CR-05: GCS failsafe 3 s (HLM-D27). Simulator "
+              "results folded into HLM-D05/08/20/24/25/26/28/29; HLM-D42 "
+              "to D44 added; parameter baseline now generated from "
+              "software/params.", "Claude, owner decisions"]],
 
     purpose="Navigate, enforce the fence and run every native failsafe on "
             "an independent RTOS processor, whatever else has failed.",
-    inside=["Flight controller hardware (F405-class)", "ArduPilot Rover "
+    inside=["Flight controller hardware (SpeedyBee F405 WING APP + PDB)",
+            "ArduPilot Rover "
             "firmware (third party) and the controlled parameter set",
             "GNSS + compass module and mast cabling", "Fence and mission "
             "storage", "Dataflash / SD logging"],
     outside=["Everything that sends commands (MCN via IF-02, MCP via IF-04)",
              "Motor drives (PRP)", "Power sources (PWR)"],
-    breakdown=[("HLM-1 Flight controller", "F405-class, ChibiOS; IMU, baro, "
-                "UARTs, outputs, ADCs"),
-               ("HLM-2 Firmware", "ArduPilot Rover, pinned version"),
-               ("HLM-3 Parameter set", "params/boaty-mk1.parm (controlled)"),
-               ("HLM-4 GNSS/compass", "u-blox M10 + magnetometer on the "
-                "mast")],
-    constraints=["ADD DD-02: F405-class, subject to V-01", "ADD DD-13: no "
+    breakdown=[("HLM-1 Flight controller", "SpeedyBee F405 WING APP "
+                "(STM32F405, ChibiOS), PDB with V/I sense, microSD"),
+               ("HLM-2 Firmware", "ArduPilot Rover 4.7.1, pinned"),
+               ("HLM-3 Parameter set", "software/params/boaty-mk1.parm "
+                "(behaviour, also flown in SITL) + boaty-mk1-speedybee.parm "
+                "(board wiring)"),
+               ("HLM-4 GNSS/compass", "u-blox M10 + QMC5883L on the mast")],
+    constraints=["ADD DD-19 (CR-04): SpeedyBee F405 WING APP, 7-36 V input",
+                 "ADD DD-13: no "
                  "Lua; Python on the MCP covers Lua-type behaviours",
                  "No project-written code on the FC (SAF-001)"],
-    budget=[("Mass allocation", "≤ 40 g (estimate 32 g)"),
-            ("Cost allocation", "£76 (Matek F405-TE-class FC with microSD £62, "
-             "GNSS £14)"),
+    budget=[("Mass allocation", "≤ 45 g (estimate 39 g: FC + PDB 25 g, "
+             "GNSS 14 g)"),
+            ("Cost allocation", "£63 (SpeedyBee F405 WING APP £45, GNSS £14, "
+             "microSD £4)"),
             ("Power", "≈ 0.8 W including GNSS")],
     special="hlm",
-    open_items=[("V-01", "Firmware feature check for the chosen board, "
-                 "incl. path planning around fences"),
-                ("V-02 … V-06", "Mode, failsafe and identity behaviours in "
-                 "SITL"),
-                ("V-14", "Native mechanism for FEN-006 (persistent breach → "
-                 "motors stop)"),
-                ("V-15", "Reduced RTL speed on critical battery (FS-001)"),
-                ("V-16", "GNSS-velocity yaw fallback behaviour (NAV-008)"),
-                ("V-17", "Whether the helm itself refuses fence changes "
-                 "while armed"),
+    open_items=[("V-01", "Bench check of the SpeedyBee with Rover 4.7.1 "
+                 "(every feature was exercised in SITL)"),
+                ("V-02 … V-06, V-11 … V-17", "Answered in SITL (ADD "
+                 "section 9); results folded into the requirements below"),
+                ("Tuning", "MOT_THST_EXPO, CRUISE_THROTTLE, steering gains "
+                 "from thrust-stand and pool data (HLM-D42)"),
                 ("HLM-OI-1 / CR-02", "Closed: owner chose a flight "
-                 "controller with microSD (ADD DD-15)"),
-                ("A-18", "Interim persistent-breach path formalised in "
-                 "HLM-D24 until V-14 is resolved")],
+                 "controller with microSD (ADD DD-15)")],
 )
 group(m, "Hardware and firmware")
 D(m, "HLM-D01", "The helm shall run a pinned ArduPilot Rover stable release "
-  "(≥ 4.5) built for the chosen board. Version and hash are recorded in the "
-  "repository.", "M", "I", "BENCH", ["SAF-001", "SWE-006"])
+  "built for the chosen board: Rover 4.7.1 (tag Rover-4.7.1, commit "
+  "dbe79216), the release the simulator flies. Version and hash are "
+  "recorded in the repository.", "M", "I", "BENCH", ["SAF-001", "SWE-006"])
 D(m, "HLM-D02", "The flight controller shall provide: ≥ 2 free UARTs (GNSS, "
   "companion), ≥ 3 DShot-capable outputs, ≥ 2 analogue battery inputs, I2C, "
   "IMU and baro, and a microSD slot (≥ 8 GB card) for logging "
-  "(CR-02). Baseline candidate: Matek F405-TE class (6 UARTs, 8 DShot "
-  "outputs, microSD), subject to V-01.", "M", "I", "BENCH", ["SAF-001", "PRE-008", "V-01", "DD-15"])
+  "(CR-02), and run from ≥ 7 V so it survives pack sag near empty. "
+  "Baseline: SpeedyBee F405 WING APP (7-36 V, 5 usable UARTs, 12 DShot "
+  "outputs, microSD; CR-04), wireless module not fitted.", "M", "I",
+  "BENCH", ["SAF-001", "PRE-008", "V-01", "DD-15", "DD-19"])
 D(m, "HLM-D03", "No project-written code (including Lua) shall run on the "
   "flight controller. It runs ChibiOS only.", "M", "I", "BENCH",
   ["SAF-001", "DD-13"])
@@ -395,8 +428,10 @@ D(m, "HLM-D04", "On power-up the helm shall be disarmed with motor outputs "
   ["MOD-002"])
 group(m, "Modes")
 D(m, "HLM-D05", "Only STEERING, HOLD, LOITER, AUTO, RTL and GUIDED "
-  "(weed-shedding only) shall be used. No RC mode switch is configured.",
-  "M", "I", "SIM", ["MOD-001", "DD-12"])
+  "(weed-shedding only) shall be used. The helm shall boot and arm into "
+  "HOLD (INITIAL_MODE 4), with no RC mode switch (MODE_CH 0) and any RC "
+  "receiver ignored (RC_OPTIONS 1). Without these SITL armed into MANUAL.",
+  "M", "T", "SIM", ["MOD-001", "DD-12"])
 D(m, "HLM-D06", "At mission end the helm shall RTL and then hold at home. "
   "The mission-done behaviour is set to hold as a backstop.", "M", "S", "SIM",
   ["MOD-005", "V-04"])
@@ -404,8 +439,9 @@ D(m, "HLM-D07", "Auto-disarm after 60 s at home is performed by Mission "
   "Control (MCN-D12). The helm shall accept it.", "C", "S", "SIM",
   ["MOD-008"])
 group(m, "Pre-arm checks")
-D(m, "HLM-D08", "All ArduPilot arming checks shall be enabled, and failures "
-  "reported as STATUSTEXT (MCN translates them).", "M", "S", "SIM",
+D(m, "HLM-D08", "All ArduPilot arming checks shall be enabled except the "
+  "RC-channels check (no receiver is fitted: ARMING_SKIPCHK 64), and "
+  "failures reported as STATUSTEXT (MCN translates them).", "M", "S", "SIM",
   ["MOD-004"])
 D(m, "HLM-D09", "Arming shall need a 3D fix with HDOP ≤ 1.5. The ≥ 8 "
   "satellite check is done by Mission Control (MCN-D15).", "M", "T", "BENCH",
@@ -434,9 +470,10 @@ D(m, "HLM-D18", "Steering and speed controllers shall be tuned to ≤ 3 m RMS "
 D(m, "HLM-D19", "RTL shall plan around exclusion zones inside the "
   "inclusion fence (fence-aware path planning).", "M", "S", "SIM",
   ["NAV-007", "V-01"])
-D(m, "HLM-D20", "The heading estimate shall fall back to GNSS-velocity yaw "
-  "when the compass disagrees above 0.3 m/s.", "S", "S", "SIM",
-  ["NAV-008", "V-16"])
+D(m, "HLM-D20", "NAV-008 shall be met by the helm's EKF together with B7's "
+  "first-motion heading check (MCP-D22). V-16 showed the EKF alone keeps a "
+  "wrong heading with its single compass rotated 90°, though navigation "
+  "still tracked on GNSS course.", "S", "S", "SIM", ["NAV-008", "V-16"])
 group(m, "Fence")
 D(m, "HLM-D21", "The helm shall hold one inclusion polygon (≤ 70 vertices) "
   "and ≤ 10 exclusion polygons or circles, plus a 100 m circle backstop "
@@ -446,25 +483,30 @@ D(m, "HLM-D22", "The fence shall be enforced in every armed mode used.",
 D(m, "HLM-D23", "A breach shall trigger RTL within 1 s.", "M", "S", "SIM",
   ["FEN-005"])
 D(m, "HLM-D24", "Persistent breach (> 30 s or > 10 m outside) shall stop "
-  "the motors. If V-14 finds no native mechanism, Mission Control "
-  "(MCN-D59) and the MCP (B7) shall each independently command HOLD on "
-  "that condition, and either suffices. The helm's fence RTL stays the "
-  "primary response.", "M", "S", "SIM", ["FEN-006", "V-14", "A-18",
-                                         "FM-14"])
+  "the motors. V-14 found no native mechanism, so B7 (MCP-D30) and Mission "
+  "Control (MCN-D59) each independently command HOLD, and either "
+  "suffices. The helm's fence RTL stays the primary response.", "M", "S",
+  "SIM", ["FEN-006", "V-14", "A-18", "FM-14", "DD-21"])
 D(m, "HLM-D25", "Fence changes while armed shall be refused by every "
-  "sender (IF-14, IF-04 filter) and by the helm if supported (V-17).", "M",
-  "S", "SIM", ["FEN-007", "V-17"])
+  "sender: C7 (IF-14) and the IF-04 filter. V-17 showed the helm itself "
+  "accepts them, so these two are the only enforcement.", "M", "S", "SIM",
+  ["FEN-007", "V-17"])
 group(m, "Failsafes")
 D(m, "HLM-D26", "Battery failsafe: RTL at 35% remaining; at 15%, "
-  "continue RTL, alarm and reduce speed (V-15).", "M", "S", "SIM",
-  ["FS-001", "V-15"])
-D(m, "HLM-D27", "GCS failsafe on system-255 heartbeats: 2 s timeout, action "
-  "HOLD, continue in AUTO. The later RTL steps are done by MCP B4 "
-  "(MCP-D12).", "M", "S", "SIM", ["FS-002", "FS-003", "V-03", "V-06"])
-D(m, "HLM-D28", "EKF/position failsafe → HOLD (motors stop). Recovery RTL "
-  "is done by MCP B6 (MCP-D15).", "M", "S", "SIM", ["FS-004"])
-D(m, "HLM-D29", "Crash/stuck check → HOLD, raising an event the MCP can "
-  "act on.", "M", "S", "POOL", ["FS-005", "V-05"])
+  "continue RTL and alarm. V-15 found no native speed reduction, so B6 "
+  "lowers the RTL speed (MCP-D29).", "M", "S", "SIM", ["FS-001", "V-15"])
+D(m, "HLM-D27", "GCS failsafe on system-255 heartbeats: FS_GCS_TIMEOUT 2 s "
+  "+ FS_TIMEOUT 1 s = HOLD 3 s after the link goes (CR-05; both are the "
+  "firmware minimums), continue in AUTO. The later RTL steps are done by "
+  "MCP B4 (MCP-D12).", "M", "T", "SIM", ["FS-002", "FS-003", "V-03",
+                                          "V-06", "DD-22"])
+D(m, "HLM-D28", "EKF/position failsafe → HOLD as a backstop. It took 9 s "
+  "in SITL, so B6 stops the motors within FS-004's 3 s (MCP-D28) and does "
+  "the recovery RTL (MCP-D15).", "M", "S", "SIM", ["FS-004", "DD-21"])
+D(m, "HLM-D29", "Crash/stuck check → HOLD (CRASH_THR_MIN 50%, CRASH_VEL_MIN "
+  "0.1 m/s, CRASH_TIMEOUT 5 s), raising an event the MCP acts on. One "
+  "noisy GNSS speed sample resets its timer (V-05), so B7's second "
+  "detector backs it up.", "M", "S", "POOL", ["FS-005", "V-05"])
 D(m, "HLM-D30", "No companion-computer failsafe shall be configured: the "
   "helm completes missions without the MCP.", "M", "S", "SIM",
   ["FS-007", "SAF-002"])
@@ -504,23 +546,45 @@ D(m, "HLM-D41", "Compass interference shall be measured on rig L2 at full "
   "thrust before the hull layout is frozen. Above 30%, wiring or mast "
   "height changes before build.", "M", "T", "BENCH", ["MEC-013", "A-02",
                                                       "FM-04"])
+group(m, "Found in simulation (Issue D)")
+D(m, "HLM-D42", "The throttle-to-thrust curve shall be linearised "
+  "(MOT_THST_EXPO), because props give thrust ~ throttle^2. At the default "
+  "a 180° pivot took 20 s in SITL; at 1.0 it takes 6 s. Re-tuned from "
+  "thrust-stand data before the pool.", "M", "T", "POOL",
+  ["NAV-001", "NAV-005"])
+D(m, "HLM-D43", "Motor power shall be limited (BATT_WATT_MAX 70 W) so pack "
+  "sag near empty cannot brown out the ESCs or flight controller (KCL "
+  "section 5), while leaving thrust to make headway in the ENV-002 wind.",
+  "M", "A", "BENCH", ["PWR-005", "DD-19"])
+D(m, "HLM-D44", "The helm shall have exactly one MAVLink command path: "
+  "SERIAL1 to the mission computer. The flight controller's wireless "
+  "module is not fitted and SERIAL6 is disabled.", "M", "I", "BENCH",
+  ["SAF-003", "IF-02", "IF-04"])
 
 # ======================================================================
 # MCP  Mission computer
 # ======================================================================
 c = subsystem(
     "MCP", title="Mission computer",
-    issue="Issue B (for review)",
-    parents="SRS Issue D, ADD Issue D, ICD Issue C, FMEA Issue B",
+    issue="Issue C (for review)",
+    parents="SRS Issue F, ADD Issue F, ICD Issue E, FMEA Issue D",
     history=[["B", "28 September 2026", "FMEA actions A-03, A-07, A-08, A-11: navigation monitor B7 "
               "(MCP-D22 to D25, D27) and box temperature (MCP-D26).", "Claude, owner decisions "
-              "(CR-02, FMEA actions)"]],
+              "(CR-02, FMEA actions)"],
+             ["C", "29 September 2026", "Simulator slice 2: B6 takes the "
+              "FS-004 HOLD (MCP-D28) and the FS-001 slow RTL (MCP-D29); B7 "
+              "takes FEN-006 (MCP-D30); B5 astern bursts by thrust command "
+              "(MCP-D18, ICD IF-04 correction); MCP-D31 to D33 from "
+              "integration. All SIM requirements now have passing "
+              "scenarios (software/results).", "Claude, owner decision "
+              "(slice 2)"]],
 
     purpose="Take and geotag photos, relay MAVLink to the bank, and run the "
             "small boat-side watchdogs, without ever being needed for "
             "safety.",
     inside=["Raspberry Pi Zero 2W, microSD, heatsink", "5 MP camera",
-            "Moisture sensor", "OS image and services B1-B6"],
+            "Moisture sensor", "OS image and services B1-B7 "
+            "(software/boaty/mcp)"],
     outside=["Its 5 V supply (PWR)", "Camera hood and mount (HUL)",
              "Helm behaviour (HLM)"],
     breakdown=[("MCP-1 Computer", "Pi Zero 2W, 32 GB A1/U3 microSD, "
@@ -536,11 +600,16 @@ c = subsystem(
                  "SWE-001: Python services"],
     budget=[("Mass allocation", "≤ 35 g (estimate 30 g)"),
             ("Cost allocation", "£29 (Pi £15, camera £8, SD £4, "
-             "temperature sensor £2)"),
+             "temperature sensor £2); the flight controller's SD card is "
+             "in HLM"),
             ("Power", "≤ 2.0 W average, ≤ 3.0 W peak")],
     special="mcp",
     open_items=[("V-10", "Thermal in the sealed box"),
-                ("V-11", "Helm stops if B5 dies mid-burst")],
+                ("V-11", "Answered: the helm stops 3.9 s after the last "
+                 "target (3 s timeout + deceleration); accepted"),
+                ("B1", "The simulator uses a Python router with "
+                 "mavlink-router's topology; the boat runs mavlink-router "
+                 "itself (check on rig L1)")],
 )
 group(c, "Hardware")
 D(c, "MCP-D01", "The mission computer shall be a Pi Zero 2W with a 32 GB "
@@ -560,7 +629,7 @@ group(c, "Platform software")
 D(c, "MCP-D06", "The OS shall be Raspberry Pi OS Lite 64-bit with a "
   "read-only root filesystem and a separate data partition.", "M", "T",
   "BENCH", ["CAM-004", "IF-08"])
-D(c, "MCP-D07", "Services B1-B6 shall be systemd units that restart "
+D(c, "MCP-D07", "Services B1-B7 shall be systemd units that restart "
   "automatically and are running ≤ 45 s after power-on.", "M", "T", "BENCH",
   ["IF-04", "IF-03"])
 D(c, "MCP-D08", "The clock shall be set from helm GNSS time at start "
@@ -582,21 +651,25 @@ D(c, "MCP-D13", "≥ 5 GB shall be reserved for photos (≥ 500 at ≤ 2.5 MB). 
   "BENCH", ["CAM-004"])
 D(c, "MCP-D14", "B3 shall implement IF-03, with thumbnails made at capture "
   "time.", "M", "T", "BENCH", ["IF-03", "CAM-007"])
-D(c, "MCP-D15", "B6 (health): moisture → RTL within 2 s plus STATUSTEXT. "
-  "After a position-loss HOLD, RTL once the EKF has been healthy for "
-  "10 s.", "M", "S", "SIM", ["FS-010", "FS-004"])
+D(c, "MCP-D15", "B6 (health): moisture or box > 60 °C → RTL within 2 s "
+  "plus STATUSTEXT, unless the position is unhealthy (then HOLD wins, "
+  "FS-011). After a position-loss HOLD, RTL once the position has been "
+  "healthy for 10 s.", "M", "S", "SIM", ["FS-010", "FS-004", "FS-011"])
 D(c, "MCP-D16", "Photo sync throughput ≥ 11 Mbit/s with the boat ≤ 10 m "
   "from the bank (200 photos ≤ 5 min).", "S", "T", "POOL", ["CAM-007"])
 D(c, "MCP-D17", "Optional live view: 320 × 240 MJPEG at 2 fps when "
   "enabled, paused during sync.", "C", "D", "POOL", ["CAM-008"])
 group(c, "Weed-shedding and command filter (B5)")
-D(c, "MCP-D18", "B5 shall act only on a helm stuck event. Up to 3 GUIDED "
-  "astern bursts (≤ 0.5 m/s, ≤ 2 s, targets at 10 Hz), then resume the "
-  "previous mode if ground speed > 0.3 m/s is regained, else HOLD + "
-  "alarm.", "S", "S", "SIM", ["FS-006", "V-11"])
+D(c, "MCP-D18", "B5 shall act only on a stuck event (helm crash check or "
+  "B7). Up to 3 GUIDED astern bursts (≤ 0.5 m/s, ≤ 2 s, commands at 10 "
+  "Hz), then resume the previous mode if ground speed > 0.3 m/s is "
+  "regained, else HOLD + alarm. Bursts use SET_ATTITUDE_TARGET thrust with "
+  "zero yaw rate: a negative velocity target makes Rover turn round "
+  "instead (ICD IF-04, Issue E).", "S", "S", "SIM", ["FS-006", "V-11"])
 D(c, "MCP-D19", "All services shall send MAVLink only through a shared "
-  "client that blocks forbidden messages (IF-04 list).", "M", "T", "SIM",
-  ["SAF-003", "IF-04"])
+  "client with a default-deny filter (IF-04 list, per-service policy). "
+  "Proven by fuzzing every forbidden command from every service in every "
+  "helm mode (SC-30).", "M", "T", "SIM", ["SAF-003", "IF-04"])
 group(c, "Future: on-board duck spotting")
 D(c, "MCP-D20", "An upgrade may run an on-device bird detector at ≥ 2 fps "
   "that requests 'pause and look'.", "C", "T", "POOL", ["DET-003"])
@@ -625,6 +698,32 @@ D(c, "MCP-D26", "A DS18B20 at the top of the box interior shall be read at "
 D(c, "MCP-D27", "B7 thresholds shall be configuration, version-"
   "controlled, and exercised by SC-05, SC-29 and SC-38.", "M", "I", "SIM",
   ["SAF-007", "A-03", "A-07", "A-08"])
+group(c, "Gaps the helm cannot close (ADD DD-21)")
+D(c, "MCP-D28", "B6 shall request HOLD when the position has been unhealthy "
+  "(no 3D fix, HDOP > 2.5 or EKF unhealthy) for 1 s as the helm reports "
+  "it. The helm takes ~1.5 s to report a loss, so the motors stop within "
+  "FS-004's 3 s of the loss itself (2.5-2.7 s in SITL). The native EKF "
+  "failsafe alone took 9 s.", "M", "T", "SIM", ["FS-004", "DD-21"])
+D(c, "MCP-D29", "At critical battery (≤ 15% or the helm's critical alarm), "
+  "B6 shall reduce the RTL speed to 0.6 m/s with DO_CHANGE_SPEED and raise "
+  "an alarm. It may only reduce speed, and only in RTL.", "M", "T", "SIM",
+  ["FS-001", "V-15", "DD-21"])
+D(c, "MCP-D30", "B7 shall request HOLD when the boat has been outside the "
+  "fence for 30 s or is more than 10 m outside it (distance computed from "
+  "the fence read back from the helm), in any powered mode.", "M", "T",
+  "SIM", ["FEN-006", "V-14", "DD-21", "FM-14"])
+group(c, "Found in integration (Issue C)")
+D(c, "MCP-D31", "B7's stuck and divergence checks shall be suspended within "
+  "5 m of the active target: when station-keeping at home, progress along "
+  "a leg is meaningless and wind can push throttle past 50%.", "M", "T",
+  "SIM", ["FS-005", "A-07"])
+D(c, "MCP-D32", "A service shall not send mode-dependent commands until the "
+  "helm's heartbeat reports that mode (the filter checks against the "
+  "reported mode). B5 waits for GUIDED before its first burst.", "M", "T",
+  "SIM", ["SAF-003", "IF-04"])
+D(c, "MCP-D33", "All MAVLink shall be version 2 from the first packet "
+  "(IF-02). MAVLink 1 silently drops extension fields such as "
+  "mission_type.", "M", "I", "SIM", ["IF-02"])
 
 # ======================================================================
 # MCN  Mission Control
@@ -904,26 +1003,34 @@ D(r, "REC-D08", "The flag staff shall be capped, and hoop and flag edges "
 # ======================================================================
 s = subsystem(
     "SIM", title="Simulation & test",
-    issue="Issue C (for review)",
+    issue="Issue D (for review)",
     history=[["B", "28 September 2026", "Hardware-in-the-loop rigs L1-L3 "
               "added (SIM-D13 to D24). Test catalogue rebuilt with IDs and "
               "extended with FMEA-derived scenarios (BOATY-FMEA-001).",
               "Claude, owner request"],
              ["C", "28 September 2026", "L1-10 (adult PIN) and B-07 (cell "
               "acceptance) added for FMEA FM-48 and A-20.", "Claude, "
-              "owner decision (CR-03)"]],
+              "owner decision (CR-03)"],
+             ["D", "29 September 2026", "Simulator built (slices 1-2): our "
+              "own boat model through SITL's JSON interface (ADD DD-20), "
+              "B1 router topology, real services on a simulated Pi Zero. "
+              "SIM-D01/02/07 updated; SIM-D25 to D28 added; test results "
+              "shown against the catalogue; SC-02 at 3 s (CR-05).",
+              "Claude, owner decisions"]],
     purpose="Let the whole system be exercised, failed on purpose and "
             "rehearsed at home, first against a simulated boat and then "
             "with more and more real hardware in the loop, with the same "
             "software throughout.",
-    inside=["ArduPilot SITL (Rover, boat frame)", "Camera stub (IF-03)",
-            "Launch scripts", "Scenario runner and test suites", "CI "
-            "configuration", "Rig L1: real computers + SITL",
+    inside=["ArduPilot Rover 4.7.1 SITL", "Boat and battery model "
+            "(JSON physics)", "Radio-link relay and B1 router stand-in",
+            "Simulated camera for B2", "Scenario runner and test suites "
+            "(software/tests)", "CI configuration", "Rig L1: real computers + SITL",
             "Rig L2: iron bird (real helm and power train)",
             "Rig L3: water-tank thrust and weed rig"],
     outside=["The software under test (MCN, MCP services)", "Pool and lake "
              "trials (per-subsystem and system test procedures)"],
-    breakdown=[("SIM-1 Simulator", "SITL + camera stub + launcher"),
+    breakdown=[("SIM-1 Simulator", "SITL + boat model (software/boaty/sim) "
+                "+ launcher; services run from software/boaty/mcp"),
                ("SIM-2 Test suites", "Unit, contract, scenario, FMEA-"
                 "derived, LLM evaluation"),
                ("SIM-3 CI", "GitHub Actions workflows"),
@@ -935,8 +1042,9 @@ s = subsystem(
                 "beacon, on a board; driven by the real Mission Control"),
                ("SIM-6 Rig L3 tank", "One pod in a water tub on a load cell, "
                 "with current logging and real pond weed")],
-    constraints=["Same parameter file as the real helm, plus SIM_* "
-                 "overrides", "Runs on a laptop or the Pi 5",
+    constraints=["Same parameter file as the real helm, plus sitl.parm",
+                 "All timings in simulated time; runs faster than real "
+                 "time (5x used)", "Runs on a laptop or the Pi 5",
                  "Rig L2 is run with props off, or in water with the tank "
                  "covered. Removing the magnetic key is the emergency stop."],
     budget=[("Cost", "£0 software (open source). Rig equipment, outside "
@@ -945,18 +1053,23 @@ s = subsystem(
             ("LLM evaluation", "API credit, capped per run"),
             ("Mass / power", "n/a")],
     special="sim",
-    open_items=[("TBC-03 / V-12", "SITL skid boat frame"),
-                ("TBC-04", "Fault injection parameters per scenario"),
+    open_items=[("Model", "Boat-model thrust, drag and inertia are estimates "
+                 "until the thrust stand and pool replace them (KCL "
+                 "section 8)"),
+                ("Slice 3", "Mission Control against the simulator; C7 "
+                 "impostor-GCS detection (SC-37)"),
                 ("SIM-OI-1", "Rig L2 needs the first parts order (FC, ESCs, "
                  "motors, power parts). Rig L1 needs only a Pi Zero 2W and "
                  "camera.")],
 )
 group(s, "Simulator")
-D(s, "SIM-D01", "SITL shall run the same ArduPilot version as the helm, "
-  "with a skid-steer boat frame and the controlled parameter file.", "M",
-  "D", "SIM", ["SWE-004", "V-12"])
-D(s, "SIM-D02", "The camera stub shall implement IF-03 exactly, serving "
-  "test images geotagged from SITL.", "M", "T", "SIM", ["SWE-004", "IF-21"])
+D(s, "SIM-D01", "SITL shall run the same ArduPilot version as the helm "
+  "(Rover 4.7.1) and the controlled parameter file, flying our own "
+  "skid-steer boat model through the JSON interface (ADD DD-20).", "M",
+  "D", "SIM", ["SWE-004", "V-12", "DD-20"])
+D(s, "SIM-D02", "The real B2/B3 code shall serve IF-03 in simulation, with "
+  "a simulated camera rendering images at the boat's true position.", "M",
+  "T", "SIM", ["SWE-004", "IF-21"])
 D(s, "SIM-D03", "One command shall start the simulator on a laptop or the "
   "Pi 5 at a given site's home.", "M", "D", "SIM", ["SWE-004"])
 D(s, "SIM-D04", "Mission Control shall run against the simulator with "
@@ -967,9 +1080,11 @@ group(s, "Tests")
 D(s, "SIM-D06", "Each FS-001 to FS-013 requirement shall have an automated "
   "scenario with explicit pass criteria (SC-01 to SC-13, section 6). "
   "FS-008 is proven on rig L2.", "M", "T", "SIM", ["SWE-005"])
-D(s, "SIM-D07", "Fault injection shall use SITL simulation parameters and "
-  "network impairment, mapped per scenario.", "M", "T", "SIM",
-  ["SWE-005", "IF-21"])
+D(s, "SIM-D07", "Fault injection shall use SITL simulation parameters "
+  "(SIM_GPS1_ENABLE, SIM_MAG1_ORIENT), boat-model faults (motor loss or "
+  "reversal, weed drag, wind, battery drain, key out) and radio-link "
+  "impairment (cut, loss, latency), mapped per scenario in the test code.",
+  "M", "T", "SIM", ["SWE-005", "IF-21"])
 D(s, "SIM-D08", "Contract tests for IF-03 and IF-14 shall run against both "
   "the simulator and real hardware.", "M", "T", "SIM", ["IF-14", "IF-03"])
 D(s, "SIM-D09", "The validator's adversarial suite (≥ 50 cases) and a "
@@ -985,6 +1100,22 @@ D(s, "SIM-D11", "Every push shall run ruff, mypy and unit tests. SITL "
 D(s, "SIM-D12", "Tool and dependency versions (SITL commit, Python lock "
   "file) shall be pinned in the repository.", "M", "I", "SIM",
   ["SWE-006"])
+group(s, "Built in slices 1-2 (Issue D)")
+D(s, "SIM-D25", "The boat model shall take its parameters from the Key "
+  "Component List (mass, thrust ahead/astern, drag, windage, pack capacity "
+  "and resistance) and be re-fitted to thrust-stand and pool data when "
+  "they exist.", "M", "A", "SIM", ["SWE-004", "DD-20"])
+D(s, "SIM-D26", "The simulated boat shall have the boat's MAVLink topology: "
+  "SITL's port joined by a B1 router to the radio relay and to the "
+  "services, so a mission-computer failure takes the bank link with it.",
+  "M", "D", "SIM", ["SWE-004", "IF-04", "IF-21"])
+D(s, "SIM-D27", "Every timing criterion shall be measured in simulated time "
+  "from truth (commanded outputs, thrust, position), not from telemetry "
+  "round trips.", "M", "I", "SIM", ["SWE-005"])
+D(s, "SIM-D28", "Each run shall write per-scenario evidence (measured "
+  "values against the criterion) and a report (software/results). Known "
+  "native gaps are marked as such, never hidden.", "M", "I", "SIM",
+  ["SWE-005", "SAF-007"])
 group(s, "Hardware-in-the-loop rigs (Issue B)")
 D(s, "SIM-D13", "Rig L1 shall connect SITL to the real Pi Zero 2W through "
   "a 3.3 V USB-serial adapter at 115200 baud on the Pi's UART, so the "
@@ -1034,55 +1165,80 @@ ORDER = ["HUL", "PRP", "PWR", "HLM", "MCP", "MCN", "REC", "SIM"]
 
 
 # ---------------------------------------------------------------- tables
-HLM_PARAMS = [
-    ("Vehicle", "FRAME_CLASS", "Boat", "MOD-001", "V-01"),
-    ("Motor outputs", "SERVO1_FUNCTION / SERVO2_FUNCTION",
-     "ThrottleLeft (73) / ThrottleRight (74)", "NAV-001, IF-05", "Bench"),
-    ("Output protocol", "MOT_PWM_TYPE", "DShot300", "IF-05", "TBC-05"),
-    ("Throttle cap", "MOT_THR_MAX", "Tuned: full throttle ≤ 1.5 m/s",
-     "NAV-003", "Pool"),
-    ("Cruise", "CRUISE_SPEED / CRUISE_THROTTLE", "1.0 m/s / measured",
-     "NAV-002", "Pool"),
-    ("Waypoints", "WP_SPEED / WP_RADIUS", "1.0 m/s / 3 m", "NAV-004", "SITL"),
-    ("RTL", "RTL_SPEED", "0 (= WP_SPEED)", "NAV-007", "SITL"),
-    ("Loiter", "LOIT_RADIUS", "2 m", "NAV-006", "Lake"),
-    ("Path planning", "OA_TYPE", "Dijkstra (fence-aware)", "NAV-007",
-     "V-01"),
-    ("Identity", "SYSID_THISMAV / SYSID_MYGCS", "1 / 255", "IF-02", "V-06"),
-    ("Companion port", "SERIAL2_PROTOCOL / SERIAL2_BAUD", "2 (MAVLink 2) / "
-     "115", "IF-04", "TBC-02"),
-    ("Fence", "FENCE_ENABLE / FENCE_TYPE / FENCE_ACTION", "1 / polygon + "
-     "circle / RTL", "FEN-001, FEN-005", "V-02"),
-    ("Fence backstop", "FENCE_RADIUS / FENCE_MARGIN", "100 m / 3 m",
-     "OPS-006", "SITL"),
-    ("Battery", "BATT_MONITOR / BATT_CAPACITY", "Analogue V+I / measured "
-     "(≈ 3000 mAh)", "PWR-006", "Bench"),
-    ("Battery failsafe", "BATT_LOW_MAH / BATT_CRT_MAH", "35% / 15% of "
-     "capacity", "FS-001", "SITL"),
-    ("Battery actions", "BATT_FS_LOW_ACT / BATT_FS_CRT_ACT", "RTL / RTL",
-     "FS-001", "V-15"),
-    ("Arming capacity", "BATT_ARM_MAH", "80% of capacity", "PRE-003",
-     "SITL"),
-    ("Motor rail", "BATT2_MONITOR / BATT2_ARM_VOLT", "Analogue V / 9.0 V",
-     "MOD-003, PRE-007", "V-13"),
-    ("GCS failsafe", "FS_GCS_ENABLE / FS_TIMEOUT / FS_ACTION", "2 (continue "
-     "in AUTO) / 2 s / Hold", "FS-002, FS-003", "V-03"),
-    ("EKF failsafe", "FS_EKF_ACTION", "Hold", "FS-004", "SITL"),
-    ("Stuck", "FS_CRASH_CHECK", "Hold", "FS-005", "V-05"),
-    ("GNSS", "GPS_TYPE / GPS_HDOP_GOOD", "Auto / 150", "PRE-001", "Bench"),
-    ("Arming", "ARMING_CHECKS", "All", "MOD-004", "SITL"),
-    ("Heading", "COMPASS_ORIENT (+ EKF3 GSF yaw)", "Per module / default "
-     "on", "NAV-008", "TBC-09, V-16"),
-    ("Beacon", "NTF_LED_TYPES / SERVO3_FUNCTION", "NeoPixel / NeoPixel1",
-     "REC-004, IF-09", "Bench"),
-    ("Logging", "LOG_BACKEND_TYPE / LOG_BITMASK", "File / default + ≥ 5 Hz",
-     "LOG-001", "Bench"),
-    ("Mission end", "MIS_DONE_BEHAVE", "Hold (backstop)", "MOD-005", "V-04"),
-    ("Battery backstop", "BATT_LOW_VOLT / BATT_CRT_VOLT", "10.2 V / 9.6 V",
-     "FS-001 (HLM-D40)", "L2-09"),
-    ("GNSS glitch", "EK3_GLITCH_RAD", "25 m (default; confirm)",
-     "FS-004 (HLM-D39)", "SC-20"),
-]
+SOFTWARE_PARAMS = DOCS.parent / "software" / "params"
+
+
+def load_param_baseline():
+    """The controlled parameter files, as (group, name, value, note) rows.
+
+    The SSS no longer keeps its own copy of the baseline: this table is
+    generated from software/params, the same files the helm and the
+    simulator load, so the two cannot drift apart."""
+    rows = []
+    for fname, default_group in (("boaty-mk1.parm", "Behaviour"),
+                                 ("boaty-mk1-speedybee.parm", "Board")):
+        group_name = default_group
+        pending = None
+        for raw in (SOFTWARE_PARAMS / fname).read_text().splitlines():
+            line = raw.strip()
+            if line.startswith("# ---"):
+                group_name = line.strip("# -").split("(")[0].strip()
+                pending = None
+                continue
+            if line.startswith("#") and raw[:1].isspace() and pending:
+                pending[3] += " " + line.lstrip("# ").strip()
+                continue
+            if not line or line.startswith("#"):
+                pending = None
+                continue
+            body, _, note = raw.partition("#")
+            parts = body.split()
+            if len(parts) == 2:
+                name, value = parts
+                pending = [group_name if fname.startswith("boaty-mk1.")
+                           else "Board wiring", name, value, note.strip()]
+                rows.append(pending)
+    return rows
+
+
+HLM_PARAMS = load_param_baseline()
+
+RESULTS_JSON = DOCS.parent / "software" / "results" / "sitl_results.json"
+UNIT_EVIDENCE = {"SC-30": "Pass (unit fuzz, 6,000 cases)"}
+
+
+def load_sim_results() -> dict:
+    """Catalogue ID -> result from the simulator's evidence file. A
+    catalogue test may have several records (e.g. SC-04 helm-only and
+    with the boat services); any pass counts, else the known gap shows."""
+    import json
+    import re
+    out = dict(UNIT_EVIDENCE)
+    if not RESULTS_JSON.exists():
+        return out
+    by_id: dict = {}
+    for r in json.loads(RESULTS_JSON.read_text())["records"]:
+        rid = r.get("id") or ""
+        m = re.match(r"(SC-\d+|V-\d+)", rid)
+        by_id.setdefault(m.group(1) if m else rid, []).append(r["outcome"])
+    for tid, outs in by_id.items():
+        if "passed" in outs or "xpass" in outs:
+            out[tid] = "Pass"
+        elif "xfail" in outs:
+            out[tid] = "Known gap"
+        elif "failed" in outs:
+            out[tid] = "FAIL"
+    if "V-05" in out:
+        out["SC-05"] = out["V-05"] + " (via V-05; B7 backs up at 10 s)"
+    for rec_id, tid in (("IF-14-05", "SC-40"),):
+        if rec_id in by_id:
+            out[tid] = "Pass" if "passed" in by_id[rec_id] else "FAIL"
+    if out.get("SC-09") == "Pass":
+        out["SC-09"] = "Pass (helm part; panel in slice 3)"
+    return out
+
+
+SIM_RESULTS = load_sim_results()
 
 # Test catalogue (SSS-SIM Issue B). kind: SIM, L1, L2, L3.
 # (id, kind, title, injection / method, pass criterion, refs)
@@ -1090,7 +1246,7 @@ TESTS = [
     ("SC-01", "SIM", "Battery drain to 35% then 15%", "Simulated battery "
      "drain", "RTL at 35%; alarm at 15%; reaches home", ["FS-001"]),
     ("SC-02", "SIM", "Link cut in STEERING", "Drop UDP 14550",
-     "HOLD ≤ 2 s; RTL at 10 s (B4)", ["FS-002"]),
+     "HOLD ≤ 3 s (CR-05); RTL at 10 s (B4)", ["FS-002"]),
     ("SC-03", "SIM", "Link cut in AUTO", "Drop UDP 14550", "Mission "
      "continues; RTL at 60 s (B4)", ["FS-003", "FM-31"]),
     ("SC-04", "SIM", "GNSS failure 5 s then restore", "SITL GPS failure",
@@ -1160,6 +1316,8 @@ TESTS = [
      "HOLD ≤ 10 s after start", ["FM-05", "FM-18"]),
     ("SC-39", "SIM", "Capacity overstated by 30%", "Wrong capacity "
      "parameter", "Voltage backstop triggers RTL in time", ["FM-15"]),
+    ("SC-40", "SIM", "Arm lands in HOLD", "Arm with default RC input "
+     "present", "Armed in HOLD, motors off", ["FM-53"]),
     ("L1-01", "L1", "End-to-end mission, real computers", "Voice → "
      "captain's log over real Wi-Fi and UART", "Completes; all artefacts "
      "logged", ["SWE-004"]),

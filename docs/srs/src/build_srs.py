@@ -25,8 +25,9 @@ FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_System_Requirements_Specification.pdf"
 
 DOC_ID = "BOATY-SRS-001"
-ISSUE = "Issue E (for review)"
-DATE = "28 September 2026"
+ISSUE = "Issue F (for review)"
+DATE = "29 September 2026"
+PREV = "28 September 2026"
 
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 pdfmetrics.registerFont(TTFont("DV", FONT_DIR / "DejaVuSans.ttf"))
@@ -210,24 +211,29 @@ def build():
     toc.levelStyles = [S["toc1"], S["toc2"]]
     st += [P("Document control", "h1"),
            table([["Issue", "Date", "Change", "By"],
-                  ["A", DATE, "First issue, for review. Includes the Concept of "
+                  ["A", PREV, "First issue, for review. Includes the Concept of "
                    "Operations (section 3) and Concept of Use (section 4).",
                    "Claude (drafted)"],
-                  ["B", DATE, "Owner review: ArduPilot (Route A) selected, "
+                  ["B", PREV, "Owner review: ArduPilot (Route A) selected, "
                    "TBD-01 closed, SAF-005 marked not applicable, MC-014 "
                    "applies unconditionally. Failsafe thresholds and safety "
                    "numbers accepted as baseline (TBD-08 closed).",
                    "Claude, owner decisions"],
-                  ["C", DATE, "CR-01 accepted: CON-001 cap raised to £160 "
+                  ["C", PREV, "CR-01 accepted: CON-001 cap raised to £160 "
                    "(target £150). TBD-04 to TBD-07 closed by the "
                    "architecture decisions (ADD DD-06 to DD-09).",
                    "Claude, owner decisions"],
-                  ["D", DATE, "Fourth crew button TALK (blue, microphone) "
+                  ["D", PREV, "Fourth crew button TALK (blue, microphone) "
                    "added for push-to-talk: MC-002, NLI-002, CHD-005 and "
                    "ConUse updated (ICD TBC-10).", "Claude, owner decision"],
-                  ["E", DATE, "CR-03: CON-001 cap raised to £185 (target £180) "
+                  ["E", PREV, "CR-03: CON-001 cap raised to £185 (target £180) "
                    "after real UK prices for a microSD flight controller "
-                   "(ADD Issue E).", "Claude, owner decision"]],
+                   "(ADD Issue E).", "Claude, owner decision"],
+                  ["F", DATE, "CR-05: FS-002 link-loss HOLD relaxed from 2 s "
+                   "to 3 s, the autopilot's native minimum measured in "
+                   "simulation (software/results, SC-02). CR-04 (flight "
+                   "controller change) needs no SRS change.",
+                   "Claude, owner decision"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),
            table([["Role", "Name", "Signature / date"],

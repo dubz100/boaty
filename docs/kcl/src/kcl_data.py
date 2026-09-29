@@ -62,7 +62,8 @@ FINDINGS = [
      "meet. The SpeedyBee F405 WING APP runs from 7 V, has microSD "
      "logging, 12 DShot outputs and an ArduPilot board definition, and "
      "costs about £17 less.",
-     "Decision", "CR-04: change KC-01 to the SpeedyBee F405 WING APP"),
+     "Decision", "CR-04 accepted (Issue B): KC-01 is the SpeedyBee F405 "
+     "WING APP (ADD DD-19)"),
     ("KF-02", "Limit motor power so sag can't brown out anything",
      "Even with the SpeedyBee, full thrust on a nearly flat, high-"
      "resistance pack could pull the rail below the ESCs' 7.2 V minimum. "
@@ -149,7 +150,7 @@ kc("KC-01", "Flight controller (helm)", "HLM", 1,
    "SpeedyBee F405 WING APP (FC + PDB; wireless board not fitted)",
    "Baseline: Matek F405-TE (fails KF-01). Matek F405-WTE runs from 6.8 V "
    "but is end-of-life.",
-   "Proposed (CR-04)",
+   "Baseline (CR-04 accepted)",
    "Every helm parameter, UART, ADC and output assignment comes from its "
    "board definition.",
    [("MCU", "STM32F405, 168 MHz, 1 MB flash", "AP", "V-01"),
@@ -615,25 +616,26 @@ DATASHEETS = [
 # (document, change, refs)
 # ----------------------------------------------------------------------
 CHANGES = [
-    ("ADD Issue F", "KC-01 replaces the F405-TE in HLM, BOM and mass "
-     "budget; BOM per section 4; new DD-19 (own boat physics via SITL "
-     "JSON); DD-15 unchanged (microSD kept).", ["KF-01", "KF-05", "KF-07"]),
-    ("ICD Issue E", "IF-04 port = SERIAL1 (closes TBC-02). IF-05 outputs 1 "
-     "and 4, AM32 3D DShot (closes TBC-05 on the bench). IF-06 high-side "
-     "switch and AIRSPD-pad sense. IF-01 2.4 GHz. IF-02 no FC wireless. "
-     "IF-21 JSON backend (closes TBC-03).", ["KF-03", "KF-04", "KF-06",
-                                              "KF-07"]),
-    ("SSS-HLM Issue D", "Parameter baseline per section 7, including "
-     "BATT_WATT_MAX and SERIAL6 off.", ["KF-02", "KF-04"]),
-    ("SSS-PWR Issue C", "PWR-D07 high-side; sag analysis added; PWR-D12 "
-     "checked at 9.0 V under the power limit.", ["KF-01", "KF-03"]),
-    ("SSS-PRP Issue B", "ESC choice and configuration (3D, LVC off, BEC "
-     "unused).", ["KF-08"]),
-    ("SSS-SIM Issue D", "Boat physics model and its parameters (section "
-     "8); scenario injections on the JSON side (wind, thrust loss, "
-     "battery).", ["KF-07"]),
-    ("FMEA Issue D", "Re-rate FM-23 (pack) and supply brown-out; consider "
-     "RPM telemetry as a detection control for FM-16 and FM-27.",
+    ("ADD Issue F", "Done: KC-01 in HLM, BOM (£181) and mass budget (DD-19); "
+     "own boat physics via SITL JSON (DD-20); DD-15 unchanged (microSD "
+     "kept).", ["KF-01", "KF-05", "KF-07"]),
+    ("ICD Issue E", "Done: IF-04 on SERIAL1 (TBC-02 closed); IF-05 outputs "
+     "1 and 4, AM32 3D DShot (TBC-05 closed, bench check with V-09); IF-06 "
+     "high-side switch and AIRSPD-pad sense (TBC-07 closed); SERIAL6 off; "
+     "IF-21 rewritten for the JSON model (TBC-03/04 closed). IF-01 was "
+     "already 2.4 GHz.", ["KF-03", "KF-04", "KF-06", "KF-07"]),
+    ("SSS-HLM Issue D", "Done: parameter baseline now generated from "
+     "software/params; BATT_WATT_MAX (HLM-D43) and one command path "
+     "(HLM-D44).", ["KF-02", "KF-04"]),
+    ("SSS-PWR Issue C", "Done: PWR-D07 high-side; PWR-D22 supplies work "
+     "down to 7.5 V under the power limit.", ["KF-01", "KF-03"]),
+    ("SSS-PRP Issue B", "Done: AM32 ESC and its configuration (3D, LVC "
+     "off, BEC unused; PRP-D16).", ["KF-08"]),
+    ("SSS-SIM Issue D", "Done: boat model from this list (SIM-D25); "
+     "injections on the model side (SIM-D07).", ["KF-07"]),
+    ("FMEA Issue D", "Done: FM-08 (supply brown-out) re-rated with its "
+     "real cause and closed by A-21. Still open: RPM telemetry as a "
+     "detection control for FM-16/FM-50 (dead motor vs weed).",
      ["KF-01", "KF-09"]),
 ]
 

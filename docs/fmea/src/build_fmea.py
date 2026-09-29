@@ -26,8 +26,9 @@ OUT = HERE.parent / "Boaty_Design_FMEA.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-FMEA-001"
-ISSUE = "Issue C (for review)"
-DATE = "28 September 2026"
+ISSUE = "Issue D (for review)"
+DATE = "29 September 2026"
+PREV = "28 September 2026"
 W = 257  # usable width in mm (landscape A4 minus margins)
 
 
@@ -78,20 +79,26 @@ def build():
                                           "hardware). Updated after rigs, "
                                           "pool and before the first lake "
                                           "trial (SAF-006)."],
-                         ["Basis", "ADD Issue C, ICD Issue B, SSS Issue A/B"],
+                         ["Basis", "ADD Issue F, ICD Issue E, SSS Issues "
+                          "B-D, simulator slices 1-2"],
                          ["Content", f"{n} failure modes, {len(F.ACTIONS)} "
                           f"actions, {len(SD.TESTS)} catalogued tests"]])
     st += control_and_contents(
-        [["A", DATE, "First issue: design FMEA at architecture level.",
+        [["A", PREV, "First issue: design FMEA at architecture level.",
           "Claude (drafted)"],
-         ["B", DATE, "Actions carried into SSS-HLM/MCP/MCN Issue B, ICD "
+         ["B", PREV, "Actions carried into SSS-HLM/MCP/MCN Issue B, ICD "
           "Issue C and ADD Issue D; status and post-action ratings added. "
           "A-05, A-09, A-17 await the operations manual.",
           "Claude, owner request"],
-         ["C", DATE, "CR-03: salvaged cells (FM-23 O 1 → 2; A-20 cell "
+         ["C", PREV, "CR-03: salvaged cells (FM-23 O 1 → 2; A-20 cell "
           "acceptance) and adult PIN (new FM-48). Operations manual "
           "BOATY-OPS-001 closes A-05, A-09, A-11, A-17, A-19.",
-          "Claude, owner decision"]],
+          "Claude, owner decision"],
+         ["D", DATE, "Simulator evidence (software/results): FM-08 re-rated "
+          "with its real cause (KCL); FM-49 to FM-53 added; actions A-21 to "
+          "A-24 incorporated; A-18 closed (V-14: no native mechanism); "
+          "detection re-rated where a scenario now passes.",
+          "Claude, owner decisions (CR-04, CR-05)"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "
         "missing failure modes: an FMEA is only as good as its "
@@ -190,21 +197,47 @@ def build():
                "catalogue only covered the failsafes we'd already "
                "designed.",
            ]),
-           H2("4.2 After Issues B and C"),
-           P("Every action is now incorporated: in the subsystem specs "
-             "(Issue B/C) or in the operations manual (BOATY-OPS-001). The "
-             "one row still above the action threshold is FM-43 (other "
-             "water users near the boat, RPN 126 after actions). It's a "
-             "severity-9 hazard with no sensor to detect it, so detection "
-             "relies on the lookout procedure (OP-10). It remains an "
-             "accepted residual risk (section 6). Highest RPNs now: " +
+           H2("4.2 After the incorporated actions"),
+           P("Every action is now incorporated: in the subsystem specs, the "
+             "ICD or the operations manual (BOATY-OPS-001). Rows still at or "
+             "above the action threshold after their actions: " +
+             ", ".join(f"<b>{r[0]}</b> ({F.rpn_after(r)})" for r in
+                       sorted(F.ROWS, key=F.rpn_after, reverse=True)
+                       if F.rpn_after(r) >= 100) + ". "
+             "FM-43 (other water users near the boat) is a severity-9 "
+             "hazard with no sensor to detect it; detection relies on the "
+             "lookout procedure (OP-10), and it is an accepted residual "
+             "risk (section 6). FM-02 (GNSS glitch near the fence) stays "
+             "above the threshold until SC-20 runs in the simulator; "
+             "Issue C wrongly listed FM-43 as the only such row. Highest "
+             "RPNs now: " +
              ", ".join(f"{r[0]} {F.rpn_after(r)}" for r in
                        sorted(F.ROWS, key=F.rpn_after, reverse=True)[:6]) +
              "."),
+           H2("4.3 What the simulator changed (Issue D)"),
+           *bullets([
+               "<b>The worst failure mode was a specification error.</b> "
+               "FM-52: the ICD's astern-burst command (a negative velocity "
+               "target) makes Rover turn round and drive forwards into the "
+               "weed. RPN 420 before the fix, the highest in this FMEA, and "
+               "no planned test before simulation would have caught it.",
+               "<b>Supply brown-out (FM-08) was under-rated.</b> The Key "
+               "Component List showed the baseline flight controller's 9 V "
+               "minimum is crossed by pack sag near empty (CR-04).",
+               "<b>Three configuration or integration faults</b> (FM-51, "
+               "FM-53) were found and fixed the first time the parts ran "
+               "together.",
+               "<b>Two new, accepted behaviours</b> (FM-49 gale "
+               "misdiagnosis, FM-50 dead motor looks like weed) end safely "
+               "in HOLD with an alarm.",
+               "<b>Detection improved</b> where a scenario now passes "
+               "(FM-05, FM-14, FM-17). FM-16 is unchanged: the helm's crash "
+               "check is noise-sensitive, and B7 backs it up at 10 s.",
+           ]),
            PageBreak(),
            H1("5. Actions"),
            table([["ID", "Action", "Owner", "Failure modes", "Status (Issue "
-                   "B)", "Carried by"]] +
+                   "D)", "Carried by"]] +
                  [[f"<b>{a[0]}</b>", a[1], a[2], ", ".join(a[4]),
                    F.STATUS[a[0]][0], ", ".join(F.STATUS[a[0]][1]) or "-"]
                   for a in F.ACTIONS], [14, 110, 20, 30, 45, 38]),

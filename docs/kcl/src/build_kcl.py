@@ -24,8 +24,9 @@ OUT = HERE.parent / "Boaty_Key_Component_List.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-KCL-001"
-ISSUE = "Issue A (for review)"
-DATE = "28 September 2026"
+ISSUE = "Issue B (for review)"
+DATE = "29 September 2026"
+PREV = "28 September 2026"
 plt.rcParams["font.family"] = "DejaVu Sans"
 
 from reportlab.pdfbase import pdfmetrics  # noqa: E402
@@ -157,7 +158,10 @@ def build():
                  f"{len(K.FINDINGS)} findings, {len(K.DATASHEETS)} "
                  "datasheet entries"]])
     st += control_and_contents(
-        [["A", DATE, "First issue.", "Claude (drafted)"]],
+        [["A", PREV, "First issue.", "Claude (drafted)"],
+         ["B", DATE, "CR-04 accepted: SpeedyBee F405 WING APP is the "
+          "baseline. Section 10 now records where each change went.",
+          "Claude, owner decision"]],
         "Review guidance: check the proposed parts against what you can "
         "actually buy, and the cost estimates against real prices. Every "
         "value is tagged with its source; orange-tagged values are guesses "
@@ -204,14 +208,14 @@ def build():
         rows.append([f"<b>{f[0]}</b>", f"<b>{f[1]}.</b> {f[2]}", f[3], f[4]])
         style.append(("BACKGROUND", (2, i), (2, i), sev_c[f[3]]))
     st += [H1("2. Findings"),
-           callout("<b>Decision needed (CR-04).</b> The baseline flight "
-                   "controller (Matek F405-TE) needs 9 V, and our 3S Li-ion "
+           callout("<b>CR-04 accepted (Issue B).</b> The baseline flight "
+                   "controller (Matek F405-TE) needed 9 V, and our 3S Li-ion "
                    "pack sags below that under load near empty. The boat "
-                   "could lose its autopilot during the very return-home "
-                   "that the low-battery failsafe starts. The proposed "
+                   "could have lost its autopilot during the very "
+                   "return-home that the low-battery failsafe starts. The "
                    "SpeedyBee F405 WING APP runs from 7 V, keeps microSD "
-                   "logging, and costs about £17 less. Section 5 has the "
-                   "numbers.", ORANGE, ORANGE_T),
+                   "logging, costs about £17 less, and is now the baseline "
+                   "(ADD DD-19). Section 5 has the numbers.", BLUE, BLUE_T),
            Spacer(1, 3 * mm),
            table(rows, [13, 115, 16, 26], style_extra=style),
            PageBreak()]
@@ -239,8 +243,8 @@ def build():
     for b in K.NEW_BOM:
         rows.append([b[0], b[1], str(b[2]), ", ".join(b[3]) or "-", b[4]])
     rows.append(["", "<b>Total (excluding conditional)</b>",
-                 f"<b>{total}</b>", "", f"ADD Issue E baseline "
-                 f"£{res['old']}"])
+                 f"<b>{total}</b>", "", f"ADD Issue F baseline "
+                 f"£{res['old']} (Issue E: £182)"])
     for c in K.CONDITIONAL:
         rows.append([c[0], c[1], str(c[2]), "-", "Unchanged"])
     st += [H1("4. Cost reconciliation"),
@@ -380,10 +384,10 @@ def build():
            PageBreak()]
 
     # 10 changes and open items
-    rows = [["Document", "Change once CR-04 is decided", "Findings"]]
+    rows = [["Document", "Where it went (Issue B)", "Findings"]]
     for c in K.CHANGES:
         rows.append([c[0], c[1], ", ".join(c[2])])
-    st += [H1("10. What changes next"),
+    st += [H1("10. Where the changes went"),
            table(rows, [30, 118, 22]),
            H2("10.1 Measurements that matter most to the simulator"),
            *bullets([

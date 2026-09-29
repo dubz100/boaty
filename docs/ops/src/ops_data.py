@@ -305,13 +305,17 @@ CONTINGENCY = [
      "home. End the session.", "Wave it in", ["FS-001"]),
     ("K-03", "Stuck in weed", "'I'm stuck, trying to wiggle free'", "Wait "
      "for up to three wiggles. Still stuck: COME HOME to retry, else "
-     "recover by line (K-07).", "Spot the boat", ["FS-005", "FS-006"]),
+     "recover by line (K-07). Stuck in clear water with no weed in sight? "
+     "Suspect a dead motor: the boat can't tell the two apart. Recover and "
+     "inspect the pods.", "Spot the boat", ["FS-005", "FS-006", "FM-50"]),
     ("K-04", "Boat stopped: position lost", "'I've lost my way, stopping'",
      "Wait up to a minute. It goes home once GPS is back. If not, recover "
      "(K-07).", "-", ["FS-004"]),
     ("K-05", "At or beyond the fence", "Fence alarm; boat heading home",
-     "Let it return. If it's pushed against the bank, STOP and recover.",
-     "-", ["FEN-005", "FEN-006"]),
+     "Let it return. If wind keeps it outside, it stops itself after 30 s "
+     "or 10 m out ('outside fence' alarm): recover it (K-07). If it's "
+     "pushed against the bank, STOP and recover.", "-",
+     ["FEN-005", "FEN-006", "MCP-D30"]),
     ("K-06", "Person or animal near the boat", "You see them first: "
      "the boat can't", "COME HOME, or STOP if close. Wait until clear.",
      "Press STOP if asked", ["OPS-004", "A-17"]),
@@ -331,8 +335,10 @@ CONTINGENCY = [
      ["FS-010", "A-11"]),
     ("K-11", "Boat behaving strangely", "Circling, going the wrong way, "
      "or a navigation alarm", "STOP. Look before resuming: pods, weed, "
-     "compass. Resume only with the PIN if you understand why.", "Press "
-     "STOP if asked", ["FM-17", "FM-05", "MCN-D60"]),
+     "compass. A 'heading check' alarm in strong wind may be the wind "
+     "blowing the boat backwards, not the compass: check the wind first. "
+     "Resume only with the PIN if you understand why.", "Press STOP if "
+     "asked", ["FM-17", "FM-05", "FM-49", "MCN-D60"]),
     ("K-12", "Battery hot, swollen, smoking or smelling",
      "Heat, hissing, smoke", "Keep everyone away, especially the crew. "
      "Don't touch it. If it's on land and burning, let it burn out on a "

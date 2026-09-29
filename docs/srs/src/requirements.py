@@ -161,9 +161,10 @@ section("FS", "Failsafes",
 R("FS-001", "Low battery: when estimated state of charge falls to 35%, the "
   "boat shall enter RTL. At 15% it shall continue RTL at reduced speed and "
   "sound an alarm.", "M", "S,T", "SIM", ["STK-01"])
-R("FS-002", "Link loss in MANUAL: with no command link for 2 s the boat "
-  "shall enter HOLD, and after 10 s it shall enter RTL.", "M", "S,T", "SIM",
-  ["STK-01"])
+R("FS-002", "Link loss in MANUAL: with no command link for 3 s the boat "
+  "shall enter HOLD, and after 10 s it shall enter RTL. (3 s by CR-05: the "
+  "autopilot's fastest link-loss failsafe, measured in simulation.)", "M",
+  "S,T", "SIM", ["STK-01"])
 R("FS-003", "Link loss in AUTO: the boat shall continue the mission. If the "
   "link is still lost after 60 s it shall enter RTL.", "M", "S,T", "SIM",
   ["STK-01"])
@@ -675,7 +676,7 @@ FAILSAFES = [
      "Motors stop, alarm", "FEN-006"),
     ("Low battery", "SoC ≤ 35%", "RTL", "FS-001"),
     ("Critical battery", "SoC ≤ 15%", "Continue RTL slowly, alarm", "FS-001"),
-    ("Link loss (MANUAL)", "No link 2 s / 10 s", "HOLD, then RTL", "FS-002"),
+    ("Link loss (MANUAL)", "No link 3 s / 10 s", "HOLD, then RTL", "FS-002"),
     ("Link loss (AUTO)", "No link 60 s", "Continue, then RTL", "FS-003"),
     ("Position loss", "No fix, HDOP > 2.5 or unhealthy for 3 s",
      "Motors stop; RTL after 10 s healthy", "FS-004"),

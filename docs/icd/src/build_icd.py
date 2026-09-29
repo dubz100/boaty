@@ -34,8 +34,9 @@ S["code"] = ParagraphStyle("code", fontName="DVM", fontSize=6.9, leading=8.9,
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Interface_Control_Document.pdf"
 DOC_ID = "BOATY-ICD-001"
-ISSUE = "Issue D (for review)"
-DATE = "28 September 2026"
+ISSUE = "Issue E (for review)"
+DATE = "29 September 2026"
+PREV = "28 September 2026"
 
 IFS = {i[0]: i for i in A.INTERFACES}
 NAMES = {s[0]: s[1] for s in A.SUBSYSTEMS} | A.EXTERNALS
@@ -181,7 +182,7 @@ def section_network():
                    "(ONBOARD_COMPUTER)", "ONBOARD_CONTROLLER (18)"],
                   ["QGroundControl backup (MC-014)", "255", "190", "GCS (6)"]],
                  [52, 24, 48, 46]),
-           P("The helm is configured with SYSID_MYGCS = 255, so only "
+           P("The helm is configured with MAV_GCS_SYSID = 255 (Rover 4.7 name; SYSID_MYGCS before), so only "
              "heartbeats from system 255 count as ground-station presence "
              "for the GCS failsafe. The mission computer's heartbeats "
              "(system 1, component 191) do not mask a lost bank link "
@@ -228,8 +229,9 @@ def section_network():
                    "p1 = 1", "After fence upload, before arming"],
                   ["Stream rates", "COMMAND_LONG: SET_MESSAGE_INTERVAL (511)",
                    "p1 = msg id, p2 = interval µs", "On connect"],
-                  ["Manual drive", "MANUAL_CONTROL (69)", "x = throttle, "
-                   "r = turn (−1000..1000), 10 Hz", "MANUAL (STEERING) only; "
+                  ["Manual drive", "MANUAL_CONTROL (69)", "z = throttle, "
+                   "y = steering (−1000..1000), 10 Hz. Rover ignores x and "
+                   "r (corrected in Issue E)", "MANUAL (STEERING) only; "
                    "adult"],
                   ["Parameter read", "PARAM_REQUEST_LIST (21) / PARAM_VALUE "
                    "(22)", "-", "On connect (SAF-007 baseline check)"],
@@ -247,7 +249,9 @@ def section_network():
                  [60, 60, 50]),
            P("Mode numbers follow ArduPilot Rover's published list "
              + tbc("IF-02", "Confirm Rover mode numbers against the "
-                   "firmware version flashed (SITL check).") + ".", "small"),
+                   "firmware version flashed (SITL check).",
+                   closed="Confirmed on Rover 4.7.1 in SITL (IF-14 contract "
+                   "tests).") + ".", "small"),
            F("sequence.png", 140, "Figure 3. Fence and mission upload, "
              "read-back, arming and start (VAL-010, MOD-003)."),
            sub("Mission and fence transfer"),
@@ -300,11 +304,15 @@ def section_network():
                   ["Wiring", "FC TX → Pi GPIO15 (RXD, pin 10); FC RX ← Pi "
                    "GPIO14 (TXD, pin 8); GND ↔ pin 6. No power conductor "
                    "(each side is powered separately, IF-07/IF-08)."],
-                  ["Port", "FC SERIAL2 (TELEM2 pads) " + tbc(
+                  ["Port", "FC SERIAL1 = USART1, DMA both ways, pads R1/T1 "
+                   "(SpeedyBee F405 WING APP, CR-04) " + tbc(
                       "IF-04", "Confirm which UART is free on the chosen "
-                      "F405 board.")],
+                      "F405 board.", closed="SERIAL1 per the board "
+                      "definition (KCL section 7).")],
                   ["Settings", "115200 baud, 8N1, no flow control. "
-                   "SERIAL2_PROTOCOL = 2 (MAVLink 2)."],
+                   "SERIAL1_PROTOCOL = 2 (MAVLink 2). SERIAL6 (the board's "
+                   "wireless module) disabled and the module not fitted "
+                   "(KCL KF-04)."],
                   ["Pi side", "/dev/serial0 on the PL011 UART "
                    "(dtoverlay=disable-bt), serial console disabled"],
                   ["Cable", "≤ 200 mm, inside the electronics box"]],
@@ -333,27 +341,38 @@ Port = 14560
 """),
            sub("What boat-side services (component 191) may send"),
            table([["Service", "Messages / commands", "Constraint"],
-                  ["B4 link watchdog", "DO_SET_MODE → RTL (11)", "Only if "
-                   "mode is AUTO and no system-255 HEARTBEAT for 60 s "
-                   "(FS-003)"],
-                  ["B5 weed-shedding", "DO_SET_MODE → GUIDED (15); "
-                   "SET_POSITION_TARGET_LOCAL_NED (84) velocity-only in "
-                   "MAV_FRAME_BODY_NED (8); DO_SET_MODE → HOLD (4) or back "
-                   "to the previous mode", "Only after a helm stuck event. "
-                   "≤ 0.5 m/s astern, ≤ 2 s per burst, ≤ 3 bursts, targets "
-                   "at 10 Hz. Relies on V-11."],
-                  ["B6 health", "DO_SET_MODE → RTL (11); STATUSTEXT",
-                   "Moisture detected, or box temperature > 60 °C"],
+                  ["B4 link watchdog", "DO_SET_MODE → RTL (11)", "AUTO with "
+                   "no system-255 HEARTBEAT for 60 s (FS-003); or HOLD 10 s "
+                   "after a link loss that began in STEERING (FS-002)"],
+                  ["B5 weed-shedding", "DO_SET_MODE → GUIDED (15) or HOLD "
+                   "(4); SET_ATTITUDE_TARGET (82) with type_mask 131 "
+                   "(thrust + body yaw rate), thrust −0.5..0, yaw rate 0; "
+                   "DO_SET_MODE back to the one mode it interrupted (AUTO or "
+                   "RTL)", "Only after a stuck event (helm crash check or "
+                   "B7). ≤ 0.5 m/s astern, ≤ 2 s per burst, ≤ 3 bursts, 10 "
+                   "Hz, only while the helm reports GUIDED. <b>Issue E:</b> "
+                   "a negative body-frame velocity target (the Issue D "
+                   "form) makes Rover turn round and drive forwards."],
+                  ["B6 health", "DO_SET_MODE → RTL (11) or HOLD (4); "
+                   "DO_CHANGE_SPEED (178) ≤ 1.0 m/s; STATUSTEXT",
+                   "RTL on moisture or box > 60 °C. HOLD when the position "
+                   "is unhealthy for 1 s (FS-004), RTL after 10 s healthy. "
+                   "Speed change only in RTL, only downwards (critical "
+                   "battery, FS-001)"],
                   ["B7 navigation monitor", "DO_SET_MODE → HOLD (4); "
                    "STATUSTEXT", "First-motion heading error > 45°; "
                    "no progress along track at high throttle for 10 s; "
-                   "cross-track > 10 m or heading error > 60° for 20 s "
-                   "(FMEA A-03/07/08)"],
+                   "cross-track > 10 m or heading error > 60° over 20 s; "
+                   "outside the fence 30 s or 10 m (FEN-006)"],
                   ["B2 camera", "None (listens only)", "Reads "
-                   "GLOBAL_POSITION_INT, MISSION_ITEM_REACHED, SYSTEM_TIME"],
-                  ["All", "Never: arm/disarm, PARAM_SET, fence or mission "
-                   "upload, AUTO, MANUAL, STEERING", "Enforced by a message "
-                   "filter in the services' shared MAVLink client library"]],
+                   "GLOBAL_POSITION_INT, MISSION_ITEM_REACHED"],
+                  ["All", "HEARTBEAT; STATUSTEXT events starting 'BOATY '; "
+                   "SET_MESSAGE_INTERVAL / REQUEST_MESSAGE; read-only "
+                   "mission protocol (REQUEST_LIST, REQUEST_INT, ACK)",
+                   "Never: arm/disarm, PARAM_SET, fence or mission upload, "
+                   "MANUAL, STEERING, manual control or RC override. "
+                   "Enforced by a default-deny filter in the shared client "
+                   "(MCP-D19), fuzz-tested (SC-30)"]],
                  [26, 72, 72]),
            P("A boat-side request that the helm rejects is logged and not "
              "retried more than twice.", "small")]
@@ -685,31 +704,46 @@ Exceptions: HelmError > {NoResponse, CommandRejected(code, text), PreArmFailed(r
 
     # ---------------- IF-21
     st += header("IF-21")
-    st += [code("""
-sim_vehicle.py -v Rover -f motorboat-skid \\
-    --custom-location=<home lat>,<home lon>,0,<heading> \\
-    --add-param-file=params/boaty-mk1.parm --out=udp:127.0.0.1:14550
-python -m boaty.sim.camera_stub --port 8080 --images tests/images/ducks/
+    st += [P("The simulator runs the real helm firmware (ArduPilot Rover "
+             "4.7.1 SITL) against our own boat model, and the real "
+             "mission-computer services on a simulated Pi Zero (ADD DD-20; "
+             "code in software/boaty/sim)."),
+           code("""
+physics (boat.py) <-UDP 9002 JSON-> ardurover --model JSON --defaults
+    params/boaty-mk1.parm + params/sitl.parm
+ardurover --serial0 udpclient:127.0.0.1:14570 -> B1 router stand-in
+B1 local endpoint 127.0.0.1:14560  <-> services B2-B7 (same code as the boat)
+B1 Mission Control endpoint -> radio relay (cut / loss / latency)
+                            -> Mission Control on UDP 14550
 """),
            *bullets([
-               "SITL presents the same MAVLink as IF-02 on UDP 14550. The "
-               "camera stub implements IF-03 exactly and reads positions "
-               "from SITL, so Mission Control runs unmodified with its "
-               "host set to 127.0.0.1 (SWE-004).",
-               "The frame name is " + tbc("IF-21", "Confirm a skid-steer "
-                                         "boat frame name in the SITL "
-                                         "version used (V-12).") +
+               "SITL presents the same MAVLink as IF-02, through the same "
+               "router topology as IF-04, so Mission Control and the "
+               "services run unmodified. B3 serves IF-03 from photos the "
+               "simulated camera renders at the boat's true position.",
+               "The frame is our JSON boat model, not a built-in SITL "
+               "frame " + tbc("IF-21", "Confirm a skid-steer boat frame "
+                              "name in the SITL version used (V-12).",
+                              closed="SITL's motorboat is sized for 50 N; "
+                              "our 3-DOF model uses KCL values (DD-20).") +
                ". The parameter file is the same controlled file flashed "
-               "to the real helm, plus SIM_* overrides.",
-               "Fault injection for SWE-005 uses SITL simulation "
-               "parameters (GPS failure, battery drain, added drag) and "
-               "network impairment (dropping UDP 14550) " +
-               tbc("IF-21", "Map each FS scenario to specific SIM_* "
-                   "parameters for the SITL version used.") + ".",
+               "to the real helm, plus sitl.parm (battery scaling, one "
+               "compass as on the boat).",
+               "Fault injection " + tbc("IF-21", "Map each FS scenario to "
+                                        "specific SIM_* parameters for the "
+                                        "SITL version used.",
+                                        closed="Mapped in the test suite: "
+                                        "SIM_GPS1_ENABLE, SIM_MAG1_ORIENT, "
+                                        "plus model faults (thrust loss, "
+                                        "reversed motor, weed drag, wind, "
+                                        "battery drain) and link cut/loss/"
+                                        "latency.") + ". All timings are in "
+               "simulated time, so results do not depend on the speed-up.",
            ])]
     st += verify("IF-21", [
         ("Demonstration", "SIM", "A full mission from voice to captain's log "
-         "in simulation; every FS scenario runs in CI")])
+         "in simulation; every FS scenario runs in the suite (slices 1-2: "
+         "106 passing)")])
     return st
 
 
@@ -719,13 +753,18 @@ def section_electrical():
 
     st += header("IF-05")
     st += [table([["Parameter", "Value"],
-                  ["Protocol", "DShot300, bidirectional ('3D') ESC mode. "
-                   "Fallback: PWM 1000-2000 µs, 50 Hz, neutral 1500 µs, "
-                   "deadband ± 25 µs " + tbc("IF-05", "Confirm the chosen "
-                                              "ESC supports DShot and 3D "
-                                              "mode.")],
-                  ["Channel map", "FC output 1 = left (ThrottleLeft), "
-                   "output 2 = right (ThrottleRight)"],
+                  ["Protocol", "DShot300, reversible ('3D') mode set by the "
+                   "helm (SERVO_BLH_3DMASK = 9, SERVO_DSHOT_ESC = 1). "
+                   "Fallback: PWM 1000-2000 µs, 50 Hz, neutral 1500 µs " +
+                   tbc("IF-05", "Confirm the chosen ESC supports DShot and 3D "
+                       "mode.", closed="AM32 20 A ESC (KCL KC-03); "
+                       "confirm on the bench with V-09.")],
+                  ["Channel map", "FC output 1 = left (ThrottleLeft, 73), "
+                   "output 4 = right (ThrottleRight, 74): the two "
+                   "BIDIR-capable outputs, so RPM telemetry is possible "
+                   "later (KCL KF-09). Outputs 2 and 3 unused."],
+                  ["ESC settings", "Low-voltage cut-off off (KF-08); BEC "
+                   "lead unconnected"],
                   ["Sense", "Positive = forward thrust on both sides"],
                   ["Wiring", "Signal + GND twisted pair, ≤ 150 mm; no power "
                    "from the ESCs to the FC"],
@@ -747,14 +786,21 @@ def section_electrical():
                                                   "and re-rate.")],
                   ["Protection", "20 A blade fuse ≤ 50 mm from the battery "
                    "positive (PWR-003)"],
-                  ["Key switch", "Normally-open reed switch on the lid. "
-                   "Magnet present → MOSFET on → motor rail live. Magnet "
-                   "absent → gate pulled down → rail off (fails safe). "
-                   "MOSFET ≥ 40 A, R<sub>DS(on)</sub> ≤ 10 mΩ."],
-                  ["Rail sense", "Divider 10 kΩ / 1 kΩ to the FC's second "
-                   "voltage input (≤ 1.2 V at 12.6 V). Arming blocked below "
-                   "9.0 V " + tbc("IF-06", "Confirm arming can be gated on "
-                                  "the second battery monitor (V-13).")],
+                  ["Key switch", "Normally-open reed switch on the lid "
+                   "driving a <b>high-side P-MOSFET</b> in the positive "
+                   "motor feed (KCL KC-07, KF-03). Magnet present → gate "
+                   "pulled towards ground → rail live; absent → 10 kΩ holds "
+                   "the gate at source → rail off (fails safe). "
+                   "V<sub>DS</sub> ≥ 30 V, I<sub>D</sub> ≥ 30 A, "
+                   "R<sub>DS(on)</sub> ≤ 15 mΩ; gate RC ≈ 10 ms soft start. "
+                   "Low-side switching is not allowed: ESC return current "
+                   "would flow through the signal grounds."],
+                  ["Rail sense", "Divider 10 kΩ / 1 kΩ from the switched rail "
+                   "to the AIRSPD pad (ADC pin 15; BATT2_VOLT_PIN 15, "
+                   "BATT2_VOLT_MULT 11.0). Arming blocked below 9.0 V " +
+                   tbc("IF-06", "Confirm arming can be gated on the second "
+                       "battery monitor (V-13).", closed="Shown in SITL: "
+                       "'Battery 2 below minimum arming voltage'.")],
                   ["Connectors", "XT30 per ESC; battery XT60; polarised, "
                    "with no same-type connector used for another function "
                    "(PWR-008)"],
@@ -802,7 +848,8 @@ def section_electrical():
     st += header("IF-09")
     st += [table([["Parameter", "Value"],
                   ["Device", "WS2812-type ring, 8 LEDs, at the mast head"],
-                  ["Drive", "FC output configured as NeoPixel. 330 Ω "
+                  ["Drive", "FC output 12, the LED pad (SERVO12_FUNCTION "
+                   "120, NeoPixel1). 330 Ω "
                    "series resistor. Data cable ≤ 400 mm inside the mast "
                    "tube."],
                   ["Power", "5 V from the FC's 5 V pad, brightness capped "
@@ -821,13 +868,16 @@ def section_electrical():
     st += [table([["Parameter", "Value"],
                   ["Module", "u-blox M10 GNSS with magnetometer, on the "
                    "mast head ≥ 150 mm from power wiring (MEC-013)"],
-                  ["GNSS", "UART at 3.3 V to an FC serial port set to GPS. "
+                  ["GNSS", "UART at 3.3 V to FC SERIAL3 (USART3) set to GPS. "
                    "ArduPilot auto-configures the receiver (baud, "
                    "5-10 Hz)."],
-                  ["Compass", "I2C to the FC; external compass with the "
-                   "orientation set in parameters " + tbc(
+                  ["Compass", "QMC5883L at I2C 0x0D (KC-02), probed by "
+                   "ArduPilot as external; the only compass on the boat. "
+                   "Orientation set on the bench " + tbc(
                        "IF-22", "Confirm the compass chip, I2C address and "
-                       "orientation for the chosen module.")],
+                       "orientation for the chosen module.",
+                       closed="Chip and address from the KCL and "
+                       "ArduPilot's driver; orientation at assembly.")],
                   ["Power", "5 V from the FC, ≈ 50 mA"],
                   ["Cable", "≤ 450 mm through the mast tube; the module "
                    "connector is strain-relieved at the mast head"]],
@@ -1039,15 +1089,22 @@ def build():
                  f"{sum(1 for t in TBC if 'Closed' not in t[1])} open items "
                  "to be confirmed"]])
     st += control_and_contents(
-        [["A", DATE, "First issue, for review.", "Claude (drafted)"],
-         ["B", DATE, "TBC-10 closed: TALK button approved and defined in "
+        [["A", PREV, "First issue, for review.", "Claude (drafted)"],
+         ["B", PREV, "TBC-10 closed: TALK button approved and defined in "
           "IF-12.", "Claude, owner decision"],
-         ["C", DATE, "FMEA actions: B7 navigation monitor added to the "
+         ["C", PREV, "FMEA actions: B7 navigation monitor added to the "
           "IF-04 allowed-commands table; box_temp_c added to IF-03 "
           "Health; B6 over-temperature trigger; IF-15 'launch' role with "
           "wind sectors.", "Claude, FMEA Issue B"],
-         ["D", DATE, "Adult unlock by PIN on the web UI replaces the panel "
-          "key switch (ADD DD-17, CR-03).", "Claude, owner decision"]],
+         ["D", PREV, "Adult unlock by PIN on the web UI replaces the panel "
+          "key switch (ADD DD-17, CR-03).", "Claude, owner decision"],
+         ["E", DATE, "Simulator evidence and CR-04: IF-02 manual drive "
+          "fields corrected (z/y); IF-04 on SERIAL1, boat-service command "
+          "table rewritten (B5 astern bursts by thrust, B6 HOLD and speed, "
+          "B7 FEN-006); IF-05 outputs 1 and 4, AM32 3D; IF-06 high-side key "
+          "switch and AIRSPD-pad sense; IF-21 rewritten for the JSON boat "
+          "model. TBC-01, 02, 03, 04, 05, 07 and 09 closed.",
+          "Claude, owner decisions"]],
         "Review guidance: check that each interface is complete enough to "
         "build and test against. Items marked [TBC-nn] are known gaps with "
         "an owner; they're listed in section 9.")

@@ -19,8 +19,9 @@ SRS = A.SRS
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Architecture_Design_Document.pdf"
 DOC_ID = "BOATY-ADD-001"
-ISSUE = "Issue E (for review)"
-DATE = "28 September 2026"
+ISSUE = "Issue F (for review)"
+DATE = "29 September 2026"
+PREV = "28 September 2026"
 
 
 def F(name, w, cap):
@@ -56,23 +57,28 @@ def build():
                  f"8 subsystems, {len(A.INTERFACES)} interfaces, "
                  f"{n_alloc} requirements allocated"]])
     st += control_and_contents(
-        [["A", DATE, "First issue, for review.", "Claude (drafted)"],
-         ["B", DATE, "Owner accepted AR-2 and CR-01 (cap £160, SRS Issue C). "
+        [["A", PREV, "First issue, for review.", "Claude (drafted)"],
+         ["B", PREV, "Owner accepted AR-2 and CR-01 (cap £160, SRS Issue C). "
           "Weed-shedding mechanism refined during ICD work (bounded GUIDED "
           "velocity bursts); V-11 to V-13 added.", "Claude, owner "
           "decisions"],
-         ["C", DATE, "TALK button added (ICD TBC-10 closed, SRS Issue D): "
+         ["C", PREV, "TALK button added (ICD TBC-10 closed, SRS Issue D): "
           "BOM +£2, MCN and IF-12 descriptions updated. From subsystem "
           "specification work: IP67 main switch added to BOM (+£4, "
           "previously omitted); V-14 to V-17 added.", "Claude, owner "
           "decision"],
-         ["D", DATE, "CR-02 accepted: flight controller with microSD "
+         ["D", PREV, "CR-02 accepted: flight controller with microSD "
           "(DD-15, +£10 est.). FMEA actions: navigation monitor B7 "
           "(DD-16) and box temperature sensor (+£2). Baseline now over "
           "the cap: CR-03 raised.", "Claude, owner decision"],
-         ["E", DATE, "CR-03 closed: real flight-controller price £62; tested "
+         ["E", PREV, "CR-03 closed: real flight-controller price £62; tested "
           "salvaged cells (DD-18); PIN replaces the panel key switch (DD-17); "
-          "cap £185 (SRS Issue E).", "Claude, owner decision"]],
+          "cap £185 (SRS Issue E).", "Claude, owner decision"],
+         ["F", DATE, "CR-04: SpeedyBee F405 WING APP flight controller "
+          "(DD-19; BOM from the Key Component List, £181). CR-05: FS-002 "
+          "3 s (DD-22). Simulator evidence: own boat model (DD-20), V-item "
+          "results in section 9, FS-001/004/FEN-006 gaps allocated to the "
+          "boat services (DD-21).", "Claude, owner decisions"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "
@@ -225,15 +231,18 @@ def build():
                  [[f"<b>{c[1]}</b>", c[2], c[3], c[4]] for c in
                   A.COMPONENTS], [11, 30, 89, 40]),
            Spacer(1, 3 * mm),
-           callout("<b>Rule for boat-side Python (B4-B6):</b> these services "
+           callout("<b>Rule for boat-side Python (B4-B7):</b> these services "
                    "may only <i>request</i> safer states through MAVLink: "
-                   "HOLD, LOITER or RTL. The one exception is B5's "
-                   "weed-shedding. It may use GUIDED for bounded reverse "
-                   "bursts (at most 0.5 m/s astern, 2 s each, 3 in total), "
-                   "and must then hand back to HOLD. V-11 confirms the helm "
+                   "HOLD or RTL, and B6 may lower the RTL speed. The one "
+                   "exception is B5's weed-shedding. It may use GUIDED for "
+                   "bounded astern bursts (at most 0.5 m/s, 2 s each, 3 in "
+                   "total), must then hand back to HOLD, and may resume only "
+                   "the exact mode it interrupted. V-11 confirms the helm "
                    "stops if B5 dies mid-burst. These services never arm, "
                    "never change the fence or parameters, and never command "
-                   "AUTO or MANUAL (FS-007, SAF-003).", ORANGE, ORANGE_T),
+                   "MANUAL. A default-deny filter in their shared MAVLink "
+                   "client enforces this (MCP-D19; fuzz-tested, SC-30) "
+                   "(FS-007, SAF-003).", ORANGE, ORANGE_T),
            H2("4.4 Network and link"),
            P("The Pi 5 runs the Wi-Fi access point, using a USB adapter "
              "with an external antenna. The boat's Pi Zero joins it as a "
@@ -394,9 +403,10 @@ def build():
            H2("7.3 Cost"),
            table(bom_rows, [16, 130, 24]),
            Spacer(1, 3 * mm),
-           callout(f"<b>Cost position (Issue E).</b> Baseline "
+           callout(f"<b>Cost position (Issue F).</b> Baseline "
                    f"<b>£{base}</b> against the CON-001 cap of £185 (target "
-                   f"£180; SRS Issue E). £{185 - base} headroom. The pole "
+                   f"£180). £{185 - base} headroom. Prices are estimates "
+                   "from the Key Component List; confirm at order time. The pole "
                    f"kit, if V-08 needs it, would make £{base + deferred}: "
                    "over the cap, so it would need a saving elsewhere.<br/>"
                    "<b>History:</b> CR-01 raised the cap from £120 to £160 "
@@ -406,7 +416,10 @@ def build():
                    "£61-66 (Matek F405-TE class). CR-03: the owner chose to "
                    "keep microSD, apply the savings (tested salvaged cells "
                    "−£8; PIN instead of the panel key switch −£3) and raise "
-                   "the cap to £185.", ORANGE, ORANGE_T),
+                   "the cap to £185. CR-04 (Issue F) swapped to the SpeedyBee flight "
+                   "controller (−£17), which paid for realistic ESC prices "
+                   "(+£12) and a second microSD card (+£4).", ORANGE,
+                   ORANGE_T),
            PageBreak()]
 
     # ---------------- 8 decisions + 9 verification/risks
@@ -421,8 +434,13 @@ def build():
              "and the hardware. They are cheap to check in SITL or on the "
              "bench, so they're checked <b>first</b>, before most parts are "
              "bought or code is written."),
-           table([["ID", "Assumption to confirm", "Where", "Protects"]] +
-                 [list(v) for v in A.VERIFY_EARLY], [12, 110, 22, 26]),
+           table([["ID", "Assumption to confirm", "Where", "Protects",
+                   "Result (Issue F)"]] +
+                 [list(v) + [A.V_RESULTS.get(v[0], "Open")]
+                  for v in A.VERIFY_EARLY], [11, 62, 16, 19, 62]),
+           P("Results come from the simulator (software/results): the "
+             "real ArduPilot Rover 4.7.1 firmware on our boat model. Items "
+             "marked Open need the bench, pool or lake.", "small"),
            Spacer(1, 3 * mm),
            table([["ID", "Risk", "Level", "Mitigation"]] +
                  [list(r) for r in A.RISKS], [12, 58, 16, 84]),
