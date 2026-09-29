@@ -81,6 +81,8 @@ class ArduPilotHelm:
         self._heartbeat_enabled = True
         self._threads: list[threading.Thread] = []
         self.params: dict[str, float] = {}
+        self._foreign: dict[tuple[int, int], float] = {}
+        self._param_idx: set[int] = set()
         self._param_count = None
         # Status cache.
         self._s = dict(link_t=0.0, armed=False, mode=None, lat=None, lon=None,
@@ -161,6 +163,13 @@ class ArduPilotHelm:
             if msg is None or msg.get_type() == "BAD_DATA":
                 continue
             if msg.get_srcSystem() != self.ts:
+                if msg.get_type() == "HEARTBEAT" and \
+                        msg.get_srcSystem() == self.sysid:
+                    # Our own heartbeats never come back to us, so any
+                    # system-255 heartbeat here is another ground station
+                    # (MCN-D57, FM-41).
+                    self._foreign[(msg.get_srcSystem(),
+                                   msg.get_srcComponent())] = time.monotonic()
                 continue
             try:
                 self._handle(msg)
@@ -225,6 +234,8 @@ class ArduPilotHelm:
         elif t == "PARAM_VALUE":
             self.params[msg.param_id] = msg.param_value
             self._param_count = msg.param_count
+            if msg.param_index != 65535:
+                self._param_idx.add(msg.param_index)
         with self._cv:
             self._seq += 1
             self._inbox.append((self._seq, msg))
@@ -370,6 +381,11 @@ class ArduPilotHelm:
     def hold(self) -> None:
         self._set_mode(RoverMode.LOITER)
 
+    def halt(self) -> None:
+        """HOLD: motors off, stay armed so an adult can still bring the
+        boat home (FEN-006, MCN-D59). Not in IF-14 Issue E; proposed."""
+        self._set_mode(RoverMode.HOLD)
+
     def return_home(self) -> None:
         self._set_mode(RoverMode.RTL)
 
@@ -422,6 +438,16 @@ class ArduPilotHelm:
     def subscribe(self, cb: Callable[[HelmEvent], None]) -> None:
         self._subs.append(cb)
 
+    def foreign_gcs(self, within_s: float = 3.0) -> list[tuple[int, int]]:
+        """Other system-255 sources heard in the last within_s (helm time)."""
+        t = time.monotonic() - within_s / self.time_scale
+        return sorted(k for k, ts in list(self._foreign.items()) if ts >= t)
+
+    def text_log(self) -> list[tuple[float, str]]:
+        """Every STATUSTEXT still buffered, oldest first: (monotonic, text).
+        """
+        return [(ts, txt) for (ts, _, txt) in list(self._texts)]
+
     def recent_texts(self, since_s: float = 60) -> list[str]:
         t = time.monotonic() - since_s
         return [txt for (ts, _, txt) in list(self._texts) if ts >= t]
@@ -430,7 +456,11 @@ class ArduPilotHelm:
     # Parameters (C7 baseline check, SAF-007)
 
     def read_params(self, timeout: float = 20) -> dict[str, float]:
+        """PARAM_REQUEST_LIST, then fetch any index the stream dropped with
+        PARAM_REQUEST_READ (a lossy link loses some of ~1,300 PARAM_VALUEs;
+        without this the baseline check sees phantom differences)."""
         self.params.clear()
+        self._param_idx.clear()
         self._param_count = None
         self._send("param_request_list_send", self.ts, self.tc)
         end = time.monotonic() + timeout
@@ -438,12 +468,27 @@ class ArduPilotHelm:
         n = 0
         while time.monotonic() < end:
             time.sleep(0.2)
-            if len(self.params) != n:
-                n, last = len(self.params), time.monotonic()
+            if len(self._param_idx) != n:
+                n, last = len(self._param_idx), time.monotonic()
             if self._param_count and n >= self._param_count:
                 break
-            if n and time.monotonic() - last > 2:
+            if n and time.monotonic() - last > 1.0:
                 break
+        for _ in range(3):
+            if not self._param_count:
+                break
+            missing = [i for i in range(self._param_count)
+                       if i not in self._param_idx]
+            if not missing:
+                break
+            for i in missing:
+                self._send("param_request_read_send", self.ts, self.tc,
+                           b"", i)
+                time.sleep(0.005)
+            t = time.monotonic() + 2.0
+            while time.monotonic() < min(t, end) and any(
+                    i not in self._param_idx for i in missing):
+                time.sleep(0.1)
         return dict(self.params)
 
     def set_param(self, name: str, value: float) -> None:

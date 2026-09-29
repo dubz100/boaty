@@ -1,0 +1,19 @@
+{
+ "generated": "2026-09-29T09:24:34.953840+00:00",
+ "items": {
+  "Validator suite (VAL-006, MCN-D40)": {
+   "result": "91 passed in 2.15s",
+   "branch_coverage_pct": 100.0,
+   "branches": 76,
+   "missing_branches": 0
+  },
+  "SC-31 property-based validator check": {
+   "missions": 400,
+   "accepted": 112,
+   "rejected": 288,
+   "closest_accepted_route_to_a_boundary_m": 2.999,
+   "criterion": "no accepted route crosses a boundary; >= 2.9 m clear"
+  },
+  "Unit suite": "294 passed in 40.35s"
+ }
+}

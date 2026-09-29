@@ -15,6 +15,8 @@ ICON = {"passed": "PASS", "failed": "FAIL", "error": "ERROR",
 
 
 def fmt(v):
+    if isinstance(v, dict):
+        return "; ".join(f"{k}={fmt(x)}" for k, x in v.items()) or "-"
     if isinstance(v, list):
         return "; ".join(str(x) for x in v) or "-"
     return "-" if v is None else str(v)
@@ -25,7 +27,7 @@ def main() -> int:
     recs = sorted(data["records"], key=lambda r: (r["id"] or "zz"))
     n = {k: sum(1 for r in recs if r["outcome"] == k)
          for k in ("passed", "failed", "error", "xfail", "xpass")}
-    out = ["# Boaty simulator results (slices 1-2)", "",
+    out = ["# Boaty simulator results (slices 1-3)", "",
            f"Generated {data['generated']} from `results/sitl_results.json`. "
            f"ArduPilot Rover 4.7.1 SITL on the Boaty boat model, "
            f"speed-up {data['speedup']}x.", "",
@@ -49,6 +51,14 @@ def main() -> int:
             out.append(f"- **Known gap:** {r['known_finding']}")
         if r.get("failure"):
             out.append(f"- Failure: `{r['failure'].splitlines()[0][:300]}`")
+        out.append("")
+    ue = RES / "unit_evidence.json"
+    if ue.exists():
+        u = json.loads(ue.read_text())
+        out += ["## Unit-level evidence (no simulator)", "",
+                f"Generated {u['generated']} by `tools/unit_evidence.py`.", ""]
+        for k, v in u["items"].items():
+            out.append(f"- **{k}**: {fmt(v)}")
         out.append("")
     (RES / "SITL_REPORT.md").write_text("\n".join(out))
     print(f"wrote {RES / 'SITL_REPORT.md'}: {n}")

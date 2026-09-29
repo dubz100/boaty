@@ -134,8 +134,12 @@ def test_sc06_weed_released_after_burst_two(helm, sim, services, companion,
     sim.wait_until(lambda: b5.bursts >= 2, 90)
     astern = []
     end = sim.t + 2
+    released = False
     while sim.t < end:
         astern.append(sim.boat.u)
+        if not released and sim.t >= end - 1.0:   # half-way through burst 2
+            sim.boat.faults.extra_drag = 0.0
+            released = True
         time.sleep(0.05 / SPEEDUP)
     sim.boat.faults.extra_drag = 0.0
     sim.wait_until(lambda: any(a[1] == "free" for a in b5.actions), 40)

@@ -1,16 +1,150 @@
-# Simulator findings (slices 1 and 2)
+# Simulator findings (slices 1 to 3)
 
 What flying the real ArduPilot Rover 4.7.1 firmware on the Boaty boat model
 showed about the design:
 
 - **Slice 1:** the autopilot on its own.
 - **Slice 2:** the boat services B2-B7 on the simulated Pi Zero.
+- **Slice 3:** Mission Control (C1-C10) on the bank, driving the whole
+  system from a typed instruction to the captain's log.
 
 Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, ICD Issue E, SSS-HLM Issue D, SSS-MCP Issue C and SRS Issue F.
 
 ## Owner decisions
 
 - **CR-05 (FS-002 relaxed to 3 s):** HOLD within 3 s of losing the link in MANUAL, which is the native minimum (FS_GCS_TIMEOUT 2 s + FS_TIMEOUT 1 s). Measured 3.04 s (SC-02a). B4 still commands RTL at 10 s (SC-02b).
+
+## Slice 3 results
+
+- **The whole trip works end to end (MC-E2E).** "Explore the bay and take
+  photos of the island, then come home": the Claude reply (a stand-in; see
+  below) is planned and validated, uploaded, read back with an equal
+  checksum, and flown. The boat stops at the photo point for 3 photos plus
+  27 interval photos, comes home, and disarms itself 61 s after arriving
+  (MCN-D12). All 30 photos are synced, sha256-checked and only then
+  acknowledged, and the captain's log is written. The boat stayed at least
+  8.8 m inside the fence and 5.3 m from every no-go zone.
+- **STOP (SC-09):** in ARMED, MISSION, RETURNING and MANUAL, the button
+  handler reaches helm.stop() in under 1 ms (MCN-D10 allows 50 ms), and
+  the outputs are neutral within 0.32 s (FS-009 allows 1 s).
+- **Parameter baseline (SC-24):** one changed failsafe parameter blocks
+  arming, and the difference is shown by name; restoring it clears the
+  block.
+- **Fence missing (SC-25) and read-back corruption (SC-32):** the read-back
+  comparison refuses approval, so GO stays disabled. Even with the session
+  forced into ARMED, C7 refuses GO because the boat's copy was never
+  verified.
+- **Site file (SC-26):** swapped [lat, lon] and a site 5 km from its
+  configured place are both refused by the linter and at pre-arm. The good
+  file's fence round-trips through the helm exactly.
+- **Home sanity (SC-35):** a boat 30 m from the site's home cannot get a
+  plan approved (VAL-004).
+- **Foreign ground station (SC-37):** detected 0.9 s after it appears. GO
+  and arming are refused, an alarm is shown and spoken, and STOP still
+  works. It clears 3 s after the other source goes (V-06b mitigated).
+- **Persistent breach with B7 absent (MCN-D59):** a gale pushed the boat
+  out of the fence; C1 stopped the motors 10.8 s later, when it was 10.2 m
+  outside, and they stayed off.
+- **Boat stops itself (MCN-D60):** with a dead motor, each weed-shedding
+  episode is announced once. The final stop is spoken 0.2 s after the
+  helm's HOLD, with the reason on the adult's screen. Resume is refused
+  without the PIN and accepted with it.
+- **Validator (VAL-006, MCN-D40, SC-31):**
+  - 91 adversarial cases pass, with 100 % branch coverage.
+  - Of 400 generated missions, 112 were accepted. An independent geometry
+    check found that none of them crosses a boundary; the closest came to
+    within 2.999 m.
+
+## New findings in slice 3
+
+- **A validator denial of service (fixed).** A waypoint at 0 N 0 E makes a
+  5,800 km leg. Sampling it every metre took 56 s. The validator now checks
+  a leg's endpoints against the fence first and only samples legs whose
+  ends are inside, so every leg is at most about 200 m. MCN-D39 should say
+  so.
+- **Parameter download loses values on a busy link (fixed; IF-02/IF-14).**
+  With the boat services' traffic on the link, a different handful of the
+  1,273 PARAM_VALUE messages went missing on each run. The baseline check
+  then saw phantom differences and blocked arming. read_params() now
+  re-requests missing indices one by one, as QGroundControl does.
+- **The final RTL item runs in AUTO (IF-13 note).** ArduPilot flies a
+  mission's NAV_RETURN_TO_LAUNCH item without changing mode, so "the boat
+  is coming home" cannot be read from the mode. C1 follows the mission item
+  sequence instead. RTL *mode* during a mission now always means a failsafe
+  or an adult command.
+- **The IF-13 checksum can't be compared with the helm as written.** It
+  covers photo counts and item numbers, which the helm does not store. The
+  photo counts go to the camera service (IF-03 Session). VAL-010 now
+  compares a checksum of what the helm holds: kind, position, hold time
+  and speed. The ICD should define that "helm view" as the read-back form.
+- **IF-14 needs "motors off, stay armed".** hold() is LOITER (station-
+  keeping) and stop() disarms. FEN-006 and MCN-D59 need HOLD with the boat
+  still armed, so an adult can bring it back. halt() was added; the ICD
+  should add it.
+- **Boat-service stops: the reason comes after the mode change.** B5
+  switches the helm to HOLD before its "STILL STUCK" text arrives. C1 takes
+  the reason from the event text. It also declares a HOLD it can't explain
+  after 1 s, so a stop is never silent.
+- **Foreign ground station policy (MCN-D57 wording).** "Refuses to command
+  the helm" would include STOP. C7 refuses what starts or continues motion
+  (arm, GO, upload, manual, drive), but always allows STOP, HOLD and come
+  home. Our own heartbeats never come back through the router, so any
+  system-255 heartbeat that arrives is foreign.
+- **ArduPilot moves home to wherever the boat is armed.** After a
+  mid-lake STOP, re-arming out there would make the lake the new home.
+  VAL-004 refuses to plan in that case ("launch from the jetty"), which is
+  what OPS wants. The checklist should say it too.
+- **Planner limits are real.** Exploring the whole pond at medium or
+  thorough coverage exceeds 20 min. The planner refuses, and the retry
+  asks Claude for something shorter. The 1.2 x estimate was conservative:
+  planned 249 s, and the RTL item began at 167 s.
+- **"Duck patrol" spreads its photo stops over the whole pond**, not just
+  the chosen area (photo_stops with near = null). This is safe and
+  validated, but it may not be what the owner expects. It is a candidate
+  template change.
+- **Claude API contract (IF-11 updates):**
+  - Model: the ICD names `claude-opus-5`. The code uses `claude-opus-5-5`,
+    the current model.
+  - Structured outputs can't carry numeric ranges or string lengths. The
+    schema therefore puts them in descriptions, and pydantic re-checks
+    them.
+  - Retries: the ICD's "retry once" and MCN-D29's "at most 2" are both met
+    by one retry, with the problem passed back as data.
+  - Refusals: the request opts into server-side fallbacks
+    (`fallbacks: "default"`, beta `server-side-fallback-2026-07-01`). A
+    refusal that survives the fallback offers the templates.
+
+## Open: SC-06 is intermittent in the full suite
+
+- SC-06 is "weed clears during burst 2, the mission resumes".
+- The test used to release the weed at the end of burst 2, which raced
+  B5's decision. It now releases half-way through the burst. Run on its
+  own, it then freed after exactly burst 2 in 4 runs out of 4.
+- In the full suite it still failed once: B5 never reported "free".
+- The root cause is not found yet. Suspects are B5's free-speed test
+  (0.3 m/s over `watch_after_resume_s`) and host load.
+- This is not caused by slice 3: nothing in that path changed.
+
+## Not yet verified (needs the API key or hardware)
+
+- **Live Claude evaluation (IF-11, SC-33, NLI-007: plan shown in 20 s or
+  less).**
+  - Not run: this environment has no API key.
+  - Ready to run: `tools/nli_eval.py` with 33 cases, 11 of which must be
+    declined.
+  - Every test here used hand-written replies in the API's format. They
+    exercise the real SDK request encoding (through a mock transport) and
+    everything after the reply.
+- **Not built yet in slice 3:**
+  - speech engines (C4 has the interfaces, stand-ins and an espeak
+    fallback)
+  - map tiles and the fence editor (MCN-D19)
+  - helm log download and replay (MCN-D51)
+  - the waterfowl finder (MCN-D48)
+  - home-network sync (MCN-D52)
+  - RSSI and latency logging (MCN-D21, D46)
+  - QGroundControl takeover (MCN-D24)
+- **Hardware only:** the GPIO panel code (MCN-D02, D09) needs the Pi 5.
 
 ## Gaps from slice 1, and how slice 2 closed them
 

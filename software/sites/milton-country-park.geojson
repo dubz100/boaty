@@ -1,0 +1,383 @@
+{
+ "type": "FeatureCollection",
+ "properties": {
+  "site": "milton-country-park",
+  "version": 1,
+  "wifi_channel": 6,
+  "max_distance_from_home_m": 100,
+  "note": "Stand-in shape at the simulator home; redraw on the real map before the first lake trial."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "fence_inclusion"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       0.1589664,
+       52.2447102
+      ],
+      [
+       0.1605069,
+       52.2447102
+      ],
+      [
+       0.160727,
+       52.2451144
+      ],
+      [
+       0.1603602,
+       52.2454737
+      ],
+      [
+       0.1592599,
+       52.2455187
+      ],
+      [
+       0.1588197,
+       52.2451593
+      ],
+      [
+       0.1589664,
+       52.2447102
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "exclusion",
+    "radius_m": 7,
+    "reason": "island"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1598467,
+     52.2452042
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "exclusion",
+    "reason": "reed bed"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       0.1589664,
+       52.2450246
+      ],
+      [
+       0.1591131,
+       52.2450246
+      ],
+      [
+       0.1591425,
+       52.2452042
+      ],
+      [
+       0.1589958,
+       52.2452312
+      ],
+      [
+       0.1589664,
+       52.2450246
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "exclusion",
+    "radius_m": 2,
+    "reason": "floating duck house"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1596266,
+     52.2454109
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "exclusion",
+    "radius_m": 4,
+    "reason": "fishing platform"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1605509,
+     52.2449347
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "home",
+    "name": "jetty"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1597,
+     52.2448
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "area",
+    "name": "home bay",
+    "aliases": [
+     "the bay",
+     "bay"
+    ]
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       0.1591865,
+       52.2447641
+      ],
+      [
+       0.1603602,
+       52.2447641
+      ],
+      [
+       0.1604336,
+       52.2449976
+      ],
+      [
+       0.1591425,
+       52.2449976
+      ],
+      [
+       0.1591865,
+       52.2447641
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "area",
+    "name": "north pond",
+    "aliases": [
+     "far end",
+     "the top"
+    ]
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       0.1593332,
+       52.245321
+      ],
+      [
+       0.1602869,
+       52.2452941
+      ],
+      [
+       0.1603162,
+       52.2454288
+      ],
+      [
+       0.1593332,
+       52.2454648
+      ],
+      [
+       0.1593332,
+       52.245321
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "area",
+    "name": "whole pond",
+    "aliases": [
+     "pond",
+     "lake",
+     "everywhere"
+    ]
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       0.1590104,
+       52.2447371
+      ],
+      [
+       0.1604629,
+       52.2447371
+      ],
+      [
+       0.1606683,
+       52.2451054
+      ],
+      [
+       0.1603309,
+       52.2454468
+      ],
+      [
+       0.1592745,
+       52.2454917
+      ],
+      [
+       0.1588784,
+       52.2451593
+      ],
+      [
+       0.1590104,
+       52.2447371
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "landmark",
+    "name": "the island",
+    "aliases": [
+     "island"
+    ],
+    "keep_out_m": 12
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1598467,
+     52.2452042
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "landmark",
+    "name": "the reeds",
+    "aliases": [
+     "reeds",
+     "reed bed"
+    ],
+    "keep_out_m": 6
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       0.1589664,
+       52.2450246
+      ],
+      [
+       0.1591131,
+       52.2450246
+      ],
+      [
+       0.1591425,
+       52.2452042
+      ],
+      [
+       0.1589958,
+       52.2452312
+      ],
+      [
+       0.1589664,
+       52.2450246
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "landmark",
+    "name": "the duck house",
+    "aliases": [
+     "duck house",
+     "ducks house"
+    ],
+    "keep_out_m": 6
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1596266,
+     52.2454109
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "launch",
+    "name": "jetty",
+    "good_wind_from": [
+     "N",
+     "NE",
+     "NW"
+    ]
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1597,
+     52.2446742
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "role": "launch",
+    "name": "east beach",
+    "good_wind_from": [
+     "W",
+     "SW",
+     "NW"
+    ]
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     0.1607563,
+     52.2447461
+    ]
+   }
+  }
+ ]
+}
