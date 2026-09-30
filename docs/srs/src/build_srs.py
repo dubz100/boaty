@@ -788,6 +788,7 @@ def build():
                      .replace("Open to", "Open").split(" to ")[0]
                      for r in vrows)
     colour = {"Verified": colors.HexColor("#e3f5ec"),
+              "Sim": colors.HexColor("#e8f1fb"),
               "Partly": colors.HexColor("#fff6dc"),
               "Open": colors.HexColor("#fdf0ea")}
     trows = [["ID", "Pri", "Method", "Stage", "Evidence", "Status"]]
@@ -812,10 +813,12 @@ def build():
              "evidence is failing, or if a Must requirement due at the "
              "SIM stage has neither passing evidence nor a declared open "
              "item with its gate. 'Planned' = verified at a later stage "
-             "(bench, pool, lake) by the tests in SSS-SIM."),
+             "(bench, pool, lake) by the tests in SSS-SIM; 'Sim evidence' = "
+             "a later-stage requirement already shown in simulation, still "
+             "to be confirmed on hardware."),
            P(", ".join(f"{k}: {v}" for k, v in sorted(counts.items())),
              "small"),
-           table(trows, [16, 9, 13, 14, 88, 30], style_extra=style)]
+           table(trows, [16, 9, 15, 14, 84, 32], style_extra=style)]
 
     doc = Doc(OUT)
     doc.multiBuild(st)

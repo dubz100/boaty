@@ -1,6 +1,6 @@
 {
- "generated": "2026-09-30T16:46:16.940565+00:00",
- "sitl_run": "2026-09-30T14:02:35.395796+00:00",
+ "generated": "2026-09-30T17:26:51.967728+00:00",
+ "sitl_run": "2026-09-30T17:24:51.719637+00:00",
  "rows": [
   {
    "kind": "unit",
@@ -1075,191 +1075,318 @@
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-along-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-towards-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-rtl-from-corner]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-along-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-towards-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-rtl-from-corner]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-along-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-towards-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-rtl-from-corner]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-along-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-towards-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-rtl-from-corner]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-along-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-towards-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-rtl-from-corner]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-along-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-towards-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-rtl-from-corner]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-along-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-towards-fence]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-rtl-from-corner]",
-   "id": null,
+   "id": "SC-13",
    "verifies": [
-    "SAF-002"
+    "FS-013",
+    "SAF-002",
+    "SAF-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-out]",
+   "id": "SC-20",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[50m-out]",
+   "id": "SC-20",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-in]",
+   "id": "SC-20",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[50m-in]",
+   "id": "SC-20",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-in-10s]",
+   "id": "SC-20",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-in-30s]",
+   "id": "SC-20",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-out-30s]",
+   "id": "SC-20",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc11_gnss_loss_during_battery_rtl[rtl-then-gnss]",
+   "id": "SC-11",
+   "verifies": [
+    "FS-001",
+    "FS-004",
+    "FS-011"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_gnss_faults.py::test_sc11_gnss_loss_during_battery_rtl[gnss-then-battery]",
+   "id": "SC-11",
+   "verifies": [
+    "FS-001",
+    "FS-004",
+    "FS-011"
+   ],
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
@@ -1420,42 +1547,50 @@
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[battery]",
-   "id": null,
+   "id": "SC-12",
    "verifies": [
+    "FS-001",
+    "FS-012",
     "LOG-002",
     "MC-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[gnss]",
-   "id": null,
+   "id": "SC-12",
    "verifies": [
+    "FS-004",
+    "FS-012",
     "LOG-002",
     "MC-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[water]",
-   "id": null,
+   "id": "SC-12",
    "verifies": [
+    "FS-010",
+    "FS-012",
     "LOG-002",
     "MC-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
    "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[weed]",
-   "id": null,
+   "id": "SC-12",
    "verifies": [
+    "FS-005",
+    "FS-012",
     "LOG-002",
     "MC-007"
    ],
-   "outcome": "not run"
+   "outcome": "passed"
   },
   {
    "kind": "sitl",
@@ -1509,7 +1644,7 @@
    "verifies": [
     "FS-005"
    ],
-   "outcome": "xpass"
+   "outcome": "xfail"
   },
   {
    "kind": "sitl",
@@ -1557,6 +1692,15 @@
    "id": "V-14",
    "verifies": [
     "FEN-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_fen005_breach_rtl_within_1s",
+   "id": "FEN-005",
+   "verifies": [
+    "FEN-005"
    ],
    "outcome": "passed"
   },

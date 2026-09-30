@@ -116,6 +116,26 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
     (`fallbacks: "default"`, beta `server-side-fallback-2026-07-01`). A
     refusal that survives the fallback offers the templates.
 
+## System Design Review WP4: interfaces and verification matrix
+
+- **Event vocabulary (RID-05).** The boat-service events are now defined in
+  `boaty/mcp/events.py`. The services send only those texts, Mission
+  Control classifies what it receives by them, and the ICD's IF-04 table
+  is generated from the same list. Mission Control now also shows the
+  "alert" events (for example water in the box when RTL isn't possible)
+  and flags any event it doesn't recognise. Before, those were only
+  logged.
+- **The VCRM found one real gap.** FEN-005 (fence breach → RTL within
+  1 s) had no direct evidence. SC-20 listed it but never breached the
+  fence. A new test pushes the boat over the line with a gale, and the
+  helm was in RTL 0.12 s after the breach.
+- **VCRM totals.** Of the 76 requirements due at the SIM stage:
+  - 64 are verified.
+  - 3 are partly verified, with the rest declared open.
+  - 9 are declared open, each with its gate (CDR, TRR, ORR or the freeze).
+
+  A further 12 later-stage requirements already have simulator evidence.
+
 ## System Design Review WP3: the missing failsafe scenarios
 
 - **SC-20: GNSS position jump near the fence.**

@@ -68,6 +68,8 @@ def build() -> list[dict]:
             status = "FAIL"
         elif ok and op:
             status = f"Partly; open to {op[1]}"
+        elif ok and r["stage"] != "SIM":
+            status = f"Sim evidence; confirm at {r['stage']}"
         elif ok:
             status = "Verified"
         elif op:

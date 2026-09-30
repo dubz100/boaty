@@ -19,7 +19,7 @@ Scores live in `docs/concept/src/scoring.py`. The table, the chart and the sensi
 
 - [`docs/srs/Boaty_System_Requirements_Specification.pdf`](docs/srs/Boaty_System_Requirements_Specification.pdf): system requirements specification (BOATY-SRS-001), including the Concept of Operations and Concept of Use.
 
-The SRS is generated the same way. Requirements live in `docs/srs/src/requirements.py`, and `build_srs.py` checks IDs and traceability before rendering:
+The SRS is generated the same way. Requirements live in `docs/srs/src/requirements.py`, and `build_srs.py` checks IDs and traceability before rendering. Appendix C is the verification cross-reference matrix (VCRM). It is generated from the tests themselves: unit tests tagged `@pytest.mark.verifies(...)`, SITL evidence records and the SSS-SIM catalogue, collected by `software/tools/vcrm.py` into `software/results/vcrm_tests.json`. Inspection and analysis evidence, and declared open items with their gates, live in `docs/srs/src/verification.py`. The build fails if any evidence is failing, or if a Must requirement due at the simulation stage has no evidence and no declared open item:
 
 ```sh
 cd docs/srs/src
@@ -64,3 +64,11 @@ These issues carry:
   - CR-06: NLI-003 and MOD-005 reworded to match the verified design.
   - CR-07: wildlife is photographed only from outside a 15 m nest stand-off, which the site checker enforces. "Duck patrol" is now "Duck watch". The breeding-season rule is deferred to the site visit (TBD-09).
   - CR-08: the £185 cap covers the boat, Mission Control and charging kit. The antenna pole kit, spares and consumables sit in a separate field-kit budget.
+- SDR WP2 to WP4:
+  - RTL now plans round exclusion zones.
+  - Mission Control checks HDOP before arming.
+  - The failsafe scenarios SC-11, SC-12, SC-13 and SC-20 are built, and B6 now holds on a GNSS position jump.
+  - The boat-service event vocabulary is in one module, with the ICD IF-04 table generated from it.
+  - The ICD has a data statement for what is sent to Claude.
+  - The web UI's security assumption is recorded.
+  - The SRS carries a generated VCRM.

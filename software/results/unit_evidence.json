@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-30T14:03:44.207954+00:00",
+ "generated": "2026-09-30T17:26:05.121668+00:00",
  "items": {
   "Validator suite (VAL-006, MCN-D40)": {
    "result": "91 passed in 2.85s",
@@ -14,6 +14,6 @@
    "closest_accepted_route_to_a_boundary_m": 3.273,
    "criterion": "no accepted route crosses a boundary; >= 2.9 m clear"
   },
-  "Unit suite": "299 passed in 47.56s"
+  "Unit suite": "308 passed in 47.25s"
  }
 }
