@@ -1059,7 +1059,8 @@ s = subsystem(
               "Claude, owner decisions"],
              ["E", "29 September 2026", "Slice 3: Mission Control in the "
               "loop. SC-41 to SC-43 added; SIM-D29 and D30 added; SC-31 "
-              "and SC-33 evidence sources named.", "Claude"]],
+              "and SC-33 evidence sources named. SC-33 run against the live "
+              "Claude API (39 cases).", "Claude, owner request"]],
     purpose="Let the whole system be exercised, failed on purpose and "
             "rehearsed at home, first against a simulated boat and then "
             "with more and more real hardware in the loop, with the same "
@@ -1257,9 +1258,9 @@ HLM_PARAMS = load_param_baseline()
 
 RESULTS_JSON = DOCS.parent / "software" / "results" / "sitl_results.json"
 UNIT_EVIDENCE = {"SC-30": "Pass (unit fuzz, 6,000 cases)",
-                 "SC-33": "Not run: needs the API key (tools/nli_eval.py, "
-                          "33 cases ready)"}
+                 "SC-33": "Not run: needs the API key (tools/nli_eval.py)"}
 UNIT_JSON = RESULTS_JSON.with_name("unit_evidence.json")
+NLI_JSON = RESULTS_JSON.with_name("nli_eval.json")
 
 
 def load_sim_results() -> dict:
@@ -1277,6 +1278,12 @@ def load_sim_results() -> dict:
                             f"{p['accepted']} accepted, closest "
                             f"{p['closest_accepted_route_to_a_boundary_m']:.3f}"
                             " m)")
+    if NLI_JSON.exists():
+        n = json.loads(NLI_JSON.read_text())["summary"]
+        out["SC-33"] = (("Pass" if n["criteria_met"] else "FAIL") +
+                        f" (live API: {n['passed']}/{n['cases']} cases, "
+                        f"declines {n['must_decline_declined']}, p95 "
+                        f"{n['p95_s']:.1f} s)")
     if not RESULTS_JSON.exists():
         return out
     by_id: dict = {}

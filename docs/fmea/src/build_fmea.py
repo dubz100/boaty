@@ -102,7 +102,8 @@ def build():
          ["E", DATE, "Mission Control in the simulator (slice 3): FM-54 to "
           "FM-58 added from what the runs found, actions A-25 to A-29 "
           "incorporated; FM-09, 10, 34, 35, 41 re-rated now SC-24, 25, 31, "
-          "32 and 37 pass.", "Claude"]],
+          "32 and 37 pass; FM-37 re-rated after the live Claude "
+          "evaluation (SC-33).", "Claude"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "
         "missing failure modes: an FMEA is only as good as its "

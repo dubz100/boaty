@@ -57,10 +57,11 @@ tests/unit/           fast tests (no SITL): model, services, validator
                       (91 adversarial cases + property test), planner,
                       Claude client, session, web UI
 tests/sitl/           scenarios flown on ArduPilot SITL
-tests/data/nli_eval.json  33-instruction evaluation set for the Claude API
+tests/data/nli_eval.json  39-instruction evaluation set for the Claude API
 tools/sitl_report.py  results/sitl_results.json -> results/SITL_REPORT.md
 tools/unit_evidence.py    validator coverage and property-test evidence
 tools/nli_eval.py     run the evaluation set against the live Claude API
+                      (results/NLI_EVAL.md)
 ```
 
 ## Setup
@@ -101,7 +102,7 @@ For natural-language planning, put an Anthropic API key in
 repository, MCN-D33). Without it, Mission Control offers the templates.
 The request uses `claude-opus-5-5` with structured outputs and the
 server-side refusal fallback (`fallbacks: "default"`). Then
-`PYTHONPATH=. python tools/nli_eval.py` runs the 33-case evaluation.
+`PYTHONPATH=. python tools/nli_eval.py` runs the 39-case evaluation (last run: 39/39, p95 8 s, $0.23).
 
 SITL tests skip themselves if the `ardurover` binary isn't found.
 `BOATY_SIM_SPEEDUP` runs the simulation faster than real time. All test

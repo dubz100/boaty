@@ -268,8 +268,21 @@ class IntentClient:
             self.log("llm", prompt_version=PROMPT_VERSION, model=self.model,
                      request=req["messages"][0]["content"], outcome=r.kind,
                      detail=r.detail, request_id=r.request_id, usage=r.usage,
+                     cost_usd=cost_usd(r.usage),
                      reply=r.raw)
         return r
+
+
+# USD per million tokens for MODEL (cost estimate for the session log,
+# LOG-002). Cache writes are the 5-minute TTL rate (1.25x input).
+PRICE_PER_MTOK = {"input_tokens": 4.00, "output_tokens": 20.00,
+                  "cache_read_input_tokens": 0.20,
+                  "cache_creation_input_tokens": 5.00}
+
+
+def cost_usd(usage: dict) -> float:
+    return round(sum(PRICE_PER_MTOK.get(k, 0.0) * v for k, v in
+                     usage.items()) / 1e6, 5)
 
 
 def _usage(resp) -> dict:

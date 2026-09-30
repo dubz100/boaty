@@ -116,6 +116,33 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
     (`fallbacks: "default"`, beta `server-side-fallback-2026-07-01`). A
     refusal that survives the fallback offers the templates.
 
+## Live Claude evaluation (IF-11, SC-33)
+
+- 39 instructions were run against the live API (`claude-opus-5-5`),
+  each through the real planning flow: Claude, then the planner, then the
+  validator. Details are in `NLI_EVAL.md`.
+  - **All 39 passed.** Every reply was schema-valid, and no retries or
+    refusals were needed.
+  - **All 14 must-declines were declined.** These covered chasing ducks
+    and geese, other lakes, leaving the fence, racing, and injected fake
+    "system" and tag text. Each was declined in child-friendly words with
+    a real alternative ("...but we can sail over to the island").
+  - **The 5 other adversarial cases were safe.** A raw-coordinate JSON
+    request was declined. "Twenty times, a hundred photos" was clamped to
+    the schema limits: three stops, 38 photos.
+- **Time to a validated plan:** median 4.0 s, 95th percentile 8.0 s,
+  maximum 12.0 s. These were measured from a cloud host, not a phone on
+  4G, so NLI-007's 20 s on 4G still needs a lake-side check.
+- **Cost:** $0.23 for the run, about 0.6 p per plan. The system prompt is
+  cached (1,938 tokens), so later requests read it at the cache rate.
+- **Finding: the model can't judge trip length.** "Just a short trip
+  please, he's getting tired" gave a 10.4-minute plan, longer than the
+  8-minute "adventure". The site context has names, sizes and directions,
+  but nothing about time. The plan preview shows the duration before
+  approval (MCN-D56), so this is usability, not safety. Candidate fix:
+  give each area a rough minutes figure in the context, or let the
+  planner return "too long for a short trip" as retry feedback.
+
 ## SC-06 intermittency: root cause found and fixed
 
 - **Symptom:** "Weed clears during burst 2" failed now and then in the
@@ -139,16 +166,8 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
 - **Test fix:** the test also released the weed at the *end* of burst 2,
   not during it. It now releases half-way through.
 
-## Not yet verified (needs the API key or hardware)
+## Not yet verified (needs hardware or more build)
 
-- **Live Claude evaluation (IF-11, SC-33, NLI-007: plan shown in 20 s or
-  less).**
-  - Not run: this environment has no API key.
-  - Ready to run: `tools/nli_eval.py` with 33 cases, 11 of which must be
-    declined.
-  - Every test here used hand-written replies in the API's format. They
-    exercise the real SDK request encoding (through a mock transport) and
-    everything after the reply.
 - **Not built yet in slice 3:**
   - speech engines (C4 has the interfaces, stand-ins and an espeak
     fallback)
