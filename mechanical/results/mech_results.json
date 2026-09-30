@@ -1,5 +1,5 @@
 {
- "commit": "23a4e04",
+ "commit": "c856b2a",
  "cadquery": "2.8.0",
  "rows": [
   {
@@ -1619,7 +1619,7 @@
    ],
    [
     90,
-    -46.77
+    -53.36
    ]
   ],
   "gz_max": [
@@ -1687,7 +1687,7 @@
     false
    ]
   ],
-  "hivis_share": 63.7
+  "hivis_share": 63.9
  },
  "params": {
   "B": 84.0,
