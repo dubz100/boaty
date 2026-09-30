@@ -1,0 +1,2302 @@
+{
+ "bom_total": 181,
+ "cap": 185,
+ "commit": "88b1cd7",
+ "fm_actions": 28,
+ "fm_residual": [
+  "FM-43",
+  "FM-31",
+  "FM-23",
+  "Common cause"
+ ],
+ "fm_rows": [
+  [
+   "FM-01",
+   7,
+   63,
+   63
+  ],
+  [
+   "FM-02",
+   9,
+   180,
+   108
+  ],
+  [
+   "FM-03",
+   9,
+   90,
+   54
+  ],
+  [
+   "FM-04",
+   6,
+   108,
+   72
+  ],
+  [
+   "FM-05",
+   9,
+   81,
+   36
+  ],
+  [
+   "FM-06",
+   7,
+   42,
+   42
+  ],
+  [
+   "FM-07",
+   7,
+   70,
+   70
+  ],
+  [
+   "FM-08",
+   7,
+   105,
+   21
+  ],
+  [
+   "FM-09",
+   9,
+   72,
+   36
+  ],
+  [
+   "FM-10",
+   9,
+   54,
+   27
+  ],
+  [
+   "FM-11",
+   9,
+   81,
+   54
+  ],
+  [
+   "FM-12",
+   7,
+   245,
+   70
+  ],
+  [
+   "FM-13",
+   8,
+   72,
+   72
+  ],
+  [
+   "FM-14",
+   8,
+   120,
+   48
+  ],
+  [
+   "FM-15",
+   7,
+   84,
+   42
+  ],
+  [
+   "FM-16",
+   7,
+   175,
+   84
+  ],
+  [
+   "FM-17",
+   7,
+   196,
+   56
+  ],
+  [
+   "FM-18",
+   9,
+   72,
+   54
+  ],
+  [
+   "FM-19",
+   9,
+   54,
+   54
+  ],
+  [
+   "FM-20",
+   6,
+   54,
+   54
+  ],
+  [
+   "FM-21",
+   10,
+   100,
+   50
+  ],
+  [
+   "FM-22",
+   6,
+   60,
+   36
+  ],
+  [
+   "FM-23",
+   10,
+   140,
+   50
+  ],
+  [
+   "FM-24",
+   7,
+   84,
+   84
+  ],
+  [
+   "FM-25",
+   7,
+   42,
+   42
+  ],
+  [
+   "FM-26",
+   5,
+   40,
+   40
+  ],
+  [
+   "FM-27",
+   6,
+   54,
+   54
+  ],
+  [
+   "FM-28",
+   5,
+   45,
+   45
+  ],
+  [
+   "FM-29",
+   4,
+   24,
+   24
+  ],
+  [
+   "FM-30",
+   2,
+   30,
+   30
+  ],
+  [
+   "FM-31",
+   5,
+   40,
+   40
+  ],
+  [
+   "FM-32",
+   7,
+   42,
+   21
+  ],
+  [
+   "FM-33",
+   6,
+   48,
+   48
+  ],
+  [
+   "FM-34",
+   8,
+   32,
+   16
+  ],
+  [
+   "FM-35",
+   7,
+   28,
+   14
+  ],
+  [
+   "FM-36",
+   4,
+   100,
+   60
+  ],
+  [
+   "FM-37",
+   6,
+   54,
+   24
+  ],
+  [
+   "FM-38",
+   3,
+   36,
+   36
+  ],
+  [
+   "FM-39",
+   5,
+   90,
+   90
+  ],
+  [
+   "FM-40",
+   7,
+   63,
+   63
+  ],
+  [
+   "FM-41",
+   6,
+   90,
+   18
+  ],
+  [
+   "FM-42",
+   7,
+   140,
+   70
+  ],
+  [
+   "FM-43",
+   9,
+   189,
+   126
+  ],
+  [
+   "FM-44",
+   8,
+   48,
+   48
+  ],
+  [
+   "FM-45",
+   10,
+   100,
+   50
+  ],
+  [
+   "FM-46",
+   6,
+   54,
+   54
+  ],
+  [
+   "FM-48",
+   6,
+   54,
+   54
+  ],
+  [
+   "FM-47",
+   6,
+   48,
+   48
+  ],
+  [
+   "FM-49",
+   5,
+   30,
+   30
+  ],
+  [
+   "FM-50",
+   4,
+   48,
+   48
+  ],
+  [
+   "FM-51",
+   4,
+   64,
+   8
+  ],
+  [
+   "FM-52",
+   6,
+   420,
+   12
+  ],
+  [
+   "FM-53",
+   5,
+   120,
+   10
+  ],
+  [
+   "FM-54",
+   3,
+   45,
+   6
+  ],
+  [
+   "FM-55",
+   3,
+   36,
+   6
+  ],
+  [
+   "FM-56",
+   5,
+   150,
+   20
+  ],
+  [
+   "FM-57",
+   4,
+   120,
+   8
+  ],
+  [
+   "FM-58",
+   6,
+   144,
+   36
+  ]
+ ],
+ "has_ci": false,
+ "has_hdop_gate": false,
+ "has_lock": false,
+ "has_oa": false,
+ "has_power_csv": false,
+ "has_register": false,
+ "n_derived": 243,
+ "nli": {
+  "cases": 41,
+  "cost_usd": 0.31,
+  "criteria_met": true,
+  "max_s": 11.38,
+  "model": "claude-opus-5-5",
+  "must_decline_declined": "14/14",
+  "p50_s": 3.83,
+  "p95_s": 6.9,
+  "passed": 41,
+  "prompt_version": "intent-1.1",
+  "retries": 0,
+  "schema_valid_replies": "41/41"
+ },
+ "reqs": [
+  {
+   "id": "MOD-001",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The system shall implement exactly these boat modes: DISARMED, HOLD, MANUAL, AUTO and RTL, as defined in section 2.3."
+  },
+  {
+   "id": "MOD-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "On power-up the boat shall enter DISARMED, with both motors inhibited."
+  },
+  {
+   "id": "MOD-003",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Arming shall require two deliberate adult actions: the arming switch on the boat set to ARM, and arming confirmed at Mission Control."
+  },
+  {
+   "id": "MOD-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The system shall refuse to arm unless every pre-arm check (PRE-001 to PRE-008) passes, and shall state the failing check in plain language at Mission Control."
+  },
+  {
+   "id": "MOD-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "When an AUTO mission completes, the boat shall enter RTL. On reaching home (within the waypoint acceptance radius) it shall enter HOLD."
+  },
+  {
+   "id": "MOD-006",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "While armed, the operator shall be able to command HOLD, RTL, MANUAL or STOP from Mission Control at any time, overriding AUTO."
+  },
+  {
+   "id": "MOD-007",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Every mode change shall be shown and announced at Mission Control within 2 s, whatever caused it."
+  },
+  {
+   "id": "MOD-008",
+   "pri": "C",
+   "stage": "SIM",
+   "text": "The boat shall disarm automatically after 60 s in HOLD at home with no operator input, and announce it."
+  },
+  {
+   "id": "PRE-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "GNSS shall have a 3D fix with at least 8 satellites and HDOP no greater than 1.5."
+  },
+  {
+   "id": "PRE-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "A geofence shall be loaded and enabled, and home shall lie inside the inclusion fence and outside all exclusion zones."
+  },
+  {
+   "id": "PRE-003",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Battery state of charge shall be at least 80%."
+  },
+  {
+   "id": "PRE-004",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The heading sensor shall report healthy and calibrated."
+  },
+  {
+   "id": "PRE-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "For AUTO: a mission that has passed validation and operator approval shall be loaded, and read back from the helm to match (VAL-010)."
+  },
+  {
+   "id": "PRE-006",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "The pre-launch checklist (OPS-001) shall be complete and signed off at Mission Control for this session."
+  },
+  {
+   "id": "PRE-007",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The independent safety layer (SAF-001) shall report healthy."
+  },
+  {
+   "id": "PRE-008",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Logging shall be active on the helm and Mission Control, each with at least 1 GB free."
+  },
+  {
+   "id": "NAV-001",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "The boat shall steer by differential thrust from two thrusters, and be able to go forward and in reverse."
+  },
+  {
+   "id": "NAV-002",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "Cruise speed in calm water shall be 1.0 m/s \u00b1 0.2 m/s."
+  },
+  {
+   "id": "NAV-003",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "Speed through the water shall be limited to 1.5 m/s in every mode."
+  },
+  {
+   "id": "NAV-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "In AUTO the boat shall pass within the acceptance radius of each waypoint. The radius is configurable from 1 to 10 m, default 3 m."
+  },
+  {
+   "id": "NAV-005",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "Cross-track error between waypoints shall be no more than 3 m RMS in wind up to 3 m/s."
+  },
+  {
+   "id": "NAV-006",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "In HOLD with station-keeping, the boat shall stay within 5 m of the hold point in wind up to 3 m/s."
+  },
+  {
+   "id": "NAV-007",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "In RTL the boat shall navigate to home without entering any exclusion zone or leaving the inclusion fence."
+  },
+  {
+   "id": "NAV-008",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Above 0.3 m/s the heading estimate shall use GNSS course as well as the magnetometer, so a disturbed compass cannot alone cause a wrong course."
+  },
+  {
+   "id": "FEN-001",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The system shall support one inclusion polygon of 3 to 70 vertices and up to 10 exclusion zones, each a polygon or circle."
+  },
+  {
+   "id": "FEN-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Fences shall be drawn on a map at Mission Control, stored per site with a name, and version-controlled."
+  },
+  {
+   "id": "FEN-003",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Mission Control shall show a 5 m guide inside the drawn inclusion fence, and warn if any home or waypoint falls within it."
+  },
+  {
+   "id": "FEN-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The fence shall be enforced in every armed mode, including MANUAL."
+  },
+  {
+   "id": "FEN-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "On a fence breach the boat shall enter RTL within 1 s of the breach."
+  },
+  {
+   "id": "FEN-006",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "If the boat stays outside the inclusion fence for more than 30 s, or gets more than 10 m outside it, the motors shall stop (HOLD, no thrust) and an alarm shall sound at Mission Control."
+  },
+  {
+   "id": "FEN-007",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Fence and exclusion zones shall not be changed while the boat is armed."
+  },
+  {
+   "id": "FS-001",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Low battery: when estimated state of charge falls to 35%, the boat shall enter RTL. At 15% it shall continue RTL at reduced speed and sound an alarm."
+  },
+  {
+   "id": "FS-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Link loss in MANUAL: with no command link for 3 s the boat shall enter HOLD, and after 10 s it shall enter RTL. (3 s by CR-05: the autopilot's fastest link-loss failsafe, measured in simulation.)"
+  },
+  {
+   "id": "FS-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Link loss in AUTO: the boat shall continue the mission. If the link is still lost after 60 s it shall enter RTL."
+  },
+  {
+   "id": "FS-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Position loss: if the GNSS fix is lost, HDOP exceeds 2.5 or the position estimate is unhealthy for 3 s, the motors shall stop (HOLD, no thrust). After 10 s of healthy position the boat shall enter RTL."
+  },
+  {
+   "id": "FS-005",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "Stuck detection: if commanded thrust is at least 50% and ground speed stays below 0.1 m/s for 5 s, the boat shall enter HOLD and alarm."
+  },
+  {
+   "id": "FS-006",
+   "pri": "S",
+   "stage": "POOL",
+   "text": "Weed-shedding: after a stuck detection the boat shall try up to 3 short reverse bursts, then resume its previous mode if free, or stay in HOLD if not."
+  },
+  {
+   "id": "FS-007",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Mission computer failure: if the helm receives no mission computer heartbeat for 3 s, it shall complete the loaded mission and RTL on its own."
+  },
+  {
+   "id": "FS-008",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Helm failure: if motor commands stop arriving from the helm, the motors shall stop within 1 s."
+  },
+  {
+   "id": "FS-009",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "STOP: pressing STOP at Mission Control shall stop both motors within 1 s, whatever the mode."
+  },
+  {
+   "id": "FS-010",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "Water ingress: a moisture sensor in the electronics box shall trigger RTL and an alarm."
+  },
+  {
+   "id": "FS-011",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "When several failsafes are active, the most conservative response shall win: motors stopped over RTL over continuing the mission."
+  },
+  {
+   "id": "FS-012",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Every failsafe event shall be logged, and announced at Mission Control within 2 s if the link is up."
+  },
+  {
+   "id": "FS-013",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "No single failure shall cause the boat to leave the inclusion fence under its own power. This is shown by FMEA (SAF-007) and by simulated fault injection."
+  },
+  {
+   "id": "SAF-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Fence and failsafe functions shall run on a processor separate from the mission computer and Mission Control. That processor shall run bare-metal firmware or an RTOS, not a general-purpose operating system."
+  },
+  {
+   "id": "SAF-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Those functions shall keep working with the mission computer, Mission Control and the radio link all failed."
+  },
+  {
+   "id": "SAF-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The mission computer and Mission Control shall command the helm only through the helm interface (SWE-002). They shall not be able to disable the fence or failsafes while armed."
+  },
+  {
+   "id": "SAF-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Output from the language model shall never be sent to the helm as a command. Only mission objects that have passed validation (VAL-001) may reach the helm."
+  },
+  {
+   "id": "SAF-005",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Route B only: a MicroPython guardian with its own GNSS shall pass motor commands through only while the helm heartbeat is fresh (under 0.5 s) and the boat is inside the fence. Otherwise it shall stop the motors or run its own return-home routine."
+  },
+  {
+   "id": "SAF-006",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "A failure modes and effects analysis (FMEA) shall be done before the first lake trial and updated after any change to hardware or safety software."
+  },
+  {
+   "id": "SAF-007",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Safety parameters (fence, failsafe thresholds, speed limits) shall be version-controlled. The values loaded on the helm shall be checked against the committed baseline at pre-arm."
+  },
+  {
+   "id": "MIS-001",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The system shall support these mission elements: waypoint, area survey (lawnmower pattern over a polygon, with lane spacing), photo point (hold, then take N photos), and return home."
+  },
+  {
+   "id": "MIS-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Every mission shall end with return home."
+  },
+  {
+   "id": "MIS-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Planned mission duration shall not exceed 20 min (configurable up to 30 min). Planned energy shall not exceed 50% of usable battery energy."
+  },
+  {
+   "id": "MIS-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Missions shall be represented in a documented JSON schema with a version number."
+  },
+  {
+   "id": "MIS-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Offline templates shall be available without internet, at least: 'Explore the bay', 'Duck patrol' (survey with photo points) and 'Lap of the bay'."
+  },
+  {
+   "id": "MIS-006",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "An adult shall be able to create and edit missions on the map at Mission Control."
+  },
+  {
+   "id": "NLI-001",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Mission Control shall accept instructions as typed text."
+  },
+  {
+   "id": "NLI-002",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Mission Control shall accept spoken instructions through a microphone, using push-to-talk on the TALK button."
+  },
+  {
+   "id": "NLI-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Instructions shall be turned into a mission through the Claude API. The request shall include the site context: fence, exclusion zones, home, battery state, time and energy limits, and the mission schema."
+  },
+  {
+   "id": "NLI-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The language model's reply shall be constrained to the mission schema (structured output or tool use). A malformed reply shall be rejected and retried at most twice. After that the user shall be offered the templates."
+  },
+  {
+   "id": "NLI-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The proposed mission shall be shown on the map with a one-sentence plain-language summary, which shall also be spoken aloud."
+  },
+  {
+   "id": "NLI-006",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Requests the boat must not or cannot do (for example leaving the fence, chasing animals, going to another lake) shall be declined in child-friendly words, with a safe alternative offered."
+  },
+  {
+   "id": "NLI-007",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "With mobile data available, a plan shall be displayed within 20 s of the instruction."
+  },
+  {
+   "id": "NLI-008",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The API key shall be stored only on Mission Control and shall never be committed to the repository."
+  },
+  {
+   "id": "VAL-001",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Every mission, from any source, shall pass the validator before upload. There shall be no other path for uploading missions to the helm."
+  },
+  {
+   "id": "VAL-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Every waypoint, and every leg sampled at 1 m intervals or finer, shall be inside the inclusion fence by at least 3 m and outside every exclusion zone by at least 3 m."
+  },
+  {
+   "id": "VAL-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The mission shall meet the duration and energy limits in MIS-003."
+  },
+  {
+   "id": "VAL-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The mission shall start within 10 m of home and end with return home."
+  },
+  {
+   "id": "VAL-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Commanded speeds shall be within NAV-003. Each hold shall be 60 s or less. The photo count shall fit in the free camera storage. The waypoint count shall be within the helm's limit."
+  },
+  {
+   "id": "VAL-006",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The validator shall be pure Python with no network access and no randomness. It shall have a unit-test suite that includes adversarial missions, with at least 95% branch coverage."
+  },
+  {
+   "id": "VAL-007",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Each rejection shall be reported in plain language, naming the rule broken and where on the map."
+  },
+  {
+   "id": "VAL-008",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "After validation, an adult shall approve the mission at Mission Control. GO shall stay disabled until then."
+  },
+  {
+   "id": "VAL-009",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Any change to an approved mission shall void the approval."
+  },
+  {
+   "id": "VAL-010",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "After upload, the mission shall be read back from the helm and compared with the approved mission by checksum before GO is enabled."
+  },
+  {
+   "id": "CAM-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The boat shall carry a forward-looking camera that captures still images of at least 2 MP (M) and at least 5 MP (S)."
+  },
+  {
+   "id": "CAM-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Capture modes shall be: interval (every 2 to 30 s), at photo points, and on command."
+  },
+  {
+   "id": "CAM-003",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Every photo shall be tagged with UTC time, position, heading and mission ID."
+  },
+  {
+   "id": "CAM-004",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Local storage shall hold at least 500 photos. Full storage shall not affect navigation or safety."
+  },
+  {
+   "id": "CAM-005",
+   "pri": "S",
+   "stage": "POOL",
+   "text": "A duck (about 0.3 m long) at 5 m shall span at least 40 pixels in the image."
+  },
+  {
+   "id": "CAM-006",
+   "pri": "S",
+   "stage": "POOL",
+   "text": "The lens shall be shielded from spray and cleanable on the bank without tools."
+  },
+  {
+   "id": "CAM-007",
+   "pri": "S",
+   "stage": "POOL",
+   "text": "After a mission, photos shall transfer to Mission Control automatically when in range, with 200 photos taking 5 min or less."
+  },
+  {
+   "id": "CAM-008",
+   "pri": "C",
+   "stage": "POOL",
+   "text": "Mission Control may show a low-rate live view from the camera."
+  },
+  {
+   "id": "DET-001",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "After a mission, the system shall identify photos containing waterfowl, with at least 80% precision on a test set of lake photos."
+  },
+  {
+   "id": "DET-002",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "The system shall produce a captain's log: up to 6 best photos, a map of the route, distance, duration, ducks seen, and a short child-friendly story of the voyage."
+  },
+  {
+   "id": "DET-003",
+   "pri": "C",
+   "stage": "POOL",
+   "text": "An upgraded mission computer may detect waterfowl on board in real time and trigger 'pause and look' (hold and take a burst of photos)."
+  },
+  {
+   "id": "DET-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "If DET-003 is implemented, 'pause and look' shall hold position and shall never steer towards the detected animal."
+  },
+  {
+   "id": "MC-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Mission Control shall run on the owned Raspberry Pi 5 and operate for at least 2.5 h from a USB-C power bank."
+  },
+  {
+   "id": "MC-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "It shall have four physical push buttons, each at least 30 mm across, in distinct colours with icons: GO (green), COME HOME (yellow), STOP (red) and TALK (blue, microphone)."
+  },
+  {
+   "id": "MC-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "STOP and COME HOME shall always be active while armed. GO shall be active only when a validated, approved and verified mission is loaded and the boat is armed in HOLD."
+  },
+  {
+   "id": "MC-004",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "GO shall require a 1 s press-and-hold, to prevent accidental starts."
+  },
+  {
+   "id": "MC-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The display shall show, updated at least once a second: a map with the boat's position, heading and track; fence, exclusions, home and mission; battery %, link status, mode and mission time remaining."
+  },
+  {
+   "id": "MC-006",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "The display shall be readable in daylight. A tablet or phone used as the display is acceptable."
+  },
+  {
+   "id": "MC-007",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Mission Control shall give spoken announcements of mode changes, failsafes and mission events in child-friendly words."
+  },
+  {
+   "id": "MC-008",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Adult-only functions (arming, fence editing, parameter changes, mission approval) shall be protected by a PIN or key switch."
+  },
+  {
+   "id": "MC-009",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The last known position and track shall stay displayed after link loss, in a 'find my boat' view."
+  },
+  {
+   "id": "MC-010",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Mission Control shall host the pre-launch checklist (OPS-001) and record who signed it off, and when."
+  },
+  {
+   "id": "MC-011",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Everything except natural-language planning and cloud photo analysis shall work without internet access."
+  },
+  {
+   "id": "MC-012",
+   "pri": "S",
+   "stage": "POOL",
+   "text": "An adult shall be able to drive the boat in MANUAL from Mission Control, using an on-screen joystick or a gamepad."
+  },
+  {
+   "id": "MC-013",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "The Mission Control case shall resist splashes (IPX4 intent)."
+  },
+  {
+   "id": "MC-015",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Mission Control shall have a photo-review mode the crew can use: large thumbnails, stepped through with the buttons, and ducks highlighted."
+  },
+  {
+   "id": "MC-014",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "QGroundControl or MAVProxy shall be usable as a backup ground station."
+  },
+  {
+   "id": "COM-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The boat-to-bank link shall use licence-exempt 2.4 GHz Wi-Fi within UK power limits."
+  },
+  {
+   "id": "COM-002",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "Link range shall be at least 100 m line of sight over water, with the boat antenna at least 150 mm above the water."
+  },
+  {
+   "id": "COM-003",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "Within range: telemetry at 1 Hz or faster, and command latency of 1 s or less (95th percentile)."
+  },
+  {
+   "id": "COM-004",
+   "pri": "S",
+   "stage": "POOL",
+   "text": "Link quality shall be shown at Mission Control and logged."
+  },
+  {
+   "id": "COM-005",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "Mission Control shall reach the internet through a phone hotspot. Losing internet shall not affect the boat link."
+  },
+  {
+   "id": "COM-006",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The link shall be secured with WPA2 or better and non-default credentials. The boat shall accept commands only from the authenticated Mission Control."
+  },
+  {
+   "id": "COM-007",
+   "pri": "C",
+   "stage": "POOL",
+   "text": "An independent manual-override radio link (e.g. ExpressLRS) may be added."
+  },
+  {
+   "id": "REC-001",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "The boat shall stay afloat, carrying its maximum payload, with the electronics box flooded and any two hull segments breached."
+  },
+  {
+   "id": "REC-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "At least 50% of the visible top surface shall be fluorescent orange or yellow."
+  },
+  {
+   "id": "REC-003",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "A flag at least 100 \u00d7 60 mm shall fly with its top at least 300 mm above the waterline."
+  },
+  {
+   "id": "REC-004",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "An LED beacon shall be visible from 100 m in overcast daylight, with flash patterns showing armed, failsafe and low-battery states."
+  },
+  {
+   "id": "REC-005",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "A recovery hoop of at least 60 mm internal diameter shall be fitted to the mast. It shall withstand a 50 N pull, and the boat shall tow by it without capsizing."
+  },
+  {
+   "id": "REC-006",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The hull shall carry an 'If found' label with a contact phone number."
+  },
+  {
+   "id": "REC-007",
+   "pri": "C",
+   "stage": "BENCH",
+   "text": "A Bluetooth item tracker may be carried in the hull."
+  },
+  {
+   "id": "MEC-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The boat shall be a twin-hull catamaran no more than 650 mm long, 400 mm wide and 500 mm high (including mast)."
+  },
+  {
+   "id": "MEC-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Ready-to-sail mass, excluding payload, shall be no more than 1.8 kg."
+  },
+  {
+   "id": "MEC-003",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "The boat shall carry at least 300 g of payload on the deck with at least 50 mm of freeboard."
+  },
+  {
+   "id": "MEC-004",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "Static heel shall be 10\u00b0 or less with 300 g at the deck edge. The boat shall not capsize in full-speed turns or in 100 mm waves."
+  },
+  {
+   "id": "MEC-005",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Every printed part shall fit a 200 \u00d7 200 \u00d7 200 mm build volume (Ultimaker)."
+  },
+  {
+   "id": "MEC-006",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Wetted and exposed printed parts shall be PETG or ASA. Hull segments shall be filled with closed-cell foam."
+  },
+  {
+   "id": "MEC-007",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Hull segments, thruster pods, mast, electronics box and DUPLO deck shall be removable and refittable by hand, without tools."
+  },
+  {
+   "id": "MEC-008",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "Swapping a thruster pod shall take under 2 min. Pod connectors shall be waterproof and keyed."
+  },
+  {
+   "id": "MEC-009",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The deck plate shall carry LEGO DUPLO-compatible studs. Genuine bricks shall grip firmly and be removable by a 4-year-old."
+  },
+  {
+   "id": "MEC-010",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Propellers shall be guarded so that an 8 mm diameter probe cannot touch a blade."
+  },
+  {
+   "id": "MEC-011",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "Thruster pods shall include weed-shedding features: a swept leading edge and a guard shape that sheds weed."
+  },
+  {
+   "id": "MEC-012",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The electronics box shall let in no water after 30 min at 0.3 m depth. Every cable entry shall go through a gland."
+  },
+  {
+   "id": "MEC-013",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The GNSS and compass shall be mounted at least 150 mm from motor and power wiring."
+  },
+  {
+   "id": "MEC-014",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "The boat shall fit in a car boot and have a carry handle for one adult hand."
+  },
+  {
+   "id": "MEC-015",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "Fasteners shall be stainless steel or plastic."
+  },
+  {
+   "id": "PWR-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Propulsion and avionics shall run from one removable 3S (nominal 11.1 V) lithium battery of 25 to 50 Wh."
+  },
+  {
+   "id": "PWR-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The battery shall be protected against over-discharge, over-current and short circuit (BMS or equivalent)."
+  },
+  {
+   "id": "PWR-003",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "A main fuse shall sit within 50 mm of the battery positive, rated no more than twice the maximum continuous current."
+  },
+  {
+   "id": "PWR-004",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "A waterproof main power switch shall be operable without opening the electronics box."
+  },
+  {
+   "id": "PWR-005",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Avionics shall have a separate regulated 5 V supply. A full reverse-to-forward thrust step shall not reset or brown out the helm."
+  },
+  {
+   "id": "PWR-006",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Battery voltage and current shall be measured, logged and used for state of charge and failsafes."
+  },
+  {
+   "id": "PWR-007",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The battery shall be removed from the boat for charging, and charged only off-boat."
+  },
+  {
+   "id": "PWR-008",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "All power connectors shall be polarised and keyed, with no two same-type connectors doing different jobs."
+  },
+  {
+   "id": "PWR-009",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "Endurance at cruise speed from a full battery at 15 \u00b0C shall be at least 40 min (M), with a target of 60 min (S)."
+  },
+  {
+   "id": "PWR-010",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Electronics in the sealed box shall run for 60 min at 30 \u00b0C ambient in direct sun without fault or throttling."
+  },
+  {
+   "id": "PWR-011",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "A power budget shall be kept up to date alongside the design."
+  },
+  {
+   "id": "SWE-001",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "All project-written software shall be Python: CPython 3.11+ on Linux and MicroPython on microcontrollers. Third-party firmware (ArduPilot, ESC firmware) is excluded."
+  },
+  {
+   "id": "SWE-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "A Python helm interface shall provide: arm, disarm, set mode, upload mission, read mission back, start, hold, return home, stop, set fence, and a status stream."
+  },
+  {
+   "id": "SWE-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Mission-level code shall run unchanged against any helm implementation, selected by configuration: first ArduPilot over MAVLink, later a Python helm."
+  },
+  {
+   "id": "SWE-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The whole system shall run in simulation (helm simulator and simulated camera) on the Pi 5 or a laptop, with Mission Control software unchanged."
+  },
+  {
+   "id": "SWE-005",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Each failsafe requirement (FS-001 to FS-013) shall have an automated simulation scenario."
+  },
+  {
+   "id": "SWE-006",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Source, configuration and safety parameters shall live in this git repository, with a tagged release for each lake trial."
+  },
+  {
+   "id": "SWE-007",
+   "pri": "S",
+   "stage": "SIM",
+   "text": "Unit tests (pytest), linting (ruff) and type checking (mypy) shall run automatically on every push."
+  },
+  {
+   "id": "SWE-008",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "All components shall timestamp in UTC, taken from GNSS where available."
+  },
+  {
+   "id": "SWE-009",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "Mission Control software shall start automatically within 60 s of power-on."
+  },
+  {
+   "id": "LOG-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The helm shall log position, attitude, mode, commands, battery and failsafe events at 5 Hz or faster."
+  },
+  {
+   "id": "LOG-002",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Mission Control shall log: all commands, sign-offs and approvals; each mission as approved (JSON); language model requests and replies; and validator results."
+  },
+  {
+   "id": "LOG-003",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "The logs shall be enough to replay any trip on a map, including every failsafe event."
+  },
+  {
+   "id": "LOG-004",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Photos shall be stored locally and never published automatically. Photos go to cloud services only if an adult enables cloud analysis for that session."
+  },
+  {
+   "id": "LOG-005",
+   "pri": "C",
+   "stage": "SIM",
+   "text": "Logs and photos may be backed up at home and kept for at least 12 months."
+  },
+  {
+   "id": "ENV-001",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "The system shall operate in air at 0 to 35 \u00b0C and in fresh water at 2 to 25 \u00b0C."
+  },
+  {
+   "id": "ENV-002",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "The boat shall make at least 0.5 m/s headway into a 5.4 m/s wind (top of Beaufort 3)."
+  },
+  {
+   "id": "ENV-003",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "The boat shall operate in waves up to 100 mm."
+  },
+  {
+   "id": "ENV-004",
+   "pri": "S",
+   "stage": "POOL",
+   "text": "The boat should keep operating in light rain. Heavy rain is outside the operating envelope."
+  },
+  {
+   "id": "ENV-005",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "The boat shall keep operating in sparse surface weed, recovering through FS-005 and FS-006."
+  },
+  {
+   "id": "ENV-006",
+   "pri": "C",
+   "stage": "LAKE",
+   "text": "Exposed parts shall keep their function over two seasons of outdoor use."
+  },
+  {
+   "id": "CHD-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "No child-handled part shall fit wholly inside the EN 71-1 small-parts cylinder."
+  },
+  {
+   "id": "CHD-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Child-handled parts shall have rounded edges (radius at least 0.5 mm) and no pinch points."
+  },
+  {
+   "id": "CHD-003",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The battery, electronics and propellers shall not be reachable without tools or an adult action."
+  },
+  {
+   "id": "CHD-004",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "'Child tier' assembly (hull segments, pods, deck, flag) shall need no tools and be doable with small hands."
+  },
+  {
+   "id": "CHD-005",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The crew controls (GO, COME HOME, STOP, TALK) shall be usable without reading, by colour and icon alone."
+  },
+  {
+   "id": "CHD-006",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "No child-accessible surface shall exceed 48 \u00b0C."
+  },
+  {
+   "id": "OPS-001",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "The pre-launch checklist shall cover at least: site permission and conditions; no swim session, course or algae notice; wind at Beaufort 3 or less, blowing towards the launch bank where possible; battery charged; box sealed and latched; props and guards; fence and exclusions reviewed on the map; recovery kit present; beacon working."
+  },
+  {
+   "id": "OPS-002",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "Written permission from Cambridge Sport Lakes Trust shall be obtained before any operation at Milton Country Park, and its conditions followed."
+  },
+  {
+   "id": "OPS-003",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "There shall be no operation during swim sessions or watersports courses, or while a blue-green algae warning is posted."
+  },
+  {
+   "id": "OPS-004",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "Exclusion zones shall keep the boat at least 20 m from occupied angling swims and other water users. If anyone comes within 20 m of the boat, the operator shall command RTL or HOLD."
+  },
+  {
+   "id": "OPS-005",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "Islands, reed beds and known nesting areas shall be exclusion zones. No mission shall aim to approach or follow wildlife."
+  },
+  {
+   "id": "OPS-006",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "At Milton, the Mk1 inclusion fence shall stay within 100 m of the launch point until at least 5 successful lake missions have been logged."
+  },
+  {
+   "id": "OPS-007",
+   "pri": "M",
+   "stage": "POOL",
+   "text": "An adult operator shall be present and in control throughout. The child shall never be unsupervised near the water."
+  },
+  {
+   "id": "OPS-008",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "The recovery kit shall include a telescopic pole of at least 3 m with a landing net, and a casting rod with a weighted line. Nobody shall enter the water to recover the boat."
+  },
+  {
+   "id": "OPS-009",
+   "pri": "M",
+   "stage": "LAKE",
+   "text": "Trials shall progress: simulation, then bench, then paddling pool or small water, then lake. Each failsafe shall be demonstrated before the first lake trial."
+  },
+  {
+   "id": "OPS-010",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "Batteries shall be charged under supervision in a fire-safe bag, and stored at storage voltage."
+  },
+  {
+   "id": "OPS-011",
+   "pri": "S",
+   "stage": "LAKE",
+   "text": "A spares kit shall be taken to every session: spare propellers, a spare fuse, cable ties, a microfibre lens cloth and a towel."
+  },
+  {
+   "id": "OPS-012",
+   "pri": "M",
+   "stage": "SIM",
+   "text": "Before the first lake trial, the operator shall rehearse every contingency scenario in section 3.5 in simulation."
+  },
+  {
+   "id": "CON-001",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The Mk1 bill of materials shall not exceed \u00a3185, excluding items already owned (Pi 5, printer, tools, charger, phone, power bank). The target is \u00a3180."
+  },
+  {
+   "id": "CON-002",
+   "pri": "M",
+   "stage": "BENCH",
+   "text": "The owned Raspberry Pi 5 and Ultimaker printer shall be used."
+  },
+  {
+   "id": "CON-003",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "Purchased components shall be available from UK retailers or common online marketplaces."
+  },
+  {
+   "id": "CON-004",
+   "pri": "S",
+   "stage": "BENCH",
+   "text": "Purchased electronics shall carry CE or UKCA marking where such products are normally marked."
+  }
+ ],
+ "results": {
+  "B2-01": "Pass",
+  "FS-001b": "Pass",
+  "IF-14-01": "Pass",
+  "IF-14-02": "Pass",
+  "IF-14-03": "Pass",
+  "IF-14-04": "Pass",
+  "IF-14-05": "Pass",
+  "IF-14-06": "Pass",
+  "IF-14-07": "Pass",
+  "MC-E2E": "Pass",
+  "MCN-D59": "Pass",
+  "MCN-D60": "Pass",
+  "SC-01": "Pass",
+  "SC-02": "Pass",
+  "SC-03": "Pass",
+  "SC-04": "Pass",
+  "SC-05": "Pass (via V-05; B7 backs up at 10 s)",
+  "SC-06": "Pass",
+  "SC-07": "Pass",
+  "SC-09": "Pass (panel emulation, 4 armed states)",
+  "SC-10": "Pass",
+  "SC-24": "Pass",
+  "SC-25": "Pass",
+  "SC-26": "Pass",
+  "SC-28": "Pass",
+  "SC-29": "Pass",
+  "SC-30": "Pass (unit fuzz, 6,000 cases)",
+  "SC-31": "Pass (400 generated, 112 accepted, closest 2.999 m)",
+  "SC-32": "Pass",
+  "SC-33": "Pass (live API: 41/41 cases, declines 14/14, p95 6.9 s)",
+  "SC-35": "Pass",
+  "SC-37": "Pass",
+  "SC-38": "Pass",
+  "SC-40": "Pass",
+  "SC-41": "Pass",
+  "SC-42": "Pass",
+  "SC-43": "Pass",
+  "V-02": "Pass",
+  "V-03": "Pass",
+  "V-04": "Pass",
+  "V-05": "Pass",
+  "V-06": "Pass",
+  "V-11": "Known gap",
+  "V-12": "Pass",
+  "V-13": "Pass",
+  "V-14": "Pass",
+  "V-15": "Pass",
+  "V-16": "Pass",
+  "V-17": "Pass"
+ },
+ "sitl_ardupilot": null,
+ "sitl_outcomes": {
+  "passed": 43,
+  "xfail": 2,
+  "xpass": 1
+ },
+ "sitl_records": 46,
+ "tbds": 8,
+ "tbds_open": 2,
+ "tests": [
+  [
+   "SC-01",
+   "SIM",
+   "Battery drain to 35% then 15%",
+   "Simulated battery drain",
+   "RTL at 35%; alarm at 15%; reaches home",
+   [
+    "FS-001"
+   ]
+  ],
+  [
+   "SC-02",
+   "SIM",
+   "Link cut in STEERING",
+   "Drop UDP 14550",
+   "HOLD \u2264 3 s (CR-05); RTL at 10 s (B4)",
+   [
+    "FS-002"
+   ]
+  ],
+  [
+   "SC-03",
+   "SIM",
+   "Link cut in AUTO",
+   "Drop UDP 14550",
+   "Mission continues; RTL at 60 s (B4)",
+   [
+    "FM-31",
+    "FS-003"
+   ]
+  ],
+  [
+   "SC-04",
+   "SIM",
+   "GNSS failure 5 s then restore",
+   "SITL GPS failure",
+   "Motors stop \u2264 3 s; RTL after 10 s healthy (B6)",
+   [
+    "FM-01",
+    "FM-06",
+    "FS-004"
+   ]
+  ],
+  [
+   "SC-05",
+   "SIM",
+   "Heavy drag at throttle \u2265 50%",
+   "SITL drag / wind",
+   "HOLD \u2264 5 s plus event",
+   [
+    "FM-16",
+    "FS-005"
+   ]
+  ],
+  [
+   "SC-06",
+   "SIM",
+   "Drag released after burst 2",
+   "SITL + B5",
+   "\u2264 3 bursts; resumes mission",
+   [
+    "FM-27",
+    "FS-006"
+   ]
+  ],
+  [
+   "SC-07",
+   "SIM",
+   "Kill all MCP services mid-mission",
+   "Stop stub and B-services",
+   "Mission completes; RTL; HOLD at home",
+   [
+    "FM-26",
+    "FS-007"
+   ]
+  ],
+  [
+   "SC-08",
+   "SIM",
+   "Helm signal loss to ESCs",
+   "Covered by L2-10",
+   "See L2-10",
+   [
+    "FS-008"
+   ]
+  ],
+  [
+   "SC-09",
+   "SIM",
+   "STOP in every state",
+   "Panel emulation",
+   "Motors stop \u2264 1 s",
+   [
+    "FS-009"
+   ]
+  ],
+  [
+   "SC-10",
+   "SIM",
+   "Moisture flagged",
+   "Stub health = moisture",
+   "RTL \u2264 2 s",
+   [
+    "FM-24",
+    "FS-010"
+   ]
+  ],
+  [
+   "SC-11",
+   "SIM",
+   "GNSS loss during battery RTL",
+   "Combined",
+   "Motors-stopped (HOLD) wins",
+   [
+    "FS-011"
+   ]
+  ],
+  [
+   "SC-12",
+   "SIM",
+   "Log and announce audit",
+   "Log inspection over SC-01 to SC-11",
+   "Every event logged, announced \u2264 2 s",
+   [
+    "FS-012"
+   ]
+  ],
+  [
+   "SC-13",
+   "SIM",
+   "Single-fault sweep across mission phases",
+   "Scripted matrix of SC-20 to SC-39 faults",
+   "Never leaves the fence under power",
+   [
+    "FS-013"
+   ]
+  ],
+  [
+   "SC-20",
+   "SIM",
+   "GNSS glitch: 20-50 m jump for 2 s near the fence",
+   "SITL GPS glitch",
+   "No uncommanded exit; glitch rejected or HOLD",
+   [
+    "FM-02"
+   ]
+  ],
+  [
+   "SC-21",
+   "SIM",
+   "GNSS frozen: stale position while moving",
+   "SITL GPS freeze",
+   "Detected; motors stop \u2264 3 s",
+   [
+    "FM-03"
+   ]
+  ],
+  [
+   "SC-22",
+   "SIM",
+   "Compass offset 30\u00b0 and 90\u00b0",
+   "SITL compass offset",
+   "Yaw fallback or HOLD; stays inside the fence",
+   [
+    "FM-04",
+    "FM-05"
+   ]
+  ],
+  [
+   "SC-23",
+   "SIM",
+   "Helm restart mid-mission",
+   "Restart SITL process",
+   "Motors stop; boots disarmed; alarm at Mission Control",
+   [
+    "FM-07"
+   ]
+  ],
+  [
+   "SC-24",
+   "SIM",
+   "Parameter differs from baseline",
+   "Change one failsafe parameter",
+   "Arming blocked; difference shown",
+   [
+    "FM-09"
+   ]
+  ],
+  [
+   "SC-25",
+   "SIM",
+   "Fence missing or disabled",
+   "Skip the fence upload",
+   "Arming refused",
+   [
+    "FM-10"
+   ]
+  ],
+  [
+   "SC-26",
+   "SIM",
+   "Site file lat/lon swapped; wrong site",
+   "Corrupt the site file",
+   "Linter and pre-arm both refuse",
+   [
+    "FM-11"
+   ]
+  ],
+  [
+   "SC-27",
+   "SIM",
+   "Breach on the far side of the island",
+   "Push the boat out with wind",
+   "RTL path avoids the exclusion",
+   [
+    "FM-13"
+   ]
+  ],
+  [
+   "SC-28",
+   "SIM",
+   "Persistent breach (wind pushing out)",
+   "Strong offshore wind",
+   "Motors stop by 30 s / 10 m",
+   [
+    "FM-14"
+   ]
+  ],
+  [
+   "SC-29",
+   "SIM",
+   "Single motor failure",
+   "Zero one output",
+   "Divergence watchdog \u2192 HOLD \u2264 20 s",
+   [
+    "FM-17"
+   ]
+  ],
+  [
+   "SC-30",
+   "SIM",
+   "Boat-service command fuzz",
+   "Random forbidden commands",
+   "All blocked by the filter",
+   [
+    "FM-27"
+   ]
+  ],
+  [
+   "SC-31",
+   "SIM",
+   "Validator adversarial + property-based",
+   "Hypothesis vs independent geometry",
+   "No accepted mission crosses a boundary",
+   [
+    "FM-34"
+   ]
+  ],
+  [
+   "SC-32",
+   "SIM",
+   "Read-back corruption",
+   "Alter one item in transfer",
+   "GO stays disabled",
+   [
+    "FM-35",
+    "FM-47"
+   ]
+  ],
+  [
+   "SC-33",
+   "SIM",
+   "LLM evaluation with adversarial phrasing",
+   "Recorded instruction set",
+   "Schema-valid; must-decline declined",
+   [
+    "FM-36",
+    "FM-37"
+   ]
+  ],
+  [
+   "SC-34",
+   "SIM",
+   "Link degradation: 30/60/90% loss, 2 s latency",
+   "Network impairment",
+   "FS-002/003 behaviour holds; STOP latency logged",
+   [
+    "FM-39",
+    "FM-40"
+   ]
+  ],
+  [
+   "SC-35",
+   "SIM",
+   "Home sanity",
+   "Arm with GNSS unsettled / far from site home",
+   "Refused or warned before GO",
+   [
+    "FM-46"
+   ]
+  ],
+  [
+   "SC-36",
+   "SIM",
+   "Interrupted upload",
+   "Drop the link mid-transfer",
+   "No partial mission accepted",
+   [
+    "FM-47"
+   ]
+  ],
+  [
+   "SC-37",
+   "SIM",
+   "Foreign GCS heartbeat",
+   "Second system-255 source",
+   "C7 refuses to operate; alarm",
+   [
+    "FM-41"
+   ]
+  ],
+  [
+   "SC-38",
+   "SIM",
+   "First-motion heading check",
+   "Compass reversed",
+   "HOLD \u2264 10 s after start",
+   [
+    "FM-05",
+    "FM-18"
+   ]
+  ],
+  [
+   "SC-39",
+   "SIM",
+   "Capacity overstated by 30%",
+   "Wrong capacity parameter",
+   "Voltage backstop triggers RTL in time",
+   [
+    "FM-15"
+   ]
+  ],
+  [
+   "SC-40",
+   "SIM",
+   "Arm lands in HOLD",
+   "Arm with default RC input present",
+   "Armed in HOLD, motors off",
+   [
+    "FM-53"
+   ]
+  ],
+  [
+   "SC-41",
+   "SIM",
+   "Instruction to captain's log",
+   "Typed instruction, stand-in Claude reply, full Mission Control",
+   "Validated, read back equal, flown inside the fence, home, auto-disarm at 60 s, photos sha256-verified before ack",
+   [
+    "MCN-D47",
+    "SWE-004",
+    "VAL-010"
+   ]
+  ],
+  [
+   "SC-42",
+   "SIM",
+   "Persistent breach with B7 absent",
+   "Gale; boat services not running",
+   "C1 stops motors before 30 s or 10 m outside",
+   [
+    "FM-14",
+    "MCN-D59"
+   ]
+  ],
+  [
+   "SC-43",
+   "SIM",
+   "Boat stops itself",
+   "Dead motor mid-mission",
+   "Reason spoken \u2264 2 s after HOLD; resume needs the PIN",
+   [
+    "MCN-D60"
+   ]
+  ],
+  [
+   "L1-01",
+   "L1",
+   "End-to-end mission, real computers",
+   "Voice \u2192 captain's log over real Wi-Fi and UART",
+   "Completes; all artefacts logged",
+   [
+    "SWE-004"
+   ]
+  ],
+  [
+   "L1-02",
+   "L1",
+   "Panel self-test and state \u00d7 button table",
+   "Real buttons",
+   "Matches ICD IF-12",
+   [
+    "FM-32",
+    "FM-33"
+   ]
+  ],
+  [
+   "L1-03",
+   "L1",
+   "STOP latency, 100 trials",
+   "Button edge \u2192 SITL mode",
+   "P99 \u2264 0.5 s",
+   [
+    "FM-40",
+    "FS-009"
+   ]
+  ],
+  [
+   "L1-04",
+   "L1",
+   "Photo sync, 200 photos",
+   "Real Wi-Fi at 10 m",
+   "\u2264 5 min; hashes verified",
+   [
+    "CAM-007"
+   ]
+  ],
+  [
+   "L1-05",
+   "L1",
+   "UART load",
+   "Maximum telemetry + services",
+   "GCS heartbeat jitter < 0.5 s",
+   [
+    "FM-28"
+   ]
+  ],
+  [
+   "L1-06",
+   "L1",
+   "Mission Control power pulled mid-mission",
+   "Unplug the Pi 5",
+   "B4 RTL at 60 s",
+   [
+    "FM-31"
+   ]
+  ],
+  [
+   "L1-07",
+   "L1",
+   "Range walk on land",
+   "Walk the Pi Zero away",
+   "RSSI vs distance; flap behaviour as SC-34",
+   [
+    "FM-39"
+   ]
+  ],
+  [
+   "L1-08",
+   "L1",
+   "Pi Zero power-cut \u00d750",
+   "Switched 5 V",
+   "No filesystem damage",
+   [
+    "FM-26"
+   ]
+  ],
+  [
+   "L1-09",
+   "L1",
+   "Sealed-box heat soak 30 \u00b0C",
+   "Heat lamp",
+   "No throttling for 60 min",
+   [
+    "PWR-010"
+   ]
+  ],
+  [
+   "L2-01",
+   "L2",
+   "Motor direction and channel map",
+   "Props off",
+   "Left/right and sense correct",
+   [
+    "FM-18"
+   ]
+  ],
+  [
+   "L2-02",
+   "L2",
+   "Arming gated on the key",
+   "Key in/out",
+   "Refused with key out; rail < 0.5 V",
+   [
+    "FM-22",
+    "MOD-003"
+   ]
+  ],
+  [
+   "L2-03",
+   "L2",
+   "GNSS unplugged",
+   "Pull connector",
+   "EKF failsafe HOLD",
+   [
+    "FM-01"
+   ]
+  ],
+  [
+   "L2-04",
+   "L2",
+   "GNSS data line cut, power on",
+   "Cut TX",
+   "Detected \u2264 3 s",
+   [
+    "FM-03"
+   ]
+  ],
+  [
+   "L2-05",
+   "L2",
+   "Compass vs motor current",
+   "Motor-interference calibration",
+   "Interference \u2264 30%",
+   [
+    "FM-04"
+   ]
+  ],
+  [
+   "L2-06",
+   "L2",
+   "Heading vs reference",
+   "Known bearing",
+   "Within 10\u00b0",
+   [
+    "FM-05"
+   ]
+  ],
+  [
+   "L2-07",
+   "L2",
+   "FC power-cycle with motors running",
+   "Interrupt FC supply",
+   "Motors stop; boots disarmed",
+   [
+    "FM-07"
+   ]
+  ],
+  [
+   "L2-08",
+   "L2",
+   "Thrust-step brownout",
+   "Full reverse \u2192 forward",
+   "5 V rails in regulation",
+   [
+    "FM-08",
+    "PWR-005"
+   ]
+  ],
+  [
+   "L2-09",
+   "L2",
+   "Supply voltage ramp",
+   "Bench supply",
+   "Battery failsafe at thresholds",
+   [
+    "FM-15"
+   ]
+  ],
+  [
+   "L2-10",
+   "L2",
+   "ESC signal cut and restore",
+   "Cut the signal lead",
+   "Stop \u2264 1 s; restart only from neutral",
+   [
+    "FM-19",
+    "FM-20",
+    "FS-008"
+   ]
+  ],
+  [
+   "L2-11",
+   "L2",
+   "STOP to motors stopped",
+   "Panel STOP",
+   "\u2264 1 s",
+   [
+    "FM-40",
+    "FS-009"
+   ]
+  ],
+  [
+   "L2-12",
+   "L2",
+   "Beacon patterns",
+   "Cycle states",
+   "Each state distinguishable",
+   [
+    "REC-004"
+   ]
+  ],
+  [
+   "L2-13",
+   "L2",
+   "Key-switch short detection",
+   "Bridge the MOSFET",
+   "Checklist rail test flags it",
+   [
+    "FM-22"
+   ]
+  ],
+  [
+   "L3-01",
+   "L3",
+   "Thrust and current curves",
+   "Load cell, 0-100%",
+   "\u2265 2 N forward per pod; current \u2264 8 A",
+   [
+    "IF-06",
+    "NAV-001"
+   ]
+  ],
+  [
+   "L3-02",
+   "L3",
+   "Weed fouling trials",
+   "Real pond weed",
+   "Cleared in \u2265 2 of 3",
+   [
+    "ENV-005",
+    "FM-16"
+   ]
+  ],
+  [
+   "L3-03",
+   "L3",
+   "Cruise power estimate",
+   "Thrust vs drag model",
+   "\u2264 10 W at 1.0 m/s",
+   [
+    "PWR-009"
+   ]
+  ],
+  [
+   "B-01",
+   "BENCH",
+   "Prop guard probe",
+   "8 mm probe",
+   "No blade contact",
+   [
+    "FM-21",
+    "FM-45"
+   ]
+  ],
+  [
+   "B-02",
+   "BENCH",
+   "BMS protection",
+   "Over-current and short on the pack",
+   "BMS trips; fuse intact",
+   [
+    "FM-23"
+   ]
+  ],
+  [
+   "B-03",
+   "BENCH",
+   "Box dunk",
+   "30 min at 0.3 m",
+   "No ingress",
+   [
+    "FM-24"
+   ]
+  ],
+  [
+   "B-04",
+   "BENCH",
+   "Harness pull and connector",
+   "Tug test",
+   "No disconnect",
+   [
+    "FM-25"
+   ]
+  ],
+  [
+   "B-05",
+   "BENCH",
+   "Camera failure",
+   "Unplug camera",
+   "Health reports fault; mission unaffected",
+   [
+    "FM-29"
+   ]
+  ],
+  [
+   "L1-10",
+   "L1",
+   "Adult PIN: unlock, timeout, lockout",
+   "Web UI",
+   "10 min unlock; 5 failures \u2192 5 min lockout; motors still need the key",
+   [
+    "FM-48",
+    "MC-008"
+   ]
+  ],
+  [
+   "B-07",
+   "BENCH",
+   "Salvaged cell acceptance",
+   "PWR-D20 tests",
+   "Only compliant cells accepted and recorded",
+   [
+    "FM-23"
+   ]
+  ],
+  [
+   "B-06",
+   "BENCH",
+   "Clock without GNSS",
+   "Boot offline",
+   "Timestamps flagged until GNSS time",
+   [
+    "FM-30"
+   ]
+  ],
+  [
+   "R-01",
+   "REHEARSAL",
+   "Operator contingency rehearsal",
+   "SIM rehearsal mode",
+   "All section 3.5 scenarios rehearsed",
+   [
+    "FM-12",
+    "FM-42",
+    "FM-43",
+    "FM-44"
+   ]
+  ],
+  [
+   "P-01",
+   "POOL",
+   "Internet absent",
+   "Phone disconnected",
+   "Templates offered",
+   [
+    "FM-38"
+   ]
+  ]
+ ],
+ "unit_tests": 295,
+ "watt": 70
+}

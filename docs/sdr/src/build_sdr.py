@@ -21,17 +21,13 @@ for sub in ("common", "srs/src", "add/src", "sss/src", "fmea/src",
     sys.path.insert(0, str(DOCS / sub))
 
 import baseline as BL  # noqa: E402
-import fmea_data as F  # noqa: E402
-import kcl_data as K  # noqa: E402
-import requirements as R  # noqa: E402
-import sss_data as SD  # noqa: E402
 from pdfdoc import (ORANGE, ORANGE_T, GREEN_T, BLUE_T, H1, H2, P, Doc,  # noqa
                     PageBreak, Spacer, bullets, callout, colors,
                     control_and_contents, cover, mm, table)
 
 OUT = HERE.parent / "Boaty_System_Design_Review.pdf"
 DOC_ID = "BOATY-SDR-001"
-ISSUE = BL.issue("SDR", "review report; RID log at the freeze candidate")
+ISSUE = BL.issue("SDR", f"review report and decision; {BL.TAG}")
 DATE = BL.DATE
 
 # RID closures recorded after the review: RID -> (status, evidence).
@@ -73,10 +69,10 @@ CLOSURES = {
                "every build takes its issue and parents from it and the "
                "check fails on a typed parent issue; stale text corrected; "
                "all PDFs rebuilt by docs/build_all.py."),
-    "RID-09": ("Partly", "WP5: ArduPilot pinned to dbe79216 in the KCL "
+    "RID-09": ("Closed", "WP5: ArduPilot pinned to dbe79216 in the KCL "
                "(sources re-archived), software and README, and recorded "
-               "in the SITL evidence; requirements.lock. Tag "
-               "sdr-baseline-1 waits for the owner's signature."),
+               "in the SITL evidence; requirements.lock. Annotated tag "
+               "sdr-baseline-1 on the owner's GO."),
     "RID-10": ("Closed", "WP5: .github/workflows/ci.yml runs ruff, the "
                "mypy ratchet (safety modules clean), unit tests and every "
                "document check."),
@@ -84,57 +80,43 @@ CLOSURES = {
 AMBER_T = colors.HexColor("#fff6dc")
 
 # ---------------------------------------------------------------- facts
-REQS = list(R.all_reqs())
-REQ = {r["id"]: r for r in REQS}
-DERIVED = {ss: list(SD.all_derived(SD.SUBSYSTEMS[ss])) for ss in SD.ORDER}
-N_DER = sum(len(v) for v in DERIVED.values())
-RES = SD.SIM_RESULTS
-SIM_TESTS = [t for t in SD.TESTS if t[1] == "SIM"]
+# Sections 2 to 7 and Appendix A record the baseline as it was reviewed
+# (commit 88b1cd7): their numbers come from review_snapshot.json, computed
+# from that commit by snapshot.py. Section 10 reports the freeze candidate
+# from the working tree (NOW).
+import snapshot as SNAP  # noqa: E402
+
+RV = json.loads((HERE / "review_snapshot.json").read_text())
+NOW = SNAP.load(ROOT)
+REVIEWED = RV["commit"]
+
+REQS = RV["reqs"]
+N_DER = RV["n_derived"]
+RES = RV["results"]
+SIM_TESTS = [t for t in RV["tests"] if t[1] == "SIM"]
 NOT_BUILT = [t for t in SIM_TESTS if t[0] not in RES]
-PASSED = [t for t in SIM_TESTS if RES.get(t[0], "").startswith("Pass")]
-TRACED = {x for t in SD.TESTS for x in t[5]}
+PASSED = [t for t in SIM_TESTS if (RES.get(t[0]) or "").startswith("Pass")]
+TRACED = {x for t in RV["tests"] for x in t[5]}
 SIM_STAGE = [r for r in REQS if r["stage"] == "SIM"]
 SIM_UNNAMED = [r for r in SIM_STAGE if r["id"] not in TRACED]
 SIM_UNNAMED_M = [r for r in SIM_UNNAMED if r["pri"] == "M"]
-TBD_OPEN = [t for t in R.TBDS if "Closed" not in t[1]]
-BOM = K.check()
-
-
-def after(r):
-    return F.rpn_after(r) if r[0] in F.POST else F.rpn(r)
-
-
-HI_BEFORE = [r for r in F.ROWS if F.rpn(r) >= 100]
-HI_AFTER = [r for r in F.ROWS if after(r) >= 100]
-RESIDUAL_IDS = {x[0] for x in F.RESIDUAL}
-SEV9 = [r for r in F.ROWS if r[5] >= 9]
-
-SITL = json.loads((ROOT / "software/results/sitl_results.json").read_text())
-SITL_OUT = Counter(r["outcome"] for r in SITL["records"])
-UNIT = json.loads((ROOT / "software/results/unit_evidence.json").read_text())
-NLI = json.loads((ROOT / "software/results/nli_eval.json").read_text())
-NLI_S = NLI["summary"]
-PARM = "\n".join(p.read_text() for p in (ROOT / "software/params")
-                 .glob("*.parm"))
-HAS_OA = bool(re.search(r"^OA_TYPE", PARM, re.M))
-HAS_HDOP = bool(re.search(r"^GPS_HDOP_GOOD", PARM, re.M))
-HAS_CI = (ROOT / ".github" / "workflows").exists()
-HAS_POWER_CSV = (DOCS / "budgets" / "power.csv").exists()
+N_TBDS, N_TBD_OPEN = RV["tbds"], RV["tbds_open"]
+BOM = dict(total=RV["bom_total"], watt=RV["watt"])
+CAP = RV["cap"]
+FM_ROWS = RV["fm_rows"]                  # [id, S, RPN, RPN after actions]
+HI_BEFORE = [r for r in FM_ROWS if r[2] >= 100]
+HI_AFTER = [r for r in FM_ROWS if r[3] >= 100]
+SEV9 = [r for r in FM_ROWS if r[1] >= 9]
+N_ACTIONS = RV["fm_actions"]
+RESIDUAL = RV["fm_residual"]
+SITL_OUT = Counter(RV["sitl_outcomes"])
+NLI_S = RV["nli"]
+HAS_OA, HAS_HDOP = RV["has_oa"], RV["has_hdop_gate"]
+HAS_CI, HAS_POWER_CSV = RV["has_ci"], RV["has_power_csv"]
 
 
 def unit_total():
-    """Unit tests collected (pytest --collect-only), else the count at
-    the reviewed commit."""
-    import subprocess
-    try:
-        out = subprocess.run(
-            [sys.executable, "-m", "pytest", "--collect-only", "-q",
-             "tests/unit"], cwd=ROOT / "software", capture_output=True,
-            text=True, timeout=120).stdout
-        m = re.search(r"(\d+) tests? collected", out)
-        return int(m.group(1)) if m else 295
-    except (OSError, subprocess.TimeoutExpired):
-        return 295
+    return RV["unit_tests"]
 
 
 # ---------------------------------------------------------------- RIDs
@@ -185,7 +167,7 @@ RIDS = [
      "FMEA FM-02, residual-risk register, SSS-SIM SC-20",
      f"{len(HI_BEFORE)} failure modes met the RPN ≥ 100 rule before "
      f"actions and {len(HI_AFTER)} still do after them: "
-     + ", ".join(f"{r[0]} ({after(r)})" for r in HI_AFTER) + ". "
+     + ", ".join(f"{r[0]} ({r[3]})" for r in HI_AFTER) + ". "
      "FM-43 (swimmer near the boat) is formally accepted in the "
      "residual-risk register. FM-02 (GNSS position jump near the fence, "
      "S9) is neither accepted nor closed. Its post-action rating waits "
@@ -337,8 +319,8 @@ RIDS = [
      "PWR-D17 names docs/budgets/power.csv, which "
      + ("exists." if HAS_POWER_CSV else "does not exist.") +
      " The power analysis lives only in the KCL. The BOM is "
-     f"£{BOM['total']} against the £{K.CAP} cap (margin "
-     f"£{K.CAP - BOM['total']}, {100 * (K.CAP - BOM['total']) / K.CAP:.0f}%) "
+     f"£{BOM['total']} against the £{CAP} cap (margin "
+     f"£{CAP - BOM['total']}, {100 * (CAP - BOM['total']) / CAP:.0f}%) "
      "on estimated prices. The conditional antenna pole kit (£8, only "
      "if V-08 needs it) would breach it.",
      "Either create power.csv from the KCL data (generated) or re-point "
@@ -467,6 +449,8 @@ def build():
                  "Design Review (gate 1 of 4: SDR, CDR, TRR, ORR)"],
                 ["Recommendation", "<b>Conditional GO</b>: freeze after "
                  f"closing {len(maj)} Major and {len(mino)} Minor RIDs"],
+                ["Outcome", f"<b>GO</b> (owner, {DATE}): every RID closed; "
+                 f"baseline frozen as tag <i>{BL.TAG}</i> (section 9)"],
                 ["Findings", f"{len(maj)} Major, {len(mino)} Minor, "
                  f"{len(obs)} Observations carried to a named gate"]])
     st += control_and_contents(
@@ -481,13 +465,22 @@ def build():
          ["C", DATE, "WP5: RID-08, RID-10 and RID-12 closed; RID-09 closed "
           "except the tag, which follows the owner's signature. Decision "
           "record lists the freeze candidate from the baseline register.",
-          "Claude, owner decisions"]],
+          "Claude, owner decisions"],
+         ["D", DATE, "Owner decision GO. Sections 2 to 7 and Appendix A "
+          "now read a snapshot computed from the reviewed commit, so they "
+          "stay the review record. New section 9 records the design and "
+          "test changes since the review and the status at the freeze. "
+          "RID-09 closed with the tag; decision record completed.",
+          "Claude, owner decision"]],
         "How to use this report: section 2 gives the decision. Section 6 "
         "lists every review item discrepancy (RID) with its evidence and "
         "recommended closure. Section 8 is the plan to freeze. Close a "
         "RID by recording the closure evidence in the RID log (section "
         "8.3); the freeze happens when every Major and Minor RID is "
-        "closed or dispositioned by the owner.")
+        "closed or dispositioned by the owner. Sections 2 to 7 describe "
+        f"the baseline as reviewed (commit {REVIEWED}); section 9 is what "
+        "changed afterwards and the state at the freeze; section 10 is "
+        "the decision.")
 
     # 1
     st += [H1("1. Purpose, scope and reviewer statement"),
@@ -610,14 +603,14 @@ def build():
                   f"{N_DER} derived requirements. HUL and REC Issue A with "
                   "stale parents; hard-coded references (RID-08)."],
                  ["Design FMEA", "BOATY-FMEA-001", "E",
-                  f"{len(F.ROWS)} failure modes, {len(F.ACTIONS)} actions. "
+                  f"{len(FM_ROWS)} failure modes, {N_ACTIONS} actions. "
                   "FM-02 (RID-03), FM-13 (RID-01), FM-44 (RID-04), rules "
                   "(RID-13)."],
                  ["Operations Manual", "BOATY-OPS-001", "C",
                   "Good. Needs the wildlife and data statements (RID-04, "
                   "RID-14)."],
                  ["Key Component List", "BOATY-KCL-001", "B",
-                  f"BOM £{BOM['total']} of £{K.CAP}. ArduPilot commit "
+                  f"BOM £{BOM['total']} of £{CAP}. ArduPilot commit "
                   "mismatch (RID-09); basis stale (RID-08)."],
                  ["Software and results", "software/", "commit 88b1cd7",
                   "Not a document, but the documents cite it. No tag, no "
@@ -635,7 +628,7 @@ def build():
            "SRS §1-2; STK-01 to STK-08, with owner decisions logged."],
           ["E2", "System requirements complete, with priority, method and "
            "stage", "Met with RIDs", f"{len(REQS)} requirements; "
-           f"{len(TBD_OPEN)} of {len(R.TBDS)} TBDs open (site-dependent). "
+           f"{N_TBD_OPEN} of {N_TBDS} TBDs open (site-dependent). "
            "RID-04, RID-06."],
           ["E3", "Architecture selected with trade studies", "Met",
            "ADD design-space exploration, weighted candidates and "
@@ -648,10 +641,10 @@ def build():
           ["E6", "Subsystem requirements derived and traced", "Met",
            f"{N_DER} derived requirements; trace checked by the build."],
           ["E7", "Budgets (cost, mass, power) with margins", "Partly met",
-           f"Cost £{BOM['total']}/£{K.CAP}; power.csv missing (RID-12); "
+           f"Cost £{BOM['total']}/£{CAP}; power.csv missing (RID-12); "
            "the numbers are estimates (OBS-04)."],
           ["E8", "Hazards and failure modes analysed; high risks actioned",
-           "Partly met", f"{len(F.ROWS)} FMs; FM-02 has no disposition "
+           "Partly met", f"{len(FM_ROWS)} FMs; FM-02 has no disposition "
            "(RID-03); FM-13 relies on an unconfigured control (RID-01)."],
           ["E9", "Verification approach defined per requirement", "Partly "
            "met", "Method and stage on every requirement, but no VCRM "
@@ -683,7 +676,7 @@ def build():
              ". The requirements are mostly singular, testable and "
              "free of design. The exceptions are those in RID-06, and "
              "HLM-D19 which names a mechanism."),
-           P(f"TBDs: {len(R.TBDS) - len(TBD_OPEN)} of {len(R.TBDS)} "
+           P(f"TBDs: {N_TBDS - N_TBD_OPEN} of {N_TBDS} "
              "closed. The two open ones (TBD-02 site and TBD-03 "
              "permission) don't affect the system design. They are "
              "carried to ORR (OBS-01)."),
@@ -711,13 +704,13 @@ def build():
            f"{len(PASSED)} pass, {len(NOT_BUILT)} not built "
            f"({', '.join(t[0] for t in NOT_BUILT)}). No failures."],
           ["BENCH", str(stage["BENCH"]),
-           str(sum(1 for t in SD.TESTS if t[1] == "BENCH")),
+           str(sum(1 for t in RV["tests"] if t[1] == "BENCH")),
            "Planned; needs hardware (CDR/TRR)."],
-          ["Rigs L1-L3", "-", str(sum(1 for t in SD.TESTS
+          ["Rigs L1-L3", "-", str(sum(1 for t in RV["tests"]
                                       if t[1] in ("L1", "L2", "L3"))),
            "Planned; needs hardware."],
           ["POOL", str(stage["POOL"]),
-           str(sum(1 for t in SD.TESTS if t[1] == "POOL")),
+           str(sum(1 for t in RV["tests"] if t[1] == "POOL")),
            "Planned (TRR)."],
           ["LAKE", str(stage["LAKE"]), "-", "Planned (ORR onwards)."]]
     st += [table(vs, [22, 20, 26, 102]),
@@ -731,21 +724,21 @@ def build():
              "test, but only those with a built scenario count for "
              "SWE-005 (RID-02).", "small"),
            H2("5.5 Safety and risk"),
-           P(f"The FMEA has {len(F.ROWS)} failure modes. {len(SEV9)} are "
+           P(f"The FMEA has {len(FM_ROWS)} failure modes. {len(SEV9)} are "
              f"at severity ≥ 9, and all of those have a test. "
              f"{len(HI_BEFORE)} met the RPN ≥ 100 rule before actions and "
              f"{len(HI_AFTER)} after "
              f"({', '.join(r[0] for r in HI_AFTER)}). "
-             f"{len(F.RESIDUAL)} residual risks are formally accepted "
-             f"({', '.join(x[0] for x in F.RESIDUAL)}). The FMEA is "
+             f"{len(RESIDUAL)} residual risks are formally accepted "
+             f"({', '.join(RESIDUAL)}). The FMEA is "
              "strengthened by simulator findings (FM-49 to FM-58). Its "
              "weaknesses are the unconfigured RTL control (RID-01), the "
              "open FM-02 (RID-03), the wildlife rating (RID-04) and one "
              "missing mode (RID-13)."),
            H2("5.6 Budgets"),
            table([["Budget", "Value", "Limit / margin", "Assessment"],
-                  ["Cost (BOM)", f"£{BOM['total']}", f"£{K.CAP} cap; "
-                   f"£{K.CAP - BOM['total']} margin", "Compliant but thin; "
+                  ["Cost (BOM)", f"£{BOM['total']}", f"£{CAP} cap; "
+                   f"£{CAP - BOM['total']} margin", "Compliant but thin; "
                    "estimated prices (RID-12)."],
                   ["Power", f"{BOM['watt']} W limit", "PWR-D17 ≥ 30% "
                    "margin", "Analysis in KCL; budget file missing "
@@ -845,7 +838,7 @@ def build():
                "Tag <i>sdr-baseline-1</i> created. From then on, any "
                "change to a frozen document goes through a numbered CR "
                "with impact noted on the other documents.",
-               "The owner signs the decision record (section 9).",
+               "The owner signs the decision record (section 10).",
            ]),
            H2("8.3 RID log"),
            table([["RID", "Sev.", "Status", "Closed by (commit / CR)",
@@ -871,27 +864,185 @@ def build():
            ]),
            PageBreak()]
 
-    # 9 decision record
-    st += [H1("9. Decision record"),
+    # 9 changes since the review and status at the freeze
+    import vcrm as VCRM
+    vrows = VCRM.build()
+    vsim = Counter(r["status"].split(";")[0].split(" (")[0].split(" to")[0]
+                   for r in vrows if r["stage"] == "SIM")
+    mypy_left = sum(json.loads((ROOT / "software" / "tools" /
+                                "mypy_baseline.json").read_text()).values())
+
+    def sim_pass(f):
+        sim = [t for t in f["tests"] if t[1] == "SIM"]
+        ok = sum((f["results"].get(t[0]) or "").startswith("Pass")
+                 for t in sim)
+        return f"{ok} of {len(sim)}"
+
+    def after_hi(f):
+        hi = [r[0] for r in f["fm_rows"] if r[3] >= 100]
+        return f"{len(hi)} ({', '.join(hi) or 'none'})"
+
+    yes = {True: "Yes", False: "No"}
+    cmp_rows = [
+        ["Measure", f"At review ({REVIEWED})", f"At the freeze ({BL.TAG})"],
+        ["SRS requirements / SSS derived requirements",
+         f"{len(RV['reqs'])} / {RV['n_derived']}",
+         f"{len(NOW['reqs'])} / {NOW['n_derived']}"],
+        ["SIM catalogue scenarios passing", sim_pass(RV), sim_pass(NOW) +
+         ". Not passing: " + "; ".join(
+             f"{t[0]} {NOW['results'].get(t[0]) or 'not built'}"
+             for t in NOW["tests"] if t[1] == "SIM" and not
+             (NOW["results"].get(t[0]) or "").startswith("Pass")) +
+         ". SC-08 is an SWE-005 deviation (rig L2); the unbuilt FMEA "
+         "scenarios are OBS-07, by TRR"],
+        ["SITL records passed / known gaps",
+         f"{RV['sitl_outcomes'].get('passed', 0)} / "
+         f"{RV['sitl_outcomes'].get('xfail', 0) + RV['sitl_outcomes'].get('xpass', 0)}",
+         f"{NOW['sitl_outcomes'].get('passed', 0)} / "
+         f"{NOW['sitl_outcomes'].get('xfail', 0) + NOW['sitl_outcomes'].get('xpass', 0)}"],
+        ["Unit tests", str(RV["unit_tests"]), str(NOW["unit_tests"])],
+        ["FMEA failure modes / actions",
+         f"{len(RV['fm_rows'])} / {RV['fm_actions']}",
+         f"{len(NOW['fm_rows'])} / {NOW['fm_actions']}"],
+        ["RPN ≥ 100 after actions", after_hi(RV), after_hi(NOW) +
+         "; FM-43 is an accepted residual risk"],
+        ["SIM-stage requirements in the VCRM", "No VCRM",
+         ", ".join(f"{k} {v}" for k, v in sorted(vsim.items()))],
+        ["RTL path planning configured", yes[RV["has_oa"]],
+         yes[NOW["has_oa"]]],
+        ["CI / dependency lock / baseline register",
+         f"{yes[RV['has_ci']]} / {yes[RV['has_lock']]} / "
+         f"{yes[RV['has_register']]}",
+         f"{yes[NOW['has_ci']]} / {yes[NOW['has_lock']]} / "
+         f"{yes[NOW['has_register']]}"],
+        ["Power budget file (PWR-D17)", yes[RV["has_power_csv"]],
+         yes[NOW["has_power_csv"]]],
+        ["ArduPilot commit recorded with the SITL evidence",
+         RV["sitl_ardupilot"] or "No",
+         (NOW["sitl_ardupilot"] or "No")[:12]],
+        ["BOM against the cap", f"£{RV['bom_total']} / £{RV['cap']}",
+         f"£{NOW['bom_total']} / £{NOW['cap']}"],
+    ]
+    design = [
+        ["Change", "Why", "Recorded in"],
+        ["RTL plans round exclusions: OA_TYPE 2 (Dijkstra), AVOID_BEHAVE 0 "
+         "(slide), FENCE_MARGIN 3 → 2 m, OA_MARGIN_MAX 6 m",
+         "RID-01; with Rover's default 'stop' the planned path stalled the "
+         "boat (SC-27)", "ADD DD-26; SSS-HLM HLM-D19; FMEA FM-13, FM-59"],
+        ["HDOP ≤ 1.5 arming gate in Mission Control", "RID-11: Rover has no "
+         "GPS_HDOP_GOOD", "SSS-MCN MCN-D15; SSS-HLM HLM-D09"],
+        ["B6 position-jump HOLD, latched, no automatic RTL", "RID-03: a "
+         "sustained 20 m GNSS offset took the boat 12 m out of the fence "
+         "(SC-20)", "SSS-MCP MCP-D35; FMEA A-30, FM-02"],
+        ["B7 and Mission Control far-outside trigger 10 → 8 m", "The trigger "
+         "sat at FEN-006's own limit; SC-28 stopped at 10.2-10.6 m",
+         "SSS-MCP MCP-D30; SSS-MCN MCN-D59"],
+        ["15 m nest stand-off enforced by the site linter; 'Duck watch'",
+         "RID-04, CR-07", "SRS OPS-005; SSS-MCN MCN-D65; ICD IF-15"],
+        ["Planner detours by shortest path, any number of hops", "The "
+         "bigger nest zone defeated the two-hop search", "SSS-MCN MCN-D66"],
+        ["Requirement wording: NLI-003, MOD-005 (CR-06); CON-001 cap scope "
+         "(CR-08); MC-008 PIN; PWR-D18 20 Wh", "RID-06, RID-12, RID-08",
+         "SRS H; SSS-PWR D"],
+        ["One event vocabulary for the boat services; Mission Control "
+         "alerts on 'alert' events and flags unknown ones", "RID-05",
+         "software/boaty/mcp/events.py; ICD IF-04"],
+        ["Web UI security assumption; IF-11 data statement", "RID-15, "
+         "RID-14", "ADD DD-27; SSS-MCN MCN-D67; ICD IF-11; OPS OP-12"],
+    ]
+    found = [
+        "<b>ArduPilot's Dijkstra planner and fence avoidance fight.</b> The "
+        "planner's legs may skim a zone; Rover's default 'stop' avoidance "
+        "then holds the boat there for good. Slide avoidance fixes it "
+        "(SC-27).",
+        "<b>A sustained GNSS offset is invisible to the helm.</b> Short "
+        "jumps are rejected by the EKF; after ~10 s it adopts the false "
+        "position. Only the jump at that moment gives it away (SC-20, B6).",
+        "<b>The planner pauses each leg ~0.9 s</b>, which moved two timing "
+        "results (SC-28, SC-38) and showed a detector set at its "
+        "requirement's own limit.",
+        "<b>Documents and code disagreed in ways only running them "
+        "showed:</b> GPS_HDOP_GOOD does not exist in Rover; FEN-005 had no "
+        "direct evidence; the KCL cited a different ArduPilot commit from "
+        "the one flown; PWR-D18 did not match the accepted cells; and "
+        "'pip install -e .' never worked.",
+    ]
+    exit_rows = [
+        ["Exit criterion (8.2)", "Status"],
+        ["Every Major and Minor RID closed or dispositioned",
+         f"Met: {sum(1 for r in RIDS if r[1] != OBS and CLOSURES.get(r[0], ('',))[0] == 'Closed')} "
+         f"of {sum(1 for r in RIDS if r[1] != OBS)} closed"],
+        ["All document builds pass their checks, including the baseline "
+         "register and the VCRM", "Met: docs/build_all.py, and CI on every "
+         "push"],
+        ["Full SITL and unit suites pass on the frozen commit, no new "
+         "known gaps", f"Met: SITL {NOW['sitl_outcomes'].get('passed', 0)} "
+         f"passed, {NOW['sitl_outcomes'].get('xfail', 0)} known gaps (all "
+         f"from before the review); {NOW['unit_tests']} unit tests"],
+        [f"Tag {BL.TAG} created", "Met: annotated tag on the frozen commit"],
+        ["Owner signs the decision record", "Met: section 10"],
+    ]
+    st += [H1("9. Changes since the review and status at the freeze"),
+           P("Sections 2 to 7 are the review as carried out, on commit "
+             f"{REVIEWED}. This section records what the gap closure "
+             "(WP1 to WP5) changed in the design and in the evidence, and "
+             "where the baseline stands at the freeze. Its numbers are "
+             "computed from the frozen commit."),
+           H2("9.1 Design changes"),
+           table(design, [70, 55, 45]),
+           H2("9.2 Evidence at review and at the freeze"),
+           table(cmp_rows, [66, 42, 62]),
+           H2("9.3 What the gap closure itself found"),
+           P("Closing the RIDs meant running the design, not just "
+             "re-reading it. That turned up problems the document review "
+             "had not seen:"),
+           *bullets(found),
+           H2("9.4 Carried beyond the freeze"),
+           *bullets([
+               f"Observations OBS-01 to OBS-{len(obs):02d}, each with its "
+               "gate (section 7).",
+               "TBD-02, TBD-03 (site and permission) and TBD-09 (breeding "
+               "season rule), all to be settled at the site visit, before "
+               "ORR.",
+               f"{mypy_left} mypy findings outside the safety-critical "
+               "modules, held by the CI ratchet (may only go down); "
+               "clear them by CDR.",
+               f"SIM-stage requirements still open or partly verified in "
+               f"the VCRM: {vsim.get('Open', 0) + vsim.get('Partly', 0)}, "
+               "each with its gate (SRS Appendix C).",
+           ]),
+           H2("9.5 Exit criteria"),
+           table(exit_rows, [100, 70]),
+           PageBreak()]
+
+    # 10 decision record
+    st += [H1("10. Decision record"),
            table([["Item", "Entry"],
                   ["Review", "System Design Review / PDR, gate 1"],
-                  ["Baseline reviewed", "commit 88b1cd7"],
-                  ["RID status at freeze candidate", ", ".join(
+                  ["Baseline reviewed", f"commit {REVIEWED}"],
+                  ["Reviewer recommendation", "Conditional GO: close "
+                   f"{len(maj)} Major and {len(mino)} Minor RIDs, then "
+                   "freeze and tag"],
+                  ["RID status at the freeze", ", ".join(
                       f"{k}: {v}" for k, v in sorted(Counter(
                           CLOSURES.get(r[0], ("Open" if r[1] != OBS
                                               else "Carried", ""))[0]
                           for r in RIDS).items()))],
-                  ["Freeze candidate", "; ".join(
+                  ["Frozen baseline", "; ".join(
                       f"{BL.REGISTER[k][0] if BL.REGISTER[k][0] != '-' else BL.REGISTER[k][1]} "
-                      f"{BL.letter(k)}" for k in BL.REGISTER if k != "SDR")
-                   + f"; tag <i>{BL.TAG}</i> on the owner's signature"],
-                  ["Reviewer recommendation", "Conditional GO: close "
-                   f"{len(maj)} Major and {len(mino)} Minor RIDs, then "
-                   "freeze and tag"],
-                  ["Owner decision", "☐ GO   ☐ Conditional GO   ☐ NO-GO"],
-                  ["Conditions / notes", "<br/><br/>"],
-                  ["Signed (owner)", "<br/>"],
-                  ["Date", ""]], [50, 120]),
+                      f"{BL.letter(k)}" for k in BL.REGISTER) +
+                   f"; software, parameters and site files at the same "
+                   f"commit; ArduPilot {(NOW['sitl_ardupilot'] or '')[:8]}"],
+                  ["Owner decision", "<b>GO</b>"],
+                  ["Conditions / notes", "All RIDs closed. Observations and "
+                   "open items carried to their named gates (section 9.4). "
+                   "From the freeze, any change to a baselined document or "
+                   "configuration item needs a numbered change request, and "
+                   "the baseline register is updated in the same commit."],
+                  ["Approved by", "Project owner, in writing in the project "
+                   f"session of {DATE} ('Please then do the freeze')"],
+                  ["Tag", f"<b>{BL.TAG}</b> (annotated)"],
+                  ["Date", DATE]], [50, 120]),
            PageBreak()]
 
     # Appendix A

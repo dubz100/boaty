@@ -315,7 +315,7 @@ def build_one(code):
                ss["purpose"],
                [["Document", doc_id], ["Issue", issue],
                 ["Date", (ss.get("history") or [[None, DATE]])[-1][1]],
-                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Status", SD.B.COVER_STATUS],
                 ["Parents", ss["parents"]],
                 ["Content", f"{len(prim)} allocated SRS requirements → "
                  f"{len(derived)} subsystem requirements ({pc['M']} M, "

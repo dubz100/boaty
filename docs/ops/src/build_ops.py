@@ -92,8 +92,8 @@ def build():
                "Boaty session safely: procedures, checklist, contingency "
                "cards and the crew card",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "Baseline candidate for the SDR freeze; the owner "
-                 "is also its main user"],
+                ["Status", BL.COVER_STATUS + ". The owner is also its main "
+                 "user"],
                 ["Basis", BL.ref("SRS") + " (OPS-001 to OPS-012, ConOps, "
                  "ConUse); " + BL.ref("FMEA") + " procedural actions"],
                 ["Content", f"{len(O.PROCEDURES)} procedures, "

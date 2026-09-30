@@ -1165,7 +1165,7 @@ def build():
                "Mk1 interfaces IF-01 to IF-22: definitions, timing, error "
                "handling and verification",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Status", BL.COVER_STATUS],
                 ["Parent", BL.full("ADD") + " (interface register, "
                  "section 5)"],
                 ["Content", f"{len(A.INTERFACES)} interfaces, "

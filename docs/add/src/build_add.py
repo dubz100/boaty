@@ -53,7 +53,7 @@ def build():
                "Mk1 system architecture: design-space exploration, selected "
                "architecture, interfaces and requirement allocation",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Status", BL.COVER_STATUS],
                 ["Inputs", BL.full("SRS") + "; " + BL.full("CONCEPT")],
                 ["Outcome", f"Architecture {chosen['id']} '{chosen['name']}': "
                  f"8 subsystems, {len(A.INTERFACES)} interfaces, "

@@ -203,7 +203,7 @@ def build():
              "Control", "sub"),
            Spacer(1, 14 * mm),
            table([["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                  ["Status", "Baseline candidate for the SDR freeze"],
+                  ["Status", BL.COVER_STATUS],
                   ["Basis", BL.full("CONCEPT") + " (Concept G)"],
                   ["Includes", "System overview, ConOps, ConUse, requirements, "
                    "verification and traceability"],

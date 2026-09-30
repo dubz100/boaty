@@ -61,9 +61,9 @@ Dependencies are pinned in `software/requirements.lock`. The SITL scenarios run 
 
 - [`software/`](software/): the Python code and the simulator. ArduPilot Rover 4.7.1 SITL flies a model of the boat, the real mission-computer services run on a simulated Pi Zero, and Mission Control drives it all as it will on the Pi 5. See [`software/README.md`](software/README.md). Results are in [`software/results/`](software/results/): `FINDINGS.md` summarises what the simulator showed, and `SITL_REPORT.md` gives the evidence for every scenario.
 
-## Document issues (30 September 2026): SDR baseline candidate
+## Document issues (30 September 2026): SDR baseline, tag `sdr-baseline-1`
 
-The authoritative list is `docs/common/baseline.py`:
+The System Design Review closed with the owner's GO on 30 September 2026. The documentation, software, parameters and site files are frozen at the annotated tag `sdr-baseline-1`. From now on, changes need a numbered change request, and the baseline register is updated in the same commit. The authoritative list is `docs/common/baseline.py`:
 
 - SRS H
 - ADD H
@@ -72,7 +72,7 @@ The authoritative list is `docs/common/baseline.py`:
 - FMEA G
 - Operations manual E
 - KCL D
-- SDR C
+- SDR D (review report and decision)
 
 These issues carry:
 

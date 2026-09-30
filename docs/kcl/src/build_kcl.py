@@ -152,7 +152,7 @@ def build():
                "The parts whose numbers feed the software, the parameters "
                "and the simulator, with where each number came from",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Status", BL.COVER_STATUS],
                 ["Basis", BL.refs("ADD", "ICD", "FMEA") + ", SSS ("
                  + BL.sss_all() + ")"],
                 ["Content", f"{len(K.KC)} key components, "

@@ -78,10 +78,12 @@ def build():
     st = cover("Design FMEA", "Failure modes and effects analysis of the "
                "Mk1 architecture, used to drive simulator, rig and bench "
                "tests", [["Document", DOC_ID], ["Issue", ISSUE],
-                         ["Date", DATE], ["Status", "Design stage (before "
-                                          "hardware). Updated after rigs, "
+                         ["Date", DATE], ["Status", BL.COVER_STATUS +
+                                          ". Design stage (before "
+                                          "hardware); updated after rigs, "
                                           "pool and before the first lake "
-                                          "trial (SAF-006)."],
+                                          "trial (SAF-006) by change "
+                                          "request."],
                          ["Basis", BL.refs("ADD", "ICD") + ", SSS ("
                           + BL.sss_all() + "), simulator evidence to the "
                           "SDR"],

@@ -21,8 +21,10 @@ from pathlib import Path
 
 DOCS = Path(__file__).resolve().parents[1]
 DATE = "30 September 2026"
-STATUS = "baseline candidate, SDR"
 TAG = "sdr-baseline-1"
+STATUS = f"baselined, {TAG}"
+COVER_STATUS = (f"Baselined at the System Design Review (tag {TAG}); "
+                "changes only by change request")
 
 # key: (document ID, title, issue)
 REGISTER = {
@@ -41,7 +43,7 @@ REGISTER = {
     "FMEA": ("BOATY-FMEA-001", "Design FMEA", "G"),
     "OPS": ("BOATY-OPS-001", "Operations Manual", "E"),
     "KCL": ("BOATY-KCL-001", "Key Component List", "D"),
-    "SDR": ("BOATY-SDR-001", "System Design Review", "C"),
+    "SDR": ("BOATY-SDR-001", "System Design Review", "D"),
 }
 
 
