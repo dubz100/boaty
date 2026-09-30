@@ -82,7 +82,8 @@ def build():
           "boat services (DD-21).", "Claude, owner decisions"],
          ["G", DATE, "SDR decisions (BOATY-SDR-001 WP1): DD-23 (CR-06), "
           "DD-24 (CR-07, wildlife stand-off), DD-25 (CR-08, cost-cap "
-          "scope); R-02 updated.", "Claude, owner decisions"]],
+          "scope); R-02 updated. WP2: DD-26 (RTL path planning; HDOP "
+          "gate in Mission Control).", "Claude, owner decisions"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "

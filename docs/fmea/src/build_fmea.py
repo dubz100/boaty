@@ -107,7 +107,10 @@ def build():
           "evaluation (SC-33).", "Claude"],
          ["F", DATE, "SDR decision CR-07: FM-44 controls now include the "
           "15 m nest stand-off enforced by the site linter (MCN-D65); "
-          "SC-26 added to its tests.", "Claude, owner decision"]],
+          "SC-26 added to its tests. SDR WP2: FM-13 re-rated (O 3 → 2, "
+          "D 3 → 2) now path planning is configured and SC-27 passes; "
+          "FM-59 (RTL stalls near a zone) added from what SC-27 found.",
+          "Claude, owner decision"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "
         "missing failure modes: an FMEA is only as good as its "

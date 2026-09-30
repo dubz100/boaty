@@ -6,7 +6,7 @@
 #
 # Source: SSS-HLM HLM_PARAMS, updated by BOATY-KCL-001 section 7 (CR-04).
 # Firmware: ArduPilot Rover 4.7.1. Parameter names checked against the running
-# firmware by tools/check_params.py.
+# firmware by the SITL test IF-14-02 (tests/sitl/test_helm_contract.py).
 
 # --- Vehicle -----------------------------------------------------------
 FRAME_CLASS         2       # Boat (MOD-001, V-01)
@@ -45,7 +45,24 @@ FENCE_ENABLE        1
 FENCE_TYPE          6       # circle (2) + polygon (4)
 FENCE_ACTION        1       # RTL or Hold
 FENCE_RADIUS        100     # m backstop circle (OPS-006)
-FENCE_MARGIN        3       # m
+FENCE_MARGIN        2       # m: fence avoidance keeps this clear. Below the
+                            # validator's 3 m leg clearance, and well below
+                            # OA_MARGIN_MAX (SC-27: at 3 m it stalled RTL)
+
+# --- Path planning round exclusions (NAV-007, HLM-D19, SDR RID-01) ---------
+# Dijkstra's planner routes round exclusion zones and inside the inclusion
+# fence whenever the straight line to the target crosses one: RTL from the
+# far side of the island, or AUTO after drifting. Validated mission legs
+# never cross a zone, so it stays idle on a normal mission. If it cannot
+# find a path the boat slows to a stop (safe, but not home): SC-27.
+OA_TYPE             2       # Dijkstra
+AVOID_BEHAVE        0       # slide along a zone's margin, don't stop. The
+                            # planner's legs can pass close to a zone; with
+                            # Rover's default (stop) RTL deadlocked (SC-27)
+OA_MARGIN_MAX       6       # m round zones for planned paths. Must exceed
+                            # FENCE_MARGIN plus the ~2 m the boat cuts each
+                            # corner, or fence avoidance stalls the boat on
+                            # the planned path (SC-27; ArduPilot #11601)
 
 # --- Battery (FS-001, PRE-003) --------------------------------------------
 BATT_MONITOR        4       # analogue voltage + current

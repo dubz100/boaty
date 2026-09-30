@@ -374,6 +374,19 @@ def test_arm_blocked_by_few_satellites(env):
     assert not ok and any("satellites" in w for w in why)
 
 
+def test_arm_blocked_by_poor_hdop(env):
+    """PRE-001 / MCN-D15: HDOP > 1.5 blocks arming (Rover has no native
+    HDOP gate; SDR RID-11)."""
+    s, helm, *_ = env
+    s.choose_template("lap", "home bay")
+    tok = adult(s)
+    s.approve(tok)
+    ready_to_arm(s, tok)
+    helm.set(hdop=1.8)
+    ok, why = s.arm(tok)
+    assert not ok and any("HDOP" in w for w in why)
+
+
 def test_arm_blocked_by_param_mismatch(env):
     """MCN-D45 / SC-24 (unit level)."""
     s, helm, *_ = env

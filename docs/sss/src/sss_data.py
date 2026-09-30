@@ -357,9 +357,9 @@ D(w, "PWR-D19", "The battery shall sit ≥ 30 mm from the ESCs. Box internal "
 # ======================================================================
 m = subsystem(
     "HLM", title="Helm",
-    issue="Issue D (for review)",
-    parents="SRS Issue F, ADD Issue F, ICD Issue E, FMEA Issue D, KCL "
-            "Issue B",
+    issue="Issue E (for review)",
+    parents="SRS Issue G, ADD Issue G, ICD Issue G, FMEA Issue F, KCL "
+            "Issue C",
     history=[["B", "28 September 2026", "CR-02: microSD logging (HLM-D02). FMEA actions A-01, A-02, "
               "A-06, A-18: HLM-D24 formalised; HLM-D39 to D41 added; "
               "parameter baseline extended.", "Claude, owner decisions "
@@ -371,7 +371,12 @@ m = subsystem(
               "(HLM-D02). CR-05: GCS failsafe 3 s (HLM-D27). Simulator "
               "results folded into HLM-D05/08/20/24/25/26/28/29; HLM-D42 "
               "to D44 added; parameter baseline now generated from "
-              "software/params.", "Claude, owner decisions"]],
+              "software/params.", "Claude, owner decisions"],
+             ["E", "30 September 2026", "SDR WP2: HLM-D19 met by Dijkstra "
+              "path planning with slide avoidance (OA_TYPE, OA_MARGIN_MAX, "
+              "AVOID_BEHAVE; FENCE_MARGIN 3 → 2 m), verified by SC-27. "
+              "HLM-D09: HDOP gate moved to Mission Control (not available "
+              "in Rover).", "Claude"]],
 
     purpose="Navigate, enforce the fence and run every native failsafe on "
             "an independent RTOS processor, whatever else has failed.",
@@ -443,9 +448,10 @@ D(m, "HLM-D08", "All ArduPilot arming checks shall be enabled except the "
   "RC-channels check (no receiver is fitted: ARMING_SKIPCHK 64), and "
   "failures reported as STATUSTEXT (MCN translates them).", "M", "S", "SIM",
   ["MOD-004"])
-D(m, "HLM-D09", "Arming shall need a 3D fix with HDOP ≤ 1.5. The ≥ 8 "
-  "satellite check is done by Mission Control (MCN-D15).", "M", "T", "BENCH",
-  ["PRE-001"])
+D(m, "HLM-D09", "Arming shall need a 3D fix and a healthy EKF. Rover has "
+  "no HDOP arming gate (GPS_HDOP_GOOD is Copter-only; SDR RID-11), so the "
+  "HDOP ≤ 1.5 and ≥ 8 satellite checks are done by Mission Control "
+  "(MCN-D15).", "M", "T", "BENCH", ["PRE-001"])
 D(m, "HLM-D10", "Arming shall need the fence enabled and loaded, with home "
   "inside it.", "M", "S", "SIM", ["PRE-002", "FEN-001"])
 D(m, "HLM-D11", "Arming shall need ≥ 80% battery capacity remaining.",
@@ -468,8 +474,11 @@ D(m, "HLM-D18", "Steering and speed controllers shall be tuned to ≤ 3 m RMS "
   "cross-track error and ≤ 5 m loiter error in 3 m/s wind.", "S", "T", "LAKE",
   ["NAV-005", "NAV-006"])
 D(m, "HLM-D19", "RTL shall plan around exclusion zones inside the "
-  "inclusion fence (fence-aware path planning).", "M", "S", "SIM",
-  ["NAV-007", "V-01"])
+  "inclusion fence: ArduPilot's Dijkstra planner (OA_TYPE 2, OA_MARGIN_MAX "
+  "6 m) with fence avoidance set to slide along a zone's margin "
+  "(AVOID_BEHAVE 0, FENCE_MARGIN 2 m). With Rover's default 'stop' "
+  "behaviour the planned path stalled the boat (SC-27, SDR RID-01).",
+  "M", "S,T", "SIM", ["NAV-007", "V-01"])
 D(m, "HLM-D20", "NAV-008 shall be met by the helm's EKF together with B7's "
   "first-motion heading check (MCP-D22). V-16 showed the EKF alone keeps a "
   "wrong heading with its single compass rotated 90°, though navigation "
@@ -755,7 +764,8 @@ n = subsystem(
               "Claude"],
              ["E", "30 September 2026", "SDR decisions (CR-07): MCN-D65 "
               "nest stand-off in the site linter; MCN-D66 planner routes "
-              "round large exclusions.", "Claude, owner decision"]],
+              "round large exclusions. WP2: MCN-D15 adds the HDOP ≤ 1.5 "
+              "arming check.", "Claude, owner decision"]],
 
     purpose="Be the only place people interact with Boaty: turn words into "
             "safe, approved missions, and show, say and record what the "
@@ -830,7 +840,8 @@ D(n, "MCN-D14", "Arming, approval, fence editing, parameter changes, "
   "digits, 10 min unlock, lockout after 5 failures).", "M", "T", "SIM",
   ["MC-008", "DD-17"])
 D(n, "MCN-D15", "Before arming, Mission Control shall also check ≥ 8 "
-  "satellites, a verified mission and ≥ 1 GB free locally.", "M", "T", "SIM",
+  "satellites, GPS HDOP ≤ 1.5 (the helm has no HDOP gate, HLM-D09), a "
+  "verified mission and ≥ 1 GB free locally.", "M", "T", "SIM",
   ["PRE-005", "PRE-001", "PRE-008"])
 group(n, "C3 Web UI")
 D(n, "MCN-D16", "The map view shall show boat, heading, track, fence, "
@@ -1371,8 +1382,10 @@ TESTS = [
      "Arming refused", ["FM-10"]),
     ("SC-26", "SIM", "Site file lat/lon swapped; wrong site", "Corrupt the "
      "site file", "Linter and pre-arm both refuse", ["FM-11"]),
-    ("SC-27", "SIM", "Breach on the far side of the island", "Push the "
-     "boat out with wind", "RTL path avoids the exclusion", ["FM-13"]),
+    ("SC-27", "SIM", "RTL from the far side of the island", "RTL where "
+     "the straight line home crosses the island; calm and 3 m/s wind "
+     "pushing towards it", "Never enters a zone or leaves the fence; home "
+     "≤ 180 s", ["FM-13", "FM-59", "NAV-007"]),
     ("SC-28", "SIM", "Persistent breach (wind pushing out)", "Strong "
      "offshore wind", "Motors stop by 30 s / 10 m", ["FM-14"]),
     ("SC-29", "SIM", "Single motor failure", "Zero one output", "Divergence "

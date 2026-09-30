@@ -40,6 +40,12 @@ CLOSURES = {
                "TBD-09 to ORR."),
     "RID-06": ("Closed", "CR-06 (SRS G NLI-003, MOD-005, mode table; ADD G "
                "DD-23)."),
+    "RID-01": ("Closed", "WP2: OA_TYPE 2 + AVOID_BEHAVE 0, FENCE_MARGIN 2 "
+               "(params); SC-27 passes calm and in wind; FM-13 re-rated, "
+               "FM-59 added (FMEA F); HLM-D19 (SSS-HLM E); ADD G DD-26."),
+    "RID-11": ("Closed", "WP2: Rover has no GPS_HDOP_GOOD, so the HDOP ≤ 1.5 "
+               "gate is in Mission Control (MCN-D15, unit test); HLM-D09 "
+               "re-allocated (SSS-HLM E)."),
     "RID-12": ("Partly", "CR-08 cap scope and price rule (SRS G CON-001; "
                "ADD G DD-25; KCL C). power.csv open (WP5)."),
 }
@@ -426,8 +432,8 @@ def build():
           "as at commit 88b1cd7.", "Claude (as reviewer)"],
          ["B", DATE, "WP1 owner decisions recorded (CR-06, CR-07, CR-08): "
           "RID log updated. RID-12 corrected: the pole kit that breaches "
-          "the cap is the antenna pole, not a recovery pole.",
-          "Claude, owner decisions"]],
+          "the cap is the antenna pole, not a recovery pole. WP2 closes "
+          "RID-01 and RID-11.", "Claude, owner decisions"]],
         "How to use this report: section 2 gives the decision. Section 6 "
         "lists every review item discrepancy (RID) with its evidence and "
         "recommended closure. Section 8 is the plan to freeze. Close a "

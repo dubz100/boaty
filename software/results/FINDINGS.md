@@ -116,6 +116,37 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
     (`fallbacks: "default"`, beta `server-side-fallback-2026-07-01`). A
     refusal that survives the fallback offers the templates.
 
+## System Design Review WP2: RTL round exclusions (SC-27)
+
+The SDR found RTL was not fence-aware (RID-01): with no path planning
+configured, a return home from beyond the island would steer straight
+through it. SC-27 now flies RTL on the real Milton site fence from a point
+where the straight line home crosses the island.
+
+- **Dijkstra alone stalls the boat.** With `OA_TYPE 2` the planner did
+  route round the island, but the boat stopped 1.7-2.8 m from its edge
+  and never got home. Rover 4.7 applies fence avoidance inside the
+  position controller, and its default behaviour is *stop*. The
+  planner's legs can pass close to a zone: it places its corner points
+  with the margin, but checks legs only against the real zone. So
+  avoidance saw the path clip `FENCE_MARGIN` and held the boat there.
+- **Fix:** `AVOID_BEHAVE 0` (slide along the margin), `FENCE_MARGIN`
+  3 → 2 m, `OA_MARGIN_MAX 6`. RTL now goes round in 83 s with 2.6 m
+  clearance. The margin change also gives validated legs (3 m clearance)
+  1 m of spare before avoidance acts.
+- **SmartRTL was tried too.** It worked (retraced the validated route,
+  10.6 m clear, home in 97 s), but it retraces everything since arming.
+  After a long lawnmower pattern, a low-battery return would take almost
+  as long as the mission. Not adopted.
+- **New failure mode FM-59:** RTL can still stall short of home if the
+  planner finds no path. The boat stops inside the fence, so this is
+  safe but inconvenient. An adult drives it back.
+
+The review also found that `GPS_HDOP_GOOD` does not exist in Rover (it is
+Copter-only), so the helm had no HDOP arming gate. Mission Control now
+blocks arming when HDOP is above 1.5 (MCN-D15), alongside the satellite
+check (RID-11).
+
 ## Live Claude evaluation (IF-11, SC-33)
 
 - 39 instructions (41 after the trip-length fix below) were run against

@@ -66,6 +66,8 @@ class Config:
     breach_max_s: float = 30.0               # MCN-D59
     breach_max_outside_m: float = 10.0
     min_sats: int = 8                        # MCN-D15
+    max_hdop: float = 1.5                    # PRE-001, MCN-D15: Rover has
+                                             # no native HDOP arming gate
     min_free_mb: int = 1024
     min_battery_pct: float = 80.0            # PRE-003
     reference: tuple[float, float] | None = None
@@ -433,6 +435,8 @@ class Session:
             out.append("site file has errors")
         if st.sats < self.cfg.min_sats:
             out.append(f"{st.sats} satellites (need {self.cfg.min_sats})")
+        if st.hdop > self.cfg.max_hdop:
+            out.append(f"GPS HDOP {st.hdop:.1f} (need ≤ {self.cfg.max_hdop})")
         if st.battery_pct < self.cfg.min_battery_pct:
             out.append(f"battery {st.battery_pct:.0f} % (need "
                        f"{self.cfg.min_battery_pct:.0f} %)")

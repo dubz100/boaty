@@ -96,9 +96,10 @@ ROWS = [
      7, "Satellite image offset, drawing error", 5, "5 m margin", "Operator "
      "watching", 7, ["R-01"], ["A-05"]),
     ("FM-13", "HLM", "RTL path", "RTL crosses an exclusion zone", "Island "
-     "or nesting area approached", 8, "No path planning on board", 3,
-     "Fence-aware planning (V-01)", "Exclusion breach → stop", 3,
-     ["SC-27"], []),
+     "or nesting area approached", 8, "Straight-line RTL; no path planning "
+     "configured (found at SDR, RID-01)", 2, "Dijkstra path planning round "
+     "zones (OA_TYPE 2) with slide avoidance (HLM-D19)", "Exclusion breach "
+     "→ stop", 2, ["SC-27"], []),
     ("FM-14", "HLM", "Fence", "Persistent breach doesn't stop the motors",
      "Boat keeps pushing at the shore", 8, "No native mechanism (V-14)", 3,
      "Interim HOLD from MCP and Mission Control", "Breach alarm", 5,
@@ -272,6 +273,13 @@ ROWS = [
      "moving; no limit on repeat episodes", 6, "-", "Found by SC-06 "
      "intermittency and MCN-D60", 4, ["SC-06", "SC-29", "SC-43"],
      ["A-29"]),
+    ("FM-59", "HLM", "RTL path", "RTL stalls short of home near an "
+     "exclusion", "Boat stops inside the fence, not home; adult must "
+     "drive it back", 6, "Planner leg passes close to a zone and fence "
+     "avoidance set to 'stop' halts the boat; or the planner finds no "
+     "path", 2, "AVOID_BEHAVE slide; OA_MARGIN_MAX > FENCE_MARGIN + corner "
+     "cut (HLM-D19)", "Mission Control shows RTL with no progress; "
+     "operator", 3, ["SC-27"], []),
 ]
 
 ACTIONS = [

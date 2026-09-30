@@ -524,6 +524,11 @@ DECISIONS = [
      "Conditional and field items (antenna pole kit, spares, consumables) "
      "sit in a separate field-kit budget; prices confirmed before ordering",
      "CR-08 (SDR RID-12)", "Pole kit (£8) off the cap"),
+    ("DD-26", "RTL goes round exclusion zones using ArduPilot's Dijkstra "
+     "planner, with fence avoidance set to slide rather than stop "
+     "(Rover's default stop stalled the boat on the planned path). The "
+     "HDOP arming gate moves to Mission Control, since Rover has none",
+     "SDR RID-01, RID-11; SC-27", "No hardware cost"),
 ]
 
 # Results of the early checks (simulator slices 1-2, software/results).
