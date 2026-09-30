@@ -17,6 +17,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import Circle, Polygon, Rectangle  # noqa: E402
 
+import baseline as BL  # noqa: E402
 import fmea_data as F  # noqa: E402
 import ops_data as O  # noqa: E402
 import sss_data as SD  # noqa: E402
@@ -29,8 +30,9 @@ OUT = HERE.parent / "Boaty_Operations_Manual.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-OPS-001"
-ISSUE = "Issue D (for review)"
-DATE = "30 September 2026"
+ISSUE = BL.issue("OPS")
+DATE = BL.DATE
+PREV_D = "30 September 2026"
 PREV_C = "29 September 2026"
 PREV = "28 September 2026"
 BOX = "☐"
@@ -90,10 +92,10 @@ def build():
                "Boaty session safely: procedures, checklist, contingency "
                "cards and the crew card",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "For review by the project owner (who is also "
-                 "its main user)"],
-                ["Basis", "SRS Issue F (OPS-001 to OPS-012), ConOps/ConUse, "
-                 "FMEA Issue D actions A-05, A-09, A-11, A-17, A-19"],
+                ["Status", "Baseline candidate for the SDR freeze; the owner "
+                 "is also its main user"],
+                ["Basis", BL.ref("SRS") + " (OPS-001 to OPS-012, ConOps, "
+                 "ConUse); " + BL.ref("FMEA") + " procedural actions"],
                 ["Content", f"{len(O.PROCEDURES)} procedures, "
                  f"{len(O.CHECKLIST)}-item checklist, {len(O.CONTINGENCY)} "
                  "contingency cards"]])
@@ -106,9 +108,12 @@ def build():
          ["C", PREV_C, "Mission Control findings: CL-13 (arm at the jetty: "
           "home is taken where the boat is armed) and CL-18 (close any "
           "other ground station) added.", "Claude, from simulator slice 3"],
-         ["D", DATE, "SDR decision CR-07: site drawing now puts a ≥ 15 m "
+         ["D", PREV_D, "SDR decision CR-07: site drawing now puts a ≥ 15 m "
           "circle round every nest structure; bird photos only from outside "
-          "it (OPS-005, SRS Issue G).", "Claude, owner decision"]],
+          "it (OPS-005, SRS Issue G).", "Claude, owner decision"],
+         ["E", DATE, "SDR baseline candidate: OP-12 step on session logs "
+          "(WP4, RID-14); basis from the baseline register (RID-08).",
+          "Claude"]],
         "Review guidance: read it as if it's your first lake session. "
         "Anything you wouldn't actually do, or that's missing, is a finding. "
         "Sections 7 and 8 are meant to be printed and laminated.")

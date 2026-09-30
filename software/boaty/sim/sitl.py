@@ -44,6 +44,23 @@ def have_sitl() -> bool:
     return find_ardurover().is_file()
 
 
+# The helm firmware release: Rover-4.7.1. The KCL's archived sources come
+# from the same commit (SDR RID-09).
+ARDUPILOT_COMMIT = "dbe792162d06cab66c3475fd5556bf7a120f119e"
+
+
+def ardupilot_commit() -> str | None:
+    """The commit the SITL binary was built from, if it is a git tree."""
+    exe = find_ardurover()
+    try:
+        out = subprocess.run(["git", "-C", str(exe.parents[3]), "rev-parse",
+                              "HEAD"], capture_output=True, text=True,
+                             timeout=10)
+        return out.stdout.strip() or None
+    except (OSError, IndexError, subprocess.TimeoutExpired):
+        return None
+
+
 @dataclass
 class SimConfig:
     home: tuple = MILTON_HOME

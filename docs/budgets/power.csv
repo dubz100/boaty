@@ -1,0 +1,12 @@
+item,watts,source
+Flight controller + GNSS,0.8,"ADD 7.2 (estimate; motors from the boat model, tests/unit/test_boat.py)"
+Pi Zero 2W + camera + Wi-Fi (average),1.8,"ADD 7.2 (estimate; motors from the boat model, tests/unit/test_boat.py)"
+LED beacon,0.3,"ADD 7.2 (estimate; motors from the boat model, tests/unit/test_boat.py)"
+ESC idle (2),0.2,"ADD 7.2 (estimate; motors from the boat model, tests/unit/test_boat.py)"
+Motors at cruise (estimate),8.0,"ADD 7.2 (estimate; motors from the boat model, tests/unit/test_boat.py)"
+TOTAL at cruise (1.0 m/s),11.1,
+pack capacity (Ah),2.50,BATT_CAPACITY = cell acceptance limit (PWR-D20)
+usable energy (Wh),21.6,3S x 3.6 V x capacity x 80%
+endurance at cruise (min),117,needs >= 40 (PWR-009)
+margin at 40 min,192%,needs >= 30% (PWR-D17)
+cruise time before the 35% RTL (min),76,FS-001; missions are <= 20 min (MIS-003)

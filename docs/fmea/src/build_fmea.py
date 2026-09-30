@@ -16,6 +16,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from reportlab.lib.pagesizes import A4, landscape  # noqa: E402
 
+import baseline as BL  # noqa: E402
 import fmea_data as F  # noqa: E402
 from pdfdoc import (ORANGE, ORANGE_T, H1, H2, P, Doc, PageBreak, KeepTogether,  # noqa
                     Paragraph, S, Spacer, bullets, callout, colors,
@@ -26,8 +27,9 @@ OUT = HERE.parent / "Boaty_Design_FMEA.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-FMEA-001"
-ISSUE = "Issue F (for review)"
-DATE = "30 September 2026"
+ISSUE = BL.issue("FMEA")
+DATE = BL.DATE
+PREV_F = "30 September 2026"
 PREV_E = "29 September 2026"
 PREV = "28 September 2026"
 W = 257  # usable width in mm (landscape A4 minus margins)
@@ -80,8 +82,9 @@ def build():
                                           "hardware). Updated after rigs, "
                                           "pool and before the first lake "
                                           "trial (SAF-006)."],
-                         ["Basis", "ADD Issue F, ICD Issue E, SSS Issues "
-                          "B-D, simulator slices 1-2"],
+                         ["Basis", BL.refs("ADD", "ICD") + ", SSS ("
+                          + BL.sss_all() + "), simulator evidence to the "
+                          "SDR"],
                          ["Content", f"{n} failure modes, {len(F.ACTIONS)} "
                           f"actions, {len(SD.TESTS)} catalogued tests"]])
     st += control_and_contents(
@@ -105,7 +108,7 @@ def build():
           "incorporated; FM-09, 10, 34, 35, 41 re-rated now SC-24, 25, 31, "
           "32 and 37 pass; FM-37 re-rated after the live Claude "
           "evaluation (SC-33).", "Claude"],
-         ["F", DATE, "SDR decision CR-07: FM-44 controls now include the "
+         ["F", PREV_F, "SDR decision CR-07: FM-44 controls now include the "
           "15 m nest stand-off enforced by the site linter (MCN-D65); "
           "SC-26 added to its tests. SDR WP2: FM-13 re-rated (O 3 → 2, "
           "D 3 → 2) now path planning is configured and SC-27 passes; "
@@ -114,7 +117,9 @@ def build():
           "GNSS offset leaves the fence; FM-02 after-action RPN 108 → 72; "
           "FM-60 (home reset by re-arming on the water); S ≥ 9 rule text "
           "matches the build check.",
-          "Claude, owner decision"]],
+          "Claude, owner decision"],
+         ["G", DATE, "SDR baseline candidate (WP5, RID-08): basis and "
+          "references from the baseline register.", "Claude"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "
         "missing failure modes: an FMEA is only as good as its "
@@ -180,7 +185,8 @@ def build():
            P("Blue S cell = severity ≥ 9. Orange RPN cell = at or above "
              "the action threshold. 'After' = RPN once the incorporated "
              "actions are in (Issue B); '-' = unchanged. Test IDs are "
-             "defined in SSS-SIM Issue B, section 6.", "small"),
+             "defined in the SSS-SIM test catalogue (" + BL.ref("SSS-SIM") +
+             ").", "small"),
            table(rows, [16, 22, 29, 31, 7, 25, 7, 40, 7, 10, 11, 29, 17],
                  style_extra=style),
            PageBreak()]
@@ -252,8 +258,8 @@ def build():
            ]),
            PageBreak(),
            H1("5. Actions"),
-           table([["ID", "Action", "Owner", "Failure modes", "Status (Issue "
-                   "D)", "Carried by"]] +
+           table([["ID", "Action", "Owner", "Failure modes", "Status",
+                   "Carried by"]] +
                  [[f"<b>{a[0]}</b>", a[1], a[2], ", ".join(a[4]),
                    F.STATUS[a[0]][0], ", ".join(F.STATUS[a[0]][1]) or "-"]
                   for a in F.ACTIONS], [14, 110, 20, 30, 45, 38]),

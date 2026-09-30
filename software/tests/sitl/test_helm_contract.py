@@ -2,7 +2,7 @@
 (ICD IF-14 verification), run here against ArduPilotHelm on SITL."""
 import pytest
 
-from boaty.helm.api import (Fence, Mission, MissionItem, NotAllowedWhileArmed,
+from boaty.helm.api import (Mission, MissionItem, NotAllowedWhileArmed,
                             RoverMode, SrsMode)
 from boaty.helm.params import differences, read_many
 from boaty.sim.geo import offset

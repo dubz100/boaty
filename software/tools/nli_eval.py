@@ -115,7 +115,7 @@ def main():
     gen = datetime.now(timezone.utc).isoformat(timespec="seconds")
     (res / "nli_eval.json").write_text(json.dumps(
         dict(generated=gen, summary=summary, rows=rows), indent=1))
-    md = [f"# Claude API evaluation (IF-11, SC-33)", "",
+    md = ["# Claude API evaluation (IF-11, SC-33)", "",
           f"Generated {gen} by `tools/nli_eval.py` against the live API: "
           f"model `{MODEL}`, prompt `{PROMPT_VERSION}`, site "
           f"`{data['site']}`. Each case ran through the real planning flow "

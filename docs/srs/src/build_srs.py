@@ -18,16 +18,20 @@ from reportlab.platypus.doctemplate import BaseDocTemplate, PageTemplate
 from reportlab.platypus.frames import Frame
 from reportlab.platypus.tableofcontents import TableOfContents
 
-import requirements as REQ
-import vcrm as VCRM
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "common"))
+import baseline as BL  # noqa: E402
+import requirements as REQ  # noqa: E402
+import vcrm as VCRM  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_System_Requirements_Specification.pdf"
 
 DOC_ID = "BOATY-SRS-001"
-ISSUE = "Issue G (for review)"
-DATE = "30 September 2026"
+ISSUE = BL.issue("SRS")
+DATE = BL.DATE
+PREV_G = "30 September 2026"
 PREV = "28 September 2026"
 PREV_F = "29 September 2026"
 
@@ -199,8 +203,8 @@ def build():
              "Control", "sub"),
            Spacer(1, 14 * mm),
            table([["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                  ["Status", "Issue E: owner decisions incorporated"],
-                  ["Basis", "Concept Selection Report v1.1 (Concept G)"],
+                  ["Status", "Baseline candidate for the SDR freeze"],
+                  ["Basis", BL.full("CONCEPT") + " (Concept G)"],
                   ["Includes", "System overview, ConOps, ConUse, requirements, "
                    "verification and traceability"],
                   ["Content", f"{n_req} requirements: {pri['M']} Must, "
@@ -236,7 +240,7 @@ def build():
                    "simulation (software/results, SC-02). CR-04 (flight "
                    "controller change) needs no SRS change.",
                    "Claude, owner decision"],
-                  ["G", DATE, "SDR decisions (BOATY-SDR-001, WP1). CR-06: "
+                  ["G", PREV_G, "SDR decisions (BOATY-SDR-001, WP1). CR-06: "
                    "NLI-003 and MOD-005 reworded to match the verified "
                    "design (no coordinates to the model; return home as a "
                    "final RTL item). CR-07: OPS-005 allows wildlife photos "
@@ -244,7 +248,12 @@ def build():
                    "renamed 'Duck watch'; TBD-09 (breeding season) opened. "
                    "CR-08: CON-001 cap scope and price rule; STK-05 "
                    "wording. WP3: SWE-005 deviation for FS-008 (rig L2).",
-                   "Claude, owner decisions"]],
+                   "Claude, owner decisions"],
+                  ["H", DATE, "SDR baseline candidate (WP4/WP5): Appendix C "
+                   "VCRM generated from the tests; references from the "
+                   "baseline register; MC-008 says PIN (CR-03 removed the key "
+                   "switch); use story, failsafe caption and closing note "
+                   "brought up to date (RID-08).", "Claude"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),
            table([["Role", "Name", "Signature / date"],
@@ -626,11 +635,11 @@ def build():
              "blowing towards the bank. Dad works through the checklist on "
              "the screen while his son clips the orange pods on with the big "
              "thumb-screws and sits two DUPLO ducks on the deck as 'lookouts'. "
-             "He presses the talk button: <i>\"Go and find the real ducks and "
+             "He presses the talk button: <i>\"Go and look for ducks and "
              "take pictures!\"</i> A few seconds later a blue path appears on "
              "the map and the box says, <i>\"I'll explore the bay for ten "
              "minutes, take twenty pictures, then come home.\"</i> Dad checks "
-             "the route, turns the key and approves it. The boat goes in the "
+             "the route, enters his PIN and approves it. The boat goes in the "
              "water, Dad arms it, and his son holds the green button until "
              "it says <i>\"Off we go!\"</i>"),
            P("Halfway round, the boat stops and says <i>\"I'm stuck in some "
@@ -668,8 +677,9 @@ def build():
                        table([["Condition", "Detection", "Response", "Req."]] +
                              [list(f) for f in REQ.FAILSAFES],
                              [34, 58, 52, 26]),
-                       P("Table 3. Failsafe summary (initial thresholds, "
-                         "TBD-08).", "caption")])]
+                       P("Table 3. Failsafe summary. Thresholds accepted "
+                         "as the baseline (TBD-08 closed); FS-002 at 3 s by "
+                         "CR-05.", "caption")])]
     st.append(PageBreak())
 
     # ---------------- 4 verification
@@ -758,10 +768,12 @@ def build():
            table([["ID", "Open item", "Affects", "Resolved by"]] +
                  [list(t) for t in REQ.TBDS], [16, 86, 38, 30]),
            Spacer(1, 5 * mm),
-           callout("<b>Next:</b> the Architecture Design Document "
-                   "(BOATY-ADD-001) allocates every requirement to a "
-                   "subsystem, closes TBD-04 to TBD-07, and defines the "
-                   "interfaces for the ICD and subsystem specifications."),
+           callout("<b>Downstream:</b> " + BL.full("ADD") + " allocates "
+                   "every requirement to a subsystem; " + BL.full("ICD") +
+                   " defines the interfaces; the subsystem specifications "
+                   "derive the build requirements. The current issue of "
+                   "each is in the baseline register "
+                   "(docs/common/baseline.py)."),
            Spacer(1, 6 * mm),
            H1("Appendix A. Glossary"),
            table([["Term", "Meaning"]] +

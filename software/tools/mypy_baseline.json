@@ -1,0 +1,13 @@
+{
+ "boaty/helm/api.py": 1,
+ "boaty/helm/ardupilot.py": 34,
+ "boaty/mcn/llm.py": 1,
+ "boaty/mcn/models.py": 13,
+ "boaty/mcn/planner.py": 13,
+ "boaty/mcn/planning.py": 1,
+ "boaty/mcn/site.py": 16,
+ "boaty/mcp/camera.py": 6,
+ "boaty/mcp/geometry.py": 2,
+ "boaty/mcp/services.py": 10,
+ "boaty/sim/sitl.py": 4
+}

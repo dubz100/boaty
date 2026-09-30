@@ -66,15 +66,25 @@ tools/nli_eval.py     run the evaluation set against the live Claude API
 
 ## Setup
 
-Python 3.11+, then `pip install -e ".[test]"` (pymavlink, Pillow,
-anthropic, pydantic; pytest, hypothesis, coverage).
+Python 3.11+, then install the locked versions the evidence was produced
+with (SDR RID-09):
+
+```sh
+pip install -r requirements.lock && pip install -e . --no-deps
+```
+
+`pyproject.toml` lists the direct dependencies (pymavlink, Pillow,
+anthropic, pydantic) and the extras `test`, `docs` and `dev` (ruff, mypy).
 
 Build ArduPilot Rover SITL once (about 5 minutes on 4 cores). This is the
-same firmware release the helm will run:
+same firmware release the helm will run: Rover-4.7.1, commit
+`dbe792162d06cab66c3475fd5556bf7a120f119e`. The KCL's archived sources
+come from the same commit, and the build checks it:
 
 ```sh
 git clone --depth 1 --branch Rover-4.7.1 https://github.com/ArduPilot/ardupilot.git
-cd ardupilot && git submodule update --init --recursive --depth 1
+cd ardupilot && test "$(git rev-parse HEAD)" = dbe792162d06cab66c3475fd5556bf7a120f119e
+git submodule update --init --recursive --depth 1
 pip install pexpect future "empy==3.3.4"
 ./waf configure --board sitl && ./waf rover
 export ARDUPILOT_HOME=$PWD

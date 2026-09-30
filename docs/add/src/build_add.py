@@ -11,6 +11,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[1] / "common"))
 
 import architecture as A  # noqa: E402
+import baseline as BL  # noqa: E402
 from pdfdoc import (BLUE_T, GREEN_T, ORANGE, ORANGE_T, H1, H2, P,  # noqa: E402
                     Doc, KeepTogether, PageBreak, Spacer, bullets, callout,
                     colors, control_and_contents, cover, fig, mm, table)
@@ -19,8 +20,9 @@ SRS = A.SRS
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Architecture_Design_Document.pdf"
 DOC_ID = "BOATY-ADD-001"
-ISSUE = "Issue G (for review)"
-DATE = "30 September 2026"
+ISSUE = BL.issue("ADD")
+DATE = BL.DATE
+PREV_G = "30 September 2026"
 PREV_F = "29 September 2026"
 PREV = "28 September 2026"
 
@@ -43,7 +45,7 @@ def build():
     mass = sum(m for _, m in A.MASS)
     p_boat = sum(p for _, p in A.POWER_BOAT)
     p_bank = sum(p for _, p in A.POWER_BANK)
-    usable_wh = 3 * 3.6 * 3.0 * 0.8
+    usable_wh = 3 * 3.6 * 2.5 * 0.8     # accepted cells (CR-03, PWR-D20)
     chosen = next(c for c in A.CANDIDATES if c.get("chosen"))
     sens = A.candidate_sensitivity()
 
@@ -51,9 +53,8 @@ def build():
                "Mk1 system architecture: design-space exploration, selected "
                "architecture, interfaces and requirement allocation",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "AR-2 and CR-01 accepted by the owner"],
-                ["Inputs", "SRS BOATY-SRS-001 Issue D; Concept Selection "
-                 "Report v1.1"],
+                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Inputs", BL.full("SRS") + "; " + BL.full("CONCEPT")],
                 ["Outcome", f"Architecture {chosen['id']} '{chosen['name']}': "
                  f"8 subsystems, {len(A.INTERFACES)} interfaces, "
                  f"{n_alloc} requirements allocated"]])
@@ -80,11 +81,15 @@ def build():
           "3 s (DD-22). Simulator evidence: own boat model (DD-20), V-item "
           "results in section 9, FS-001/004/FEN-006 gaps allocated to the "
           "boat services (DD-21).", "Claude, owner decisions"],
-         ["G", DATE, "SDR decisions (BOATY-SDR-001 WP1): DD-23 (CR-06), "
+         ["G", PREV_G, "SDR decisions (BOATY-SDR-001 WP1): DD-23 (CR-06), "
           "DD-24 (CR-07, wildlife stand-off), DD-25 (CR-08, cost-cap "
           "scope); R-02 updated. WP2: DD-26 (RTL path planning; HDOP "
           "gate in Mission Control). WP4: DD-27 (web UI security "
-          "assumption).", "Claude, owner decisions"]],
+          "assumption).", "Claude, owner decisions"],
+         ["H", DATE, "SDR baseline candidate (WP5, RID-08): references "
+          "from the baseline register; cost, drivers, mode notes, the "
+          "Claude request wording and section 10 brought up to date; 7.2 "
+          "uses accepted-cell energy (power.csv).", "Claude"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "
@@ -114,17 +119,20 @@ def build():
                "assumptions to prove early.",
            ]),
            P("Some things were already fixed and are not reopened: the "
-             "catamaran concept, ArduPilot as the helm (SRS Issue B), the "
+             "catamaran concept, ArduPilot as the helm (SRS TBD-01), the "
              "Pi 5, and the SRS itself. Everything else was open.", "small"),
            H2("1.3 Related documents"),
            table([["Ref", "Document"],
-                  ["[1]", "BOATY-SRS-001 System Requirements Specification, "
-                   "Issue B"],
-                  ["[2]", "Concept Selection Report v1.1"],
+                  ["[1]", BL.full("SRS") + " System Requirements "
+                   "Specification"],
+                  ["[2]", BL.full("CONCEPT")],
                   ["[3]", "ArduPilot Rover documentation (ardupilot.org/"
                    "rover) and MAVLink common message set (mavlink.io)"],
-                  ["[4]", "BOATY-ICD-001 Interface Control Document (next)"],
-                  ["[5]", "BOATY-SSS-xxx Subsystem specifications (next)"]],
+                  ["[4]", BL.full("ICD") + " Interface Control Document"],
+                  ["[5]", "BOATY-SSS-HUL to SIM Subsystem specifications ("
+                   + BL.sss_all() + ")"],
+                  ["[6]", BL.full("FMEA") + " Design FMEA; " +
+                   BL.full("KCL") + " Key Component List"]],
                  [14, 156]),
            PageBreak()]
 
@@ -299,8 +307,9 @@ def build():
                "<b>Intent, not waypoints.</b> The Claude API returns a small "
                "JSON intent, e.g. <i>explore(area='home bay', coverage="
                "'medium'), photo_stops(n=3, near='island'), "
-               "return_home()</i>. The request uses tool use, so the output "
-               "must match the schema (NLI-004).",
+               "return_home()</i>. The request uses structured output, so the "
+               "reply must match the schema, and it is checked again by "
+               "pydantic (NLI-004).",
                "<b>Planner.</b> Deterministic Python turns the intent into "
                "geometry, using the site store's fence, exclusions and named "
                "landmarks: survey lanes, photo points and legs.",
@@ -379,8 +388,9 @@ def build():
     bom_rows += [["", "<b>Baseline (boat + bank, excluding *)</b>",
                   f"<b>{base}</b>"],
                  ["", "Boat only / bank only", f"{boat_bom} / {bank_bom}"],
-                 ["", "If the pole kit (*) is needed", f"{base + deferred}"],
-                 ["", "SRS cap (CON-001, Issue C) / target", "160 / 150"]]
+                 ["", "Antenna pole kit (*), field-kit budget (CR-08)",
+                  f"{deferred}"],
+                 ["", "SRS cap (CON-001) / target", "185 / 180"]]
     st += [H1("7. Budgets"),
            H2("7.1 Mass"),
            table([["Item", "g"]] + [[i, str(m)] for i, m in A.MASS] +
@@ -391,7 +401,8 @@ def build():
            table([["Boat load", "W"]] + [[i, f"{p:.1f}"] for i, p in
                                          A.POWER_BOAT] +
                  [["<b>Total at cruise</b>", f"<b>{p_boat:.1f}</b>"],
-                  ["Usable energy: 3S 18650, 3.0 Ah, 80% usable",
+                  ["Usable energy: 3S 18650, 2.5 Ah accepted cells, 80% "
+                   "usable (docs/budgets/power.csv)",
                    f"{usable_wh:.1f} Wh"],
                   ["Estimated endurance (PWR-009 needs ≥ 40 min)",
                    f"≈ {usable_wh / p_boat * 60:.0f} min"]], [130, 40]),
@@ -412,9 +423,9 @@ def build():
            callout(f"<b>Cost position (Issue F).</b> Baseline "
                    f"<b>£{base}</b> against the CON-001 cap of £185 (target "
                    f"£180). £{185 - base} headroom. Prices are estimates "
-                   "from the Key Component List; confirm at order time. The pole "
-                   f"kit, if V-08 needs it, would make £{base + deferred}: "
-                   "over the cap, so it would need a saving elsewhere.<br/>"
+                   "from the Key Component List; confirm at order time. The "
+                   f"antenna pole kit (£{deferred}), if V-08 needs it, is in "
+                   "the separate field-kit budget (CR-08).<br/>"
                    "<b>History:</b> CR-01 raised the cap from £120 to £160 "
                    "(AR-2's Pi Zero, bank radio, interlock, 5 V supply, "
                    "panel extras). CR-02 chose a microSD flight controller "
@@ -458,20 +469,28 @@ def build():
                   ["1", "Accept AR-2 'Smart bank' as the Mk1 architecture",
                    "<b>Accepted</b> (owner, 28 Sep 2026)"],
                   ["2", "CR-01: cost cap (section 7.3)", "<b>Accepted</b>: "
-                   "cap £160, target £150"],
+                   "cap £160, target £150 (since raised by CR-03)"],
                   ["3", "Pi Zero 2W instead of ESP32 on the boat (DD-03)",
                    "<b>Accepted</b> as part of AR-2"],
                   ["4", "Order of work: prove V-01 to V-06 in SITL and on "
                    "the bench before the main parts order",
-                   "Recommended; not yet confirmed"],
+                   "<b>Done in SITL</b> (section 9); bench items at CDR"],
                   ["5", "CR-02: helm log storage", "<b>Accepted</b>: "
                    "microSD flight controller (DD-15)"],
                   ["6", "CR-03: cost cap after CR-02 and the FMEA actions "
                    "(section 7.3)", "<b>Accepted</b>: prices checked, "
-                   "savings applied, cap £185"]],
+                   "savings applied, cap £185"],
+                  ["7", "CR-04: SpeedyBee F405 WING APP flight controller",
+                   "<b>Accepted</b> (DD-19)"],
+                  ["8", "CR-05: FS-002 link-loss HOLD at 3 s", "<b>Accepted"
+                   "</b> (DD-22)"],
+                  ["9", "SDR decisions CR-06, CR-07, CR-08; RTL path "
+                   "planning; web UI assumption", "<b>Accepted</b> "
+                   "(DD-23 to DD-27)"]],
                  [8, 100, 62]),
            Spacer(1, 4 * mm),
-           P("Then, from this document:"),
+           P("Documents that build on this one (current issues in the "
+             "baseline register, docs/common/baseline.py):"),
            table([["Document", "Content", "Source here"],
                   ["BOATY-ICD-001", "One section per interface IF-01 to "
                    "IF-22: definitions, timing, errors, verification",

@@ -22,7 +22,7 @@ import sss_data as SD  # noqa: E402
 A = SD.A
 
 # Upstream revisions the archived sources were taken from.
-AP_COMMIT = "a11f7351a9bcd860cbdb55bbeb17a5196536ba23"     # ArduPilot/ardupilot
+AP_COMMIT = "dbe792162d06cab66c3475fd5556bf7a120f119e"     # ArduPilot/ardupilot
 WIKI_COMMIT = "5365bb696d91a16e6ffb5db2523f0bee0d13c94d"   # ArduPilot/ardupilot_wiki
 AM32_COMMIT = "2738df3240baa5bd4295b460cf0c5cfe0bd49d97"   # am32-firmware/AM32
 
@@ -683,6 +683,12 @@ def check():
     assert kcs - costed <= {"KC-16"}, kcs - costed
     total = sum(b[2] for b in NEW_BOM)
     assert total <= CAP, f"BOM £{total} exceeds cap £{CAP}"
+    # The archived ArduPilot sources are from the commit the simulator is
+    # built from and the helm will run (SDR RID-09).
+    sitl = DOCS.parent / "software" / "boaty" / "sim" / "sitl.py"
+    src = sitl.read_text()
+    assert f'ARDUPILOT_COMMIT = "{AP_COMMIT}"' in src, \
+        "KCL AP_COMMIT differs from software/boaty/sim/sitl.py"
     # Sag analysis must show the baseline fails and the proposal passes.
     assert i_allow(9.0) < LOADS[1][1], "F405-TE sag case no longer fails"
     assert watt_max() >= 50

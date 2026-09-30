@@ -6,7 +6,6 @@ mission computer (system 1, component 191) or as an impostor.
 from __future__ import annotations
 
 import threading
-import time
 
 from pymavlink import mavutil
 

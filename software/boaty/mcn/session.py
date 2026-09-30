@@ -18,6 +18,8 @@ import enum
 import threading
 import time
 from dataclasses import dataclass, field
+from pathlib import Path
+from typing import TYPE_CHECKING
 
 from ..helm.api import HelmError, PreArmFailed, SrsMode
 from ..mcp import events as E
@@ -28,6 +30,9 @@ from .panel import Button
 from .pin import PinLock
 from .planning import PlanOutcome, Planning
 from .site import Site, blocking, lint
+
+if TYPE_CHECKING:
+    from .photos import SyncReport
 from .voice import PHRASES
 
 
@@ -122,8 +127,8 @@ class Session:
         self.held_reason: str | None = None
         self.photos_expected = False
         self.mission_started_t: float | None = None
-        self.sync_report = None
-        self.captains_log = None
+        self.sync_report: SyncReport | None = None
+        self.captains_log: Path | None = None
         # monitor state
         self._prev_mode: SrsMode | None = None
         self._prev_ap_mode: int | None = None
@@ -383,6 +388,8 @@ class Session:
             if blocking(self.site_issues):
                 return False, "site file has errors"
             vm = p.validated
+            if vm is None:
+                return False, "no validated mission to approve"
             try:
                 if self.boat_api is not None:
                     self.boat_api.set_session(vm.mission)

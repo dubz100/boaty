@@ -384,7 +384,7 @@ R("MC-007", "Mission Control shall give spoken announcements of mode "
   "changes, failsafes and mission events in child-friendly words.",
   "S", "D", "SIM", ["STK-04"])
 R("MC-008", "Adult-only functions (arming, fence editing, parameter "
-  "changes, mission approval) shall be protected by a PIN or key switch.",
+  "changes, mission approval) shall be protected by an adult PIN (CR-03).",
   "M", "T", "SIM", ["STK-06"])
 R("MC-009", "The last known position and track shall stay displayed after "
   "link loss, in a 'find my boat' view.", "M", "T", "SIM", ["STK-01"])

@@ -18,6 +18,7 @@ sys.path.insert(0, str(DOCS / "add" / "src"))
 sys.path.insert(0, str(DOCS.parent / "software"))
 
 import architecture as A  # noqa: E402
+import baseline as BL  # noqa: E402
 from boaty.mcp import events as EV  # noqa: E402  IF-04 event vocabulary
 from pdfdoc import (BLUE_T, GREEN_T, ORANGE, ORANGE_T, H1, H2, INK2,  # noqa
                     TINT, Doc, KeepTogether, PageBreak, Paragraph, S, Spacer,
@@ -36,8 +37,9 @@ S["code"] = ParagraphStyle("code", fontName="DVM", fontSize=6.9, leading=8.9,
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Interface_Control_Document.pdf"
 DOC_ID = "BOATY-ICD-001"
-ISSUE = "Issue G (for review)"
-DATE = "30 September 2026"
+ISSUE = BL.issue("ICD")
+DATE = BL.DATE
+PREV_G = "30 September 2026"
 PREV_F = "29 September 2026"
 PREV = "28 September 2026"
 
@@ -237,7 +239,9 @@ def section_network():
                    "r (corrected in Issue E)", "MANUAL (STEERING) only; "
                    "adult"],
                   ["Parameter read", "PARAM_REQUEST_LIST (21) / PARAM_VALUE "
-                   "(22)", "-", "On connect (SAF-007 baseline check)"],
+                   "(22); PARAM_REQUEST_READ (20) by index for any value "
+                   "missed", "-", "On connect and before arming (SAF-007 "
+                   "baseline check, MCN-D45)"],
                   ["Parameter write", "PARAM_SET (23)", "-", "<b>Disarmed "
                    "only</b>; refused by C7 when armed (SAF-003)"]],
                  [22, 52, 44, 52]),
@@ -744,7 +748,10 @@ Exceptions: HelmError > {NoResponse, CommandRejected(code, text), PreArmFailed(r
            table([["properties.role", "Geometry", "Other properties",
                    "Rules"],
                   ["fence_inclusion", "Polygon", "-", "Exactly one; ≤ 70 "
-                   "vertices; drawn ≥ 5 m inside the waterline (FEN-003)"],
+                   "vertices; drawn ≥ 5 m inside the waterline (FEN-003); "
+                   "every vertex within max_distance_from_home_m − 3 m of "
+                   "each home, so the helm's backstop circle "
+                   "(FENCE_RADIUS) never cuts it (MCN-D53)"],
                   ["exclusion", "Polygon or Point", "radius_m (Point), "
                    "reason, wildlife (optional: 'nest')", "≤ 10 in total; "
                    "inside the inclusion (FEN-001, OPS-005). A nest circle "
@@ -1158,8 +1165,8 @@ def build():
                "Mk1 interfaces IF-01 to IF-22: definitions, timing, error "
                "handling and verification",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "For review by the project owner"],
-                ["Parent", "BOATY-ADD-001 Issue F (interface register, "
+                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Parent", BL.full("ADD") + " (interface register, "
                  "section 5)"],
                 ["Content", f"{len(A.INTERFACES)} interfaces, "
                  f"{len(VERIF)} verification entries, "
@@ -1187,9 +1194,15 @@ def build():
           "retry; IF-13 read-back 'helm view' checksum and the RTL item "
           "running in AUTO; IF-14 halt() and parameter re-request.",
           "Claude"],
-         ["G", DATE, "SDR decisions: IF-15 'wildlife' property and the 15 m "
+         ["G", PREV_G, "SDR decisions: IF-15 'wildlife' property and the 15 m "
           "nest stand-off (CR-07); IF-11 key storage wording; example "
-          "site name. Parent ADD Issue F.", "Claude, owner decision"]],
+          "site name. Parent ADD Issue F. WP4: IF-04 event vocabulary "
+          "table generated from the code; IF-11 data statement.",
+          "Claude, owner decision"],
+         ["H", DATE, "SDR baseline candidate (WP5, RID-08): parent and "
+          "references from the baseline register; IF-02 parameter reads "
+          "include PARAM_REQUEST_READ re-requests; IF-15 states the "
+          "helm's backstop-circle rule.", "Claude"]],
         "Review guidance: check that each interface is complete enough to "
         "build and test against. Items marked [TBC-nn] are known gaps with "
         "an owner; they're listed in section 9.")
@@ -1230,8 +1243,8 @@ def build():
              "verification is re-run."),
            H2("1.3 References"),
            table([["Ref", "Document"],
-                  ["[1]", "BOATY-SRS-001 Issue D; BOATY-ADD-001 Issue D; "
-                   "BOATY-FMEA-001 Issue B"],
+                  ["[1]", "; ".join(BL.full(k) for k in
+                                    ("SRS", "ADD", "FMEA", "KCL"))],
                   ["[2]", "MAVLink common message set and mission protocol "
                    "(mavlink.io)"],
                   ["[3]", "ArduPilot Rover documentation: modes, failsafes, "

@@ -10,7 +10,7 @@ import pytest
 import time
 
 from boaty.helm.api import Mission, MissionItem, RoverMode
-from boaty.sim.geo import box, offset
+from boaty.sim.geo import offset
 
 from .conftest import SPEEDUP, drive_for, launch, motors_off
 
@@ -69,13 +69,17 @@ def test_sc02_link_cut_in_manual(helm, sim, companion, evidence):
     t_off = sim.wait_until(lambda: motors_off(sim), 1)
     sim.link.restore()
     evidence.measure(hold_after_cut_s=(t_hold - t_cut) if t_hold else None,
+                     motors_off_after_cut_s=(t_off - t_cut) if t_off
+                     else None,
                      native_minimum_s="FS_GCS_TIMEOUT 2 + FS_TIMEOUT 1")
     assert t_hold is not None
     assert t_hold - t_cut <= 3.3, f"HOLD after {t_hold - t_cut:.1f} s"
     helm.stop()
 
 
-@pytest.mark.xfail(strict=False, reason='Finding: EKF failsafe stops motors ~9 s after GNSS loss; FS-004 asks 3 s. Needs B6 fix-loss HOLD.')
+@pytest.mark.xfail(strict=False, reason=(
+    "Finding: EKF failsafe stops motors ~9 s after GNSS loss; FS-004 asks "
+    "3 s. Needs B6 fix-loss HOLD."))
 def test_sc04_gnss_failure(helm, sim, companion, evidence):
     evidence("SC-04", "GNSS failure 5 s then restore", ["FS-004", "SC-04",
                                                         "FM-01", "FM-06"],

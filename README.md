@@ -40,20 +40,39 @@ python3 figures.py && python3 build_srs.py
 
 - [`docs/sdr/Boaty_System_Design_Review.pdf`](docs/sdr/Boaty_System_Design_Review.pdf): System Design Review / PDR report (BOATY-SDR-001), gate 1 of 4. It is an independent-style review of the whole documentation baseline. It covers entry criteria, compliance by area, 15 review item discrepancies (9 Major, 6 Minor) plus 7 observations carried to later gates, and the gap-closure plan to freeze. Issue B records the WP1 closures. The recommendation is Conditional GO. Counts are computed from the same source data as the other documents, so rebuilding after fixes updates the picture. Build with `python3 docs/sdr/src/build_sdr.py`.
 
+- [`docs/budgets/power.csv`](docs/budgets/power.csv): the boat's power budget (SSS-PWR PWR-D17). It is generated from the ADD loads and the parameter baseline by `docs/budgets/build_power.py`, which checks the 40 min endurance with 30% margin.
+
+### Rebuilding and the baseline register
+
+`python3 docs/build_all.py` rebuilds every document in dependency order. Each build runs its own checks: traceability, allocation, FMEA rules, the VCRM, the power budget, and the baseline register. It stops on the first failure. `docs/common/baseline.py` is the register: the current issue of every document. Builds take their own issue and their parents' issues from it, and the check fails if any parent issue is typed by hand. The documentation is frozen with the annotated tag `sdr-baseline-1` once the owner signs the SDR decision record. After that, changes go through numbered change requests.
+
+### Continuous integration
+
+`.github/workflows/ci.yml` runs on every push:
+
+- `ruff`
+- the mypy ratchet (`software/tools/mypy_ratchet.py`): the safety-critical modules must be type-clean, and no other file may get worse than `software/tools/mypy_baseline.json`
+- the unit tests
+- `docs/build_all.py`
+
+Dependencies are pinned in `software/requirements.lock`. The SITL scenarios run locally, because they take about 35 min and need an ArduPilot build. Their evidence file records the ArduPilot commit used, pinned to Rover-4.7.1 `dbe79216`.
+
 ## Software
 
 - [`software/`](software/): the Python code and the simulator. ArduPilot Rover 4.7.1 SITL flies a model of the boat, the real mission-computer services run on a simulated Pi Zero, and Mission Control drives it all as it will on the Pi 5. See [`software/README.md`](software/README.md). Results are in [`software/results/`](software/results/): `FINDINGS.md` summarises what the simulator showed, and `SITL_REPORT.md` gives the evidence for every scenario.
 
-## Document issues (30 September 2026)
+## Document issues (30 September 2026): SDR baseline candidate
 
-- SRS G
-- ADD G
-- ICD G
-- SSS: HLM E, MCP E, MCN E, PWR C, PRP B, SIM F (the others are unchanged)
-- FMEA F
-- Operations manual D
-- KCL C
-- SDR B
+The authoritative list is `docs/common/baseline.py`:
+
+- SRS H
+- ADD H
+- ICD H
+- SSS: HUL B, PRP C, PWR D, HLM F, MCP F, MCN F, REC B, SIM G
+- FMEA G
+- Operations manual E
+- KCL D
+- SDR C
 
 These issues carry:
 

@@ -20,6 +20,7 @@ for sub in ("common", "srs/src", "add/src", "sss/src", "fmea/src",
             "kcl/src"):
     sys.path.insert(0, str(DOCS / sub))
 
+import baseline as BL  # noqa: E402
 import fmea_data as F  # noqa: E402
 import kcl_data as K  # noqa: E402
 import requirements as R  # noqa: E402
@@ -30,8 +31,8 @@ from pdfdoc import (ORANGE, ORANGE_T, GREEN_T, BLUE_T, H1, H2, P, Doc,  # noqa
 
 OUT = HERE.parent / "Boaty_System_Design_Review.pdf"
 DOC_ID = "BOATY-SDR-001"
-ISSUE = "Issue B (review report, RID log updated)"
-DATE = "30 September 2026"
+ISSUE = BL.issue("SDR", "review report; RID log at the freeze candidate")
+DATE = BL.DATE
 
 # RID closures recorded after the review: RID -> (status, evidence).
 CLOSURES = {
@@ -64,8 +65,21 @@ CLOSURES = {
     "RID-11": ("Closed", "WP2: Rover has no GPS_HDOP_GOOD, so the HDOP ≤ 1.5 "
                "gate is in Mission Control (MCN-D15, unit test); HLM-D09 "
                "re-allocated (SSS-HLM E)."),
-    "RID-12": ("Partly", "CR-08 cap scope and price rule (SRS G CON-001; "
-               "ADD G DD-25; KCL C). power.csv open (WP5)."),
+    "RID-12": ("Closed", "CR-08 cap scope and price rule (SRS G CON-001; "
+               "ADD G DD-25). WP5: docs/budgets/power.csv generated and "
+               "checked (117 min, margin 192%); PWR-D18 corrected to the "
+               "accepted-cell energy (SSS-PWR D)."),
+    "RID-08": ("Closed", "WP5: baseline register docs/common/baseline.py; "
+               "every build takes its issue and parents from it and the "
+               "check fails on a typed parent issue; stale text corrected; "
+               "all PDFs rebuilt by docs/build_all.py."),
+    "RID-09": ("Partly", "WP5: ArduPilot pinned to dbe79216 in the KCL "
+               "(sources re-archived), software and README, and recorded "
+               "in the SITL evidence; requirements.lock. Tag "
+               "sdr-baseline-1 waits for the owner's signature."),
+    "RID-10": ("Closed", "WP5: .github/workflows/ci.yml runs ruff, the "
+               "mypy ratchet (safety modules clean), unit tests and every "
+               "document check."),
 }
 AMBER_T = colors.HexColor("#fff6dc")
 
@@ -463,6 +477,10 @@ def build():
           "the cap is the antenna pole, not a recovery pole. WP2 closes "
           "RID-01 and RID-11; WP3 closes RID-02, RID-03 and RID-13; "
           "WP4 closes RID-05, RID-07, RID-14 and RID-15.",
+          "Claude, owner decisions"],
+         ["C", DATE, "WP5: RID-08, RID-10 and RID-12 closed; RID-09 closed "
+          "except the tag, which follows the owner's signature. Decision "
+          "record lists the freeze candidate from the baseline register.",
           "Claude, owner decisions"]],
         "How to use this report: section 2 gives the decision. Section 6 "
         "lists every review item discrepancy (RID) with its evidence and "
@@ -858,6 +876,15 @@ def build():
            table([["Item", "Entry"],
                   ["Review", "System Design Review / PDR, gate 1"],
                   ["Baseline reviewed", "commit 88b1cd7"],
+                  ["RID status at freeze candidate", ", ".join(
+                      f"{k}: {v}" for k, v in sorted(Counter(
+                          CLOSURES.get(r[0], ("Open" if r[1] != OBS
+                                              else "Carried", ""))[0]
+                          for r in RIDS).items()))],
+                  ["Freeze candidate", "; ".join(
+                      f"{BL.REGISTER[k][0] if BL.REGISTER[k][0] != '-' else BL.REGISTER[k][1]} "
+                      f"{BL.letter(k)}" for k in BL.REGISTER if k != "SDR")
+                   + f"; tag <i>{BL.TAG}</i> on the owner's signature"],
                   ["Reviewer recommendation", "Conditional GO: close "
                    f"{len(maj)} Major and {len(mino)} Minor RIDs, then "
                    "freeze and tag"],

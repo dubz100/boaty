@@ -13,7 +13,14 @@ from pathlib import Path
 DOCS = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(DOCS / "add" / "src"))
 sys.path.insert(0, str(DOCS / "fmea" / "src"))
+sys.path.insert(0, str(DOCS / "common"))
 import architecture as A  # noqa: E402
+import baseline as B  # noqa: E402
+
+PARENTS = B.refs("SRS", "ADD", "ICD", "FMEA", "KCL")
+WP5 = ("30 September 2026", "SDR WP5 (RID-08): issue, parents and "
+       "applicable documents taken from the baseline register; issued as "
+       "the SDR baseline candidate.", "Claude")
 
 SRS = A.SRS
 SUBSYSTEMS = {}
@@ -40,6 +47,8 @@ def D(ss, rid, text, pri, ver, stage, trace, note=None):
 # ======================================================================
 h = subsystem(
     "HUL", title="Hull & structure",
+    issue=B.issue("SSS-HUL"),
+    parents=PARENTS,
     purpose="Provide a stable, unsinkable, modular catamaran platform "
             "that a 4-year-old can help assemble, carrying the "
             "electronics box, thruster pods, mast and DUPLO deck.",
@@ -149,8 +158,8 @@ D(h, "HUL-D25", "The crew's assembly steps (segments, pods, deck, flag) "
 # ======================================================================
 p = subsystem(
     "PRP", title="Propulsion",
-    issue="Issue B (for review)",
-    parents="SRS Issue F, ADD Issue F, ICD Issue E, KCL Issue B",
+    issue=B.issue("SSS-PRP"),
+    parents=PARENTS,
     history=[["B", "29 September 2026", "ESC chosen: AM32 20 A, DShot 3D "
               "set by the helm (PRP-D06); ESC configuration PRP-D16; cost "
               "from the Key Component List.", "Claude, owner decision "
@@ -236,16 +245,21 @@ D(p, "PRP-D15", "Motors are consumables: rinse and dry after each session. "
 # ======================================================================
 w = subsystem(
     "PWR", title="Power",
-    issue="Issue C (for review)",
-    parents="SRS Issue F, ADD Issue F, ICD Issue E, FMEA Issue D, KCL "
-            "Issue B",
+    issue=B.issue("SSS-PWR"),
+    parents=PARENTS,
     history=[["B", "28 September 2026", "CR-03: tested salvaged 18650 "
               "cells (ADD DD-18) with acceptance tests PWR-D20 and records "
               "PWR-D21.", "Claude, owner decision"],
              ["C", "29 September 2026", "Key Component List and CR-04: the "
               "key switch is a high-side P-MOSFET (PWR-D07); supplies must "
               "tolerate pack sag near empty (PWR-D22).", "Claude, owner "
-              "decision"]],
+              "decision"],
+             ["D", "30 September 2026", "SDR RID-12: power budget "
+              "docs/budgets/power.csv now exists, generated from the ADD "
+              "loads and the parameter baseline, and checked by the build. "
+              "PWR-D18 corrected to 20 Wh: the salvaged-cell acceptance "
+              "limit (2500 mAh, CR-03) gives 21.6 Wh; endurance 117 min "
+              "against 40 min needed.", "Claude"]],
     purpose="Store and distribute energy safely. Give motor power only when "
             "an adult has inserted the magnetic key. Measure what's used.",
     inside=["3S Li-ion 18650 pack with BMS", "Main fuse and main switch",
@@ -346,7 +360,9 @@ group(w, "Budgets and thermal")
 D(w, "PWR-D17", "A power budget (docs/budgets/power.csv) shall be kept "
   "current, with ≥ 30% margin at the design endurance.", "S", "A", "BENCH",
   ["PWR-011"])
-D(w, "PWR-D18", "Usable energy ≥ 25 Wh, supporting ≥ 40 min at the budgeted "
+D(w, "PWR-D18", "Usable energy ≥ 20 Wh (3S of cells accepted at ≥ 2500 mAh, "
+  "80% usable; was 25 Wh for 3.0 Ah cells before CR-03), supporting ≥ 40 "
+  "min at the budgeted "
   "cruise load.", "M", "A", "BENCH", ["PWR-009"])
 D(w, "PWR-D19", "The battery shall sit ≥ 30 mm from the ESCs. Box internal "
   "temperature ≤ 50 °C after 60 min at 30 °C ambient in sun.", "M", "T",
@@ -357,9 +373,8 @@ D(w, "PWR-D19", "The battery shall sit ≥ 30 mm from the ESCs. Box internal "
 # ======================================================================
 m = subsystem(
     "HLM", title="Helm",
-    issue="Issue E (for review)",
-    parents="SRS Issue G, ADD Issue G, ICD Issue G, FMEA Issue F, KCL "
-            "Issue C",
+    issue=B.issue("SSS-HLM"),
+    parents=PARENTS,
     history=[["B", "28 September 2026", "CR-02: microSD logging (HLM-D02). FMEA actions A-01, A-02, "
               "A-06, A-18: HLM-D24 formalised; HLM-D39 to D41 added; "
               "parameter baseline extended.", "Claude, owner decisions "
@@ -575,8 +590,8 @@ D(m, "HLM-D44", "The helm shall have exactly one MAVLink command path: "
 # ======================================================================
 c = subsystem(
     "MCP", title="Mission computer",
-    issue="Issue E (for review)",
-    parents="SRS Issue G, ADD Issue G, ICD Issue G, FMEA Issue F",
+    issue=B.issue("SSS-MCP"),
+    parents=PARENTS,
     history=[["B", "28 September 2026", "FMEA actions A-03, A-07, A-08, A-11: navigation monitor B7 "
               "(MCP-D22 to D25, D27) and box temperature (MCP-D26).", "Claude, owner decisions "
               "(CR-02, FMEA actions)"],
@@ -766,8 +781,8 @@ D(c, "MCP-D35", "B6 shall request HOLD when the helm's position jumps "
 # ======================================================================
 n = subsystem(
     "MCN", title="Mission Control",
-    issue="Issue E (for review)",
-    parents="SRS Issue G, ADD Issue F, ICD Issue F, FMEA Issue F",
+    issue=B.issue("SSS-MCN"),
+    parents=PARENTS,
     history=[["B", "28 September 2026", "FMEA actions A-03, A-04, A-10, A-13, A-15, A-16, A-18, A-19: "
               "MCN-D53 to D60 added.", "Claude, owner decisions "
               "(CR-02, FMEA actions)"],
@@ -1043,6 +1058,8 @@ D(n, "MCN-D67", "The web UI shall be reachable only on the Pi 5's own "
 # ======================================================================
 r = subsystem(
     "REC", title="Recovery & signalling",
+    issue=B.issue("SSS-REC"),
+    parents=PARENTS,
     purpose="Make the boat easy to see, easy to find and easy to retrieve "
             "with no power, no software and no radio.",
     inside=["Hi-vis finish", "Flag", "Recovery hoop", "LED beacon ring "
@@ -1092,7 +1109,8 @@ D(r, "REC-D08", "The flag staff shall be capped, and hoop and flag edges "
 # ======================================================================
 s = subsystem(
     "SIM", title="Simulation & test",
-    issue="Issue F (for review)",
+    issue=B.issue("SSS-SIM"),
+    parents=PARENTS,
     history=[["B", "28 September 2026", "Hardware-in-the-loop rigs L1-L3 "
               "added (SIM-D13 to D24). Test catalogue rebuilt with IDs and "
               "extended with FMEA-derived scenarios (BOATY-FMEA-001).",
@@ -1268,6 +1286,18 @@ D(s, "SIM-D24", "Every FMEA failure mode with severity ≥ 8 shall be "
   "build checks this.", "M", "A", "SIM", ["SAF-006", "FS-013"])
 
 ORDER = ["HUL", "PRP", "PWR", "HLM", "MCP", "MCN", "REC", "SIM"]
+
+# Baseline candidate (SDR WP5): every subsystem's history reaches its
+# register issue.
+for _code in ORDER:
+    _ss = SUBSYSTEMS[_code]
+    _hist = _ss.setdefault("history", [])
+    _letter = B.letter(f"SSS-{_code}")
+    if _hist and _hist[-1][0] == _letter:
+        _hist[-1] = [_letter, _hist[-1][1], _hist[-1][2] + " " + WP5[1],
+                     _hist[-1][3]]
+    else:
+        _hist.append([_letter, *WP5])
 
 
 # ---------------------------------------------------------------- tables

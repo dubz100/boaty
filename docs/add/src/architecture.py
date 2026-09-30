@@ -27,7 +27,8 @@ DRIVERS = [
      "display.", "Bank-side hardware"),
     ("CHD-*, MEC-007/009", "Tool-free chunky modules and a DUPLO deck for a "
      "4-year-old.", "Mechanical modularity"),
-    ("CON-001", "Mk1 bill of materials ≤ £160 (target £150; raised from £120 by CR-01).",
+    ("CON-001", "Mk1 bill of materials ≤ £185 (target £180; CR-01 then "
+     "CR-03; field kit outside the cap, CR-08).",
      "Pushes against everything above"),
 ]
 
@@ -37,7 +38,7 @@ QUALITY_ORDER = [
     ("2", "Simplicity", "Fewest parts and processes that can be built, "
      "understood and debugged by one person."),
     ("3", "Crew experience", "It's his boat: buttons, voice, DUPLO, photos."),
-    ("4", "Cost", "Close to the £100 target."),
+    ("4", "Cost", "Within the £185 cap (CON-001)."),
     ("5", "Extensibility", "Room for duck spotting, a Python helm, longer "
      "range."),
 ]
@@ -381,7 +382,7 @@ INTERFACES = [
     ("IF-10", "Internet uplink", "MCN", "EXT-PH", "Data",
      "USB tethering (RNDIS/NCM)", "HTTPS to Claude API", "COM-005"),
     ("IF-11", "Claude API", "MCN", "EXT-AI", "Data",
-     "HTTPS, Messages API with tool use", "Instruction + site context → "
+     "HTTPS, Messages API with structured output", "Instruction + site context → "
      "intent JSON; photos → captions (opt-in)", "NLI-003/004, LOG-004"),
     ("IF-12", "Crew & operator panel", "MCN", "EXT-US", "HMI",
      "4 buttons, LEDs, mic, speaker, web UI (adult PIN)",
@@ -428,9 +429,11 @@ MODE_MAP = [
     ("HOLD (motors off)", "HOLD", "After STOP, position loss or stuck. "
      "Boat drifts."),
     ("MANUAL", "STEERING (speed-controlled)", "Speed limit applies; fence "
-     "enforcement in this mode to confirm (V-02)."),
+     "avoidance holds the boat short of the line (V-02, confirmed in "
+     "SITL)."),
     ("AUTO", "AUTO", "Validated mission; last item is RTL."),
-    ("RTL", "RTL", "Ends loitering at home; to confirm (V-04)."),
+    ("RTL", "RTL", "Plans round exclusions (DD-26); ends station-keeping "
+     "at home (V-04, confirmed in SITL)."),
 ]
 
 FS_ALLOC = [
@@ -603,8 +606,9 @@ VERIFY_EARLY = [
 
 RISKS = [
     ("R-01", "Flight-controller firmware lacks a needed feature", "Low",
-     "Simulator slices 1-2 exercised every feature we rely on in Rover "
-     "4.7.1; V-01 bench check of the SpeedyBee remains"),
+     "The simulator (slices 1-3 and the SDR scenarios) exercised every "
+     "feature we rely on in Rover 4.7.1, including path planning; V-01 "
+     "bench check of the SpeedyBee remains"),
     ("R-02", "Bill of materials over the £185 cap (Issue F baseline "
      "£181, estimated prices)", "Medium", "£4 headroom on estimated prices; "
      "confirmed from vendors before ordering. The antenna pole kit is in "

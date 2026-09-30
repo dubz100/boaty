@@ -25,7 +25,6 @@ from boaty.mcn.planning import Planning
 from boaty.mcn.session import CHECKLIST, Config, Session, State
 from boaty.mcn.site import SITES, Site
 from boaty.mcn.voice import PHRASES, RecordingSpeaker
-from boaty.sim.geo import ne_of
 
 from .conftest import SPEEDUP, Watch, boaty_events, motors_off, \
     outputs_neutral
@@ -140,7 +139,6 @@ def test_e2e_explore_photos_home(sim, helm, services, companion, mc_factory,
     assert out.ok, out.adult
     assert s.state is State.PLAN_READY
     m = out.mission
-    t_arm = sim.t
     mc.approve_and_arm()
     assert s.state is State.ARMED
     # VAL-010 on the real helm
@@ -158,7 +156,6 @@ def test_e2e_explore_photos_home(sim, helm, services, companion, mc_factory,
     t_rtl = t_home = None
     end = sim.t + m.estimates.duration_s + 200
     while sim.t < end:
-        p = sim.boat_position() if hasattr(sim, "boat_position") else None
         st = helm.status()
         if st.lat is not None:
             xy = site_xy(mc.site, st.lat, st.lon)
@@ -180,7 +177,6 @@ def test_e2e_explore_photos_home(sim, helm, services, companion, mc_factory,
     home_said = [ts for ts, x in mc.speaker.said if x == PHRASES["home"]]
     disarm_rows = [r for r in mc.log.rows if r["kind"] == "command"
                    and r.get("cmd") == "auto_disarm"]
-    mode_rows = mc.log.of("helm_mode")
     llm_rows = mc.log.of("llm")
     evidence.measure(
         items=len(m.items), planned_s=m.estimates.duration_s,
@@ -421,7 +417,7 @@ def test_sc37_foreign_gcs(sim, helm, services, companion, mc_factory,
     mc = mc_factory(services=services)
     s = mc.session
     s.choose_template("lap", "home bay")
-    tok = mc.approve_and_arm()
+    mc.approve_and_arm()
     t0 = sim.t
     companion.heartbeat_as = (255, 190)
     t_det = sim.wait_until(lambda: s._impostor_alerted, 10)

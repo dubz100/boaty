@@ -119,18 +119,23 @@ def special_prp():
 
 
 def special_pwr():
-    loads = [("Helm + GNSS", 0.8), ("Mission computer (avg)", 1.8),
-             ("Beacon", 0.3), ("ESC idle", 0.2), ("Motors at cruise", 8.0)]
-    tot = sum(x for _, x in loads)
-    usable = 3 * 3.6 * 3.0 * 0.8
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "budgets"))
+    import build_power as PB
+    b = PB.budget()
+    loads = b["loads"]
+    tot = b["total_w"]
+    usable = b["usable_wh"]
     return [H1("6. Design analysis: power budget"),
             table([["Load", "W"]] + [[n, f"{v:.1f}"] for n, v in loads] +
                   [["<b>Total at cruise</b>", f"<b>{tot:.1f}</b>"],
-                   ["Usable energy (3S, 3.0 Ah, 80%)", f"{usable:.1f} Wh"],
+                   [f"Usable energy (3S, {b['capacity_ah']:.1f} Ah accepted "
+                    "cells, 80%)", f"{usable:.1f} Wh"],
                    ["Endurance estimate", f"≈ {usable/tot*60:.0f} min "
                     "(≥ 40 min required, ≥ 60 target)"],
                    ["Margin at 40 min", f"{(usable/tot*60/40 - 1):.0%}"]],
                   [130, 40]),
+            P("Generated from docs/budgets/power.csv (PWR-D17), which the "
+              "document build regenerates and checks.", "small"),
             P("Circuit: battery → fuse → main switch → power module → bus. "
               "The bus feeds the helm (own regulator), the 5 V buck (MCP) "
               "and, through the key-switched MOSFET, the ESCs. See ADD "
@@ -260,8 +265,8 @@ def special_sim():
               "L1/L2/L3 = rig tests; B = bench; R = rehearsal; P = pool. "
               "Injection parameter names are fixed per SITL version "
               "and kept in the scenario code. <b>Result</b> is read from "
-              "software/results/sitl_results.json (slices 1-2); '-' means "
-              "not yet built (mostly slice 3, Mission Control)."),
+              "software/results/sitl_results.json (the last full SITL "
+              "run); '-' means not yet built."),
             H2("6.1 Failsafe scenarios (one per FS requirement)"),
             tt("SIM", fs_ids),
             H2("6.2 FMEA-derived simulator scenarios"),
@@ -310,9 +315,8 @@ def build_one(code):
                ss["purpose"],
                [["Document", doc_id], ["Issue", issue],
                 ["Date", (ss.get("history") or [[None, DATE]])[-1][1]],
-                ["Status", "For review by the project owner"],
-                ["Parents", ss.get("parents", "SRS Issue D, ADD Issue C, "
-                                   "ICD Issue B")],
+                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Parents", ss["parents"]],
                 ["Content", f"{len(prim)} allocated SRS requirements → "
                  f"{len(derived)} subsystem requirements ({pc['M']} M, "
                  f"{pc['S']} S, {pc['C']} C)"]])
@@ -337,15 +341,14 @@ def build_one(code):
                                               ss["breakdown"]], [55, 115]),
            H2("2. Applicable documents"),
            table([["Document", "Use"],
-                  ["BOATY-SRS-001 Issue D", "Parent requirements"],
-                  ["BOATY-ADD-001 " + ("Issue D" if ss.get("parents") else
-                                       "Issue C"), "Allocation, decisions, "
-                   "budgets, early verification items"],
-                  ["BOATY-ICD-001 " + ("Issue C" if ss.get("parents") else
-                                       "Issue B"), "Interface definitions "
-                   "(all listed in section 3 apply in full)"]] +
-                 ([["BOATY-FMEA-001 Issue B", "Failure modes and actions "
-                    "carried into this issue"]] if ss.get("parents") else []),
+                  [SD.B.full("SRS"), "Parent requirements"],
+                  [SD.B.full("ADD"), "Allocation, decisions, budgets, "
+                   "early verification items"],
+                  [SD.B.full("ICD"), "Interface definitions (all listed in "
+                   "section 3 apply in full)"],
+                  [SD.B.full("FMEA"), "Failure modes and actions carried "
+                   "into this issue"],
+                  [SD.B.full("KCL"), "Component data, parameters and cost"]],
                  [55, 115])]
 
     # 3 interfaces

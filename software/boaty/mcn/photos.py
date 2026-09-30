@@ -198,7 +198,9 @@ def captains_log(dest: Path, mission: Mission, listing: list[dict],
         "<style>body{font:18px/1.5 system-ui,sans-serif;margin:16px;"
         "background:#fff;color:#111}figure{display:inline-block;margin:6px}"
         "img{max-width:100%;border-radius:8px}</style>"
-        f"<h1>Captain's log</h1><p>{html.escape(story(dist, duration_s, len(listing), ducks, places))}</p>"
+        "<h1>Captain's log</h1><p>"
+        f"{html.escape(story(dist, duration_s, len(listing), ducks, places))}"
+        "</p>"
         f"{_route_svg(track, fence, (mission.home.lat, mission.home.lon))}"
         f"<p>Distance {dist:.0f} m · {duration_s / 60:.1f} min · "
         f"{len(listing)} photos</p>{imgs}</html>")

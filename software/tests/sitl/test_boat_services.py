@@ -12,7 +12,7 @@ from boaty.helm.api import Fence, Mission, MissionItem, RoverMode
 from boaty.sim.geo import offset, square
 
 from .conftest import (SPEEDUP, Watch, boaty_events, drive_for, launch,
-                       motors_off, outputs_neutral, triangle)
+                       motors_off, outputs_neutral)
 
 RTL_ITEM = MissionItem(20)                   # MAV_CMD_NAV_RETURN_TO_LAUNCH
 

@@ -54,7 +54,7 @@ POLICIES = {
 @dataclass
 class Filter:
     service: str
-    policy: ServicePolicy = None
+    policy: ServicePolicy | None = None     # default: POLICIES[service]
     resume_mode: int | None = None        # set by B5 while shedding
     refused: list = field(default_factory=list)
 
@@ -69,7 +69,8 @@ class Filter:
 
     def check(self, msg, helm_mode: int | None = None) -> tuple[bool, str]:
         t = msg.get_type()
-        p = self.policy
+        p = self.policy if self.policy is not None else \
+            POLICIES[self.service]
         if t in COMMON_MESSAGES:
             if t in ("MISSION_REQUEST_INT", "MISSION_REQUEST_LIST",
                      "MISSION_ACK"):

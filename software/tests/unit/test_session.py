@@ -10,8 +10,7 @@ from datetime import datetime, timezone
 import pytest
 
 import boaty  # noqa: F401
-from boaty.helm.api import Fence, HelmStatus, MissionItem, SrsMode
-from boaty.mcn import pin as pinmod
+from boaty.helm.api import HelmStatus, MissionItem, SrsMode
 from boaty.mcn.helm_guard import GuardedHelm, Refused
 from boaty.mcn.log import SessionLog
 from boaty.mcn.panel import Button, SimPanel

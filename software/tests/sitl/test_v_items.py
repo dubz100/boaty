@@ -10,13 +10,13 @@ import time
 
 import pytest
 
-from boaty.helm.api import (CommandRejected, Fence, Mission, MissionItem,
+from boaty.helm.api import (Fence, Mission, MissionItem,
                             NotAllowedWhileArmed,
                             PreArmFailed, RoverMode, TransferFailed)
 from boaty.helm.ardupilot import FENCE, F_INCL
 from boaty.sim.geo import offset, square
 
-from .conftest import (SPEEDUP, drive_for, launch, motors_off, standard_fence,
+from .conftest import (SPEEDUP, launch, motors_off, standard_fence,
                        triangle)
 
 
@@ -106,7 +106,9 @@ def test_v04_holds_station_at_home_after_rtl(helm, sim, companion, evidence):
     helm.stop()
 
 
-@pytest.mark.xfail(strict=False, reason='Finding: native crash check resets on any noisy GNSS speed sample; stuck-to-HOLD varies 4.9-20 s. Needs B7 second stuck detector (A-07).')
+@pytest.mark.xfail(strict=False, reason=(
+    "Finding: native crash check resets on any noisy GNSS speed sample; "
+    "stuck-to-HOLD varies 4.9-20 s. Needs B7 second stuck detector (A-07)."))
 def test_v05_crash_check_meets_fs005(helm, sim, companion, evidence):
     evidence("V-05", "Crash check can meet FS-005 (stuck detection)",
              ["FS-005", "V-05", "SC-05", "FM-16"], "Heavy weed drag in AUTO: "
@@ -171,7 +173,9 @@ def test_v06b_impostor_gcs_masks_failsafe(helm, sim, companion, evidence):
     helm.stop()
 
 
-@pytest.mark.xfail(strict=False, reason='Finding: GUIDED times out after 3 s then decelerates; motors off ~3.9 s.')
+@pytest.mark.xfail(strict=False, reason=(
+    "Finding: GUIDED times out after 3 s then decelerates; motors off "
+    "~3.9 s."))
 def test_v11_guided_stops_without_targets(helm, sim, evidence):
     evidence("V-11", "GUIDED stops within 3 s if velocity targets stop",
              ["FS-006", "V-11"], "After the last velocity target, motors are "

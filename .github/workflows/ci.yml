@@ -1,0 +1,56 @@
+# Boaty CI (SRS SWE-007, SDR RID-10). Runs on every push and pull request.
+#
+# - lint:  ruff, and the mypy ratchet (safety modules must be clean; other
+#          files may not get worse than tools/mypy_baseline.json)
+# - unit:  the unit tests (no simulator), including the secret scan
+# - docs:  rebuilds every document, which runs every document check:
+#          traceability, allocation, FMEA rules, VCRM, power budget and
+#          the baseline register
+#
+# The SITL scenarios are not run here: they need an ArduPilot build and
+# take ~35 min. Their evidence (software/results/sitl_results.json) records
+# the ArduPilot commit it was produced with.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: software
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.lock && pip install -e . --no-deps
+      - run: ruff check boaty tests tools
+      - run: python tools/mypy_ratchet.py
+
+  unit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: software
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.lock && pip install -e . --no-deps
+      - run: python -m pytest tests/unit -q
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: sudo apt-get install -y fonts-dejavu-core
+      - run: pip install -r software/requirements.lock && pip install -e software --no-deps
+      - run: python docs/build_all.py

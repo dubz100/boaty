@@ -5,7 +5,6 @@ The Claude replies here are hand-written fixtures in the shape the API
 returns, not recordings. The live evaluation set is tools/nli_eval.py.
 """
 import json
-import math
 import os
 from pathlib import Path
 from types import SimpleNamespace

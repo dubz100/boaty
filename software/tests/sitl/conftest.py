@@ -18,7 +18,8 @@ import pytest
 from boaty.helm.api import Fence, Mission, MissionItem
 from boaty.helm.ardupilot import ArduPilotHelm
 from boaty.sim.geo import offset, square
-from boaty.sim.sitl import SimConfig, SimulatedBoat, have_sitl
+from boaty.sim.sitl import (ARDUPILOT_COMMIT, SimConfig, SimulatedBoat,
+                            ardupilot_commit, have_sitl)
 
 SPEEDUP = int(os.environ.get("BOATY_SIM_SPEEDUP", "5"))
 RESULTS = Path(__file__).resolve().parents[2] / "results"
@@ -85,8 +86,11 @@ def pytest_sessionfinish(session, exitstatus):
     if not _records:
         return
     RESULTS.mkdir(exist_ok=True)
+    commit = ardupilot_commit()
     out = dict(generated=datetime.now(timezone.utc).isoformat(),
-               speedup=SPEEDUP, records=list(_records.values()))
+               speedup=SPEEDUP, ardupilot_commit=commit,
+               ardupilot_commit_is_baseline=commit == ARDUPILOT_COMMIT,
+               records=list(_records.values()))
     (RESULTS / "sitl_results.json").write_text(json.dumps(out, indent=2))
 
 

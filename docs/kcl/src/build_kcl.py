@@ -15,6 +15,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import FancyBboxPatch  # noqa: E402
 
+import baseline as BL  # noqa: E402
 import kcl_data as K  # noqa: E402
 from pdfdoc import (BLUE, BLUE_T, GREEN_T, ORANGE, ORANGE_T, H1, H2,  # noqa
                     KeepTogether, P, PageBreak, Spacer, bullets, callout,
@@ -24,8 +25,8 @@ OUT = HERE.parent / "Boaty_Key_Component_List.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-KCL-001"
-ISSUE = "Issue C (for review)"
-DATE = "30 September 2026"
+ISSUE = BL.issue("KCL")
+DATE = BL.DATE
 PREV_B = "29 September 2026"
 PREV = "28 September 2026"
 plt.rcParams["font.family"] = "DejaVu Sans"
@@ -151,10 +152,9 @@ def build():
                "The parts whose numbers feed the software, the parameters "
                "and the simulator, with where each number came from",
                [["Document", DOC_ID], ["Issue", ISSUE], ["Date", DATE],
-                ["Status", "For review. One owner decision (CR-04) before "
-                 "the ADD, ICD and SSS pick it up."],
-                ["Basis", "ADD Issue E, ICD Issue D, SSS Issues A-C, FMEA "
-                 "Issue C"],
+                ["Status", "Baseline candidate for the SDR freeze"],
+                ["Basis", BL.refs("ADD", "ICD", "FMEA") + ", SSS ("
+                 + BL.sss_all() + ")"],
                 ["Content", f"{len(K.KC)} key components, "
                  f"{len(K.FINDINGS)} findings, {len(K.DATASHEETS)} "
                  "datasheet entries"]])
@@ -164,7 +164,13 @@ def build():
           "baseline. Section 10 now records where each change went.",
           "Claude, owner decision"],
          ["C", DATE, "CR-08: the conditional antenna pole kit is outside "
-          "the cap, in the field-kit budget.", "Claude, owner decision"]],
+          "the cap, in the field-kit budget.", "Claude, owner decision"],
+         ["D", DATE, "SDR RID-09: ArduPilot sources re-archived from the "
+          "Rover-4.7.1 release commit dbe79216, the one the simulator is "
+          "built from (was a11f7351). Differences: ALLOW_ARM_NO_COMPASS in "
+          "both board files; a typo in the unused motorboat.parm. The build "
+          "checks the commit matches the software. Status and basis from "
+          "the baseline register (RID-08).", "Claude"]],
         "Review guidance: check the proposed parts against what you can "
         "actually buy, and the cost estimates against real prices. Every "
         "value is tagged with its source; orange-tagged values are guesses "

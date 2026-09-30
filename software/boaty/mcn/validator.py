@@ -14,8 +14,9 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
+from ..helm.api import Fence
 from . import geo
-from .models import Item, LatLon, Mission, ValidationResult, Violation, \
+from .models import LatLon, Mission, ValidationResult, Violation, \
     checksum, to_helm_items
 from .site import Site
 
@@ -66,6 +67,10 @@ class ValidatedMission:
     it. Only validate() can create one."""
     __slots__ = ("mission", "result", "helm_items", "fence")
     _token = object()
+    mission: Mission
+    result: ValidationResult
+    helm_items: tuple
+    fence: Fence
 
     def __init__(self, token, mission: Mission, result: ValidationResult,
                  fence):
@@ -102,7 +107,7 @@ def validate(m: Mission, site: Site, *, now_utc: str,
              ) -> tuple[ValidationResult, ValidatedMission | None]:
     v: list[Violation] = []
     enu = site.enu
-    home_xy = site.home.point
+    home_xy = site.home.centre
     incl = list(site.inclusion)
 
     def add(rule: str, adult: str, seq: int | None = None,
