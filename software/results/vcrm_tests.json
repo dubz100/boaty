@@ -1,0 +1,1592 @@
+{
+ "generated": "2026-09-30T16:46:16.940565+00:00",
+ "sitl_run": "2026-09-30T14:02:35.395796+00:00",
+ "rows": [
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_request_shape",
+   "verifies": [
+    "NLI-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_request_carries_no_coordinates",
+   "verifies": [
+    "NLI-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_context_carries_trip_lengths",
+   "verifies": [
+    "NLI-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_sdk_http_error_goes_to_templates",
+   "verifies": [
+    "MC-011"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_connection_error_goes_to_templates",
+   "verifies": [
+    "MC-011"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_schema_is_structured_outputs_friendly",
+   "verifies": [
+    "NLI-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_decline_is_passed_to_the_child",
+   "verifies": [
+    "NLI-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_invalid_reply_retried_once_with_the_error",
+   "verifies": [
+    "NLI-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_gives_up_after_one_retry",
+   "verifies": [
+    "NLI-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_no_llm_means_templates",
+   "verifies": [
+    "MIS-005",
+    "MC-011"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_log_records_llm_io",
+   "verifies": [
+    "LOG-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_key_file_rules",
+   "verifies": [
+    "NLI-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_no_key_committed",
+   "verifies": [
+    "NLI-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_lane_spacing[light-1]",
+   "verifies": [
+    "MIS-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_lane_spacing[medium-2]",
+   "verifies": [
+    "MIS-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_lane_spacing[thorough-3]",
+   "verifies": [
+    "MIS-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_whole_pond_medium_is_too_long",
+   "verifies": [
+    "MIS-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_visit_respects_keep_out",
+   "verifies": [
+    "MIS-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_photo_stops_near_duck_house",
+   "verifies": [
+    "MIS-001",
+    "OPS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_ends_with_rtl_and_starts_with_speed",
+   "verifies": [
+    "MIS-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_declined_intent_cannot_be_planned",
+   "verifies": [
+    "NLI-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_planning.py::test_templates_listed_for_every_area",
+   "verifies": [
+    "MIS-001",
+    "MIS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_full_flow",
+   "verifies": [
+    "MC-010",
+    "SWE-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_leds_follow_state",
+   "verifies": [
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_go_before_armed[IDLE-Not yet!]",
+   "verifies": [
+    "VAL-008",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_go_before_armed[DEBRIEF-Not yet!]",
+   "verifies": [
+    "VAL-008",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_go_before_armed[PLAN_READY-Ask a grown-up to arm.]",
+   "verifies": [
+    "VAL-008",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_go_before_armed[APPROVED-Ask a grown-up to arm.]",
+   "verifies": [
+    "VAL-008",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_go_needs_hold",
+   "verifies": [
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_come_home_works[ARMED]",
+   "verifies": [
+    "MOD-006",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_come_home_works[MISSION]",
+   "verifies": [
+    "MOD-006",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_come_home_works[MANUAL]",
+   "verifies": [
+    "MOD-006",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_stop_from_every_armed_state[ARMED]",
+   "verifies": [
+    "MOD-006",
+    "FS-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_stop_from_every_armed_state[MISSION]",
+   "verifies": [
+    "MOD-006",
+    "FS-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_stop_from_every_armed_state[RETURNING]",
+   "verifies": [
+    "MOD-006",
+    "FS-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_stop_from_every_armed_state[MANUAL]",
+   "verifies": [
+    "MOD-006",
+    "FS-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_stop_not_blocked_by_lock",
+   "verifies": [
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_talk_plans_from_voice",
+   "verifies": [
+    "NLI-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_approval_needs_pin",
+   "verifies": [
+    "VAL-008",
+    "MC-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_approval_uploads_and_verifies",
+   "verifies": [
+    "PRE-005",
+    "VAL-010"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_readback_mismatch_blocks_approval",
+   "verifies": [
+    "PRE-005",
+    "VAL-010"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_new_plan_voids_approval",
+   "verifies": [
+    "VAL-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_edited_mission_is_revalidated",
+   "verifies": [
+    "SAF-004",
+    "VAL-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_go_refused_if_boat_copy_not_verified",
+   "verifies": [
+    "PRE-005",
+    "MC-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_arm_blocked_until_checklist",
+   "verifies": [
+    "MOD-004",
+    "MC-010"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_arm_blocked_by_few_satellites",
+   "verifies": [
+    "MOD-004",
+    "PRE-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_arm_blocked_by_poor_hdop",
+   "verifies": [
+    "MOD-004",
+    "PRE-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_arm_blocked_by_param_mismatch",
+   "verifies": [
+    "MOD-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_failsafe_rtl_is_announced",
+   "verifies": [
+    "MC-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_photo_point_announced_on_arrival",
+   "verifies": [
+    "MC-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_arrival_then_auto_disarm_after_60s",
+   "verifies": [
+    "MOD-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_link_loss_keeps_last_position",
+   "verifies": [
+    "MC-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_adult_manual_and_drive",
+   "verifies": [
+    "MOD-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_pin_never_logged",
+   "verifies": [
+    "LOG-002",
+    "MC-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_session_log_is_json_lines",
+   "verifies": [
+    "LOG-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_session.py::test_snapshot_has_what_the_map_needs",
+   "verifies": [
+    "MC-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_site.py::test_milton_is_clean",
+   "verifies": [
+    "FEN-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_site.py::test_home_in_guide_is_warning",
+   "verifies": [
+    "FEN-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_site.py::test_too_many_vertices",
+   "verifies": [
+    "FEN-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_site.py::test_exclusion_outside_inclusion",
+   "verifies": [
+    "FEN-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_site.py::test_eleven_exclusions",
+   "verifies": [
+    "FEN-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_site.py::test_circle_without_radius",
+   "verifies": [
+    "FEN-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_site.py::test_nest_under_standoff_blocks",
+   "verifies": [
+    "OPS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_templates_validate[explore-home bay]",
+   "verifies": [
+    "MIS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_templates_validate[explore-north pond]",
+   "verifies": [
+    "MIS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_templates_validate[duck_watch-home bay]",
+   "verifies": [
+    "MIS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_templates_validate[duck_watch-north pond]",
+   "verifies": [
+    "MIS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_templates_validate[lap-home bay]",
+   "verifies": [
+    "MIS-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt0]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt1]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt2]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt3]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt4]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt5]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt6]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt7]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_bad_points[pt8]",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_leg_crosses_island",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_rtl_leg_crosses_island",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_concave_fence_leg_cuts_corner",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_backstop_circle",
+   "verifies": [
+    "VAL-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_one_message_per_leg",
+   "verifies": [
+    "VAL-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val002_violations_have_location",
+   "verifies": [
+    "VAL-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val003_too_long_zigzag",
+   "verifies": [
+    "VAL-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val003_understated_estimate_is_not_trusted",
+   "verifies": [
+    "VAL-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val003_low_battery_energy",
+   "verifies": [
+    "VAL-003",
+    "MIS-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val003_cap_at_30_min_even_if_configured_longer",
+   "verifies": [
+    "MIS-003",
+    "VAL-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val003_configured_25_min_allows_22",
+   "verifies": [
+    "MIS-003",
+    "VAL-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val004_no_rtl",
+   "verifies": [
+    "MIS-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val004_rtl_in_middle",
+   "verifies": [
+    "MIS-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[2.0]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[1.51]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[0.0]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[0.1]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[-1.0]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[nan]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[inf]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_speed[None]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_hold[61]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_hold[0]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_hold[-5]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_hold[None]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_bad_hold[3600]",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_val005_photos_exceed_storage",
+   "verifies": [
+    "VAL-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_forged_checksum",
+   "verifies": [
+    "SAF-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_unknown_major_version_rejected",
+   "verifies": [
+    "MIS-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_extra_fields_rejected",
+   "verifies": [
+    "MIS-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_round_trip_keeps_checksum",
+   "verifies": [
+    "MIS-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_deterministic",
+   "verifies": [
+    "VAL-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_no_io_or_randomness_in_validator",
+   "verifies": [
+    "VAL-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator.py::test_validated_mission_only_from_validator",
+   "verifies": [
+    "SAF-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_validator_property.py::test_accepted_missions_never_cross_a_boundary",
+   "verifies": [
+    "VAL-002",
+    "VAL-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_web.py::test_adult_actions_need_pin",
+   "verifies": [
+    "VAL-008",
+    "MC-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "unit",
+   "nodeid": "tests/unit/test_web.py::test_websocket_pushes_state",
+   "verifies": [
+    "MC-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc02b_manual_link_loss_rtl_at_10s",
+   "id": "SC-02b",
+   "verifies": [
+    "FS-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc03_auto_link_loss_rtl_at_60s",
+   "id": "SC-03",
+   "verifies": [
+    "FS-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc04_gnss_loss_hold_then_rtl",
+   "id": "SC-04",
+   "verifies": [
+    "FS-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc06_weed_released_after_burst_two",
+   "id": "SC-06",
+   "verifies": [
+    "FS-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc06b_weed_never_clears",
+   "id": "SC-06b",
+   "verifies": [
+    "FS-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc07_mission_computer_dies",
+   "id": "SC-07",
+   "verifies": [
+    "FS-007",
+    "MOD-005",
+    "SAF-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc10_moisture_rtl",
+   "id": "SC-10",
+   "verifies": [
+    "FS-010"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc28_persistent_breach",
+   "id": "SC-28",
+   "verifies": [
+    "FEN-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_sc29_single_motor_failure",
+   "id": "SC-29",
+   "verifies": [
+    "FS-013"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_fs001_slow_rtl_at_critical_battery",
+   "id": "FS-001b",
+   "verifies": [
+    "FS-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_boat_services.py::test_photos_in_a_mission",
+   "id": "B2-01",
+   "verifies": [
+    "CAM-002",
+    "CAM-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_failsafes.py::test_sc01_battery_drain",
+   "id": "SC-01",
+   "verifies": [
+    "FS-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_failsafes.py::test_sc02_link_cut_in_manual",
+   "id": "SC-02a",
+   "verifies": [
+    "FS-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_failsafes.py::test_sc04_gnss_failure",
+   "id": "SC-04",
+   "verifies": [
+    "FS-004"
+   ],
+   "outcome": "xfail"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-along-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-towards-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-rtl-from-corner]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-along-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-towards-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-rtl-from-corner]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-along-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-towards-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-rtl-from-corner]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-along-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-towards-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-rtl-from-corner]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-along-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-towards-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-rtl-from-corner]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-along-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-towards-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-rtl-from-corner]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-along-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-towards-fence]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-rtl-from-corner]",
+   "id": null,
+   "verifies": [
+    "SAF-002"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_status_after_connect",
+   "id": "IF-14-01",
+   "verifies": [
+    "SWE-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_parameter_baseline_is_loaded",
+   "id": "IF-14-02",
+   "verifies": [
+    "SAF-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_fence_and_mission_round_trip",
+   "id": "IF-14-03",
+   "verifies": [
+    "SWE-002",
+    "VAL-010"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_uploads_refused_while_armed",
+   "id": "IF-14-04",
+   "verifies": [
+    "FEN-007",
+    "SAF-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_arms_into_hold",
+   "id": "IF-14-05",
+   "verifies": [
+    "MOD-001",
+    "MOD-003",
+    "SWE-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_mode_commands_map_to_srs_modes",
+   "id": "IF-14-06",
+   "verifies": [
+    "MOD-001",
+    "SWE-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_manual_drive_moves_the_boat",
+   "id": "IF-14-07",
+   "verifies": [
+    "MC-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_helm_contract.py::test_stop_stops_motors_within_one_second",
+   "id": "SC-09a",
+   "verifies": [
+    "FS-009",
+    "SWE-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_e2e_explore_photos_home",
+   "id": "MC-E2E",
+   "verifies": [
+    "CAM-007",
+    "LOG-002",
+    "NLI-001",
+    "NLI-005",
+    "SWE-003",
+    "VAL-001",
+    "VAL-010"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc09_stop_in_every_armed_state",
+   "id": "SC-09",
+   "verifies": [
+    "FS-009"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc24_parameter_differs",
+   "id": "SC-24",
+   "verifies": [
+    "SAF-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc25_fence_missing",
+   "id": "SC-25",
+   "verifies": [
+    "PRE-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc32_readback_corruption",
+   "id": "SC-32",
+   "verifies": [
+    "VAL-010"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc35_home_sanity",
+   "id": "SC-35",
+   "verifies": [
+    "VAL-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_mcn_d59_persistent_breach_without_b7",
+   "id": "MCN-D59",
+   "verifies": [
+    "FEN-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_mcn_d60_b7_hold_spoken_and_pin_resume",
+   "id": "MCN-D60",
+   "verifies": [
+    "MOD-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[battery]",
+   "id": null,
+   "verifies": [
+    "LOG-002",
+    "MC-007"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[gnss]",
+   "id": null,
+   "verifies": [
+    "LOG-002",
+    "MC-007"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[water]",
+   "id": null,
+   "verifies": [
+    "LOG-002",
+    "MC-007"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[weed]",
+   "id": null,
+   "verifies": [
+    "LOG-002",
+    "MC-007"
+   ],
+   "outcome": "not run"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_path_planning.py::test_sc27_rtl_goes_round_the_island[calm]",
+   "id": "SC-27",
+   "verifies": [
+    "NAV-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_path_planning.py::test_sc27_rtl_goes_round_the_island[wind-3ms-east]",
+   "id": "SC-27",
+   "verifies": [
+    "NAV-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v02_fence_enforced_in_manual",
+   "id": "V-02",
+   "verifies": [
+    "FEN-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v03_gcs_failsafe_continues_auto",
+   "id": "V-03",
+   "verifies": [
+    "FS-003"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v04_holds_station_at_home_after_rtl",
+   "id": "V-04",
+   "verifies": [
+    "MOD-005"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v05_crash_check_meets_fs005",
+   "id": "V-05",
+   "verifies": [
+    "FS-005"
+   ],
+   "outcome": "xpass"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v06_only_mission_control_counts_as_gcs",
+   "id": "V-06",
+   "verifies": [
+    "FS-002"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v11_guided_stops_without_targets",
+   "id": "V-11",
+   "verifies": [
+    "FS-006"
+   ],
+   "outcome": "xfail"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v12_skid_steer_boat_behaves",
+   "id": "V-12",
+   "verifies": [
+    "NAV-004",
+    "NAV-005",
+    "SWE-004"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v13_rail_voltage_gates_arming",
+   "id": "V-13",
+   "verifies": [
+    "MOD-003",
+    "MOD-004",
+    "PRE-007"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v14_persistent_breach",
+   "id": "V-14",
+   "verifies": [
+    "FEN-006"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v15_rtl_speed_on_low_battery",
+   "id": "V-15",
+   "verifies": [
+    "FS-001"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v16_compass_fault_does_not_leave_fence",
+   "id": "V-16",
+   "verifies": [
+    "FS-013",
+    "NAV-008"
+   ],
+   "outcome": "passed"
+  },
+  {
+   "kind": "sitl",
+   "nodeid": "tests/sitl/test_v_items.py::test_v17_fence_change_while_armed",
+   "id": "V-17",
+   "verifies": [
+    "FEN-007"
+   ],
+   "outcome": "passed"
+  }
+ ]
+}
