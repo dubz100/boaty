@@ -50,6 +50,7 @@ REGISTER = {
 # here, but not part of the SDR baseline (they are CDR candidates).
 DETAIL = {
     "MDD": ("BOATY-MDD-001", "Mechanical Design Description", "A"),
+    "EDD": ("BOATY-EDD-001", "Electrical Design Description", "A"),
 }
 ALL = {**REGISTER, **DETAIL}
 
@@ -91,6 +92,7 @@ BUILDS = {
     "ICD": "icd/src/build_icd.py", "FMEA": "fmea/src/build_fmea.py",
     "OPS": "ops/src/build_ops.py", "KCL": "kcl/src/build_kcl.py",
     "SDR": "sdr/src/build_sdr.py", "MDD": "mdd/src/build_mdd.py",
+    "EDD": "edd/src/build_edd.py",
 }
 # A typed issue letter in a field that names current parents.
 TYPED = re.compile(r'(parents=|\["(Basis|Parent|Parents)",|\["\[\d\]",)'

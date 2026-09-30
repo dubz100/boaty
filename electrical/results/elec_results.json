@@ -1,0 +1,3682 @@
+{
+ "commit": "5bc2d6d",
+ "rows": [
+  {
+   "id": "D-01",
+   "refs": "ERC",
+   "text": "Netlist rule check (every pin placed, nets joined only by boards, mates and wires, drivers, voltages, keying)",
+   "value": "0 errors; 120 parts, 70 nets, 114 wires",
+   "limit": "0 errors",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "D-02",
+   "refs": "Boards",
+   "text": "Stripboard layouts rebuilt from copper, cuts and links, compared with the netlist",
+   "value": "0 errors on 3 boards",
+   "limit": "0 errors",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "D-03",
+   "refs": "Schematics",
+   "text": "Every part and pin on a sheet; every drawn wire joins pins of one net",
+   "value": "0 missing",
+   "limit": "0",
+   "status": "PASS",
+   "note": "only if the sheets were built in this run",
+   "cr": ""
+  },
+  {
+   "id": "P-01",
+   "refs": "PWR-001, PWR-D01",
+   "text": "One removable 3S Li-ion pack, 25-50 Wh",
+   "value": "3S1P, 27 Wh nominal",
+   "limit": "25-50 Wh",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-02",
+   "refs": "PWR-002, PWR-D02",
+   "text": "BMS: over-discharge, over-current, short circuit, balance",
+   "value": "OCP 25 A, ODV 2.7 V/cell",
+   "limit": "trip \u2264 25 A, 2.5-2.8 V",
+   "status": "PASS",
+   "note": "confirm the bought board's trip points (bench)",
+   "cr": ""
+  },
+  {
+   "id": "P-03",
+   "refs": "PWR-003, PWR-D05",
+   "text": "Main fuse: position and rating",
+   "value": "20 A ATO, 40 mm lead (W01); 2.1 \u00d7 the power-limited current; 1.2 \u00d7 the hardware maximum (2 \u00d7 8 A)",
+   "limit": "\u2264 50 mm; \u2264 2 \u00d7 max continuous",
+   "status": "PASS",
+   "note": "the BMS (25 A, fast) protects the 18 AWG ESC leads above 16 A",
+   "cr": ""
+  },
+  {
+   "id": "P-04",
+   "refs": "PWR-004, PWR-D06",
+   "text": "Main switch waterproof, outside the box, without opening it",
+   "value": "IP67 toggle with cover on the handle; drives Q1 (P-FET, 80 A class, solid-state option)",
+   "limit": "IP67; \u2265 20 A or a \u2265 30 A solid-state switch",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-05",
+   "refs": "PWR-005, PWR-D12",
+   "text": "Separate 5 V for the avionics; no brown-out on a full thrust step at 9.6 V (resting)",
+   "value": "FC fed at the PDB: 7.32 V at 70 W",
+   "limit": "FC \u2265 7.0 V, buck \u2265 6.0 V",
+   "status": "PASS",
+   "note": "the FC and buck take their supply before the key switch (PWR-D10)",
+   "cr": ""
+  },
+  {
+   "id": "P-06",
+   "refs": "PWR-D22, HLM-D43, KF-02",
+   "text": "Every supply works at the rail voltage the power limit allows (critical battery, acceptance-limit cells)",
+   "value": "ESC input 7.17 V at 70 W (harness 34 m\u03a9); 7.5 V needs \u2264 63 W",
+   "limit": "\u2265 7.5 V (ESC rated 7.2 V)",
+   "status": "FAIL",
+   "note": "at 60 W: 7.63 V and 1.85 N thrust (\u2265 1.1 N for ENV-002)",
+   "cr": "CR-12"
+  },
+  {
+   "id": "P-07",
+   "refs": "PWR-006, PWR-D13, IF-07",
+   "text": "Battery V and I measured and logged",
+   "value": "PDB sensor \u2192 BATT_VOLT_PIN 10 / BATT_CURR_PIN 11; every load behind it",
+   "limit": "\u00b1 1% V, \u00b1 5% I after calibration",
+   "status": "TEST",
+   "note": "bench calibration (KF-10)",
+   "cr": ""
+  },
+  {
+   "id": "P-08",
+   "refs": "PWR-007, PWR-D04",
+   "text": "No charge port; charged off the boat",
+   "value": "balance lead J2 and XT60 only",
+   "limit": "no port",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-09",
+   "refs": "PWR-008, PWR-D14",
+   "text": "Polarised connectors, one job per type",
+   "value": "XT60 battery \u00b7 XT30 ESCs \u00b7 JST-XH balance \u00b7 Micro-Fit Pi 5 V; signal KK254 with one pin count per board",
+   "limit": "no shared type",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-10",
+   "refs": "PWR-D15",
+   "text": "Wire gauges and joints",
+   "value": "16 AWG battery \u2192 bus, 18 AWG to the ESCs, silicone; soldered, heat-shrunk; glands on every entry",
+   "limit": "16 / 18 AWG",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-11",
+   "refs": "PWR-D15",
+   "text": "Each wire within its current rating at its continuous current",
+   "value": "0 over; worst drop 48 mV",
+   "limit": "0 over",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-12",
+   "refs": "PWR-D07, IF-06",
+   "text": "Key switch: high-side P-MOSFET, soft start, off without the key",
+   "value": "inrush 5.6 A, rail up in 2.5 ms",
+   "limit": "high side; soft start; fails off",
+   "status": "PASS",
+   "note": "gate-drain (Miller) soft start: a gate-source RC gave 24 A (CR-13)",
+   "cr": ""
+  },
+  {
+   "id": "P-13",
+   "refs": "IF-06, MCN-D54",
+   "text": "Key out \u2192 rail < 0.5 V within 100 ms",
+   "value": "58 ms (no bleeder: 956 ms)",
+   "limit": "\u2264 100 ms",
+   "status": "PASS",
+   "note": "active bleeder Q3/R9, a pulse only: a shorted Q2 cannot burn it (FM-22 is found by the rail check)",
+   "cr": "CR-13"
+  },
+  {
+   "id": "P-14",
+   "refs": "PWR-D08, IF-06",
+   "text": "Rail divided to the helm's second voltage input; arming refused below 9.0 V",
+   "value": "10 k / 1 k \u2192 \u00d7 11.0; 9.0 V \u2192 0.82 V at ADC 15",
+   "limit": "BATT2_VOLT_MULT 11.0; \u2264 3.3 V",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-15",
+   "refs": "PWR-D09, PWR-D10",
+   "text": "Rail off at power-up without the key; helm powered before the key",
+   "value": "R3 holds Q2 off; FC and buck on VBAT_S (before Q2)",
+   "limit": "-",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-16",
+   "refs": "PWR-D11, IF-08",
+   "text": "Mission computer: own 5.1 V \u2265 3 A buck, 7-14 V in; stays \u2265 4.85 V on a thrust step",
+   "value": "KC-09 buck; 470 \u00b5F + TVS at the Pi; input \u2265 7.3 V at 70 W",
+   "limit": "5.1 V \u00b1 2%",
+   "status": "TEST",
+   "note": "set-point and step response on the bench (IF-08 test)",
+   "cr": ""
+  },
+  {
+   "id": "P-17",
+   "refs": "PWR-D16",
+   "text": "No exposed live conductor outside the box",
+   "value": "motor phases in IP68 connectors (caps when unmated); mast and switch leads in IP67 parts",
+   "limit": "none",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-18",
+   "refs": "PWR-009, PWR-D17, PWR-D18",
+   "text": "Endurance at cruise, with this design's losses",
+   "value": "11.34 W \u2192 114 min on 21.6 Wh",
+   "limit": "\u2265 40 min, margin \u2265 30%",
+   "status": "PASS",
+   "note": "power.csv holds 11.1 W: add 0.24 W (CR-12)",
+   "cr": ""
+  },
+  {
+   "id": "P-19",
+   "refs": "PWR-010, PWR-D19, MCP-D04",
+   "text": "Box temperature, 30 \u00b0C in sun, 60 min",
+   "value": "44 \u00b0C (3.6 W inside, 7.5 W sun)",
+   "limit": "\u2264 50 \u00b0C",
+   "status": "PASS",
+   "note": "DUPLO plate shades 47% of the lid; test V-10",
+   "cr": ""
+  },
+  {
+   "id": "P-20",
+   "refs": "PWR-D19",
+   "text": "Battery \u2265 30 mm from the ESCs",
+   "value": "42 mm",
+   "limit": "\u2265 30 mm",
+   "status": "PASS",
+   "note": "box layout checked for overlaps and gland space",
+   "cr": ""
+  },
+  {
+   "id": "P-21",
+   "refs": "IF-06",
+   "text": "Switch MOSFETs at the power-limited current",
+   "value": "Tj 78 \u00b0C with a clip-on sink (127 \u00b0C without)",
+   "limit": "< 150 \u00b0C",
+   "status": "PASS",
+   "note": "box at 50 \u00b0C, R_DS(on) \u00d7 2.25 for low gate drive and heat",
+   "cr": ""
+  },
+  {
+   "id": "H-01",
+   "refs": "HLM-D02, HLM-D37",
+   "text": "Flight controller resources used",
+   "value": "SERIAL1 Pi, SERIAL3 GPS; UART4/5 free (ELRS spare); outputs 1, 4, 12; ADC 10, 11, 15; I\u00b2C1",
+   "limit": "\u2265 2 UARTs, 3 DShot, 2 ADC",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-02",
+   "refs": "HLM-D44, KF-04",
+   "text": "One MAVLink path; wireless board not fitted",
+   "value": "SERIAL1 only; SERIAL6 disabled",
+   "limit": "-",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-03",
+   "refs": "IF-05",
+   "text": "ESC signals: output 1 left, 4 right, twisted pair \u2264 150 mm, no ESC power to the FC",
+   "value": "TP1/TP2 150 mm; BEC leads unconnected",
+   "limit": "-",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-04",
+   "refs": "IF-04",
+   "text": "UART to the Pi: 3.3 V both ends, crossed, common ground",
+   "value": "Pi TXD \u2192 FC RX1, FC TX1 \u2192 Pi RXD, GND",
+   "limit": "no level shifting",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-05",
+   "refs": "IF-22, HLM-D35",
+   "text": "GNSS on SERIAL3, compass on I\u00b2C, through the mast connector",
+   "value": "0.9 m of cable; rise 0.56 \u00b5s (4.7 k) / 0.26 \u00b5s (2.2 k)",
+   "limit": "\u2264 1 \u00b5s (100 kHz), \u2264 0.3 \u00b5s (400 kHz)",
+   "status": "TEST",
+   "note": "confirm the module's pull-ups and the bus speed on the bench",
+   "cr": ""
+  },
+  {
+   "id": "H-06",
+   "refs": "IF-09, TBC-08",
+   "text": "Beacon data level: 3.3 V data into the LED ring",
+   "value": "with D6: V_IH margin \u2265 0.15 V (without: -0.34 V)",
+   "limit": "margin > 0",
+   "status": "PASS",
+   "note": "closes TBC-08 by design; confirm on the bench",
+   "cr": ""
+  },
+  {
+   "id": "M-01",
+   "refs": "MCP-D03, FS-010",
+   "text": "Moisture sensor read by GPIO",
+   "value": "GPIO17 (software default); trips below 10.7 k\u03a9; wet comb \u2248 82 \u03a9",
+   "limit": "GPIO; wet detected",
+   "status": "PASS",
+   "note": "trips with 0.8% of the comb wet",
+   "cr": ""
+  },
+  {
+   "id": "M-02",
+   "refs": "MCP-D26, KC-12",
+   "text": "DS18B20 at the box top on 1-Wire",
+   "value": "GPIO4, 4.7 k\u03a9 to 3.3 V",
+   "limit": "GPIO4, 4.7 k",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "M-03",
+   "refs": "MCP-D05",
+   "text": "Mission computer power",
+   "value": "1.8 W average (budget), 3 W peak; buck loss 0.2 W",
+   "limit": "\u2264 2.0 W avg",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "C-01",
+   "refs": "IF-12, MCN-D02",
+   "text": "Panel GPIOs agree with the software (boaty/mcn/panel.py)",
+   "value": "buttons GO 17, HOME 27, STOP 22, TALK 24; LEDs 5, 6, 13, 19",
+   "limit": "identical",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "C-02",
+   "refs": "MCN-D01, MC-001",
+   "text": "Mission Control on the power bank",
+   "value": "9.7 h at 6.5 W",
+   "limit": "\u2265 2.5 h",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "C-03",
+   "refs": "KC-16, MCN-1",
+   "text": "Pi 5 USB current (usb_max_current_enable=1)",
+   "value": "1.50 A",
+   "limit": "\u2264 1.6 A",
+   "status": "PASS",
+   "note": "phone on the tether as a USB SDP (\u2264 0.5 A)",
+   "cr": ""
+  },
+  {
+   "id": "S-01",
+   "refs": "SAF-001, SAF-002",
+   "text": "Helm independent of the mission computer and Mission Control",
+   "value": "own supply from the bus; UART only link; ESC signals direct",
+   "limit": "-",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "S-02",
+   "refs": "FS-008",
+   "text": "ESCs stop when commands stop",
+   "value": "AM32 0.5 s (KC-03)",
+   "limit": "\u2264 1 s",
+   "status": "TEST",
+   "note": "V-09 on the bench",
+   "cr": ""
+  },
+  {
+   "id": "S-03",
+   "refs": "CHD-003, MEC-012",
+   "text": "Electronics behind an adult action; every cable entry through a gland",
+   "value": "latched box; 4 \u00d7 PG7: motors \u00d72, mast, switch",
+   "limit": "-",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "S-04",
+   "refs": "MEC-013, HLM-D35",
+   "text": "GNSS \u2265 150 mm from power wiring",
+   "value": "252 mm (MDD E-01; motor leads run down and aft)",
+   "limit": "\u2265 150 mm",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "X-01",
+   "refs": "CON-001, CR-08",
+   "text": "Bill of materials within the \u00a3185 cap (boat and shore kit)",
+   "value": "\u00a3246 buying everything; \u00a3229 with workshop stock (wire, resistors, stripboard)",
+   "limit": "\u2264 \u00a3185",
+   "status": "FAIL",
+   "note": "SDR BOM \u00a3181; this design adds \u00a365 (connectors, cables, boards)",
+   "cr": "CR-14"
+  }
+ ],
+ "erc": {
+  "errors": [],
+  "stats": {
+   "parts": 120,
+   "nets": 70,
+   "pins": 360,
+   "wires": 114,
+   "mates": 7,
+   "nc": 2,
+   "over_voltage": 0
+  },
+  "notes": [
+   "XT60: ['Battery lead', 'Box battery socket on a 16 AWG pigtail']",
+   "JST-XH: ['Balance lead']",
+   "Micro-Fit: ['5 V in', 'Mission-computer 5 V lead (the only Micro-Fit on the boat']",
+   "XT30: ['ESC lead']"
+  ]
+ },
+ "boards": {
+  "PIB": {
+   "stats": {
+    "board": "PIB",
+    "size": "42 \u00d7 18 holes (107 \u00d7 46 mm)",
+    "parts": 36,
+    "cuts": 7,
+    "knife": 0,
+    "links": 1,
+    "heavy": [
+     "BUS_POS",
+     "MOTOR_POS",
+     "PACK_POS",
+     "VBAT_S"
+    ]
+   },
+   "errors": []
+  },
+  "MIB": {
+   "stats": {
+    "board": "MIB",
+    "size": "12 \u00d7 24 holes (30 \u00d7 61 mm)",
+    "parts": 12,
+    "cuts": 27,
+    "knife": 20,
+    "links": 8,
+    "heavy": []
+   },
+   "errors": []
+  },
+  "PNL": {
+   "stats": {
+    "board": "PNL",
+    "size": "44 \u00d7 24 holes (112 \u00d7 61 mm)",
+    "parts": 33,
+    "cuts": 44,
+    "knife": 20,
+    "links": 14,
+    "heavy": []
+   },
+   "errors": []
+  }
+ },
+ "box": {
+  "errors": [],
+  "battery_to_esc": 42.42640687119285,
+  "heat": 3.5
+ },
+ "cost": {
+  "kcl_total": 181,
+  "cap": 185,
+  "new_buy": 65.14000000000003,
+  "new_nostock": 48.39999999999999,
+  "total_buy": 246.14000000000004,
+  "total_stock": 229.39999999999998
+ },
+ "cost_lines": [
+  [
+   "J1",
+   "XT60 (sockets)",
+   0.6,
+   false
+  ],
+  [
+   "J2",
+   "JST-XH 4",
+   0.2,
+   false
+  ],
+  [
+   "J3",
+   "XT60 (pins)",
+   0.6,
+   false
+  ],
+  [
+   "C7",
+   "470\u00b5F",
+   0.4,
+   true
+  ],
+  [
+   "C8",
+   "470\u00b5F",
+   0.4,
+   true
+  ],
+  [
+   "Q1",
+   "P-MOSFET",
+   1.8,
+   false
+  ],
+  [
+   "Q3",
+   "IRLZ44N",
+   1.0,
+   false
+  ],
+  [
+   "R1",
+   "10k",
+   0.02,
+   true
+  ],
+  [
+   "R2",
+   "3k3",
+   0.02,
+   true
+  ],
+  [
+   "C1",
+   "470nF",
+   0.05,
+   true
+  ],
+  [
+   "D1",
+   "BZX85C15",
+   0.1,
+   true
+  ],
+  [
+   "D2",
+   "P6KE18A",
+   0.3,
+   false
+  ],
+  [
+   "R3",
+   "10k",
+   0.02,
+   true
+  ],
+  [
+   "R4",
+   "3k3",
+   0.02,
+   true
+  ],
+  [
+   "C2",
+   "470nF",
+   0.05,
+   true
+  ],
+  [
+   "D3",
+   "BZX85C15",
+   0.1,
+   true
+  ],
+  [
+   "C3",
+   "1\u00b5F",
+   0.05,
+   true
+  ],
+  [
+   "R5",
+   "100k",
+   0.02,
+   true
+  ],
+  [
+   "D4",
+   "BZX85C10",
+   0.1,
+   true
+  ],
+  [
+   "R9",
+   "10R",
+   0.2,
+   true
+  ],
+  [
+   "D5",
+   "P6KE18A",
+   0.3,
+   false
+  ],
+  [
+   "R6",
+   "10k",
+   0.02,
+   true
+  ],
+  [
+   "R7",
+   "1k",
+   0.02,
+   true
+  ],
+  [
+   "C4",
+   "100nF",
+   0.05,
+   true
+  ],
+  [
+   "F2",
+   "PTC 1.1 A",
+   0.3,
+   false
+  ],
+  [
+   "D6",
+   "1N4001",
+   0.1,
+   true
+  ],
+  [
+   "R8",
+   "330R",
+   0.02,
+   true
+  ],
+  [
+   "J11",
+   "KK254 2",
+   0.3,
+   false
+  ],
+  [
+   "J12",
+   "KK254 3",
+   0.3,
+   false
+  ],
+  [
+   "J14",
+   "KK254 8",
+   0.3,
+   false
+  ],
+  [
+   "J15",
+   "KK254 6",
+   0.3,
+   false
+  ],
+  [
+   "J40",
+   "M12 A 8-pole socket",
+   6.0,
+   false
+  ],
+  [
+   "P40",
+   "M12 A 8-pole plug",
+   5.0,
+   false
+  ],
+  [
+   "J50",
+   "IP68 3-pole socket",
+   4.0,
+   false
+  ],
+  [
+   "P50",
+   "IP68 3-pole plug",
+   4.0,
+   false
+  ],
+  [
+   "J51",
+   "IP68 3-pole socket",
+   4.0,
+   false
+  ],
+  [
+   "P51",
+   "IP68 3-pole plug",
+   4.0,
+   false
+  ],
+  [
+   "J30",
+   "Micro-Fit 2 plug",
+   0.5,
+   false
+  ],
+  [
+   "J31",
+   "Micro-Fit 2 header",
+   0.6,
+   false
+  ],
+  [
+   "D10",
+   "P6KE6.8A",
+   0.3,
+   false
+  ],
+  [
+   "C10",
+   "470\u00b5F",
+   0.3,
+   true
+  ],
+  [
+   "C11",
+   "10\u00b5F",
+   0.05,
+   true
+  ],
+  [
+   "J32",
+   "2\u00d720 socket",
+   1.0,
+   false
+  ],
+  [
+   "J33",
+   "KK254 3",
+   0.3,
+   false
+  ],
+  [
+   "J34",
+   "KK254 4",
+   0.3,
+   false
+  ],
+  [
+   "J35",
+   "KK254 2",
+   0.3,
+   false
+  ],
+  [
+   "R10",
+   "4k7",
+   0.02,
+   true
+  ],
+  [
+   "R11",
+   "1k",
+   0.02,
+   true
+  ],
+  [
+   "R12",
+   "100k",
+   0.02,
+   true
+  ],
+  [
+   "C12",
+   "100nF",
+   0.05,
+   true
+  ],
+  [
+   "S2",
+   "Moisture comb",
+   1.0,
+   false
+  ],
+  [
+   "J60",
+   "2\u00d720 IDC header",
+   0.8,
+   false
+  ],
+  [
+   "R61",
+   "10k",
+   0.02,
+   true
+  ],
+  [
+   "R62",
+   "1k",
+   0.02,
+   true
+  ],
+  [
+   "C61",
+   "100nF",
+   0.05,
+   true
+  ],
+  [
+   "Q61",
+   "2N7000",
+   0.1,
+   false
+  ],
+  [
+   "R63",
+   "100R",
+   0.02,
+   true
+  ],
+  [
+   "R64",
+   "100k",
+   0.02,
+   true
+  ],
+  [
+   "R71",
+   "10k",
+   0.02,
+   true
+  ],
+  [
+   "R72",
+   "1k",
+   0.02,
+   true
+  ],
+  [
+   "C62",
+   "100nF",
+   0.05,
+   true
+  ],
+  [
+   "Q62",
+   "2N7000",
+   0.1,
+   false
+  ],
+  [
+   "R73",
+   "100R",
+   0.02,
+   true
+  ],
+  [
+   "R74",
+   "100k",
+   0.02,
+   true
+  ],
+  [
+   "R81",
+   "10k",
+   0.02,
+   true
+  ],
+  [
+   "R82",
+   "1k",
+   0.02,
+   true
+  ],
+  [
+   "C63",
+   "100nF",
+   0.05,
+   true
+  ],
+  [
+   "Q63",
+   "2N7000",
+   0.1,
+   false
+  ],
+  [
+   "R83",
+   "100R",
+   0.02,
+   true
+  ],
+  [
+   "R84",
+   "100k",
+   0.02,
+   true
+  ],
+  [
+   "R91",
+   "10k",
+   0.02,
+   true
+  ],
+  [
+   "R92",
+   "1k",
+   0.02,
+   true
+  ],
+  [
+   "C64",
+   "100nF",
+   0.05,
+   true
+  ],
+  [
+   "Q64",
+   "2N7000",
+   0.1,
+   false
+  ],
+  [
+   "R93",
+   "100R",
+   0.02,
+   true
+  ],
+  [
+   "R94",
+   "100k",
+   0.02,
+   true
+  ],
+  [
+   "J20-J23",
+   "XT30 pairs on the ESC leads",
+   1.6,
+   false
+  ],
+  [
+   "HS1-2",
+   "Clip-on TO-220 heatsink, \u2264 21 K/W",
+   1.0,
+   false
+  ],
+  [
+   "SB1",
+   "Stripboard 100 \u00d7 160 mm (PIB, MIB, PNL cut from it)",
+   3.0,
+   true
+  ],
+  [
+   "C1-C11",
+   "Cables: 8-core 0.25 mm\u00b2 1 m, 3-core 0.75 mm\u00b2 1.5 m, 2-core 0.5 m",
+   5.0,
+   false
+  ],
+  [
+   "WIRE",
+   "Silicone wire 16/18/20/26 AWG, heat-shrink, tinned copper 1.5 mm\u00b2 for PIB bus strips",
+   6.0,
+   true
+  ],
+  [
+   "KK",
+   "Molex KK 254 housings and crimps (2, 3, 4, 6, 8-way)",
+   3.0,
+   true
+  ],
+  [
+   "RIB",
+   "40-way IDC ribbon 150 mm and two IDC sockets (panel)",
+   2.0,
+   false
+  ],
+  [
+   "STANDOFF",
+   "M2.5 nylon stand-offs and screws (boards, Pi)",
+   2.0,
+   true
+  ]
+ ],
+ "calcs": {
+  "harness": {
+   "up": {
+    "fuse F1": 0.0035,
+    "BMS lead W01+W02": 0.001848,
+    "XT60": 0.0005,
+    "box lead W20": 0.0015840000000000001,
+    "Q1 main switch": 0.006,
+    "PIB to PDB W22": 0.00132,
+    "negative W03+W21": 0.0035640000000000003,
+    "PDB shunt": 0.0003
+   },
+   "down": {
+    "PDB to PIB W23": 0.00132,
+    "Q2 key switch": 0.006,
+    "ESC lead W24 (+)": 0.00378,
+    "ESC lead W26 (\u2212)": 0.00378,
+    "XT30": 0.001
+   },
+   "r_up": 0.018616000000000004,
+   "r_down": 0.015880000000000002
+  },
+  "sag70": {
+   "ok": true,
+   "i": 9.566349150878462,
+   "v_pdb": 7.317316031013984,
+   "v_esc": 7.165402406498035
+  },
+  "sag70_ideal": {
+   "ok": true,
+   "i": 9.254295489922496,
+   "v_pdb": 7.56405499221705,
+   "v_esc": 7.56405499221705
+  },
+  "sag70_fallback": {
+   "ok": true,
+   "i": 9.839070109961247,
+   "v_pdb": 7.114493465102029,
+   "v_esc": 6.820502050216387
+  },
+  "watt_for_7v5": 62.96827636767178,
+  "watt_for_7v2": 69.31115437104721,
+  "thrust": {
+   "70.0": 2.055683661011142,
+   "63": 1.9162461280356162,
+   "60.0": 1.8549196031390183
+  },
+  "sag60": {
+   "ok": true,
+   "i": 7.738461359913722,
+   "v_pdb": 7.753479304142827,
+   "v_esc": 7.630592537747397
+  },
+  "gate": {
+   "Q1": {
+    "12.6": -9.473684210526315,
+    "10.8": -8.1203007518797,
+    "9.0": -6.7669172932330826,
+    "7.5": -5.639097744360902
+   },
+   "Q2": {
+    "12.6": -9.473684210526315,
+    "10.8": -8.1203007518797,
+    "9.0": -6.7669172932330826,
+    "7.5": -5.639097744360902
+   }
+  },
+  "heat": {
+   "Q1": {
+    "i": 9.566349150878462,
+    "p": 1.2354529870329267,
+    "tj_bare": 126.59808519604145,
+    "tj": 77.79769220824085,
+    "r_hot": 0.013500000000000002
+   },
+   "Q2": {
+    "i": 9.216349150878463,
+    "p": 1.1467047375571253,
+    "tj_bare": 121.09569372854178,
+    "tj": 75.80085659503533,
+    "r_hot": 0.013500000000000002
+   }
+  },
+  "rail_sense": {
+   "mult": 11.0,
+   "v_adc_full": 1.1454545454545455,
+   "v_adc_arm": 0.8181818181818182,
+   "lsb_mv": 8.8623046875,
+   "i_ma": 1.1454545454545455,
+   "z_src": 909.0909090909091,
+   "tau_us": 90.90909090909092
+  },
+  "led": {
+   "5.0 V, 50 mA": {
+    "vdd": 4.3,
+    "vih": 3.01,
+    "margin": 0.29000000000000004,
+    "margin_no_diode": -0.20000000000000018
+   },
+   "5.0 V, 250 mA": {
+    "vdd": 4.15,
+    "vih": 2.9050000000000002,
+    "margin": 0.3949999999999996,
+    "margin_no_diode": -0.20000000000000018
+   },
+   "5.2 V, 50 mA": {
+    "vdd": 4.5,
+    "vih": 3.15,
+    "margin": 0.1499999999999999,
+    "margin_no_diode": -0.33999999999999986
+   },
+   "5.2 V, 250 mA": {
+    "vdd": 4.3500000000000005,
+    "vih": 3.0450000000000004,
+    "margin": 0.25499999999999945,
+    "margin_no_diode": -0.33999999999999986
+   }
+  },
+  "moisture": {
+   "r_pullup": 33333.33333333333,
+   "r_trip": 10666.666666666666,
+   "r_wet_full": 82.5,
+   "cover_to_trip": 0.007734375000000001,
+   "tau_ms": 0.1
+  },
+  "i2c": {
+   "length_m": 0.9,
+   "c_pf": 140.0,
+   "tr_4700": 0.5575234000000001,
+   "tr_2200": 0.26096840000000004
+  },
+  "power": {
+   "loads": [
+    [
+     "Flight controller + GNSS",
+     0.8
+    ],
+    [
+     "Pi Zero 2 W + camera",
+     1.8
+    ],
+    [
+     "LED beacon (average)",
+     0.3
+    ],
+    [
+     "ESC idle (2)",
+     0.2
+    ],
+    [
+     "Motors at cruise",
+     8.0
+    ]
+   ],
+   "extra": [
+    [
+     "Buck loss (90%)",
+     0.19999999999999996
+    ],
+    [
+     "PIB: switches, gate dividers, sense",
+     0.03794029668728499
+    ]
+   ],
+   "total": 11.337940296687284,
+   "endurance_min": 114.30647596359852,
+   "budget_csv_total": 11.1,
+   "usable_wh": 21.6
+  },
+  "thermal": {
+   "area": 0.10876,
+   "p_int": 3.558653602585776,
+   "sun": 7.45088,
+   "rise": 14.461111756667073,
+   "t_box": 44.46111175666707,
+   "shade": 0.4726153846153846
+  },
+  "usb": {
+   "loads": [
+    [
+     "Wi-Fi adapter (TX)",
+     0.45
+    ],
+    [
+     "USB speaker (peaks)",
+     0.5
+    ],
+    [
+     "USB microphone",
+     0.05
+    ],
+    [
+     "Phone on the tether (SDP)",
+     0.5
+    ]
+   ],
+   "total": 1.5,
+   "limit": 1.6,
+   "pi5_w": 6.5,
+   "bank_wh": 62.9,
+   "hours": 9.676923076923076
+  },
+  "fuse": {
+   "f1": 20.0,
+   "ocp": 25.0,
+   "i_max_cont": 9.566349150878462,
+   "ratio": 2.090661723146853,
+   "f2_hold": 1.1,
+   "i_buck_max": 0.4629629629629629
+  },
+  "cost": {
+   "by_board": {
+    "PACK": 5.8,
+    "BOX": 99.4,
+    "PIB": 7.659999999999993,
+    "HANDLE": 10.0,
+    "MASTHEAD": 22.0,
+    "DECK_P": 4.0,
+    "POD_P": 10.0,
+    "DECK_S": 4.0,
+    "POD_S": 10.0,
+    "MIB": 3.2599999999999993,
+    "MC": 26.0,
+    "PNL": 1.7200000000000006
+   },
+   "new": {
+    "PIB": 7.659999999999993,
+    "HANDLE": 10.0,
+    "DECK_P": 4.0,
+    "POD_P": 10.0,
+    "DECK_S": 4.0,
+    "POD_S": 10.0,
+    "MIB": 3.2599999999999993,
+    "PNL": 1.7200000000000006
+   }
+  }
+ },
+ "key": {
+  "key_in": {
+   "i_peak": 5.578539653079712,
+   "e_mj": 76.38098376014565,
+   "t_on_ms": 2.4719999999999906,
+   "t_off_ms": null,
+   "t_gate_off_ms": null,
+   "q3_on_ms": 0.0
+  },
+  "key_out": {
+   "i_peak": 1.2919816366666559,
+   "e_mj": 58.20832974374004,
+   "t_on_ms": null,
+   "t_off_ms": 58.106000000016806,
+   "t_gate_off_ms": 44.088000000002786,
+   "q3_on_ms": 236.7620000004024
+  },
+  "key_out_no_bleed": {
+   "i_peak": 0.06504093426532323,
+   "e_mj": 0.00045055851974517164,
+   "t_on_ms": null,
+   "t_off_ms": 956.1099999982835,
+   "t_gate_off_ms": 7.429999999999866,
+   "q3_on_ms": 0.0
+  },
+  "main_on": {
+   "i_peak": 6.064047070477901,
+   "e_mj": 81.03006729632773,
+   "t_on_ms": 2.4859999999999896,
+   "t_off_ms": null,
+   "t_gate_off_ms": null,
+   "q3_on_ms": 0.0
+  },
+  "c_rail_uf": 960.0,
+  "c_bus_uf": 1000.0
+ },
+ "wires": [
+  {
+   "id": "W01",
+   "net": "BATT_POS",
+   "gauge": "16",
+   "length": 40,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 5.051032351663827,
+   "ok": true
+  },
+  {
+   "id": "W02",
+   "net": "PACK_POS",
+   "gauge": "16",
+   "length": 100,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 12.62758087915957,
+   "ok": true
+  },
+  {
+   "id": "W03",
+   "net": "GND",
+   "gauge": "16",
+   "length": 120,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 15.153097054991484,
+   "ok": true
+  },
+  {
+   "id": "W04",
+   "net": "BATT_POS",
+   "gauge": "26",
+   "length": 100,
+   "i": 0.2,
+   "amp": 2.2,
+   "drop_mv": 2.68,
+   "ok": true
+  },
+  {
+   "id": "W05",
+   "net": "CELL2",
+   "gauge": "26",
+   "length": 100,
+   "i": 0.2,
+   "amp": 2.2,
+   "drop_mv": 2.68,
+   "ok": true
+  },
+  {
+   "id": "W06",
+   "net": "CELL1",
+   "gauge": "26",
+   "length": 100,
+   "i": 0.2,
+   "amp": 2.2,
+   "drop_mv": 2.68,
+   "ok": true
+  },
+  {
+   "id": "W07",
+   "net": "BATT_NEG",
+   "gauge": "26",
+   "length": 100,
+   "i": 0.2,
+   "amp": 2.2,
+   "drop_mv": 2.68,
+   "ok": true
+  },
+  {
+   "id": "W08",
+   "net": "BATT_POS",
+   "gauge": "20",
+   "length": 30,
+   "i": 9.566349150878462,
+   "amp": 11.0,
+   "drop_mv": 9.556782801727582,
+   "ok": true
+  },
+  {
+   "id": "W09",
+   "net": "CELL2",
+   "gauge": "26",
+   "length": 30,
+   "i": 0.2,
+   "amp": 2.2,
+   "drop_mv": 0.804,
+   "ok": true
+  },
+  {
+   "id": "W10",
+   "net": "CELL1",
+   "gauge": "26",
+   "length": 30,
+   "i": 0.2,
+   "amp": 2.2,
+   "drop_mv": 0.804,
+   "ok": true
+  },
+  {
+   "id": "W11",
+   "net": "BATT_NEG",
+   "gauge": "16",
+   "length": 30,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 3.788274263747871,
+   "ok": true
+  },
+  {
+   "id": "W20",
+   "net": "PACK_POS",
+   "gauge": "16",
+   "length": 120,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 15.153097054991484,
+   "ok": true
+  },
+  {
+   "id": "W21",
+   "net": "GND",
+   "gauge": "16",
+   "length": 150,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 18.941371318739357,
+   "ok": true
+  },
+  {
+   "id": "W22",
+   "net": "BUS_POS",
+   "gauge": "16",
+   "length": 100,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 12.62758087915957,
+   "ok": true
+  },
+  {
+   "id": "W23",
+   "net": "VBAT_S",
+   "gauge": "16",
+   "length": 100,
+   "i": 9.566349150878462,
+   "amp": 22.0,
+   "drop_mv": 12.62758087915957,
+   "ok": true
+  },
+  {
+   "id": "W24",
+   "net": "MOTOR_POS",
+   "gauge": "18",
+   "length": 180,
+   "i": 4.608174575439231,
+   "amp": 16.0,
+   "drop_mv": 17.41889989516029,
+   "ok": true
+  },
+  {
+   "id": "W25",
+   "net": "MOTOR_POS",
+   "gauge": "18",
+   "length": 180,
+   "i": 4.608174575439231,
+   "amp": 16.0,
+   "drop_mv": 17.41889989516029,
+   "ok": true
+  },
+  {
+   "id": "W26",
+   "net": "GND",
+   "gauge": "18",
+   "length": 180,
+   "i": 4.608174575439231,
+   "amp": 16.0,
+   "drop_mv": 17.41889989516029,
+   "ok": true
+  },
+  {
+   "id": "W27",
+   "net": "GND",
+   "gauge": "18",
+   "length": 180,
+   "i": 4.608174575439231,
+   "amp": 16.0,
+   "drop_mv": 17.41889989516029,
+   "ok": true
+  },
+  {
+   "id": "W28",
+   "net": "GND",
+   "gauge": "22",
+   "length": 100,
+   "i": 0.3,
+   "amp": 7.0,
+   "drop_mv": 1.5899999999999999,
+   "ok": true
+  },
+  {
+   "id": "W29",
+   "net": "BUCK_IN",
+   "gauge": "20",
+   "length": 100,
+   "i": 0.45,
+   "amp": 11.0,
+   "drop_mv": 1.4985,
+   "ok": true
+  },
+  {
+   "id": "W30",
+   "net": "GND",
+   "gauge": "20",
+   "length": 100,
+   "i": 0.45,
+   "amp": 11.0,
+   "drop_mv": 1.4985,
+   "ok": true
+  },
+  {
+   "id": "W31",
+   "net": "5V_MCP",
+   "gauge": "20",
+   "length": 150,
+   "i": 0.6,
+   "amp": 11.0,
+   "drop_mv": 2.997,
+   "ok": true
+  },
+  {
+   "id": "W32",
+   "net": "GND",
+   "gauge": "20",
+   "length": 150,
+   "i": 0.6,
+   "amp": 11.0,
+   "drop_mv": 2.997,
+   "ok": true
+  },
+  {
+   "id": "W33",
+   "net": "RAIL_ADC",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W34",
+   "net": "GND",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W35",
+   "net": "ESC_L",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W36",
+   "net": "GND",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W37",
+   "net": "ESC_R",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W38",
+   "net": "GND",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W39",
+   "net": "LED_5V_FC",
+   "gauge": "24",
+   "length": 120,
+   "i": 0.25,
+   "amp": 3.5,
+   "drop_mv": 2.5260000000000002,
+   "ok": true
+  },
+  {
+   "id": "W40",
+   "net": "LED_DATA_FC",
+   "gauge": "26",
+   "length": 120,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 0.804,
+   "ok": true
+  },
+  {
+   "id": "W41",
+   "net": "GPS_4V5",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.06,
+   "amp": 2.2,
+   "drop_mv": 1.2059999999999997,
+   "ok": true
+  },
+  {
+   "id": "W42",
+   "net": "GND",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W43",
+   "net": "GPS_FC_TX",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W44",
+   "net": "GPS_FC_RX",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W45",
+   "net": "I2C_SCL",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W46",
+   "net": "I2C_SDA",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W50",
+   "net": "SW_MAIN",
+   "gauge": "24",
+   "length": 350,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 1.4735,
+   "ok": true
+  },
+  {
+   "id": "W51",
+   "net": "GND",
+   "gauge": "24",
+   "length": 350,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 1.4735,
+   "ok": true
+  },
+  {
+   "id": "W52",
+   "net": "KEY_N",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W53",
+   "net": "GND",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W60",
+   "net": "GPS_4V5",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.06,
+   "amp": 3.0,
+   "drop_mv": 1.4040000000000001,
+   "ok": true
+  },
+  {
+   "id": "W61",
+   "net": "GND",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.3,
+   "amp": 3.0,
+   "drop_mv": 7.0200000000000005,
+   "ok": true
+  },
+  {
+   "id": "W62",
+   "net": "GPS_FC_TX",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.17,
+   "ok": true
+  },
+  {
+   "id": "W63",
+   "net": "GPS_FC_RX",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.17,
+   "ok": true
+  },
+  {
+   "id": "W64",
+   "net": "I2C_SCL",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.17,
+   "ok": true
+  },
+  {
+   "id": "W65",
+   "net": "I2C_SDA",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.17,
+   "ok": true
+  },
+  {
+   "id": "W66",
+   "net": "LED_5V",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.25,
+   "amp": 3.0,
+   "drop_mv": 5.8500000000000005,
+   "ok": true
+  },
+  {
+   "id": "W67",
+   "net": "LED_DIN",
+   "gauge": "0.25 mm\u00b2",
+   "length": 300,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.17,
+   "ok": true
+  },
+  {
+   "id": "W70",
+   "net": "GPS_4V5",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.06,
+   "amp": 3.0,
+   "drop_mv": 2.106,
+   "ok": true
+  },
+  {
+   "id": "W71",
+   "net": "GND",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.3,
+   "amp": 3.0,
+   "drop_mv": 10.53,
+   "ok": true
+  },
+  {
+   "id": "W72",
+   "net": "GPS_FC_TX",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.7550000000000003,
+   "ok": true
+  },
+  {
+   "id": "W73",
+   "net": "GPS_FC_RX",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.7550000000000003,
+   "ok": true
+  },
+  {
+   "id": "W74",
+   "net": "I2C_SCL",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.7550000000000003,
+   "ok": true
+  },
+  {
+   "id": "W75",
+   "net": "I2C_SDA",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.7550000000000003,
+   "ok": true
+  },
+  {
+   "id": "W76",
+   "net": "LED_5V",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.25,
+   "amp": 3.0,
+   "drop_mv": 8.775,
+   "ok": true
+  },
+  {
+   "id": "W77",
+   "net": "LED_DIN",
+   "gauge": "0.25 mm\u00b2",
+   "length": 450,
+   "i": 0.05,
+   "amp": 3.0,
+   "drop_mv": 1.7550000000000003,
+   "ok": true
+  },
+  {
+   "id": "W78",
+   "net": "GND",
+   "gauge": "0.25 mm\u00b2",
+   "length": 30,
+   "i": 0.25,
+   "amp": 3.0,
+   "drop_mv": 0.585,
+   "ok": true
+  },
+  {
+   "id": "W800",
+   "net": "M1_A",
+   "gauge": "18",
+   "length": 600,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 47.61165971343814,
+   "ok": true
+  },
+  {
+   "id": "W801",
+   "net": "M1_B",
+   "gauge": "18",
+   "length": 600,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 47.61165971343814,
+   "ok": true
+  },
+  {
+   "id": "W802",
+   "net": "M1_C",
+   "gauge": "18",
+   "length": 600,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 47.61165971343814,
+   "ok": true
+  },
+  {
+   "id": "W820",
+   "net": "M2_A",
+   "gauge": "18",
+   "length": 600,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 47.61165971343814,
+   "ok": true
+  },
+  {
+   "id": "W821",
+   "net": "M2_B",
+   "gauge": "18",
+   "length": 600,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 47.61165971343814,
+   "ok": true
+  },
+  {
+   "id": "W822",
+   "net": "M2_C",
+   "gauge": "18",
+   "length": 600,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 47.61165971343814,
+   "ok": true
+  },
+  {
+   "id": "W900",
+   "net": "M1_A",
+   "gauge": "18",
+   "length": 220,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 17.457608561593986,
+   "ok": true
+  },
+  {
+   "id": "W901",
+   "net": "M1_B",
+   "gauge": "18",
+   "length": 220,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 17.457608561593986,
+   "ok": true
+  },
+  {
+   "id": "W902",
+   "net": "M1_C",
+   "gauge": "18",
+   "length": 220,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 17.457608561593986,
+   "ok": true
+  },
+  {
+   "id": "W920",
+   "net": "M2_A",
+   "gauge": "18",
+   "length": 220,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 17.457608561593986,
+   "ok": true
+  },
+  {
+   "id": "W921",
+   "net": "M2_B",
+   "gauge": "18",
+   "length": 220,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 17.457608561593986,
+   "ok": true
+  },
+  {
+   "id": "W922",
+   "net": "M2_C",
+   "gauge": "18",
+   "length": 220,
+   "i": 3.7787031518601695,
+   "amp": 16.0,
+   "drop_mv": 17.457608561593986,
+   "ok": true
+  },
+  {
+   "id": "W100",
+   "net": "MCP_TX",
+   "gauge": "26",
+   "length": 200,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.34,
+   "ok": true
+  },
+  {
+   "id": "W101",
+   "net": "MCP_RX",
+   "gauge": "26",
+   "length": 200,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.34,
+   "ok": true
+  },
+  {
+   "id": "W102",
+   "net": "GND",
+   "gauge": "26",
+   "length": 200,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.34,
+   "ok": true
+  },
+  {
+   "id": "W103",
+   "net": "3V3_MCP",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W104",
+   "net": "W1_DQ",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W105",
+   "net": "GND",
+   "gauge": "26",
+   "length": 150,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 1.0050000000000001,
+   "ok": true
+  },
+  {
+   "id": "W106",
+   "net": "MOIST",
+   "gauge": "26",
+   "length": 120,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 0.804,
+   "ok": true
+  },
+  {
+   "id": "W107",
+   "net": "GND",
+   "gauge": "26",
+   "length": 120,
+   "i": 0.05,
+   "amp": 2.2,
+   "drop_mv": 0.804,
+   "ok": true
+  },
+  {
+   "id": "W140a",
+   "net": "BTN_GO_SW",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W140b",
+   "net": "PI5_GND",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W140c",
+   "net": "PI5_5V",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W140d",
+   "net": "LED_GO_K",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W141a",
+   "net": "BTN_HOME_SW",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W141b",
+   "net": "PI5_GND",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W141c",
+   "net": "PI5_5V",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W141d",
+   "net": "LED_HOME_K",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W142a",
+   "net": "BTN_STOP_SW",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W142b",
+   "net": "PI5_GND",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W142c",
+   "net": "PI5_5V",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W142d",
+   "net": "LED_STOP_K",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W143a",
+   "net": "BTN_TALK_SW",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W143b",
+   "net": "PI5_GND",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W143c",
+   "net": "PI5_5V",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  },
+  {
+   "id": "W143d",
+   "net": "LED_TALK_K",
+   "gauge": "24",
+   "length": 150,
+   "i": 0.05,
+   "amp": 3.5,
+   "drop_mv": 0.6315000000000001,
+   "ok": true
+  }
+ ],
+ "sheets": [
+  [
+   "S1",
+   "Power: pack, main path, supplies (PWR-1..4)"
+  ],
+  [
+   "S2",
+   "Power and interconnect board (PIB): main switch, key switch, bleeder, rail sense"
+  ],
+  [
+   "S3",
+   "Helm, GNSS and beacon (IF-04, IF-05, IF-06, IF-09, IF-22)"
+  ],
+  [
+   "S4",
+   "Propulsion: ESC signals and motor phases (IF-05, IF-17, PRP-3)"
+  ],
+  [
+   "S5",
+   "Mission computer and its interface board (MIB): IF-03, IF-04, IF-08, MCP-D03/D26"
+  ],
+  [
+   "S6",
+   "Mission Control: Raspberry Pi 5 and the panel board (IF-12, MCN-1)"
+  ]
+ ],
+ "parts": [
+  {
+   "ref": "BT1",
+   "value": "3S1P 18650",
+   "desc": "Li-ion cells, 3 in series, accepted to PWR-D20",
+   "board": "PACK",
+   "mpn": "KC-05 salvaged 18650 \u00d73",
+   "src": "KCL",
+   "cost": 0.0
+  },
+  {
+   "ref": "U1",
+   "value": "3S BMS 20-25 A",
+   "desc": "3S Li-ion protection board with balancing",
+   "board": "PACK",
+   "mpn": "KC-06 class",
+   "src": "KCL",
+   "cost": 3.5
+  },
+  {
+   "ref": "F1",
+   "value": "20 A ATO",
+   "desc": "Main fuse, ATO/ATC blade 20 A, in a sealed inline holder \u2264 50 mm from the BMS P+ (PWR-003, PWR-D05)",
+   "board": "PACK",
+   "mpn": "",
+   "src": "DS",
+   "cost": 1.5
+  },
+  {
+   "ref": "J1",
+   "value": "XT60 (sockets)",
+   "desc": "Battery lead: XT60, socket contacts so the live side is shrouded (PWR-D14)",
+   "board": "PACK",
+   "mpn": "XT60H-F",
+   "src": "DS",
+   "cost": 0.6
+  },
+  {
+   "ref": "J2",
+   "value": "JST-XH 4",
+   "desc": "Balance lead, charger only (PWR-D04, PWR-D14)",
+   "board": "PACK",
+   "mpn": "XHP-4",
+   "src": "DS",
+   "cost": 0.2
+  },
+  {
+   "ref": "J3",
+   "value": "XT60 (pins)",
+   "desc": "Box battery socket on a 16 AWG pigtail",
+   "board": "BOX",
+   "mpn": "XT60H-M",
+   "src": "DS",
+   "cost": 0.6
+  },
+  {
+   "ref": "U2",
+   "value": "SpeedyBee F405 WING APP",
+   "desc": "Flight controller with PDB (helm)",
+   "board": "BOX",
+   "mpn": "KC-01 SpeedyBee F405 WING APP",
+   "src": "KCL",
+   "cost": 45.0
+  },
+  {
+   "ref": "U3",
+   "value": "AM32 20 A",
+   "desc": "ESC, port (left)",
+   "board": "BOX",
+   "mpn": "KC-03 AM32 6S 20 A",
+   "src": "KCL",
+   "cost": 11.0
+  },
+  {
+   "ref": "U4",
+   "value": "AM32 20 A",
+   "desc": "ESC, starboard (right)",
+   "board": "BOX",
+   "mpn": "KC-03 AM32 6S 20 A",
+   "src": "KCL",
+   "cost": 11.0
+  },
+  {
+   "ref": "C7",
+   "value": "470\u00b5F",
+   "desc": "Capacitor 470\u00b5F, 25 V, low-ESR electrolytic",
+   "board": "BOX",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.4
+  },
+  {
+   "ref": "C8",
+   "value": "470\u00b5F",
+   "desc": "Capacitor 470\u00b5F, 25 V, low-ESR electrolytic",
+   "board": "BOX",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.4
+  },
+  {
+   "ref": "U5",
+   "value": "Buck 5.1 V 3 A",
+   "desc": "Synchronous buck for the mission computer (IF-08)",
+   "board": "BOX",
+   "mpn": "KC-09 class (the KCL's \u00a33 module); bench-checked to IF-08. Upgrade: Pololu D24V50F5 (\u00a312)",
+   "src": "KCL",
+   "cost": 3.0
+  },
+  {
+   "ref": "Q1",
+   "value": "P-MOSFET",
+   "desc": "Main switch, high side (PWR-D06 solid-state option)",
+   "board": "PIB",
+   "mpn": "candidate Infineon IPP80P03P4L-04 (\u221230 V, R_DS(on) \u2264 6 m\u03a9 at \u221210 V assumed); fallback IRF4905 (20 m\u03a9)",
+   "src": "EST",
+   "cost": 1.8
+  },
+  {
+   "ref": "Q2",
+   "value": "P-MOSFET",
+   "desc": "Motor-rail key switch, high side (PWR-D07, IF-06)",
+   "board": "PIB",
+   "mpn": "candidate Infineon IPP80P03P4L-04 (\u221230 V, R_DS(on) \u2264 6 m\u03a9 at \u221210 V assumed); fallback IRF4905 (20 m\u03a9)",
+   "src": "EST",
+   "cost": 1.8
+  },
+  {
+   "ref": "Q3",
+   "value": "IRLZ44N",
+   "desc": "Rail bleeder, logic-level N-MOSFET",
+   "board": "PIB",
+   "mpn": "IRLZ44NPbF",
+   "src": "DS",
+   "cost": 1.0
+  },
+  {
+   "ref": "R1",
+   "value": "10k",
+   "desc": "Resistor 10k, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R2",
+   "value": "3k3",
+   "desc": "Resistor 3k3, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C1",
+   "value": "470nF",
+   "desc": "Capacitor 470nF, 25 V, ceramic/film",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "D1",
+   "value": "BZX85C15",
+   "desc": "Zener 15 V 1.3 W, Q1 gate clamp",
+   "board": "PIB",
+   "mpn": "BZX85C15",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "D2",
+   "value": "P6KE18A",
+   "desc": "TVS 600 W, 15.3 V stand-off, main bus",
+   "board": "PIB",
+   "mpn": "P6KE18A",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "R3",
+   "value": "10k",
+   "desc": "Resistor 10k, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R4",
+   "value": "3k3",
+   "desc": "Resistor 3k3, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C2",
+   "value": "470nF",
+   "desc": "Capacitor 470nF, 25 V, ceramic/film",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "D3",
+   "value": "BZX85C15",
+   "desc": "Zener 15 V, Q2 gate clamp",
+   "board": "PIB",
+   "mpn": "BZX85C15",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "C3",
+   "value": "1\u00b5F",
+   "desc": "Capacitor 1\u00b5F, 25 V, ceramic/film",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "R5",
+   "value": "100k",
+   "desc": "Resistor 100k, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "D4",
+   "value": "BZX85C10",
+   "desc": "Zener 10 V, Q3 gate clamp",
+   "board": "PIB",
+   "mpn": "BZX85C10",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "R9",
+   "value": "10R",
+   "desc": "Resistor 10R, 2.0 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.2
+  },
+  {
+   "ref": "D5",
+   "value": "P6KE18A",
+   "desc": "TVS 600 W, motor rail (ESC regeneration)",
+   "board": "PIB",
+   "mpn": "P6KE18A",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "R6",
+   "value": "10k",
+   "desc": "Resistor 10k, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R7",
+   "value": "1k",
+   "desc": "Resistor 1k, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C4",
+   "value": "100nF",
+   "desc": "Capacitor 100nF, 16 V, ceramic/film",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "F2",
+   "value": "PTC 1.1 A",
+   "desc": "Resettable fuse, buck feed",
+   "board": "PIB",
+   "mpn": "RXEF110",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "D6",
+   "value": "1N4001",
+   "desc": "LED ring supply drop: 5 V \u2192 \u2248 4.3 V so 3.3 V data is a valid high (closes TBC-08)",
+   "board": "PIB",
+   "mpn": "1N4001",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "R8",
+   "value": "330R",
+   "desc": "Resistor 330R, 0.25 W, 1%",
+   "board": "PIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "E1",
+   "value": "pad",
+   "desc": "Solder pad: PACK+ in",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E2",
+   "value": "pad",
+   "desc": "Solder pad: BUS+ out",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E3",
+   "value": "pad",
+   "desc": "Solder pad: VBAT_S in",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E4",
+   "value": "pad",
+   "desc": "Solder pad: MOTOR+ out",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E5",
+   "value": "pad",
+   "desc": "Solder pad: BUCK+ out",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E6",
+   "value": "pad",
+   "desc": "Solder pad: GND",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E7",
+   "value": "pad",
+   "desc": "Solder pad: RAIL_ADC out",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E8",
+   "value": "pad",
+   "desc": "Solder pad: LED 5V in",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E9",
+   "value": "pad",
+   "desc": "Solder pad: LED data in",
+   "board": "PIB",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "J11",
+   "value": "KK254 2",
+   "desc": "Main switch lead",
+   "board": "PIB",
+   "mpn": "Molex 22-27-2021",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "J12",
+   "value": "KK254 3",
+   "desc": "Reed switch lead (pin 2 not fitted: keyed against J11)",
+   "board": "PIB",
+   "mpn": "Molex 22-27-2031",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "J14",
+   "value": "KK254 8",
+   "desc": "Mast cable from the gland",
+   "board": "PIB",
+   "mpn": "Molex 22-27-2081",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "J15",
+   "value": "KK254 6",
+   "desc": "GNSS lead to the FC GPS port",
+   "board": "PIB",
+   "mpn": "Molex 22-27-2061",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "SW1",
+   "value": "IP67 toggle + cover",
+   "desc": "Main switch on the handle, sealed, flip cover (PWR-004, PWR-D06, CHD-003)",
+   "board": "HANDLE",
+   "mpn": "IP67 sealed miniature toggle, \u2265 0.5 A 24 V DC, with flip cover",
+   "src": "EST",
+   "cost": 4.0
+  },
+  {
+   "ref": "SW2",
+   "value": "Reed NO",
+   "desc": "Arming-key reed switch on a bracket inside the box under the key dock (IF-18)",
+   "board": "BOX",
+   "mpn": "normally-open glass reed, 10-20 AT (e.g. Littelfuse 59140 housed type)",
+   "src": "EST",
+   "cost": 1.5
+  },
+  {
+   "ref": "J40",
+   "value": "M12 A 8-pole socket",
+   "desc": "Mast connector, panel socket on the handle (IP67)",
+   "board": "HANDLE",
+   "mpn": "M12 A-coded 8-pole panel socket, rear mount, IP67",
+   "src": "EST",
+   "cost": 6.0
+  },
+  {
+   "ref": "P40",
+   "value": "M12 A 8-pole plug",
+   "desc": "Mast lead plug (IP67)",
+   "board": "MASTHEAD",
+   "mpn": "M12 A-coded 8-pole cable plug, IP67",
+   "src": "EST",
+   "cost": 5.0
+  },
+  {
+   "ref": "U9",
+   "value": "M10 GNSS + compass",
+   "desc": "GNSS and compass (IF-22)",
+   "board": "MASTHEAD",
+   "mpn": "KC-02 M10 + QMC5883L",
+   "src": "KCL",
+   "cost": 14.0
+  },
+  {
+   "ref": "U10",
+   "value": "WS2812B ring \u00d78",
+   "desc": "LED beacon (IF-09, REC-D03)",
+   "board": "MASTHEAD",
+   "mpn": "KC-14",
+   "src": "KCL",
+   "cost": 3.0
+  },
+  {
+   "ref": "J50",
+   "value": "IP68 3-pole socket",
+   "desc": "Pod connector, port stern deck (PRP-3, IF-17)",
+   "board": "DECK_P",
+   "mpn": "TBC-12: keyed 3-pole IP68, \u2265 10 A (e.g. Weipu SP13 3-pole; confirm rating)",
+   "src": "EST",
+   "cost": 4.0
+  },
+  {
+   "ref": "P50",
+   "value": "IP68 3-pole plug",
+   "desc": "Pod lead plug, port",
+   "board": "POD_P",
+   "mpn": "as the socket",
+   "src": "EST",
+   "cost": 4.0
+  },
+  {
+   "ref": "M1",
+   "value": "2205 outrunner",
+   "desc": "Thruster motor, port (KC-04)",
+   "board": "POD_P",
+   "mpn": "KC-04",
+   "src": "KCL",
+   "cost": 6.0
+  },
+  {
+   "ref": "J51",
+   "value": "IP68 3-pole socket",
+   "desc": "Pod connector, starboard stern deck (PRP-3, IF-17)",
+   "board": "DECK_S",
+   "mpn": "TBC-12: keyed 3-pole IP68, \u2265 10 A (e.g. Weipu SP13 3-pole; confirm rating)",
+   "src": "EST",
+   "cost": 4.0
+  },
+  {
+   "ref": "P51",
+   "value": "IP68 3-pole plug",
+   "desc": "Pod lead plug, starboard",
+   "board": "POD_S",
+   "mpn": "as the socket",
+   "src": "EST",
+   "cost": 4.0
+  },
+  {
+   "ref": "M2",
+   "value": "2205 outrunner",
+   "desc": "Thruster motor, starboard (KC-04)",
+   "board": "POD_S",
+   "mpn": "KC-04",
+   "src": "KCL",
+   "cost": 6.0
+  },
+  {
+   "ref": "J30",
+   "value": "Micro-Fit 2 plug",
+   "desc": "Mission-computer 5 V lead (the only Micro-Fit on the boat: PWR-D14)",
+   "board": "BOX",
+   "mpn": "Molex 43025-0200",
+   "src": "DS",
+   "cost": 0.5
+  },
+  {
+   "ref": "J31",
+   "value": "Micro-Fit 2 header",
+   "desc": "5 V in",
+   "board": "MIB",
+   "mpn": "Molex 43650-0200",
+   "src": "DS",
+   "cost": 0.6
+  },
+  {
+   "ref": "D10",
+   "value": "P6KE6.8A",
+   "desc": "TVS 5.8 V stand-off on the 5 V feed",
+   "board": "MIB",
+   "mpn": "P6KE6.8A",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "C10",
+   "value": "470\u00b5F",
+   "desc": "Capacitor 470\u00b5F, 10 V, low-ESR electrolytic",
+   "board": "MIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.3
+  },
+  {
+   "ref": "C11",
+   "value": "10\u00b5F",
+   "desc": "Capacitor 10\u00b5F, 16 V, ceramic/film",
+   "board": "MIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "J32",
+   "value": "2\u00d720 socket",
+   "desc": "40-way socket onto the Pi Zero header (used pins only listed)",
+   "board": "MIB",
+   "mpn": "2\u00d720 2.54 mm female, stacking",
+   "src": "EST",
+   "cost": 1.0
+  },
+  {
+   "ref": "U6",
+   "value": "Raspberry Pi Zero 2 W",
+   "desc": "Mission computer (KC-10)",
+   "board": "BOX",
+   "mpn": "KC-10",
+   "src": "KCL",
+   "cost": 15.0
+  },
+  {
+   "ref": "U7",
+   "value": "OV5647 camera",
+   "desc": "Camera (KC-11), 150 mm Pi Zero ribbon",
+   "board": "BOX",
+   "mpn": "KC-11",
+   "src": "KCL",
+   "cost": 8.0
+  },
+  {
+   "ref": "J33",
+   "value": "KK254 3",
+   "desc": "UART to the helm (IF-04)",
+   "board": "MIB",
+   "mpn": "Molex 22-27-2031",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "J34",
+   "value": "KK254 4",
+   "desc": "DS18B20 lead (pin 4 not fitted: keyed against J33)",
+   "board": "MIB",
+   "mpn": "Molex 22-27-2041",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "J35",
+   "value": "KK254 2",
+   "desc": "Moisture comb lead",
+   "board": "MIB",
+   "mpn": "Molex 22-27-2021",
+   "src": "DS",
+   "cost": 0.3
+  },
+  {
+   "ref": "R10",
+   "value": "4k7",
+   "desc": "Resistor 4k7, 0.25 W, 1%",
+   "board": "MIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R11",
+   "value": "1k",
+   "desc": "Resistor 1k, 0.25 W, 1%",
+   "board": "MIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R12",
+   "value": "100k",
+   "desc": "Resistor 100k, 0.25 W, 1%",
+   "board": "MIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C12",
+   "value": "100nF",
+   "desc": "Capacitor 100nF, 16 V, ceramic/film",
+   "board": "MIB",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "U8",
+   "value": "DS18B20",
+   "desc": "Box temperature (KC-12), top of the box",
+   "board": "BOX",
+   "mpn": "KC-12",
+   "src": "KCL",
+   "cost": 2.0
+  },
+  {
+   "ref": "S2",
+   "value": "Moisture comb",
+   "desc": "Interdigitated trace board at the box low point (MCP-D03)",
+   "board": "BOX",
+   "mpn": "nickel-plated comb board (rain-sensor type, comb only)",
+   "src": "EST",
+   "cost": 1.0
+  },
+  {
+   "ref": "U50",
+   "value": "Raspberry Pi 5",
+   "desc": "Mission Control computer (KC-16)",
+   "board": "MC",
+   "mpn": "KC-16 (owned)",
+   "src": "KCL",
+   "cost": 0.0
+  },
+  {
+   "ref": "J60",
+   "value": "2\u00d720 IDC header",
+   "desc": "Panel board header, 150 mm ribbon to the Pi 5",
+   "board": "PNL",
+   "mpn": "",
+   "src": "EST",
+   "cost": 0.8
+  },
+  {
+   "ref": "BT50",
+   "value": "USB-C PD bank 20 Ah",
+   "desc": "Power bank (MCN-D01)",
+   "board": "MC",
+   "mpn": "20,000 mAh USB-C PD, 5 V 3 A (owned or bought)",
+   "src": "EST",
+   "cost": 0.0
+  },
+  {
+   "ref": "U51",
+   "value": "Wi-Fi adapter",
+   "desc": "MT7610U/MT7612U USB adapter, RP-SMA antenna (KC-15)",
+   "board": "MC",
+   "mpn": "",
+   "src": "KCL",
+   "cost": 12.0
+  },
+  {
+   "ref": "U52",
+   "value": "USB microphone",
+   "desc": "16 kHz mono (KC-17)",
+   "board": "MC",
+   "mpn": "",
+   "src": "KCL",
+   "cost": 4.0
+  },
+  {
+   "ref": "U53",
+   "value": "USB speaker",
+   "desc": "\u2248 3 W (KC-17)",
+   "board": "MC",
+   "mpn": "",
+   "src": "KCL",
+   "cost": 4.0
+  },
+  {
+   "ref": "U54",
+   "value": "Phone (tether)",
+   "desc": "Adult's phone, USB tether (IF-10)",
+   "board": "MC",
+   "mpn": "",
+   "src": "KCL",
+   "cost": 0.0
+  },
+  {
+   "ref": "SW61",
+   "value": "GO button",
+   "desc": "30 mm arcade button, green, 5 V LED (KC-18)",
+   "board": "MC",
+   "mpn": "KC-18",
+   "src": "KCL",
+   "cost": 1.5
+  },
+  {
+   "ref": "R61",
+   "value": "10k",
+   "desc": "Resistor 10k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R62",
+   "value": "1k",
+   "desc": "Resistor 1k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C61",
+   "value": "100nF",
+   "desc": "Capacitor 100nF, 16 V, ceramic/film",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "Q61",
+   "value": "2N7000",
+   "desc": "GO LED driver",
+   "board": "PNL",
+   "mpn": "2N7000",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "R63",
+   "value": "100R",
+   "desc": "Resistor 100R, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R64",
+   "value": "100k",
+   "desc": "Resistor 100k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "E60a",
+   "value": "pad",
+   "desc": "GO switch wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E60b",
+   "value": "pad",
+   "desc": "GO LED wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "SW62",
+   "value": "HOME button",
+   "desc": "30 mm arcade button, yellow, 5 V LED (KC-18)",
+   "board": "MC",
+   "mpn": "KC-18",
+   "src": "KCL",
+   "cost": 1.5
+  },
+  {
+   "ref": "R71",
+   "value": "10k",
+   "desc": "Resistor 10k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R72",
+   "value": "1k",
+   "desc": "Resistor 1k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C62",
+   "value": "100nF",
+   "desc": "Capacitor 100nF, 16 V, ceramic/film",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "Q62",
+   "value": "2N7000",
+   "desc": "HOME LED driver",
+   "board": "PNL",
+   "mpn": "2N7000",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "R73",
+   "value": "100R",
+   "desc": "Resistor 100R, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R74",
+   "value": "100k",
+   "desc": "Resistor 100k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "E61a",
+   "value": "pad",
+   "desc": "HOME switch wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E61b",
+   "value": "pad",
+   "desc": "HOME LED wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "SW63",
+   "value": "STOP button",
+   "desc": "30 mm arcade button, red, 5 V LED (KC-18)",
+   "board": "MC",
+   "mpn": "KC-18",
+   "src": "KCL",
+   "cost": 1.5
+  },
+  {
+   "ref": "R81",
+   "value": "10k",
+   "desc": "Resistor 10k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R82",
+   "value": "1k",
+   "desc": "Resistor 1k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C63",
+   "value": "100nF",
+   "desc": "Capacitor 100nF, 16 V, ceramic/film",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "Q63",
+   "value": "2N7000",
+   "desc": "STOP LED driver",
+   "board": "PNL",
+   "mpn": "2N7000",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "R83",
+   "value": "100R",
+   "desc": "Resistor 100R, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R84",
+   "value": "100k",
+   "desc": "Resistor 100k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "E62a",
+   "value": "pad",
+   "desc": "STOP switch wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E62b",
+   "value": "pad",
+   "desc": "STOP LED wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "SW64",
+   "value": "TALK button",
+   "desc": "30 mm arcade button, blue, 5 V LED (KC-18)",
+   "board": "MC",
+   "mpn": "KC-18",
+   "src": "KCL",
+   "cost": 1.5
+  },
+  {
+   "ref": "R91",
+   "value": "10k",
+   "desc": "Resistor 10k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R92",
+   "value": "1k",
+   "desc": "Resistor 1k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "C64",
+   "value": "100nF",
+   "desc": "Capacitor 100nF, 16 V, ceramic/film",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.05
+  },
+  {
+   "ref": "Q64",
+   "value": "2N7000",
+   "desc": "TALK LED driver",
+   "board": "PNL",
+   "mpn": "2N7000",
+   "src": "DS",
+   "cost": 0.1
+  },
+  {
+   "ref": "R93",
+   "value": "100R",
+   "desc": "Resistor 100R, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "R94",
+   "value": "100k",
+   "desc": "Resistor 100k, 0.25 W, 1%",
+   "board": "PNL",
+   "mpn": "",
+   "src": "CALC",
+   "cost": 0.02
+  },
+  {
+   "ref": "E63a",
+   "value": "pad",
+   "desc": "TALK switch wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  },
+  {
+   "ref": "E63b",
+   "value": "pad",
+   "desc": "TALK LED wires",
+   "board": "PNL",
+   "mpn": "",
+   "src": "-",
+   "cost": 0.0
+  }
+ ],
+ "extras": [
+  [
+   "J20-J23",
+   "XT30 pairs on the ESC leads",
+   2,
+   0.8,
+   "new",
+   false
+  ],
+  [
+   "HS1-2",
+   "Clip-on TO-220 heatsink, \u2264 21 K/W",
+   2,
+   0.5,
+   "new",
+   false
+  ],
+  [
+   "SB1",
+   "Stripboard 100 \u00d7 160 mm (PIB, MIB, PNL cut from it)",
+   1,
+   3.0,
+   "new",
+   true
+  ],
+  [
+   "C1-C11",
+   "Cables: 8-core 0.25 mm\u00b2 1 m, 3-core 0.75 mm\u00b2 1.5 m, 2-core 0.5 m",
+   1,
+   5.0,
+   "new",
+   false
+  ],
+  [
+   "WIRE",
+   "Silicone wire 16/18/20/26 AWG, heat-shrink, tinned copper 1.5 mm\u00b2 for PIB bus strips",
+   1,
+   6.0,
+   "new",
+   true
+  ],
+  [
+   "KK",
+   "Molex KK 254 housings and crimps (2, 3, 4, 6, 8-way)",
+   1,
+   3.0,
+   "new",
+   true
+  ],
+  [
+   "F1H",
+   "Sealed inline ATO fuse holder, 16 AWG, + spare fuse",
+   1,
+   1.5,
+   "Box, PG7 glands, fuse",
+   false
+  ],
+  [
+   "RIB",
+   "40-way IDC ribbon 150 mm and two IDC sockets (panel)",
+   1,
+   2.0,
+   "new",
+   false
+  ],
+  [
+   "STANDOFF",
+   "M2.5 nylon stand-offs and screws (boards, Pi)",
+   1,
+   2.0,
+   "new",
+   true
+  ]
+ ],
+ "glands": [
+  [
+   "G1",
+   "PG7",
+   "Port motor cable C5 (\u00d86)"
+  ],
+  [
+   "G2",
+   "PG7",
+   "Starboard motor cable C6 (\u00d86)"
+  ],
+  [
+   "G3",
+   "PG7",
+   "Mast cable C3 (8-core \u00d85.5)"
+  ],
+  [
+   "G4",
+   "PG7",
+   "Main switch cable C2 (2-core \u00d84)"
+  ]
+ ],
+ "pinmaps": {
+  "U2": [
+   [
+    "BAT+",
+    "",
+    "BUS_POS"
+   ],
+   [
+    "BAT-",
+    "",
+    "GND"
+   ],
+   [
+    "VBO+",
+    "battery out after the current sensor",
+    "VBAT_S"
+   ],
+   [
+    "VBO-",
+    "",
+    "GND"
+   ],
+   [
+    "S1",
+    "PWM1 / DShot, BIDIR",
+    "ESC_L"
+   ],
+   [
+    "G1",
+    "",
+    "GND"
+   ],
+   [
+    "S4",
+    "PWM4 / DShot, BIDIR",
+    "ESC_R"
+   ],
+   [
+    "G4",
+    "",
+    "GND"
+   ],
+   [
+    "TX1",
+    "USART1 TX (SERIAL1)",
+    "MCP_RX"
+   ],
+   [
+    "RX1",
+    "USART1 RX (FT pin)",
+    "MCP_TX"
+   ],
+   [
+    "GU1",
+    "",
+    "GND"
+   ],
+   [
+    "TX3",
+    "USART3 TX (SERIAL3, GPS)",
+    "GPS_FC_TX"
+   ],
+   [
+    "RX3",
+    "USART3 RX",
+    "GPS_FC_RX"
+   ],
+   [
+    "4V5",
+    "GPS port 4.5 V",
+    "GPS_4V5"
+   ],
+   [
+    "GGPS",
+    "",
+    "GND"
+   ],
+   [
+    "SCL",
+    "I2C1 SCL",
+    "I2C_SCL"
+   ],
+   [
+    "SDA",
+    "I2C1 SDA",
+    "I2C_SDA"
+   ],
+   [
+    "LED",
+    "PWM12 / NeoPixel",
+    "LED_DATA_FC"
+   ],
+   [
+    "5V",
+    "LED pad 5 V (5 V BEC)",
+    "LED_5V_FC"
+   ],
+   [
+    "AIR",
+    "AIRSPD pad, ADC pin 15",
+    "RAIL_ADC"
+   ],
+   [
+    "GAIR",
+    "",
+    "GND"
+   ]
+  ],
+  "U6": [
+   [
+    "1",
+    "3V3",
+    "3V3_MCP"
+   ],
+   [
+    "2",
+    "5V",
+    "5V_MCP"
+   ],
+   [
+    "4",
+    "5V",
+    "5V_MCP"
+   ],
+   [
+    "6",
+    "GND",
+    "GND"
+   ],
+   [
+    "7",
+    "GPIO4 1-Wire",
+    "W1_DQ"
+   ],
+   [
+    "8",
+    "GPIO14 TXD",
+    "MCP_TX"
+   ],
+   [
+    "9",
+    "GND",
+    "GND"
+   ],
+   [
+    "10",
+    "GPIO15 RXD",
+    "MCP_RX"
+   ],
+   [
+    "11",
+    "GPIO17 moisture",
+    "MOIST_GPIO"
+   ],
+   [
+    "14",
+    "GND",
+    "GND"
+   ],
+   [
+    "CSI",
+    "camera ribbon",
+    "CSI"
+   ]
+  ],
+  "U50": [
+   [
+    "1",
+    "3V3",
+    "PI5_3V3"
+   ],
+   [
+    "2",
+    "5V",
+    "PI5_5V"
+   ],
+   [
+    "6",
+    "GND",
+    "PI5_GND"
+   ],
+   [
+    "9",
+    "GND",
+    "PI5_GND"
+   ],
+   [
+    "14",
+    "GND",
+    "PI5_GND"
+   ],
+   [
+    "11",
+    "GPIO17 GO",
+    "BTN_GO"
+   ],
+   [
+    "29",
+    "GPIO5 GO LED",
+    "LED_GO"
+   ],
+   [
+    "13",
+    "GPIO27 HOME",
+    "BTN_HOME"
+   ],
+   [
+    "31",
+    "GPIO6 HOME LED",
+    "LED_HOME"
+   ],
+   [
+    "15",
+    "GPIO22 STOP",
+    "BTN_STOP"
+   ],
+   [
+    "33",
+    "GPIO13 STOP LED",
+    "LED_STOP"
+   ],
+   [
+    "18",
+    "GPIO24 TALK",
+    "BTN_TALK"
+   ],
+   [
+    "35",
+    "GPIO19 TALK LED",
+    "LED_TALK"
+   ],
+   [
+    "USBC",
+    "USB-C power in",
+    "PI5_5V_IN"
+   ],
+   [
+    "USB1",
+    "",
+    "USB_WIFI"
+   ],
+   [
+    "USB2",
+    "",
+    "USB_MIC"
+   ],
+   [
+    "USB3",
+    "",
+    "USB_SPK"
+   ],
+   [
+    "USB4",
+    "",
+    "USB_PHONE"
+   ]
+  ]
+ }
+}
