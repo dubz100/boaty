@@ -41,8 +41,9 @@ features = [
     feat(point(10, 45), role="exclusion", radius_m=7, reason="island"),
     feat(poly([(-50, 25), (-40, 25), (-38, 45), (-48, 48)]),
          role="exclusion", reason="reed bed"),
-    feat(point(-5, 68), role="exclusion", radius_m=2,
-         reason="floating duck house"),
+    # Nest structure (CR-07, OPS-005): a 15 m wildlife stand-off.
+    feat(point(-15, 62), role="exclusion", radius_m=15, wildlife="nest",
+         reason="floating duck house (nest)"),
     feat(point(58, 15), role="exclusion", radius_m=4,
          reason="fishing platform"),
     feat(point(0, 0), role="home", name="jetty"),
@@ -57,8 +58,8 @@ features = [
          aliases=["island"], keep_out_m=12),
     feat(poly([(-50, 25), (-40, 25), (-38, 45), (-48, 48)]), role="landmark",
          name="the reeds", aliases=["reeds", "reed bed"], keep_out_m=6),
-    feat(point(-5, 68), role="landmark", name="the duck house",
-         aliases=["duck house", "ducks house"], keep_out_m=6),
+    feat(point(-15, 62), role="landmark", name="the duck house",
+         aliases=["duck house", "ducks house"], keep_out_m=18),
     feat(point(0, -14), role="launch", name="jetty",
          good_wind_from=["N", "NE", "NW"]),
     feat(point(72, -6), role="launch", name="east beach",
@@ -66,7 +67,7 @@ features = [
 ]
 
 doc = {"type": "FeatureCollection",
-       "properties": {"site": "milton-country-park", "version": 1,
+       "properties": {"site": "milton-country-park", "version": 2,
                       "wifi_channel": 6, "max_distance_from_home_m": 100,
                       "note": "Stand-in shape at the simulator home; redraw "
                               "on the real map before the first lake trial."},

@@ -165,6 +165,34 @@ def test_circle_without_radius():
     assert any("radius_m" in i.message for i in errors(d))
 
 
+def nest(d):
+    return next(f for f in d["features"]
+                if f["properties"].get("wildlife") == "nest")
+
+
+def test_nest_under_standoff_blocks():
+    # OPS-005 (CR-07): nests are photographed from 15 m, never closer.
+    d = doc()
+    nest(d)["properties"]["radius_m"] = 6
+    assert any(i.rule == "OPS-005" and "stand-off" in i.message
+               for i in errors(d))
+
+
+def test_unknown_wildlife_kind_blocks():
+    d = doc()
+    nest(d)["properties"]["wildlife"] = "swan"
+    assert any("unknown wildlife" in i.message for i in errors(d))
+
+
+def test_nest_polygon_warns_to_check_standoff():
+    d = doc()
+    reeds = next(f for f in d["features"]
+                 if f["properties"].get("reason") == "reed bed")
+    reeds["properties"]["wildlife"] = "nest"
+    out = lint(d, REF)
+    assert any(i.rule == "OPS-005" for i in out) and not blocking(out)
+
+
 def test_fence_beyond_backstop_circle():
     d = doc()
     d["properties"]["max_distance_from_home_m"] = 60

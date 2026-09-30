@@ -24,8 +24,9 @@ OUT = HERE.parent / "Boaty_Key_Component_List.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-KCL-001"
-ISSUE = "Issue B (for review)"
-DATE = "29 September 2026"
+ISSUE = "Issue C (for review)"
+DATE = "30 September 2026"
+PREV_B = "29 September 2026"
 PREV = "28 September 2026"
 plt.rcParams["font.family"] = "DejaVu Sans"
 
@@ -159,9 +160,11 @@ def build():
                  "datasheet entries"]])
     st += control_and_contents(
         [["A", PREV, "First issue.", "Claude (drafted)"],
-         ["B", DATE, "CR-04 accepted: SpeedyBee F405 WING APP is the "
+         ["B", PREV_B, "CR-04 accepted: SpeedyBee F405 WING APP is the "
           "baseline. Section 10 now records where each change went.",
-          "Claude, owner decision"]],
+          "Claude, owner decision"],
+         ["C", DATE, "CR-08: the conditional antenna pole kit is outside "
+          "the cap, in the field-kit budget.", "Claude, owner decision"]],
         "Review guidance: check the proposed parts against what you can "
         "actually buy, and the cost estimates against real prices. Every "
         "value is tagged with its source; orange-tagged values are guesses "
@@ -251,8 +254,8 @@ def build():
            P(f"With the proposed parts the estimate is <b>£{total}</b>, "
              f"against the £{K.CAP} cap and £{K.TARGET} target (CON-001). "
              "Cheaper flight controller, realistic ESC price and a second "
-             "microSD card roughly cancel out. The conditional pole kit "
-             "would still breach the cap."),
+             "microSD card roughly cancel out. The conditional antenna pole "
+             "kit sits in the field-kit budget, outside the cap (CR-08)."),
            table(rows, [14, 72, 16, 22, 46]),
            P("Prices are estimates from search results and earlier work; UK "
              "retail sites couldn't be opened from here. Confirm at order "

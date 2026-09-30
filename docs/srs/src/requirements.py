@@ -26,8 +26,8 @@ STAKEHOLDER_NEEDS = [
      "Modular, chunky, colourful parts he can assemble and customise, "
      "including building on it with DUPLO."),
     ("STK-05", "Affordable",
-     "Around £100 cash for Mk1, reusing the Raspberry Pi 5 and Ultimaker "
-     "printer."),
+     "Mk1 within the agreed cash cap (CON-001), reusing the Raspberry "
+     "Pi 5 and Ultimaker printer."),
     ("STK-06", "Safe for people and wildlife",
      "No harm to the child, other water users or wildlife."),
     ("STK-07", "Welcome at the lake",
@@ -67,9 +67,11 @@ R("MOD-003", "Arming shall require two deliberate adult actions: the arming "
 R("MOD-004", "The system shall refuse to arm unless every pre-arm check "
   "(PRE-001 to PRE-008) passes, and shall state the failing check in plain "
   "language at Mission Control.", "M", "T", "SIM", ["STK-01", "STK-06"])
-R("MOD-005", "When an AUTO mission completes, the boat shall enter RTL. On "
-  "reaching home (within the waypoint acceptance radius) it shall enter "
-  "HOLD.", "M", "S,T", "SIM", ["STK-01"])
+R("MOD-005", "When an AUTO mission completes, the boat shall return home "
+  "inside the fence, avoiding exclusions (RTL behaviour, carried out "
+  "either as the mission's final return-to-launch item in AUTO or in RTL "
+  "mode). On reaching home (within the waypoint acceptance radius) it "
+  "shall enter HOLD (CR-06).", "M", "S,T", "SIM", ["STK-01"])
 R("MOD-006", "While armed, the operator shall be able to command HOLD, RTL, "
   "MANUAL or STOP from Mission Control at any time, overriding AUTO.",
   "M", "T", "SIM", ["STK-01", "STK-06"])
@@ -249,7 +251,7 @@ R("MIS-003", "Planned mission duration shall not exceed 20 min "
 R("MIS-004", "Missions shall be represented in a documented JSON schema "
   "with a version number.", "M", "I", "SIM", ["STK-02", "STK-08"])
 R("MIS-005", "Offline templates shall be available without internet, at "
-  "least: 'Explore the bay', 'Duck patrol' (survey with photo points) and "
+  "least: 'Explore the bay', 'Duck watch' (survey with photo points kept outside wildlife stand-offs) and "
   "'Lap of the bay'.", "M", "D", "SIM", ["STK-02", "STK-04"])
 R("MIS-006", "An adult shall be able to create and edit missions on the "
   "map at Mission Control.", "S", "D", "SIM", ["STK-02"])
@@ -261,9 +263,11 @@ R("NLI-001", "Mission Control shall accept instructions as typed text.",
 R("NLI-002", "Mission Control shall accept spoken instructions through a "
   "microphone, using push-to-talk on the TALK button.", "S", "D", "SIM", ["STK-02", "STK-04"])
 R("NLI-003", "Instructions shall be turned into a mission through the "
-  "Claude API. The request shall include the site context: fence, "
-  "exclusion zones, home, battery state, time and energy limits, and the "
-  "mission schema.", "M", "T", "SIM", ["STK-02"])
+  "Claude API. The request shall include the site's named areas and "
+  "landmarks, battery state, time and energy limits, and the mission "
+  "schema. It shall not include coordinates or fence geometry: the "
+  "validator, not the language model, owns geometry (CR-06).", "M", "T",
+  "SIM", ["STK-02"])
 R("NLI-004", "The language model's reply shall be constrained to the "
   "mission schema (structured output or tool use). A malformed reply shall "
   "be rejected and retried at most twice. After that the user shall be "
@@ -616,7 +620,10 @@ R("OPS-004", "Exclusion zones shall keep the boat at least 20 m from "
   "20 m of the boat, the operator shall command RTL or HOLD.", "M", "I",
   "LAKE", ["STK-06", "STK-07"])
 R("OPS-005", "Islands, reed beds and known nesting areas shall be "
-  "exclusion zones. No mission shall aim to approach or follow wildlife.",
+  "exclusion zones, and every nest structure shall have an exclusion of "
+  "at least 15 m radius. The boat may stop to photograph wildlife only "
+  "from outside these stand-offs. No mission shall aim to approach, "
+  "follow or chase wildlife (CR-07).",
   "M", "I", "LAKE", ["STK-06"])
 R("OPS-006", "At Milton, the Mk1 inclusion fence shall stay within 100 m "
   "of the launch point until at least 5 successful lake missions have "
@@ -645,7 +652,11 @@ R("OPS-012", "Before the first lake trial, the operator shall rehearse "
 section("CON", "Cost and constraints", "")
 R("CON-001", "The Mk1 bill of materials shall not exceed £185, excluding "
   "items already owned (Pi 5, printer, tools, charger, phone, power "
-  "bank). The target is £180.", "M", "A", "BENCH", ["STK-05"])
+  "bank). The target is £180. The cap covers the boat, Mission Control "
+  "and the charging kit. Conditional and field items (the antenna pole "
+  "kit, spares and consumables) sit in a separate field-kit budget. "
+  "Prices shall be confirmed from vendors before ordering, and any "
+  "breach of the cap needs a change request (CR-08).", "M", "A", "BENCH", ["STK-05"])
 R("CON-002", "The owned Raspberry Pi 5 and Ultimaker printer shall be "
   "used.", "M", "I", "BENCH", ["STK-05"])
 R("CON-003", "Purchased components shall be available from UK retailers "
@@ -664,7 +675,8 @@ MODES = [
     ("MANUAL", "Adult drives from Mission Control. Fence still enforced.",
      "Adult → HOLD, AUTO or RTL; failsafes → HOLD or RTL."),
     ("AUTO", "Executes the loaded, validated mission.",
-     "Mission end → RTL; failsafes → RTL or HOLD; STOP → HOLD (motors off)."),
+     "Mission end → return home (final RTL item, CR-06) then HOLD; "
+     "failsafes → RTL or HOLD; STOP → HOLD (motors off)."),
     ("RTL", "Returns home inside the fence, avoiding exclusions.",
      "Arrival → HOLD; failsafes → HOLD; STOP → HOLD (motors off)."),
 ]
@@ -711,6 +723,12 @@ TBDS = [
      "changes via SRS revision.", "FS-001 to FS-013, OPS-004/006, "
      "MEC-010", "Owner, 28 Sep 2026"),
 ]
+
+TBDS.append(
+    ("TBD-09", "Breeding-season rule for nests: whether photo stops near "
+     "nest structures are barred (e.g. March to July) and the stand-off "
+     "widened. Owner deferred to the site visit, to agree with the Trust "
+     "(CR-07).", "OPS-005", "Site visit (with TBD-03)"))
 
 GLOSSARY = [
     ("Helm", "The part of the system that steers and enforces the fence: "

@@ -25,6 +25,8 @@ UK_BBOX = dict(lat=(49.8, 60.95), lon=(-8.7, 1.8))
 COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 MAX_INCLUSION_VERTICES = 70
 MAX_EXCLUSIONS = 10
+NEST_STANDOFF_M = 15.0     # OPS-005 (CR-07): photograph wildlife from here
+WILDLIFE_KINDS = ("nest",)
 
 
 @dataclass(frozen=True)
@@ -338,6 +340,22 @@ def lint(doc: dict, reference: tuple[float, float] | None = None
             err("FEN-001", "circular exclusion needs radius_m > 0")
         if _role(f) == "exclusion" and _gtype(f) not in ("Point", "Polygon"):
             err("FEN-001", "exclusion must be a Polygon or a Point")
+        # Wildlife stand-off (OPS-005, CR-07). A nest circle carries the
+        # stand-off in its radius; a nest polygon is drawn with it included.
+        wl = (f.get("properties") or {}).get("wildlife")
+        if _role(f) == "exclusion" and wl is not None:
+            p = f.get("properties") or {}
+            if wl not in WILDLIFE_KINDS:
+                err("OPS-005", f"unknown wildlife kind '{wl}'")
+            elif _gtype(f) == "Point" and \
+                    float(p.get("radius_m", 0)) < NEST_STANDOFF_M:
+                err("OPS-005", f"nest exclusion ({p.get('reason', '')}) "
+                    f"radius {float(p.get('radius_m', 0)):g} m is under "
+                    f"the {NEST_STANDOFF_M:g} m wildlife stand-off")
+            elif _gtype(f) == "Polygon":
+                warn("OPS-005", f"nest polygon ({p.get('reason', '')}): "
+                     f"check it is drawn {NEST_STANDOFF_M:g} m out from "
+                     "the nests")
     for i, z in enumerate(site.zones):
         pts = z.poly if z.centre is None else (z.centre,)
         if any(within(p) - (z.radius if z.centre else 0) < 0 for p in pts):

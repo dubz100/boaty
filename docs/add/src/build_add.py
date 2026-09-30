@@ -19,8 +19,9 @@ SRS = A.SRS
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Architecture_Design_Document.pdf"
 DOC_ID = "BOATY-ADD-001"
-ISSUE = "Issue F (for review)"
-DATE = "29 September 2026"
+ISSUE = "Issue G (for review)"
+DATE = "30 September 2026"
+PREV_F = "29 September 2026"
 PREV = "28 September 2026"
 
 
@@ -74,11 +75,14 @@ def build():
          ["E", PREV, "CR-03 closed: real flight-controller price £62; tested "
           "salvaged cells (DD-18); PIN replaces the panel key switch (DD-17); "
           "cap £185 (SRS Issue E).", "Claude, owner decision"],
-         ["F", DATE, "CR-04: SpeedyBee F405 WING APP flight controller "
+         ["F", PREV_F, "CR-04: SpeedyBee F405 WING APP flight controller "
           "(DD-19; BOM from the Key Component List, £181). CR-05: FS-002 "
           "3 s (DD-22). Simulator evidence: own boat model (DD-20), V-item "
           "results in section 9, FS-001/004/FEN-006 gaps allocated to the "
-          "boat services (DD-21).", "Claude, owner decisions"]],
+          "boat services (DD-21).", "Claude, owner decisions"],
+         ["G", DATE, "SDR decisions (BOATY-SDR-001 WP1): DD-23 (CR-06), "
+          "DD-24 (CR-07, wildlife stand-off), DD-25 (CR-08, cost-cap "
+          "scope); R-02 updated.", "Claude, owner decisions"]],
         "Review guidance: section 3 is deliberately divergent, so challenge "
         "the options and the scoring. Section 4 onwards is the converged "
         "architecture that the ICD and subsystem specifications will build "

@@ -29,8 +29,9 @@ OUT = HERE.parent / "Boaty_Operations_Manual.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-OPS-001"
-ISSUE = "Issue C (for review)"
-DATE = "29 September 2026"
+ISSUE = "Issue D (for review)"
+DATE = "30 September 2026"
+PREV_C = "29 September 2026"
 PREV = "28 September 2026"
 BOX = "☐"
 
@@ -102,9 +103,12 @@ def build():
           "weed), K-05 (the boat stops itself 30 s or 10 m outside the "
           "fence), K-11 (a heading alarm in strong wind may be wind drift).",
           "Claude, from simulator slice 2"],
-         ["C", DATE, "Mission Control findings: CL-13 (arm at the jetty: "
+         ["C", PREV_C, "Mission Control findings: CL-13 (arm at the jetty: "
           "home is taken where the boat is armed) and CL-18 (close any "
-          "other ground station) added.", "Claude, from simulator slice 3"]],
+          "other ground station) added.", "Claude, from simulator slice 3"],
+         ["D", DATE, "SDR decision CR-07: site drawing now puts a ≥ 15 m "
+          "circle round every nest structure; bird photos only from outside "
+          "it (OPS-005, SRS Issue G).", "Claude, owner decision"]],
         "Review guidance: read it as if it's your first lake session. "
         "Anything you wouldn't actually do, or that's missing, is a finding. "
         "Sections 7 and 8 are meant to be printed and laminated.")

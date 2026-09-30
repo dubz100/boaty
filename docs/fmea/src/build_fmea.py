@@ -26,8 +26,9 @@ OUT = HERE.parent / "Boaty_Design_FMEA.pdf"
 FIGDIR = HERE.parent / "figures"
 FIGDIR.mkdir(exist_ok=True)
 DOC_ID = "BOATY-FMEA-001"
-ISSUE = "Issue E (for review)"
-DATE = "29 September 2026"
+ISSUE = "Issue F (for review)"
+DATE = "30 September 2026"
+PREV_E = "29 September 2026"
 PREV = "28 September 2026"
 W = 257  # usable width in mm (landscape A4 minus margins)
 
@@ -94,16 +95,19 @@ def build():
           "acceptance) and adult PIN (new FM-48). Operations manual "
           "BOATY-OPS-001 closes A-05, A-09, A-11, A-17, A-19.",
           "Claude, owner decision"],
-         ["D", DATE, "Simulator evidence (software/results): FM-08 re-rated "
+         ["D", PREV_E, "Simulator evidence (software/results): FM-08 re-rated "
           "with its real cause (KCL); FM-49 to FM-53 added; actions A-21 to "
           "A-24 incorporated; A-18 closed (V-14: no native mechanism); "
           "detection re-rated where a scenario now passes.",
           "Claude, owner decisions (CR-04, CR-05)"],
-         ["E", DATE, "Mission Control in the simulator (slice 3): FM-54 to "
+         ["E", PREV_E, "Mission Control in the simulator (slice 3): FM-54 to "
           "FM-58 added from what the runs found, actions A-25 to A-29 "
           "incorporated; FM-09, 10, 34, 35, 41 re-rated now SC-24, 25, 31, "
           "32 and 37 pass; FM-37 re-rated after the live Claude "
-          "evaluation (SC-33).", "Claude"]],
+          "evaluation (SC-33).", "Claude"],
+         ["F", DATE, "SDR decision CR-07: FM-44 controls now include the "
+          "15 m nest stand-off enforced by the site linter (MCN-D65); "
+          "SC-26 added to its tests.", "Claude, owner decision"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "
         "missing failure modes: an FMEA is only as good as its "

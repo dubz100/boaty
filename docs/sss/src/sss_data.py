@@ -741,8 +741,8 @@ D(c, "MCP-D34", "B5 shall judge the boat free only on forward speed (along "
 # ======================================================================
 n = subsystem(
     "MCN", title="Mission Control",
-    issue="Issue D (for review)",
-    parents="SRS Issue F, ADD Issue F, ICD Issue F, FMEA Issue E",
+    issue="Issue E (for review)",
+    parents="SRS Issue G, ADD Issue F, ICD Issue F, FMEA Issue F",
     history=[["B", "28 September 2026", "FMEA actions A-03, A-04, A-10, A-13, A-15, A-16, A-18, A-19: "
               "MCN-D53 to D60 added.", "Claude, owner decisions "
               "(CR-02, FMEA actions)"],
@@ -752,7 +752,10 @@ n = subsystem(
              ["D", "29 September 2026", "Simulator slice 3 (Mission "
               "Control built and flown on SITL): MCN-D29, D39, D45, D57 and "
               "D60 clarified from the evidence; MCN-D62 to D64 added.",
-              "Claude"]],
+              "Claude"],
+             ["E", "30 September 2026", "SDR decisions (CR-07): MCN-D65 "
+              "nest stand-off in the site linter; MCN-D66 planner routes "
+              "round large exclusions.", "Claude, owner decision"]],
 
     purpose="Be the only place people interact with Boaty: turn words into "
             "safe, approved missions, and show, say and record what the "
@@ -988,6 +991,16 @@ D(n, "MCN-D64", "VAL-010 shall compare the helm view of the mission "
   "(kind, position, hold, speed; ICD IF-13 Issue F). Photo counts go to "
   "the camera service and are not in the read-back.", "M", "T", "SIM",
   ["VAL-010", "IF-13"])
+group(n, "From the System Design Review (Issue E)")
+D(n, "MCN-D65", "The site linter shall block a site in which a nest "
+  "exclusion (IF-15 wildlife = nest) is a circle under 15 m radius, and "
+  "shall warn that a nest polygon must be drawn 15 m out from the nests. "
+  "Landmarks at nests keep photo stops outside the exclusion (MCN-D34).",
+  "M", "T", "SIM", ["OPS-005", "IF-15"])
+D(n, "MCN-D66", "The planner shall route round exclusions by the shortest "
+  "clear path through candidate points around them, with as many hops as "
+  "needed, and shall refuse a plan it cannot route.", "M", "T", "SIM",
+  ["VAL-002"])
 
 # ======================================================================
 # REC  Recovery & signalling

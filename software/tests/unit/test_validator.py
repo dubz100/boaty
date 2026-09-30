@@ -26,7 +26,7 @@ T = "2026-09-29T10:00:00Z"
 SITE = Site.named("milton-country-park")
 
 # Milton geometry (metres from home): island circle r 7 at (10, 45); reeds
-# polygon around (-45, 35); duck house r 2 at (-5, 68); platform r 4 at
+# polygon around (-45, 35); duck house (nest) r 15 at (-15, 62); platform r 4 at
 # (58, 15). Fence: (-50,-10) (55,-10) (70,35) (45,75) (-30,80) (-60,40).
 
 
@@ -98,7 +98,7 @@ def test_valid_only_rtl():
 
 
 def test_valid_leg_between_island_and_reeds():
-    assert rules(mk([(-20, 40), (-20, 55)])) == []
+    assert rules(mk([(-25, 25), (-25, 38)])) == []
 
 
 def test_valid_photo_point_and_speed():
@@ -106,12 +106,21 @@ def test_valid_photo_point_and_speed():
 
 
 @pytest.mark.parametrize("name,area", [(t, a) for t in
-                                       ("explore", "duck_patrol", "lap")
-                                       for a in ("home bay", "north pond")])
+                                       ("explore", "duck_watch", "lap")
+                                       for a in ("home bay", "north pond")
+                                       if (t, a) != ("lap", "north pond")])
 def test_templates_validate(name, area):
     from boaty.mcn.planner import Planner
     m = Planner(SITE).template(name, area, now_utc=T)
     assert rules(m) == []
+
+
+def test_lap_refused_where_nest_standoff_crowds_area():
+    # The duck house's 15 m nest stand-off (CR-07) fills most of the north
+    # pond: the planner refuses rather than squeezing a lap past it.
+    from boaty.mcn.planner import Planner, PlanError
+    with pytest.raises(PlanError, match="too small or too crowded"):
+        Planner(SITE).template("lap", "north pond", now_utc=T)
 
 
 # ---------------------------------------------------------------- VAL-002
@@ -123,7 +132,7 @@ def test_templates_validate(name, area):
     (10, 45),            # centre of the island
     (10, 53.5),          # 1.5 m off the island's edge
     (-45, 35),           # in the reeds
-    (-5, 71),            # 1 m from the duck house
+    (-15, 76),           # 14 m from the duck house (nest stand-off)
     (58, 21),            # 2 m from the fishing platform
 ])
 def test_val002_bad_points(pt):
@@ -140,7 +149,7 @@ def test_val002_leg_crosses_reeds():
 
 
 def test_val002_rtl_leg_crosses_island():
-    m = mk([(-20, 40), (10, 65)])          # straight home from (10,65)
+    m = mk([(35, 45), (10, 65)])           # straight home from (10,65)
     r, _ = validate(m, SITE, now_utc=T)
     bad = [v for v in r.violations if v.rule == "VAL-002"]
     assert bad and bad[0].item_seq == m.items[-1].seq      # names the RTL

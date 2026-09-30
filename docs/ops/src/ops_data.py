@@ -61,8 +61,12 @@ PROCEDURES = [
              ("Draw the site on the map at home: inclusion fence 5 m inside "
               "the waterline, home points, areas and landmarks.",
               ["FEN-002", "FEN-003"]),
-             ("Add exclusion zones over islands, reed beds, known nests and "
-              "angling swims (≥ 20 m clearance).", ["OPS-004", "OPS-005"]),
+             ("Add exclusion zones over islands, reed beds and angling "
+              "swims (≥ 20 m clearance). Put a circle of at least 15 m "
+              "radius round every nest structure (duck house, nest raft) "
+              "and tag it wildlife = nest; the site check refuses less. "
+              "Photos of birds are taken only from outside these circles.",
+              ["OPS-004", "OPS-005"]),
              ("Keep the first fence within 100 m of the launch point. Grow "
               "it only after 5 successful missions logged at this site.",
               ["OPS-006"]),

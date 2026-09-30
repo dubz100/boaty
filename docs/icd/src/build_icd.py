@@ -34,8 +34,9 @@ S["code"] = ParagraphStyle("code", fontName="DVM", fontSize=6.9, leading=8.9,
 FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_Interface_Control_Document.pdf"
 DOC_ID = "BOATY-ICD-001"
-ISSUE = "Issue F (for review)"
-DATE = "29 September 2026"
+ISSUE = "Issue G (for review)"
+DATE = "30 September 2026"
+PREV_F = "29 September 2026"
 PREV = "28 September 2026"
 
 IFS = {i[0]: i for i in A.INTERFACES}
@@ -522,7 +523,8 @@ Error   = {"error": "bad_request"|"not_found"|"busy"|"storage_full",
                "<b>Never sent:</b> audio (speech is transcribed on the "
                "Pi 5), coordinates (the model sees named areas and "
                "landmarks only; the planner owns geometry), the API key "
-               "(stored only in the Mission Control keyring, NLI-008).",
+               "(stored only in a key file readable by the Mission Control "
+               "user alone, mode 0600, NLI-008).",
                "Photos are sent only when an adult has enabled cloud "
                "analysis for the session. Otherwise the captain's log uses "
                "on-device heuristics only.",
@@ -696,15 +698,18 @@ Exceptions: HelmError > {NoResponse, CommandRejected(code, text), PreArmFailed(r
                   ["fence_inclusion", "Polygon", "-", "Exactly one; ≤ 70 "
                    "vertices; drawn ≥ 5 m inside the waterline (FEN-003)"],
                   ["exclusion", "Polygon or Point", "radius_m (Point), "
-                   "reason", "≤ 10 in total; inside the inclusion "
-                   "(FEN-001, OPS-005)"],
+                   "reason, wildlife (optional: 'nest')", "≤ 10 in total; "
+                   "inside the inclusion (FEN-001, OPS-005). A nest circle "
+                   "has radius_m ≥ 15; a nest polygon is drawn 15 m out "
+                   "from the nests (CR-07, MCN-D65)"],
                   ["home", "Point", "name", "≥ 1; inside the inclusion, "
                    "outside exclusions (PRE-002)"],
                   ["area", "Polygon", "name, aliases[]", "e.g. 'home bay'; "
                    "inside the inclusion"],
                   ["landmark", "Point or Polygon", "name, aliases[], "
                    "keep_out_m", "e.g. 'the island' with keep_out_m = 10; "
-                   "photo stops are placed at ≥ keep_out_m"],
+                   "photo stops are placed at ≥ keep_out_m. A landmark at "
+                   "a nest keeps its stops outside the nest exclusion"],
                   ["launch", "Point", "name, good_wind_from[] (compass "
                    "sectors, e.g. ['W', 'SW'])", "Issue C (FMEA A-19): the "
                    "checklist suggests a launch point whose wind blows "
@@ -713,7 +718,7 @@ Exceptions: HelmError > {NoResponse, CommandRejected(code, text), PreArmFailed(r
            Spacer(1, 2 * mm),
            code("""
 {"type": "FeatureCollection",
- "properties": {"site": "milton-todds-pit", "version": 3, "wifi_channel": 6,
+ "properties": {"site": "milton-country-park", "version": 2, "wifi_channel": 6,
                 "max_distance_from_home_m": 100},
  "features": [
   {"type": "Feature", "properties": {"role": "home", "name": "jetty"},
@@ -766,8 +771,8 @@ B1 Mission Control endpoint -> radio relay (cut / loss / latency)
            ])]
     st += verify("IF-21", [
         ("Demonstration", "SIM", "A full mission from voice to captain's log "
-         "in simulation; every FS scenario runs in the suite (slices 1-2: "
-         "106 passing)")])
+         "in simulation; every FS scenario runs in the suite (SWE-005; "
+         "results in software/results)")])
     return st
 
 
@@ -1129,11 +1134,14 @@ def build():
           "switch and AIRSPD-pad sense; IF-21 rewritten for the JSON boat "
           "model. TBC-01, 02, 03, 04, 05, 07 and 09 closed.",
           "Claude, owner decisions"],
-         ["F", DATE, "Mission Control simulator evidence (slice 3): IF-11 "
+         ["F", PREV_F, "Mission Control simulator evidence (slice 3): IF-11 "
           "model claude-opus-5-5, schema ranges re-checked by pydantic, one "
           "retry; IF-13 read-back 'helm view' checksum and the RTL item "
           "running in AUTO; IF-14 halt() and parameter re-request.",
-          "Claude"]],
+          "Claude"],
+         ["G", DATE, "SDR decisions: IF-15 'wildlife' property and the 15 m "
+          "nest stand-off (CR-07); IF-11 key storage wording; example "
+          "site name. Parent ADD Issue F.", "Claude, owner decision"]],
         "Review guidance: check that each interface is complete enough to "
         "build and test against. Items marked [TBC-nn] are known gaps with "
         "an owner; they're listed in section 9.")

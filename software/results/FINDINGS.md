@@ -100,7 +100,7 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
   thorough coverage exceeds 20 min. The planner refuses, and the retry
   asks Claude for something shorter. The 1.2 x estimate was conservative:
   planned 249 s, and the RTL item began at 167 s.
-- **"Duck patrol" spreads its photo stops over the whole pond**, not just
+- **"Duck patrol" (now "Duck watch", CR-07) spreads its photo stops over the whole pond**, not just
   the chosen area (photo_stops with near = null). This is safe and
   validated, but it may not be what the owner expects. It is a candidate
   template change.

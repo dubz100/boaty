@@ -25,9 +25,10 @@ FIG = HERE.parent / "figures"
 OUT = HERE.parent / "Boaty_System_Requirements_Specification.pdf"
 
 DOC_ID = "BOATY-SRS-001"
-ISSUE = "Issue F (for review)"
-DATE = "29 September 2026"
+ISSUE = "Issue G (for review)"
+DATE = "30 September 2026"
 PREV = "28 September 2026"
+PREV_F = "29 September 2026"
 
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 pdfmetrics.registerFont(TTFont("DV", FONT_DIR / "DejaVuSans.ttf"))
@@ -229,11 +230,19 @@ def build():
                   ["E", PREV, "CR-03: CON-001 cap raised to £185 (target £180) "
                    "after real UK prices for a microSD flight controller "
                    "(ADD Issue E).", "Claude, owner decision"],
-                  ["F", DATE, "CR-05: FS-002 link-loss HOLD relaxed from 2 s "
+                  ["F", PREV_F, "CR-05: FS-002 link-loss HOLD relaxed from 2 s "
                    "to 3 s, the autopilot's native minimum measured in "
                    "simulation (software/results, SC-02). CR-04 (flight "
                    "controller change) needs no SRS change.",
-                   "Claude, owner decision"]],
+                   "Claude, owner decision"],
+                  ["G", DATE, "SDR decisions (BOATY-SDR-001, WP1). CR-06: "
+                   "NLI-003 and MOD-005 reworded to match the verified "
+                   "design (no coordinates to the model; return home as a "
+                   "final RTL item). CR-07: OPS-005 allows wildlife photos "
+                   "only from outside a 15 m nest stand-off; 'Duck patrol' "
+                   "renamed 'Duck watch'; TBD-09 (breeding season) opened. "
+                   "CR-08: CON-001 cap scope and price rule; STK-05 "
+                   "wording.", "Claude, owner decisions"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),
            table([["Role", "Name", "Signature / date"],
@@ -450,8 +459,9 @@ def build():
              "home' or 'boat stopped inside the fence and recoverable'."),
            table([["#", "Scenario / trigger", "System response",
                    "Operator / crew action", "Reqs"],
-                  ["OS-1", "<b>Duck patrol (normal).</b> Crew asks to "
-                   "explore and photograph ducks.", "Plans, validates, "
+                  ["OS-1", "<b>Duck watch (normal).</b> Crew asks to "
+                   "explore and photograph ducks, from outside the "
+                   "wildlife stand-offs.", "Plans, validates, "
                    "survey with photo points, RTL, HOLD.", "Approve; crew "
                    "holds GO; watch; disarm; debrief.", "MIS-001, VAL-*"],
                   ["OS-2", "<b>Manual drive</b> (pool or near bank).",

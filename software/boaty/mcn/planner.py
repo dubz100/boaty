@@ -298,24 +298,33 @@ class Planner:
                       c[1] + R * math.sin(t * math.pi / 12))
                      for t in range(24)]
         vias = [v for v in vias if self.clear(v)]
-        best = None
-        for v in vias:
-            if self.leg_clear(a, v) and self.leg_clear(v, b):
-                L = geo.dist(a, v) + geo.dist(v, b)
-                if best is None or L < best[0]:
-                    best = (L, [v])
-        if best:
-            return best[1]
-        for v in vias:                      # two-hop detours
-            if not self.leg_clear(a, v):
-                continue
-            for w in vias:
-                if self.leg_clear(v, w) and self.leg_clear(w, b):
-                    L = geo.dist(a, v) + geo.dist(v, w) + geo.dist(w, b)
-                    if best is None or L < best[0]:
-                        best = (L, [v, w])
-        if best:
-            return best[1]
+        # Shortest path over the visibility graph of a, the vias and b
+        # (Dijkstra). Large zones, such as a nest stand-off, can need
+        # several hops to get round.
+        nodes = [a, *vias, b]
+        n = len(nodes)
+        dist = [math.inf] * n
+        prev: list[int | None] = [None] * n
+        dist[0] = 0.0
+        done = [False] * n
+        for _ in range(n):
+            u = min((i for i in range(n) if not done[i]),
+                    key=lambda i: dist[i], default=None)
+            if u is None or dist[u] == math.inf or u == n - 1:
+                break
+            done[u] = True
+            for v in range(1, n):
+                if done[v]:
+                    continue
+                d = dist[u] + geo.dist(nodes[u], nodes[v])
+                if d < dist[v] and self.leg_clear(nodes[u], nodes[v]):
+                    dist[v], prev[v] = d, u
+        if dist[n - 1] < math.inf:
+            path, i = [], prev[n - 1]
+            while i is not None and i != 0:
+                path.append(nodes[i])
+                i = prev[i]
+            return path[::-1]
         raise PlanError("can't find a safe way round a no-go zone")
 
     # ---- assembly --------------------------------------------------------
@@ -382,17 +391,17 @@ def _linspace(a: float, b: float, n: int) -> list[float]:
 TEMPLATES = {
     "explore": lambda area: [{"op": "explore", "area": area,
                               "coverage": "medium"}],
-    "duck_patrol": lambda area: [{"op": "explore", "area": area,
+    "duck_watch": lambda area: [{"op": "explore", "area": area,
                                   "coverage": "light"},
                                  {"op": "photo_stops", "n": 3, "near": None}],
     "lap": lambda area: [{"op": "lap", "area": area}],
 }
-TEMPLATE_NAMES = {"explore": "Explore the bay", "duck_patrol": "Duck patrol",
+TEMPLATE_NAMES = {"explore": "Explore the bay", "duck_watch": "Duck watch",
                   "lap": "Lap of the bay"}
 TEMPLATE_SUMMARY = {
     "explore": "Let's explore {area} and take pictures!",
-    "duck_patrol": "Duck patrol! We'll look round {area} and stop for "
-                   "photos.",
+    "duck_watch": "Duck watch! We'll look round {area} and stop for "
+                  "photos from a safe distance.",
     "lap": "Let's go all the way round {area}!",
 }
 

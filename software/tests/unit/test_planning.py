@@ -402,7 +402,7 @@ def test_estimates_are_conservative():
 
 def test_battery_too_low_to_plan():
     with pytest.raises(PlanError, match="Wh"):
-        P().template("duck_patrol", "whole pond", now_utc=T, battery_pct=5)
+        P().template("duck_watch", "whole pond", now_utc=T, battery_pct=5)
 
 
 def test_unknown_area():
@@ -418,7 +418,7 @@ def test_declined_intent_cannot_be_planned():
 
 def test_templates_listed_for_every_area():
     t = Planning(SITE).templates()
-    assert {x["name"] for x in t} == {"Explore the bay", "Duck patrol",
+    assert {x["name"] for x in t} == {"Explore the bay", "Duck watch",
                                       "Lap of the bay"}
     assert all(len(x["areas"]) == 3 for x in t)
 

@@ -30,8 +30,19 @@ from pdfdoc import (ORANGE, ORANGE_T, GREEN_T, BLUE_T, H1, H2, P, Doc,  # noqa
 
 OUT = HERE.parent / "Boaty_System_Design_Review.pdf"
 DOC_ID = "BOATY-SDR-001"
-ISSUE = "Issue A (review report)"
+ISSUE = "Issue B (review report, RID log updated)"
 DATE = "30 September 2026"
+
+# RID closures recorded after the review: RID -> (status, evidence).
+CLOSURES = {
+    "RID-04": ("Closed", "CR-07 (SRS G OPS-005; SSS-MCN E MCN-D65; ICD G "
+               "IF-15; FMEA F FM-44; OPS D). Season rule carried as "
+               "TBD-09 to ORR."),
+    "RID-06": ("Closed", "CR-06 (SRS G NLI-003, MOD-005, mode table; ADD G "
+               "DD-23)."),
+    "RID-12": ("Partly", "CR-08 cap scope and price rule (SRS G CON-001; "
+               "ADD G DD-25; KCL C). power.csv open (WP5)."),
+}
 AMBER_T = colors.HexColor("#fff6dc")
 
 # ---------------------------------------------------------------- facts
@@ -290,7 +301,8 @@ RIDS = [
      " The power analysis lives only in the KCL. The BOM is "
      f"£{BOM['total']} against the £{K.CAP} cap (margin "
      f"£{K.CAP - BOM['total']}, {100 * (K.CAP - BOM['total']) / K.CAP:.0f}%) "
-     "on estimated prices. The recovery-pole kit would breach it.",
+     "on estimated prices. The conditional antenna pole kit (£8, only "
+     "if V-08 needs it) would breach it.",
      "Either create power.csv from the KCL data (generated) or re-point "
      "PWR-D17 at the KCL section. Record an owner decision on what "
      "sits inside the cap (pole kit, spares), and state a price-margin "
@@ -411,7 +423,11 @@ def build():
                  f"{len(obs)} Observations carried to a named gate"]])
     st += control_and_contents(
         [["A", DATE, "First issue: review of the documentation baseline "
-          "as at commit 88b1cd7.", "Claude (as reviewer)"]],
+          "as at commit 88b1cd7.", "Claude (as reviewer)"],
+         ["B", DATE, "WP1 owner decisions recorded (CR-06, CR-07, CR-08): "
+          "RID log updated. RID-12 corrected: the pole kit that breaches "
+          "the cap is the antenna pole, not a recovery pole.",
+          "Claude, owner decisions"]],
         "How to use this report: section 2 gives the decision. Section 6 "
         "lists every review item discrepancy (RID) with its evidence and "
         "recommended closure. Section 8 is the plan to freeze. Close a "
@@ -780,9 +796,13 @@ def build():
            H2("8.3 RID log"),
            table([["RID", "Sev.", "Status", "Closed by (commit / CR)",
                    "Date"]] +
-                 [[r[0], r[1], "Open" if r[1] != OBS else "Carried", "", ""]
+                 [[r[0], r[1],
+                   CLOSURES.get(r[0], ("Open" if r[1] != OBS else "Carried",
+                                       ""))[0],
+                   CLOSURES.get(r[0], ("", ""))[1],
+                   DATE if r[0] in CLOSURES else ""]
                   for r in RIDS],
-                 [18, 16, 22, 84, 30]),
+                 [16, 14, 16, 100, 24]),
            H2("8.4 What CDR will expect"),
            *bullets([
                "Hull and pod drawings with weighed-mass and buoyancy "

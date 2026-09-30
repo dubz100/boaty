@@ -2,7 +2,7 @@
  "type": "FeatureCollection",
  "properties": {
   "site": "milton-country-park",
-  "version": 1,
+  "version": 2,
   "wifi_channel": 6,
   "max_distance_from_home_m": 100,
   "note": "Stand-in shape at the simulator home; redraw on the real map before the first lake trial."
@@ -102,14 +102,15 @@
    "type": "Feature",
    "properties": {
     "role": "exclusion",
-    "radius_m": 2,
-    "reason": "floating duck house"
+    "radius_m": 15,
+    "wildlife": "nest",
+    "reason": "floating duck house (nest)"
    },
    "geometry": {
     "type": "Point",
     "coordinates": [
-     0.1596266,
-     52.2454109
+     0.1594799,
+     52.245357
     ]
    }
   },
@@ -331,13 +332,13 @@
      "duck house",
      "ducks house"
     ],
-    "keep_out_m": 6
+    "keep_out_m": 18
    },
    "geometry": {
     "type": "Point",
     "coordinates": [
-     0.1596266,
-     52.2454109
+     0.1594799,
+     52.245357
     ]
    }
   },

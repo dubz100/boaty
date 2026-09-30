@@ -204,8 +204,10 @@ ROWS = [
      "OPS-003/004, low speed, guards", "Operator lookout", 7, ["R-01"],
      ["A-17"]),
     ("FM-44", "OPS", "Wildlife", "Nesting area approached", "Disturbance",
-     8, "Exclusions missing", 2, "OPS-005 exclusions", "Operator", 3,
-     ["R-01", "SC-27"], []),
+     8, "Exclusions missing or too small", 2, "OPS-005 exclusions; 15 m "
+     "nest stand-off enforced by the site linter (MCN-D65, CR-07); photo "
+     "stops only outside it", "Operator", 3, ["R-01", "SC-26", "SC-27"],
+     []),
     ("FM-45", "OPS", "Handling", "Child handles a pod with the key in",
      "Prop injury risk", 10, "Supervision lapse", 2, "Guards; adult-only "
      "arming", "Key-out rule (A-09)", 5, ["B-01"], ["A-09"]),

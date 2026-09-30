@@ -487,7 +487,7 @@ def test_rtl_item_inside_auto_means_returning(env):
 def test_photo_point_announced_on_arrival(env):
     s, helm, panel, clock, sp = env
     s.state = State.IDLE
-    s.choose_template("duck_patrol", "home bay")
+    s.choose_template("duck_watch", "home bay")
     tok = adult(s)
     s.approve(tok)
     ready_to_arm(s, tok)

@@ -513,6 +513,17 @@ DECISIONS = [
      "Simulator slices 1-2", "No hardware cost"),
     ("DD-22", "FS-002 link-loss HOLD relaxed to 3 s, the autopilot's native "
      "minimum", "CR-05", "SRS Issue F"),
+    ("DD-23", "Requirements follow the verified design: no coordinates to "
+     "the language model (NLI-003); return home as the mission's final RTL "
+     "item in AUTO (MOD-005)", "CR-06 (SDR RID-06)", "SRS Issue G"),
+    ("DD-24", "Wildlife photographed only from outside a 15 m nest "
+     "stand-off enforced by the site linter; 'Duck patrol' renamed 'Duck "
+     "watch'. Breeding-season rule deferred to the site visit (TBD-09)",
+     "CR-07 (SDR RID-04)", "No hardware cost"),
+    ("DD-25", "The £185 cap covers boat, Mission Control and charging kit. "
+     "Conditional and field items (antenna pole kit, spares, consumables) "
+     "sit in a separate field-kit budget; prices confirmed before ordering",
+     "CR-08 (SDR RID-12)", "Pole kit (£8) off the cap"),
 ]
 
 # Results of the early checks (simulator slices 1-2, software/results).
@@ -583,8 +594,9 @@ RISKS = [
      "Simulator slices 1-2 exercised every feature we rely on in Rover "
      "4.7.1; V-01 bench check of the SpeedyBee remains"),
     ("R-02", "Bill of materials over the £185 cap (Issue F baseline "
-     "£181, estimated prices)", "Medium", "£4 headroom; the pole kit (+£8) would exceed the "
-     "cap, so it needs a saving elsewhere if V-08 requires it"),
+     "£181, estimated prices)", "Medium", "£4 headroom on estimated prices; "
+     "confirmed from vendors before ordering. The antenna pole kit is in "
+     "the field-kit budget, outside the cap (CR-08)"),
     ("R-03", "Wi-Fi range over water", "Medium",
      "Pole antenna; safety independent of the link"),
     ("R-04", "Pi Zero SD-card corruption on power loss", "Medium",
