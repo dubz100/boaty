@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-30T14:02:35.395796+00:00",
+  "generated": "2026-09-30T16:51:31.736560+00:00",
   "speedup": 5,
   "records": [
     {
@@ -14,10 +14,10 @@
       ],
       "criterion": "HOLD <= 3 s (helm), then RTL 10 s (+/- 1 s) after the link is cut (B4), and the boat heads home",
       "measured": {
-        "hold_after_s": 3.129,
-        "rtl_after_s": 9.212,
-        "dist_home_at_cut_m": 9.525,
-        "dist_home_15s_after_rtl_m": 6.291,
+        "hold_after_s": 3.062,
+        "rtl_after_s": 10.007,
+        "dist_home_at_cut_m": 9.579,
+        "dist_home_15s_after_rtl_m": 7.233,
         "events": [
           "BOATY B4 LINK LOST IN MANUAL: RTL"
         ]
@@ -38,10 +38,8 @@
       "criterion": "Mission continues; RTL 60 s (+/- 1 s) after the link is cut (B4)",
       "measured": {
         "mode_30s_after_cut": "AUTO",
-        "rtl_after_s": 59.167,
-        "events": [
-          "BOATY B4 LINK LOST 60S: RTL"
-        ]
+        "rtl_after_s": 59.585,
+        "events": []
       },
       "notes": [],
       "outcome": "passed"
@@ -59,9 +57,9 @@
       ],
       "criterion": "Motors stop <= 3 s after the fix is lost (B6 HOLD); RTL once the position has been healthy for 10 s",
       "measured": {
-        "outputs_neutral_after_s": 2.463,
-        "thrust_gone_after_s": 2.552,
-        "rtl_after_restore_s": 10.747,
+        "outputs_neutral_after_s": 2.287,
+        "thrust_gone_after_s": 2.374,
+        "rtl_after_restore_s": 10.477,
         "events": [
           "BOATY B6 POSITION LOST: HOLD",
           "BOATY B6 POSITION OK: RTL"
@@ -89,7 +87,7 @@
             "burst": 1,
             "resume_ack": true,
             "mode": 4,
-            "peak_mps": 0.01,
+            "peak_mps": 0.0,
             "after_s": 7.9,
             "ended": "helm HOLD"
           },
@@ -97,15 +95,15 @@
             "burst": 2,
             "resume_ack": true,
             "mode": 10,
-            "peak_mps": 0.75,
-            "after_s": 2.7,
+            "peak_mps": 0.74,
+            "after_s": 2.8,
             "ended": "moving forward"
           }
         ],
         "bursts": 2,
-        "min_speed_during_burst_m_s": 0.014,
+        "min_speed_during_burst_m_s": 0.013,
         "mode_after": "AUTO",
-        "speed_after_m_s": 0.981,
+        "speed_after_m_s": 0.98,
         "events": [
           "BOATY B5 SHED START",
           "BOATY B5 FREE AFTER 2: RESUMED",
@@ -150,8 +148,8 @@
       ],
       "criterion": "With B1-B7 dead (and so the bank link), the helm completes the mission, returns and holds within 5 m of home",
       "measured": {
-        "home_after_s": 247.489,
-        "final_distance_m": 1.219
+        "home_after_s": 248.59,
+        "final_distance_m": 1.214
       },
       "notes": [],
       "outcome": "passed"
@@ -168,7 +166,7 @@
       ],
       "criterion": "RTL <= 2 s after the moisture sensor trips; alarm raised; IF-03 health shows fault",
       "measured": {
-        "rtl_after_s": 0.055,
+        "rtl_after_s": 0.091,
         "health_status": "fault",
         "events": []
       },
@@ -187,8 +185,8 @@
       ],
       "criterion": "Offshore gale: B7 stops the motors before 30 s outside or 10 m outside, and they stay stopped (detector recorded)",
       "measured": {
-        "hold_after_breach_s": 5.304,
-        "outside_at_hold_m": 8.508,
+        "hold_after_breach_s": 5.127,
+        "outside_at_hold_m": 8.201,
         "detector": "B7 FAR OUTSIDE FENCE: HOLD",
         "motors_running_in_next_30s_s": 0.0,
         "b7_actions": [
@@ -215,11 +213,14 @@
       ],
       "criterion": "Right motor dead mid-leg: HOLD within 20 s (from whichever detector fires first), the boat stays inside the fence and ends in HOLD with an alarm",
       "measured": {
-        "first_hold_after_s": 8.928,
+        "first_hold_after_s": 8.869,
         "first_detector": "helm crash check",
         "worst_outside_m": 0.0,
         "final_mode": "HOLD",
         "events": [
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 2: RESUMED",
+          "BOATY B5 SHED END",
           "BOATY B5 SHED START",
           "BOATY B5 FREE AFTER 2: RESUMED",
           "BOATY B5 SHED END",
@@ -246,9 +247,9 @@
       ],
       "criterion": "Compass reversed before the start: HOLD <= 10 s after the boat first moves (> 0.3 m/s); the boat stays inside the fence",
       "measured": {
-        "hold_after_s": 9.577,
-        "first_motion_after_s": 4.651,
-        "hold_after_first_motion_s": 4.927,
+        "hold_after_s": 10.334,
+        "first_motion_after_s": 5.28,
+        "hold_after_first_motion_s": 5.054,
         "detector": "B7 HEADING CHECK FAILED: HOLD",
         "worst_outside_m": 0.0,
         "events": [
@@ -271,7 +272,7 @@
       ],
       "criterion": "After the critical battery failsafe, B6 slows RTL to 0.6 m/s (+/- 0.1) and raises an alarm",
       "measured": {
-        "rtl_speed_m_s": 0.579,
+        "rtl_speed_m_s": 0.58,
         "events": [
           "BOATY B6 CRITICAL BATTERY: SLOW RTL"
         ]
@@ -295,8 +296,8 @@
         "photos": 21,
         "burst": 3,
         "interval": 18,
-        "first_burst_after_reached_s": 0.001,
-        "worst_geotag_error_m": 0.26,
+        "first_burst_after_reached_s": 0.0,
+        "worst_geotag_error_m": 0.256,
         "untagged": 0
       },
       "notes": [],
@@ -313,7 +314,7 @@
       "criterion": "RTL at 35% (+/- 2%); critical alarm at 15%; reaches home within 5 m",
       "measured": {
         "battery_pct_at_rtl": 35,
-        "distance_home_m": 2.989,
+        "distance_home_m": 2.964,
         "texts": [
           "Battery 1 is low 10.89V used 1625 mAh",
           "Battery 1 is critical 10.43V used 2126 mAh"
@@ -335,7 +336,7 @@
       ],
       "criterion": "HOLD <= 3 s after the link is cut (FS-002 relaxed to 3 s by CR-05; the RTL at 10 s is B4: SC-02b)",
       "measured": {
-        "hold_after_cut_s": 3.028,
+        "hold_after_cut_s": 3.113,
         "native_minimum_s": "FS_GCS_TIMEOUT 2 + FS_TIMEOUT 1"
       },
       "notes": [],
@@ -353,7 +354,7 @@
       ],
       "criterion": "Motors stop <= 3 s after the fix is lost (the RTL after 10 s healthy is B6, slice 2)",
       "measured": {
-        "motors_off_after_s": 9.197,
+        "motors_off_after_s": 9.189,
         "modes": [
           [
             8.2,
@@ -369,7 +370,830 @@
       "notes": [],
       "outcome": "xfail",
       "known_finding": "Finding: EKF failsafe stops motors ~9 s after GNSS loss; FS-004 asks 3 s. Needs B6 fix-loss HOLD.",
-      "failure": "AssertionError: motors still running 3 s after GNSS loss\nassert (62.822499999950985 is not None and (62.822499999950985 - 53.62583333329268) <= 3.0)"
+      "failure": "AssertionError: motors still running 3 s after GNSS loss\nassert (62.84666666661763 is not None and (62.84666666661763 - 53.65749999995932) <= 3.0)"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-along-fence]",
+      "id": "SC-13",
+      "title": "Single fault: gnss-loss while along fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "RTL"
+        ],
+        "events": [
+          "BOATY B6 POSITION LOST: HOLD",
+          "BOATY B6 POSITION OK: RTL"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-towards-fence]",
+      "id": "SC-13",
+      "title": "Single fault: gnss-loss while towards fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "RTL"
+        ],
+        "events": [
+          "BOATY B6 POSITION LOST: HOLD",
+          "BOATY B6 POSITION OK: RTL"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-loss-rtl-from-corner]",
+      "id": "SC-13",
+      "title": "Single fault: gnss-loss while rtl from corner",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "RTL"
+        ],
+        "events": [
+          "BOATY B6 POSITION LOST: HOLD",
+          "BOATY B6 POSITION OK: RTL"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-along-fence]",
+      "id": "SC-13",
+      "title": "Single fault: gnss-offset-20m while along fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD"
+        ],
+        "events": [
+          "BOATY B6 POSITION JUMP: HOLD",
+          "BOATY B6 POSITION JUMP"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-towards-fence]",
+      "id": "SC-13",
+      "title": "Single fault: gnss-offset-20m while towards fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD"
+        ],
+        "events": [
+          "BOATY B6 POSITION JUMP: HOLD",
+          "BOATY B6 POSITION JUMP"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[gnss-offset-20m-rtl-from-corner]",
+      "id": "SC-13",
+      "title": "Single fault: gnss-offset-20m while rtl from corner",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD"
+        ],
+        "events": [
+          "BOATY B6 POSITION JUMP: HOLD",
+          "BOATY B6 POSITION JUMP"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-along-fence]",
+      "id": "SC-13",
+      "title": "Single fault: compass-reversed while along fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-towards-fence]",
+      "id": "SC-13",
+      "title": "Single fault: compass-reversed while towards fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[compass-reversed-rtl-from-corner]",
+      "id": "SC-13",
+      "title": "Single fault: compass-reversed while rtl from corner",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-along-fence]",
+      "id": "SC-13",
+      "title": "Single fault: motor-dead while along fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO",
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO"
+        ],
+        "events": [
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 1: RESUMED",
+          "BOATY B5 SHED END",
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 2: RESUMED",
+          "BOATY B5 SHED END"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-towards-fence]",
+      "id": "SC-13",
+      "title": "Single fault: motor-dead while towards fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO",
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO"
+        ],
+        "events": [
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 1: RESUMED",
+          "BOATY B5 SHED END",
+          "BOATY B5 SHED START"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[motor-dead-rtl-from-corner]",
+      "id": "SC-13",
+      "title": "Single fault: motor-dead while rtl from corner",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "RTL",
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "RTL"
+        ],
+        "events": [
+          "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 1: RESUMED",
+          "BOATY B5 SHED END",
+          "BOATY B5 SHED START"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-along-fence]",
+      "id": "SC-13",
+      "title": "Single fault: link-cut while along fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-towards-fence]",
+      "id": "SC-13",
+      "title": "Single fault: link-cut while towards fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[link-cut-rtl-from-corner]",
+      "id": "SC-13",
+      "title": "Single fault: link-cut while rtl from corner",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-along-fence]",
+      "id": "SC-13",
+      "title": "Single fault: mission-computer-dead while along fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-towards-fence]",
+      "id": "SC-13",
+      "title": "Single fault: mission-computer-dead while towards fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[mission-computer-dead-rtl-from-corner]",
+      "id": "SC-13",
+      "title": "Single fault: mission-computer-dead while rtl from corner",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-along-fence]",
+      "id": "SC-13",
+      "title": "Single fault: weed while along fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO",
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO"
+        ],
+        "events": [
+          "BOATY B5 SHED START"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-towards-fence]",
+      "id": "SC-13",
+      "title": "Single fault: weed while towards fence",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO",
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "AUTO"
+        ],
+        "events": [
+          "BOATY B5 SHED START",
+          "BOATY B5 STILL STUCK: HOLD",
+          "BOATY B5 SHED END"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_fault_sweep.py::test_sc13_single_fault_sweep[weed-rtl-from-corner]",
+      "id": "SC-13",
+      "title": "Single fault: weed while rtl from corner",
+      "refs": [
+        "FS-013",
+        "SC-13",
+        "SAF-007"
+      ],
+      "criterion": "Truth over 45 s after the fault: never outside the fence while the motors are driving",
+      "measured": {
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes": [
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "RTL",
+          "HOLD",
+          "GUIDED",
+          "HOLD",
+          "RTL"
+        ],
+        "events": [
+          "BOATY B5 SHED START",
+          "BOATY B5 STILL STUCK: HOLD",
+          "BOATY B5 SHED END"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-out]",
+      "id": "SC-20",
+      "title": "GNSS jump of 20 m outwards for 2 s, 7 m from the fence",
+      "refs": [
+        "FM-02",
+        "FS-013",
+        "FEN-005",
+        "SC-20"
+      ],
+      "criterion": "No uncommanded exit: the boat is never outside the fence under power (truth), and afterwards it is in AUTO, RTL or HOLD and inside the fence",
+      "measured": {
+        "jump_m": 20.0,
+        "raw_gps_jump_seen_m": 20.063,
+        "ekf_worst_error_m": 0.326,
+        "duration_s": 2,
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes_after": [],
+        "mode_at_end": "AUTO",
+        "texts": [
+          "Reached waypoint #2",
+          "Mission: 3 WP"
+        ],
+        "events": [],
+        "b6_actions": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[50m-out]",
+      "id": "SC-20",
+      "title": "GNSS jump of 50 m outwards for 2 s, 7 m from the fence",
+      "refs": [
+        "FM-02",
+        "FS-013",
+        "FEN-005",
+        "SC-20"
+      ],
+      "criterion": "No uncommanded exit: the boat is never outside the fence under power (truth), and afterwards it is in AUTO, RTL or HOLD and inside the fence",
+      "measured": {
+        "jump_m": 50.0,
+        "raw_gps_jump_seen_m": 50.054,
+        "ekf_worst_error_m": 0.317,
+        "duration_s": 2,
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes_after": [],
+        "mode_at_end": "AUTO",
+        "texts": [
+          "Reached waypoint #2",
+          "Mission: 3 WP"
+        ],
+        "events": [],
+        "b6_actions": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-in]",
+      "id": "SC-20",
+      "title": "GNSS jump of 20 m inwards for 2 s, 7 m from the fence",
+      "refs": [
+        "FM-02",
+        "FS-013",
+        "FEN-005",
+        "SC-20"
+      ],
+      "criterion": "No uncommanded exit: the boat is never outside the fence under power (truth), and afterwards it is in AUTO, RTL or HOLD and inside the fence",
+      "measured": {
+        "jump_m": -20.0,
+        "raw_gps_jump_seen_m": 19.999,
+        "ekf_worst_error_m": 0.316,
+        "duration_s": 2,
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes_after": [],
+        "mode_at_end": "AUTO",
+        "texts": [
+          "Reached waypoint #2",
+          "Mission: 3 WP"
+        ],
+        "events": [],
+        "b6_actions": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[50m-in]",
+      "id": "SC-20",
+      "title": "GNSS jump of 50 m inwards for 2 s, 7 m from the fence",
+      "refs": [
+        "FM-02",
+        "FS-013",
+        "FEN-005",
+        "SC-20"
+      ],
+      "criterion": "No uncommanded exit: the boat is never outside the fence under power (truth), and afterwards it is in AUTO, RTL or HOLD and inside the fence",
+      "measured": {
+        "jump_m": -50.0,
+        "raw_gps_jump_seen_m": 50.0,
+        "ekf_worst_error_m": 0.328,
+        "duration_s": 2,
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes_after": [],
+        "mode_at_end": "AUTO",
+        "texts": [
+          "Reached waypoint #2",
+          "Mission: 3 WP"
+        ],
+        "events": [],
+        "b6_actions": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-in-10s]",
+      "id": "SC-20",
+      "title": "GNSS jump of 20 m inwards for 10 s, 7 m from the fence",
+      "refs": [
+        "FM-02",
+        "FS-013",
+        "FEN-005",
+        "SC-20"
+      ],
+      "criterion": "No uncommanded exit: the boat is never outside the fence under power (truth), and afterwards it is in AUTO, RTL or HOLD and inside the fence",
+      "measured": {
+        "jump_m": -20.0,
+        "raw_gps_jump_seen_m": 20.071,
+        "ekf_worst_error_m": 20.005,
+        "duration_s": 10,
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes_after": [
+          "HOLD"
+        ],
+        "mode_at_end": "HOLD",
+        "texts": [
+          "BOATY B6 POSITION JUMP: HOLD",
+          "BOATY B6 POSITION JUMP"
+        ],
+        "events": [
+          "BOATY B6 POSITION JUMP: HOLD",
+          "BOATY B6 POSITION JUMP"
+        ],
+        "b6_actions": [
+          "B6 POSITION JUMP: HOLD"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-in-30s]",
+      "id": "SC-20",
+      "title": "GNSS jump of 20 m inwards for 30 s, 7 m from the fence",
+      "refs": [
+        "FM-02",
+        "FS-013",
+        "FEN-005",
+        "SC-20"
+      ],
+      "criterion": "No uncommanded exit: the boat is never outside the fence under power (truth), and afterwards it is in AUTO, RTL or HOLD and inside the fence",
+      "measured": {
+        "jump_m": -20.0,
+        "raw_gps_jump_seen_m": 20.073,
+        "ekf_worst_error_m": 20.021,
+        "duration_s": 30,
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes_after": [
+          "HOLD"
+        ],
+        "mode_at_end": "HOLD",
+        "texts": [
+          "BOATY B6 POSITION JUMP: HOLD",
+          "BOATY B6 POSITION JUMP"
+        ],
+        "events": [
+          "BOATY B6 POSITION JUMP: HOLD",
+          "BOATY B6 POSITION JUMP"
+        ],
+        "b6_actions": [
+          "B6 POSITION JUMP: HOLD"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc20_gnss_jump_near_fence[20m-out-30s]",
+      "id": "SC-20",
+      "title": "GNSS jump of 20 m outwards for 30 s, 7 m from the fence",
+      "refs": [
+        "FM-02",
+        "FS-013",
+        "FEN-005",
+        "SC-20"
+      ],
+      "criterion": "No uncommanded exit: the boat is never outside the fence under power (truth), and afterwards it is in AUTO, RTL or HOLD and inside the fence",
+      "measured": {
+        "jump_m": 20.0,
+        "raw_gps_jump_seen_m": 20.05,
+        "ekf_worst_error_m": 20.009,
+        "duration_s": 30,
+        "worst_outside_powered_m": 0.0,
+        "worst_outside_m": 0.0,
+        "modes_after": [
+          "HOLD"
+        ],
+        "mode_at_end": "HOLD",
+        "texts": [
+          "Flight mode change failed",
+          "Manual recovery started",
+          "BOATY B6 POSITION JUMP",
+          "BOATY B6 POSITION JUMP"
+        ],
+        "events": [
+          "BOATY B6 POSITION JUMP",
+          "BOATY B6 POSITION JUMP"
+        ],
+        "b6_actions": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc11_gnss_loss_during_battery_rtl[rtl-then-gnss]",
+      "id": "SC-11",
+      "title": "GNSS loss and battery failsafe together (rtl then gnss)",
+      "refs": [
+        "FS-011",
+        "FS-001",
+        "FS-004",
+        "SC-11"
+      ],
+      "criterion": "Most conservative wins: motors stopped (no thrust) from <= 3 s after the fix is lost until it is back, whatever the battery failsafe asks for; afterwards the boat returns home",
+      "measured": {
+        "motors_off_after_loss_s": 2.008,
+        "powered_from_3s_until_fix_back_s": 0.0,
+        "battery_pct_at_restore": 34,
+        "home_after_restore": true,
+        "modes": [
+          [
+            -4.0,
+            "RTL"
+          ],
+          [
+            1.8,
+            "HOLD"
+          ],
+          [
+            36.5,
+            "RTL"
+          ]
+        ],
+        "events": [
+          "BOATY B6 POSITION LOST: HOLD",
+          "BOATY B6 POSITION OK: RTL"
+        ],
+        "texts": [
+          "EKF failsafe cleared"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_gnss_faults.py::test_sc11_gnss_loss_during_battery_rtl[gnss-then-battery]",
+      "id": "SC-11",
+      "title": "GNSS loss and battery failsafe together (gnss then battery)",
+      "refs": [
+        "FS-011",
+        "FS-001",
+        "FS-004",
+        "SC-11"
+      ],
+      "criterion": "Most conservative wins: motors stopped (no thrust) from <= 3 s after the fix is lost until it is back, whatever the battery failsafe asks for; afterwards the boat returns home",
+      "measured": {
+        "motors_off_after_loss_s": 1.684,
+        "powered_from_3s_until_fix_back_s": 0.0,
+        "battery_pct_at_restore": 30,
+        "home_after_restore": true,
+        "modes": [
+          [
+            1.7,
+            "HOLD"
+          ],
+          [
+            36.2,
+            "RTL"
+          ]
+        ],
+        "events": [
+          "BOATY B6 POSITION LOST: HOLD",
+          "BOATY B6 POSITION OK: RTL"
+        ],
+        "texts": [
+          "Battery 1 is low 10.89V used 1626 mAh",
+          "EKF failsafe cleared"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
     },
     {
       "nodeid": "tests/sitl/test_helm_contract.py::test_status_after_connect",
@@ -482,7 +1306,7 @@
       ],
       "criterion": "Throttle 0.6 for 5 s moves the boat > 2 m forward",
       "measured": {
-        "moved_m": 3.568
+        "moved_m": 3.553
       },
       "notes": [],
       "outcome": "passed"
@@ -497,8 +1321,8 @@
       ],
       "criterion": "Helm commands the motors to neutral <= 1 s after stop(); helm disarmed; stop() is idempotent",
       "measured": {
-        "outputs_neutral_s": 0.068,
-        "thrust_below_0_05N_s": 0.358
+        "outputs_neutral_s": 0.305,
+        "thrust_below_0_05N_s": 0.565
       },
       "notes": [
         "Measured at 5x speed-up, so wall-clock latency in the test harness counts 5 times over; spin-down is the model's 0.1 s motor time constant."
@@ -526,17 +1350,17 @@
       "measured": {
         "items": 5,
         "planned_s": 249,
-        "flown_s": 168.666,
-        "total_s": 275.715,
+        "flown_s": 167.676,
+        "total_s": 274.676,
         "readback_checksum_equal": true,
         "min_fence_clearance_m": 8.783,
-        "min_zone_clearance_m": 5.188,
+        "min_zone_clearance_m": 5.19,
         "photos": 31,
         "photo_point_photos": 3,
         "synced": 31,
         "acked": 31,
         "bad_hash": 0,
-        "home_to_disarm_s": 61.465,
+        "home_to_disarm_s": 61.068,
         "captains_log": true,
         "llm_logged": 1,
         "spoken": [
@@ -572,19 +1396,19 @@
         },
         "MISSION": {
           "edge_to_call_ms": 0.0,
-          "outputs_neutral_s": 0.38749999999964757,
+          "outputs_neutral_s": 0.3058333333330552,
           "disarmed": true,
           "after": "DEBRIEF"
         },
         "RETURNING": {
           "edge_to_call_ms": 0.0,
-          "outputs_neutral_s": 0.05333333333328483,
+          "outputs_neutral_s": 0.037499999999965894,
           "disarmed": true,
           "after": "DEBRIEF"
         },
         "MANUAL": {
           "edge_to_call_ms": 0.0,
-          "outputs_neutral_s": 0.3249999999997044,
+          "outputs_neutral_s": 0.3383333333330256,
           "disarmed": true,
           "after": "DEBRIEF"
         }
@@ -719,11 +1543,11 @@
       ],
       "criterion": "Second system-255 source: C7 detects it within 3 s, refuses arming and GO, alarms; STOP still works; clears when it goes",
       "measured": {
-        "detect_s": 0.499,
+        "detect_s": 0.164,
         "go_refused": true,
         "alarm": true,
         "spoken": true,
-        "clear_s": 3.147,
+        "clear_s": 3.282,
         "go_after_clear": true
       },
       "notes": [],
@@ -741,8 +1565,8 @@
       ],
       "criterion": "Boat services not running (no B7). Gale pushes the boat out of the site fence: C1 commands HOLD before 30 s or 10 m outside; motors stay off",
       "measured": {
-        "halt_after_s": 9.259,
-        "outside_at_halt_m": 8.349,
+        "halt_after_s": 9.188,
+        "outside_at_halt_m": 8.338,
         "motors_running_next_20s": 0.8,
         "spoken": true,
         "helm_mode": "HOLD"
@@ -762,10 +1586,11 @@
       ],
       "criterion": "Dead motor mid-mission: the boat stops itself; Mission Control says why within 2 s of the helm reporting it; resume refused without the PIN, accepted with it",
       "measured": {
-        "held_after_s": 73.508,
-        "final_helm_hold_after_s": 73.427,
-        "said_after_final_hold_s": 0.072,
+        "held_after_s": 79.626,
+        "final_helm_hold_after_s": 79.512,
+        "said_after_final_hold_s": 0.1,
         "spoken": [
+          "I'm stuck in some weed, trying to wiggle free.",
           "I'm stuck in some weed, trying to wiggle free.",
           "I'm stuck in some weed, trying to wiggle free.",
           "I've stopped. A grown-up needs to check me."
@@ -778,11 +1603,132 @@
         "mode_after_resume": "AUTO",
         "events": [
           "BOATY B5 SHED START",
+          "BOATY B5 FREE AFTER 1: RESUMED",
+          "BOATY B5 SHED END",
+          "BOATY B5 SHED START",
           "BOATY B5 FREE AFTER 2: RESUMED",
           "BOATY B5 SHED END",
           "BOATY B5 SHED START",
           "BOATY B5 STILL STUCK: HOLD",
           "BOATY B5 SHED END"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[battery]",
+      "id": "SC-12",
+      "title": "Failsafe logged and announced (battery, FS-001)",
+      "refs": [
+        "FS-012",
+        "SC-12",
+        "FS-001"
+      ],
+      "criterion": "The boat's failsafe action (helm mode change away from AUTO, or a BOATY event) is in the session log, and Mission Control speaks or shows it within 2 s",
+      "measured": {
+        "boat_acted_after_s": 115.91,
+        "announced_after_action_s": 0.021,
+        "spoken": [
+          "I need to come home now."
+        ],
+        "alerts": [
+          "Failsafe: the boat is coming home. Flight plan received | Throttle armed | Mission: 1 ChangeSpeed | Mission: 2 WP | Battery 1 is low 10.89V used 1626 mAh"
+        ],
+        "log_kinds": [
+          "alert",
+          "helm_mode"
+        ],
+        "events": []
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[gnss]",
+      "id": "SC-12",
+      "title": "Failsafe logged and announced (gnss, FS-004)",
+      "refs": [
+        "FS-012",
+        "SC-12",
+        "FS-004"
+      ],
+      "criterion": "The boat's failsafe action (helm mode change away from AUTO, or a BOATY event) is in the session log, and Mission Control speaks or shows it within 2 s",
+      "measured": {
+        "boat_acted_after_s": 1.759,
+        "announced_after_action_s": 0.256,
+        "spoken": [
+          "I've stopped. A grown-up needs to check me."
+        ],
+        "alerts": [
+          "The boat stopped itself: BOATY B6 POSITION LOST: HOLD. Check it, then Resume (PIN) or Come home."
+        ],
+        "log_kinds": [
+          "alert",
+          "boat_event",
+          "helm_mode"
+        ],
+        "events": [
+          "BOATY B6 POSITION LOST: HOLD"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[water]",
+      "id": "SC-12",
+      "title": "Failsafe logged and announced (water, FS-010)",
+      "refs": [
+        "FS-012",
+        "SC-12",
+        "FS-010"
+      ],
+      "criterion": "The boat's failsafe action (helm mode change away from AUTO, or a BOATY event) is in the session log, and Mission Control speaks or shows it within 2 s",
+      "measured": {
+        "boat_acted_after_s": 0.027,
+        "announced_after_action_s": 0.006,
+        "spoken": [
+          "I need to come home now."
+        ],
+        "alerts": [
+          "Failsafe: the boat is coming home. Fence Indexed OK | Flight plan received | Throttle armed | Mission: 1 ChangeSpeed | Mission: 2 WP"
+        ],
+        "log_kinds": [
+          "alert",
+          "boat_event",
+          "helm_mode"
+        ],
+        "events": [
+          "BOATY B6 WATER IN BOX: RTL"
+        ]
+      },
+      "notes": [],
+      "outcome": "passed"
+    },
+    {
+      "nodeid": "tests/sitl/test_mission_control.py::test_sc12_failsafe_logged_and_announced[weed]",
+      "id": "SC-12",
+      "title": "Failsafe logged and announced (weed, FS-005/006)",
+      "refs": [
+        "FS-012",
+        "SC-12",
+        "FS-005"
+      ],
+      "criterion": "The boat's failsafe action (helm mode change away from AUTO, or a BOATY event) is in the session log, and Mission Control speaks or shows it within 2 s",
+      "measured": {
+        "boat_acted_after_s": 13.064,
+        "announced_after_action_s": 0.135,
+        "spoken": [
+          "I'm stuck in some weed, trying to wiggle free."
+        ],
+        "alerts": [],
+        "log_kinds": [
+          "boat_event",
+          "helm_mode"
+        ],
+        "events": [
+          "BOATY B5 SHED START"
         ]
       },
       "notes": [],
@@ -800,11 +1746,11 @@
       ],
       "criterion": "RTL commanded where the straight line home crosses the island: the boat never enters any exclusion zone, stays inside the inclusion fence, and reaches home (\u2264 3 m) within 180 s",
       "measured": {
-        "rtl_to_home_s": 83.346,
-        "closest_to_any_zone_m": 2.617,
+        "rtl_to_home_s": 83.258,
+        "closest_to_any_zone_m": 2.618,
         "closest_zone": "island",
-        "closest_to_island_edge_m": 2.617,
-        "closest_to_inclusion_edge_m": 8.665,
+        "closest_to_island_edge_m": 2.618,
+        "closest_to_inclusion_edge_m": 8.673,
         "wind_mps": 0.0,
         "modes": [
           "RTL"
@@ -817,30 +1763,30 @@
             0,
             15.3,
             67.4,
-            0.98
+            0.99
           ],
           [
             5,
             14.5,
-            68.0,
-            0.55
+            67.9,
+            0.58
           ],
           [
             10,
             15.9,
-            63.6,
+            63.4,
             1.01
           ],
           [
             15,
-            17.3,
-            58.7,
+            17.4,
+            58.6,
             1.01
           ],
           [
             20,
             17.8,
-            54.6,
+            54.5,
             0.95
           ],
           [
@@ -852,19 +1798,19 @@
           [
             30,
             19.6,
-            46.3,
+            46.2,
             0.88
           ],
           [
             35,
             19.0,
-            41.7,
+            41.6,
             0.98
           ],
           [
             40,
             18.1,
-            36.8,
+            36.7,
             1.0
           ],
           [
@@ -876,43 +1822,43 @@
           [
             50,
             15.6,
-            28.0,
+            27.9,
             0.98
           ],
           [
             55,
-            13.2,
+            13.1,
             23.6,
             1.0
           ],
           [
             60,
             10.7,
-            19.3,
+            19.2,
             1.01
           ],
           [
             65,
             8.3,
-            14.9,
-            1.0
+            14.8,
+            1.01
           ],
           [
             70,
-            5.9,
-            10.5,
+            5.8,
+            10.4,
             1.0
           ],
           [
             75,
-            3.5,
-            6.1,
+            3.4,
+            6.0,
             1.0
           ],
           [
             80,
             1.0,
-            1.7,
+            1.6,
             1.0
           ]
         ]
@@ -935,11 +1881,11 @@
       ],
       "criterion": "RTL commanded where the straight line home crosses the island: the boat never enters any exclusion zone, stays inside the inclusion fence, and reaches home (\u2264 3 m) within 180 s",
       "measured": {
-        "rtl_to_home_s": 83.952,
-        "closest_to_any_zone_m": 2.619,
+        "rtl_to_home_s": 84.065,
+        "closest_to_any_zone_m": 2.621,
         "closest_zone": "island",
-        "closest_to_island_edge_m": 2.619,
-        "closest_to_inclusion_edge_m": 8.752,
+        "closest_to_island_edge_m": 2.621,
+        "closest_to_inclusion_edge_m": 8.769,
         "wind_mps": 3.0,
         "modes": [
           "RTL"
@@ -950,20 +1896,20 @@
         "track": [
           [
             0,
-            15.3,
-            67.4,
-            0.98
+            15.5,
+            67.1,
+            1.0
           ],
           [
             5,
             14.2,
             68.0,
-            0.44
+            0.42
           ],
           [
             10,
             15.6,
-            63.8,
+            63.9,
             0.99
           ],
           [
@@ -987,7 +1933,7 @@
           [
             30,
             19.5,
-            46.5,
+            46.6,
             0.87
           ],
           [
@@ -1004,38 +1950,38 @@
           ],
           [
             45,
-            17.7,
+            17.8,
             32.1,
-            0.87
+            0.89
           ],
           [
             50,
             16.0,
-            28.4,
+            28.6,
             0.98
           ],
           [
             55,
             13.6,
-            24.1,
+            24.2,
             1.0
           ],
           [
             60,
-            11.1,
-            19.7,
+            11.2,
+            19.8,
             1.01
           ],
           [
             65,
-            8.7,
-            15.3,
+            8.8,
+            15.4,
             1.01
           ],
           [
             70,
-            6.2,
-            10.9,
+            6.3,
+            11.0,
             1.0
           ],
           [
@@ -1047,7 +1993,7 @@
           [
             80,
             1.4,
-            2.2,
+            2.3,
             1.0
           ]
         ]
@@ -1068,7 +2014,7 @@
       ],
       "criterion": "Driving straight at the fence in STEERING for 60 s: the boat reaches the fence area but never gets more than 10 m outside",
       "measured": {
-        "max_north_m": 23.559,
+        "max_north_m": 23.56,
         "fence_line_north_m": 25.0,
         "worst_outside_m": 0.0,
         "fence_action": "none needed",
@@ -1092,7 +2038,7 @@
         "modes_during_cut": [
           "AUTO (unchanged)"
         ],
-        "progress_m": 19.825,
+        "progress_m": 19.821,
         "failsafe_texts": [
           "GCS Failsafe",
           "Failsafe - Continuing Auto Mode"
@@ -1111,7 +2057,7 @@
       ],
       "criterion": "After arriving home in RTL, with a 4 m/s wind for 60 s, the boat stays within 5 m of home",
       "measured": {
-        "max_drift_m": 1.856,
+        "max_drift_m": 1.818,
         "mode_at_end": "RTL"
       },
       "notes": [
@@ -1131,8 +2077,8 @@
       ],
       "criterion": "Heavy weed drag in AUTO: HOLD within 5 s of the boat being stuck (< 0.1 m/s)",
       "measured": {
-        "stuck_after_weed_s": 0.053,
-        "hold_after_stuck_s": 4.882,
+        "stuck_after_weed_s": 0.045,
+        "hold_after_stuck_s": 4.901,
         "crash_text": [
           "Crash: Going to HOLD"
         ]
@@ -1153,7 +2099,7 @@
       ],
       "criterion": "With Mission Control silent but the mission computer (1/191) heartbeating, the GCS failsafe still fires",
       "measured": {
-        "failsafe_after_s": 2.204
+        "failsafe_after_s": 2.932
       },
       "notes": [],
       "outcome": "passed"
@@ -1185,15 +2131,15 @@
       ],
       "criterion": "After the last velocity target, motors are off within 3 s",
       "measured": {
-        "speed_before_m_s": 1.028,
-        "motors_off_after_s": 3.924
+        "speed_before_m_s": 1.027,
+        "motors_off_after_s": 3.835
       },
       "notes": [
         "Rover 4.7.1 mode_guided.cpp: 3 s timeout, then a decelerating stop (ATC_DECEL_MAX)."
       ],
       "outcome": "xfail",
       "known_finding": "Finding: GUIDED times out after 3 s then decelerates; motors off ~3.9 s.",
-      "failure": "assert (53.48833333329281 is not None and (53.48833333329281 - 49.56416666662971) <= 3.0)"
+      "failure": "assert (53.51499999995945 is not None and (53.51499999995945 - 49.67999999996294) <= 3.0)"
     },
     {
       "nodeid": "tests/sitl/test_v_items.py::test_v12_skid_steer_boat_behaves",
@@ -1207,10 +2153,10 @@
       ],
       "criterion": "Flies the 30 m triangle: cross-track RMS <= 3 m, mean speed within 20% of 1.0 m/s",
       "measured": {
-        "cross_track_rms_m": 0.149,
+        "cross_track_rms_m": 0.146,
         "cross_track_max_m": 0.354,
         "mean_speed_m_s": 1.005,
-        "samples": 297
+        "samples": 298
       },
       "notes": [],
       "outcome": "passed"
@@ -1249,7 +2195,7 @@
       ],
       "criterion": "Offshore gale pushes the boat out: does ArduPilot itself stop the motors by 30 s / 10 m outside? (answer recorded)",
       "measured": {
-        "outside_after_40s_m": 61.974,
+        "outside_after_40s_m": 61.927,
         "motors_running": false,
         "mode": "RTL"
       },
@@ -1269,7 +2215,7 @@
       "criterion": "Answer recorded: RTL speed after the critical battery failsafe, compared with WP_SPEED (1.0 m/s)",
       "measured": {
         "rtl_speed_after_critical_m_s": 0.999,
-        "distance_home_m": 42.097,
+        "distance_home_m": 42.181,
         "mode": "RTL",
         "texts": [
           "Battery 1 is low 10.89V used 1626 mAh",
@@ -1296,8 +2242,8 @@
       "measured": {
         "sim_mag1_orient": 2.0,
         "worst_outside_m": 0.0,
-        "worst_heading_error_deg": 101.769,
-        "heading_error_last_20s_deg": 100.168,
+        "worst_heading_error_deg": 101.789,
+        "heading_error_last_20s_deg": 100.145,
         "mission_seq_at_end": 3,
         "mission_total": 3,
         "texts": [],
