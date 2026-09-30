@@ -118,7 +118,8 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
 
 ## Live Claude evaluation (IF-11, SC-33)
 
-- 39 instructions were run against the live API (`claude-opus-5-5`),
+- 39 instructions (41 after the trip-length fix below) were run against
+  the live API (`claude-opus-5-5`),
   each through the real planning flow: Claude, then the planner, then the
   validator. Details are in `NLI_EVAL.md`.
   - **All 39 passed.** Every reply was schema-valid, and no retries or
@@ -135,13 +136,23 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
   4G, so NLI-007's 20 s on 4G still needs a lake-side check.
 - **Cost:** $0.23 for the run, about 0.6 p per plan. The system prompt is
   cached (1,938 tokens), so later requests read it at the cache rate.
-- **Finding: the model can't judge trip length.** "Just a short trip
-  please, he's getting tired" gave a 10.4-minute plan, longer than the
-  8-minute "adventure". The site context has names, sizes and directions,
-  but nothing about time. The plan preview shows the duration before
-  approval (MCN-D56), so this is usability, not safety. Candidate fix:
-  give each area a rough minutes figure in the context, or let the
-  planner return "too long for a short trip" as retry feedback.
+- **Fixed: the model couldn't judge trip length.**
+  - **Symptom:** "Just a short trip please, he's getting tired" gave a
+    10.4-minute plan, longer than the 8-minute "adventure". The site
+    context had names, sizes and directions, but nothing about time.
+  - **Fix (prompt `intent-1.1`):** the planner now works out
+    `trip_minutes` for each area (explore light/medium/thorough, lap) and
+    each landmark visit, as a whole trip from home and back, and adds it
+    to the context. The prompt says a short, quick or tired-child trip
+    should be about 5 minutes.
+  - **Check:** three short-trip phrasings, each with a 5.5-minute limit,
+    gave 4.2, 4.2 and 1.6 minutes.
+  - **Full rerun: 41 of 41** (the 39 cases plus two new short-trip ones).
+    All 14 must-declines were declined; 95th percentile 6.9 s; $0.31.
+  - **Side effect:** the model now plans landmark visits more often. For
+    "Look for ducks" and "Take lots of pictures" it visits landmarks to
+    take photos, which is reasonable, so those two cases now accept
+    "visit" as well.
 
 ## SC-06 intermittency: root cause found and fixed
 

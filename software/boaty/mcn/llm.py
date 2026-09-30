@@ -36,7 +36,7 @@ KEY_FILE = Path(os.environ.get("BOATY_KEY_FILE", Path.home() / ".config" /
                                "boaty" / "anthropic_api_key"))
 REPO = Path(__file__).resolve().parents[3]
 
-PROMPT_VERSION = "intent-1.0"
+PROMPT_VERSION = "intent-1.1"
 SYSTEM_PROMPT = """\
 You plan short trips for Boaty, a small autonomous model boat that a parent \
 and their four-year-old sail on a pond. You turn one instruction into a \
@@ -61,8 +61,15 @@ photos
 
 Use only area and landmark names from <site> (a name or one of its \
 aliases). Choose speed "slow" if they ask for slow or gentle, otherwise \
-"normal". Trips must be short: at most 20 minutes, so prefer light or \
-medium coverage and small areas unless they clearly ask for more.
+"normal".
+
+<site> includes trip_minutes: roughly how long each thing takes as a \
+whole trip from home and back. When a plan has several steps, their \
+times add up (a little less, as the travel home is shared). Every plan \
+must fit within max_trip_minutes. If they ask for a short, quick or \
+little trip, or say the child is tired or sleepy, keep the whole plan to \
+about 5 minutes: one or two quick steps. Otherwise prefer light or medium \
+coverage and small areas unless they clearly ask for more.
 
 Decline, by setting "declined" and leaving "steps" empty, when the boat \
 must not or cannot do what was asked: chasing, following, herding or \

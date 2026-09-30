@@ -108,6 +108,31 @@ class Planner:
                                 battery_pct=battery_pct,
                                 mission_id=mission_id)
 
+    def time_guide(self) -> dict:
+        """Rough minutes for each thing the model can ask for, each as a
+        whole trip from home and back (estimates x 1.2, as validated).
+        Sent to the model so it can judge 'a short trip' (IF-11); no
+        coordinates."""
+        def minutes(steps) -> float | str:
+            it = Intent.model_validate({
+                "schema": "boaty.intent/1", "speed": "normal",
+                "declined": None, "summary_for_child": "",
+                "steps": steps + [{"op": "return_home"}]})
+            try:
+                m = self.from_intent(it, source="text", now_utc="")
+            except PlanError:
+                return "too long"
+            return round(m.estimates.duration_s / 30) / 2
+        areas = {a.name: {**{f"explore_{c}": minutes(
+            [{"op": "explore", "area": a.name, "coverage": c}])
+            for c in ("light", "medium", "thorough")},
+            "lap": minutes([{"op": "lap", "area": a.name}])}
+            for a in self.site.areas}
+        marks = {m.name: minutes([{"op": "visit", "landmark": m.name,
+                                   "photos": 3, "hold_s": 10}])
+                 for m in self.site.landmarks}
+        return {"areas": areas, "visit_landmark": marks}
+
     # ---- lookups ---------------------------------------------------------
     def _area(self, name: str) -> Named:
         a = self.site.find(name, "area")

@@ -19,6 +19,7 @@ from .site import Site
 from .validator import Limits, ValidatedMission, validate
 
 RETRIES = 1
+_GUIDES: dict = {}                 # trip-length guide per site and limits
 NO_INTERNET = "No internet: templates only."
 
 
@@ -56,6 +57,14 @@ class Planning:
         return PlanOutcome(True, m.summary_for_child, mission=m, result=res,
                            validated=vm, preview=preview(m, self.site))
 
+    def context(self) -> dict:
+        """Site context for Claude, with rough trip lengths (IF-11)."""
+        key = (self.site.name, self.site.git_version,
+               self.site.props.get("version"), self.limits)
+        if key not in _GUIDES:
+            _GUIDES[key] = self.planner.time_guide()
+        return dict(self.site.context_for_llm(), trip_minutes=_GUIDES[key])
+
     def from_text(self, text: str, *, source: str, now_utc: str,
                   battery_pct: float = 100.0, photo_capacity: int = 1000,
                   boat_home=None) -> PlanOutcome:
@@ -68,8 +77,8 @@ class Planning:
         max_min = min(self.limits.max_duration_s,
                       self.limits.duration_cap_s) // 60
         for _ in range(1 + RETRIES):
-            r = self.llm.ask(self.site.context_for_llm(), text, battery_pct,
-                             max_min, note)
+            r = self.llm.ask(self.context(), text, battery_pct, max_min,
+                             note)
             attempts.append(r.kind)
             if r.kind == "error":
                 return PlanOutcome(False, "Let's pick an adventure!",

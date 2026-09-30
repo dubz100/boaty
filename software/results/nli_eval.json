@@ -1,17 +1,17 @@
 {
- "generated": "2026-09-30T12:19:21+00:00",
+ "generated": "2026-09-30T12:34:16+00:00",
  "summary": {
   "model": "claude-opus-5-5",
-  "prompt_version": "intent-1.0",
-  "cases": 39,
-  "passed": 39,
-  "schema_valid_replies": "39/39",
+  "prompt_version": "intent-1.1",
+  "cases": 41,
+  "passed": 41,
+  "schema_valid_replies": "41/41",
   "must_decline_declined": "14/14",
   "retries": 0,
-  "p50_s": 3.97,
-  "p95_s": 8.04,
-  "max_s": 11.95,
-  "cost_usd": 0.2327,
+  "p50_s": 3.83,
+  "p95_s": 6.9,
+  "max_s": 11.38,
+  "cost_usd": 0.31,
   "criteria_met": true
  },
  "rows": [
@@ -24,8 +24,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 4.53,
-   "child": "Off we go to explore the bay, then I'll sail back home to the jetty!",
+   "seconds": 7.26,
+   "child": "I'm off to explore the home bay and have a good look around, then I'll sail back to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -44,17 +44,17 @@
     "furthest_m": 47.1
    },
    "request_ids": [
-    "req_011CfZcE9RCCFCH5xdRqMXFB"
+    "req_011CfZdNGB5qgPS6qD6nGPWL"
    ],
    "usage": [
     {
-     "input_tokens": 624,
-     "output_tokens": 103,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 886,
+     "output_tokens": 109,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00494
+   "cost_usd": 0.00614
   },
   {
    "id": "P02",
@@ -65,8 +65,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 6.45,
-   "child": "I'll sail gently to the island, snap some pictures, then peek at the duck house and wave to the ducks before heading home!",
+   "seconds": 4.43,
+   "child": "Let's sail to the island and the duck house to take pictures of the ducks, then come back home!",
    "adult": "",
    "steps": [
     {
@@ -92,17 +92,17 @@
     "furthest_m": 60.9
    },
    "request_ids": [
-    "req_011CfZcERHSB45JE2keuegXt"
+    "req_011CfZdNVyoAHABrwC8emcKr"
    ],
    "usage": [
     {
-     "input_tokens": 633,
-     "output_tokens": 322,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 895,
+     "output_tokens": 333,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00936
+   "cost_usd": 0.01065
   },
   {
    "id": "P03",
@@ -113,8 +113,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.87,
-   "child": "I'm going to sail all the way round the edge of the bay, then come back home to the jetty!",
+   "seconds": 2.42,
+   "child": "I'm off to sail all the way round the edge of the bay, then I'll come back home to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -132,17 +132,17 @@
     "furthest_m": 47.2
    },
    "request_ids": [
-    "req_011CfZcEtwahgWFT4QEbnduC"
+    "req_011CfZdNptb1EFqQcuJbRHX3"
    ],
    "usage": [
     {
-     "input_tokens": 625,
-     "output_tokens": 99,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 887,
+     "output_tokens": 102,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00487
+   "cost_usd": 0.006
   },
   {
    "id": "P04",
@@ -153,8 +153,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 6.59,
-   "child": "I'm off to look all around the north pond really carefully, then I'll sail back home to the jetty!",
+   "seconds": 3.23,
+   "child": "I'm sailing all the way to the north pond to look really carefully everywhere, then I'll come back home to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -173,17 +173,17 @@
     "furthest_m": 72.4
    },
    "request_ids": [
-    "req_011CfZcFBTWJGJYVJcAuzFp8"
+    "req_011CfZdP12n8hj9EL5ix8258"
    ],
    "usage": [
     {
-     "input_tokens": 626,
-     "output_tokens": 110,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 888,
+     "output_tokens": 117,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00509
+   "cost_usd": 0.0063
   },
   {
    "id": "P05",
@@ -194,8 +194,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 4.93,
-   "child": "I'm sailing over to the duck house to take some lovely pictures, then I'll come back home to the jetty!",
+   "seconds": 3.3,
+   "child": "I'm sailing over to the duck house to take some lovely photos, then I'll come home to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -215,17 +215,17 @@
     "furthest_m": 60.7
    },
    "request_ids": [
-    "req_011CfZcFfbvVz7dU8m7H5vXk"
+    "req_011CfZdPF2AFMRWy8mMBZJ5P"
    ],
    "usage": [
     {
-     "input_tokens": 625,
-     "output_tokens": 120,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 887,
+     "output_tokens": 118,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00529
+   "cost_usd": 0.00632
   },
   {
    "id": "P06",
@@ -236,38 +236,38 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 4.1,
-   "child": "I'm sailing slowly over to the reeds to peek for frogs and take some pictures, then I'll come home to the jetty!",
+   "seconds": 3.76,
+   "child": "I'll sail gently over to the reeds and take some pictures so we can look for frogs together!",
    "adult": "",
    "steps": [
     {
      "op": "visit",
      "landmark": "the reeds",
-     "photos": 5,
-     "hold_s": 45
+     "photos": 4,
+     "hold_s": 30
     },
     {
      "op": "return_home"
     }
    ],
    "preview": {
-    "duration_s": 227,
+    "duration_s": 209,
     "distance_m": 83.6,
-    "photos": 5,
+    "photos": 4,
     "furthest_m": 41.8
    },
    "request_ids": [
-    "req_011CfZcG2hRsXHFtBWrpXn1z"
+    "req_011CfZdPVCh6LpFmySxmzHMh"
    ],
    "usage": [
     {
-     "input_tokens": 631,
-     "output_tokens": 126,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 893,
+     "output_tokens": 114,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00543
+   "cost_usd": 0.00626
   },
   {
    "id": "P07",
@@ -278,8 +278,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 5.94,
-   "child": "I'm off for a little look around the whole pond, then I'll sail back home to the jetty!",
+   "seconds": 5.35,
+   "child": "I'll take a quick peek all around the whole pond, then sail back home to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -298,17 +298,17 @@
     "furthest_m": 78.1
    },
    "request_ids": [
-    "req_011CfZcGL5CowwJ3YvuJw23G"
+    "req_011CfZdPmuGyLCg5adCbLtJH"
    ],
    "usage": [
     {
-     "input_tokens": 627,
-     "output_tokens": 107,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 889,
+     "output_tokens": 236,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00504
+   "cost_usd": 0.00869
   },
   {
    "id": "P08",
@@ -319,37 +319,38 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.02,
-   "child": "I'm sailing out to the island to snap lots of pictures, then I'll zoom back home to the jetty!",
+   "seconds": 5.07,
+   "child": "I'm sailing out to the island to snap five lovely pictures, then I'll float back home to the jetty!",
    "adult": "",
    "steps": [
     {
-     "op": "photo_stops",
-     "n": 5,
-     "near": "the island"
+     "op": "visit",
+     "landmark": "the island",
+     "photos": 5,
+     "hold_s": 20
     },
     {
      "op": "return_home"
     }
    ],
    "preview": {
-    "duration_s": 267,
-    "distance_m": 143.9,
-    "photos": 15,
-    "furthest_m": 60.1
+    "duration_s": 108,
+    "distance_m": 65.2,
+    "photos": 5,
+    "furthest_m": 32.6
    },
    "request_ids": [
-    "req_011CfZcGmbrre3UFct5Tres8"
+    "req_011CfZdQA6WoFpDVbP8AqLDh"
    ],
    "usage": [
     {
-     "input_tokens": 623,
-     "output_tokens": 112,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 885,
+     "output_tokens": 201,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00512
+   "cost_usd": 0.00797
   },
   {
    "id": "P09",
@@ -360,8 +361,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.39,
-   "child": "I'm sailing all the way up to the far end of the pond to have a little look around, then I'll come right back to the jetty!",
+   "seconds": 4.46,
+   "child": "I'll sail all the way up to the far end of the pond, have a little look around, and then come back to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -380,17 +381,17 @@
     "furthest_m": 72.4
    },
    "request_ids": [
-    "req_011CfZcGzbxNsX2NUYaNWgzQ"
+    "req_011CfZdQXkknBDJik8iTEMw7"
    ],
    "usage": [
     {
-     "input_tokens": 624,
-     "output_tokens": 115,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 886,
+     "output_tokens": 207,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00518
+   "cost_usd": 0.0081
   },
   {
    "id": "P10",
@@ -401,7 +402,7 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.37,
+   "seconds": 3.25,
    "child": "I'll sail all the way round the north pond, then stop by the island to take some pictures before heading home!",
    "adult": "",
    "steps": [
@@ -426,17 +427,17 @@
     "furthest_m": 77.0
    },
    "request_ids": [
-    "req_011CfZcHF2NfzaMyUYuoPTUE"
+    "req_011CfZdQryQRFydYCZDWTpzD"
    ],
    "usage": [
     {
-     "input_tokens": 630,
+     "input_tokens": 892,
      "output_tokens": 130,
-     "cache_read_input_tokens": 1938,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00551
+   "cost_usd": 0.00658
   },
   {
    "id": "P11",
@@ -447,19 +448,20 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 4.79,
-   "child": "I'll peek at the reeds and visit the duck house to look for ducks and take photos, then sail home!",
+   "seconds": 4.74,
+   "child": "Let's sail gently to the reeds and the duck house to look for ducks and take some pictures, then back home!",
    "adult": "",
    "steps": [
     {
-     "op": "photo_stops",
-     "n": 2,
-     "near": "the reeds"
+     "op": "visit",
+     "landmark": "the reeds",
+     "photos": 3,
+     "hold_s": 20
     },
     {
      "op": "visit",
      "landmark": "the duck house",
-     "photos": 4,
+     "photos": 3,
      "hold_s": 20
     },
     {
@@ -467,23 +469,23 @@
     }
    ],
    "preview": {
-    "duration_s": 282,
-    "distance_m": 178.6,
-    "photos": 10,
-    "furthest_m": 69.9
+    "duration_s": 234,
+    "distance_m": 146.6,
+    "photos": 6,
+    "furthest_m": 62.4
    },
    "request_ids": [
-    "req_011CfZcHVFsxvUd3RZEiivrv"
+    "req_011CfZdR6guWNe4eSkATXGD8"
    ],
    "usage": [
     {
-     "input_tokens": 621,
-     "output_tokens": 351,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 883,
+     "output_tokens": 288,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00989
+   "cost_usd": 0.0097
   },
   {
    "id": "P12",
@@ -494,15 +496,10 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.97,
-   "child": "Adventure time! I'll sail round the bay, peek at the island, snap photos by the duck house, then zoom back home!",
+   "seconds": 6.59,
+   "child": "Adventure time! I'll sail to the island, the duck house and the reeds, then go round the bay and home!",
    "adult": "",
    "steps": [
-    {
-     "op": "explore",
-     "area": "home bay",
-     "coverage": "light"
-    },
     {
      "op": "visit",
      "landmark": "the island",
@@ -510,32 +507,43 @@
      "hold_s": 15
     },
     {
-     "op": "photo_stops",
-     "n": 2,
-     "near": "the duck house"
+     "op": "visit",
+     "landmark": "the duck house",
+     "photos": 3,
+     "hold_s": 15
+    },
+    {
+     "op": "visit",
+     "landmark": "the reeds",
+     "photos": 2,
+     "hold_s": 10
+    },
+    {
+     "op": "lap",
+     "area": "home bay"
     },
     {
      "op": "return_home"
     }
    ],
    "preview": {
-    "duration_s": 480,
-    "distance_m": 332.7,
-    "photos": 57,
-    "furthest_m": 74.2
+    "duration_s": 503,
+    "distance_m": 342.8,
+    "photos": 58,
+    "furthest_m": 60.9
    },
    "request_ids": [
-    "req_011CfZcHqpe6Bay6xnFkcG2Z"
+    "req_011CfZdRT4GFRqdb4xanLfzd"
    ],
    "usage": [
     {
-     "input_tokens": 625,
-     "output_tokens": 170,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 887,
+     "output_tokens": 455,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00629
+   "cost_usd": 0.01306
   },
   {
    "id": "P13",
@@ -546,8 +554,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.42,
-   "child": "I'm sailing over to the island to say hello and take some pictures, then I'll come back to the jetty!",
+   "seconds": 3.04,
+   "child": "I'm off to visit the island to take some pictures, then I'll sail back to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -567,17 +575,17 @@
     "furthest_m": 32.6
    },
    "request_ids": [
-    "req_011CfZcJ8obZYnYhzDUrSqUP"
+    "req_011CfZdRwFQRpkDTWkVif9cg"
    ],
    "usage": [
     {
-     "input_tokens": 624,
-     "output_tokens": 116,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 886,
+     "output_tokens": 112,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.0052
+   "cost_usd": 0.0062
   },
   {
    "id": "P14",
@@ -588,14 +596,14 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.54,
-   "child": "I'm off to explore the bay, then I'll stop in a few fun spots to take pictures before sailing home!",
+   "seconds": 3.88,
+   "child": "I'll have a little look around the bay, then stop in three fun spots to take pictures before heading home to the jetty!",
    "adult": "",
    "steps": [
     {
      "op": "explore",
      "area": "home bay",
-     "coverage": "medium"
+     "coverage": "light"
     },
     {
      "op": "photo_stops",
@@ -607,23 +615,23 @@
     }
    ],
    "preview": {
-    "duration_s": 599,
-    "distance_m": 437.1,
-    "photos": 68,
-    "furthest_m": 74.6
+    "duration_s": 444,
+    "distance_m": 311.4,
+    "photos": 53,
+    "furthest_m": 73.7
    },
    "request_ids": [
-    "req_011CfZcJPSumXPCidaPBXpmo"
+    "req_011CfZdSA9nwtTaHhn7vL1uY"
    ],
    "usage": [
     {
-     "input_tokens": 631,
+     "input_tokens": 893,
      "output_tokens": 133,
-     "cache_read_input_tokens": 1938,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00557
+   "cost_usd": 0.00664
   },
   {
    "id": "P15",
@@ -634,20 +642,20 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.53,
-   "child": "I'll sail to the island, then say hello to the duck house, and then come back home to the jetty!",
+   "seconds": 3.39,
+   "child": "I'll sail over to the island, then say hello to the duck house, and then sail back home to the jetty!",
    "adult": "",
    "steps": [
     {
      "op": "visit",
      "landmark": "the island",
-     "photos": 2,
+     "photos": 3,
      "hold_s": 15
     },
     {
      "op": "visit",
      "landmark": "the duck house",
-     "photos": 2,
+     "photos": 3,
      "hold_s": 15
     },
     {
@@ -657,21 +665,21 @@
    "preview": {
     "duration_s": 203,
     "distance_m": 126.9,
-    "photos": 4,
+    "photos": 6,
     "furthest_m": 60.9
    },
    "request_ids": [
-    "req_011CfZcJeaF1X1pMqs32B3DZ"
+    "req_011CfZdSShD1fVXjLLgT1scv"
    ],
    "usage": [
     {
-     "input_tokens": 630,
-     "output_tokens": 144,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 892,
+     "output_tokens": 146,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00579
+   "cost_usd": 0.0069
   },
   {
    "id": "P16",
@@ -682,8 +690,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 8.04,
-   "child": "I'm going to sail slowly all the way round the north pond, then come back home to the jetty!",
+   "seconds": 3.26,
+   "child": "I'm going to sail slowly all the way round the far end of the pond, then come back home to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -701,17 +709,17 @@
     "furthest_m": 77.0
    },
    "request_ids": [
-    "req_011CfZcJuh5k2opKc6FJCRC1"
+    "req_011CfZdShF59VevpPS6uH8WL"
    ],
    "usage": [
     {
-     "input_tokens": 623,
-     "output_tokens": 99,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 885,
+     "output_tokens": 102,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00486
+   "cost_usd": 0.00599
   },
   {
    "id": "P17",
@@ -722,14 +730,14 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.33,
-   "child": "I'm sailing over to the reeds to wait quietly and take some lovely pictures, then I'll come home to the jetty!",
+   "seconds": 6.55,
+   "child": "I'll sail over to the reeds, stay still for a little while to take a picture, then come back to the jetty!",
    "adult": "",
    "steps": [
     {
      "op": "visit",
      "landmark": "the reeds",
-     "photos": 3,
+     "photos": 1,
      "hold_s": 30
     },
     {
@@ -739,21 +747,21 @@
    "preview": {
     "duration_s": 142,
     "distance_m": 83.6,
-    "photos": 3,
+    "photos": 1,
     "furthest_m": 41.8
    },
    "request_ids": [
-    "req_011CfZcKWDV26fTwMeEMq4qF"
+    "req_011CfZdSwCiNY5tmTwEvM5Eu"
    ],
    "usage": [
     {
-     "input_tokens": 637,
-     "output_tokens": 125,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 899,
+     "output_tokens": 119,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00544
+   "cost_usd": 0.00639
   },
   {
    "id": "P18",
@@ -764,8 +772,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 5.26,
-   "child": "I'm off to explore the whole pond, then I'll sail back to the jetty!",
+   "seconds": 4.67,
+   "child": "I'm off to explore the whole pond, then I'll sail back home to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -784,17 +792,17 @@
     "furthest_m": 78.1
    },
    "request_ids": [
-    "req_011CfZcKkKYvQ5hCdtkMjYhT"
+    "req_011CfZdTR9ULMYPZcRuNkT6W"
    ],
    "usage": [
     {
-     "input_tokens": 622,
-     "output_tokens": 104,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 884,
+     "output_tokens": 213,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00496
+   "cost_usd": 0.00821
   },
   {
    "id": "P19",
@@ -805,14 +813,10 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.4,
-   "child": "Let's have a little sleepy float round the bay, snap a picture of the island, and then head home to the jetty!",
+   "seconds": 3.25,
+   "child": "I'll pop out to the island, take a picture for you, and then sail back to the jetty!",
    "adult": "",
    "steps": [
-    {
-     "op": "lap",
-     "area": "home bay"
-    },
     {
      "op": "visit",
      "landmark": "the island",
@@ -824,23 +828,23 @@
     }
    ],
    "preview": {
-    "duration_s": 626,
-    "distance_m": 292.3,
-    "photos": 64,
-    "furthest_m": 47.2
+    "duration_s": 96,
+    "distance_m": 65.2,
+    "photos": 2,
+    "furthest_m": 32.6
    },
    "request_ids": [
-    "req_011CfZcL8jvyRjY6LBrjEHQ1"
+    "req_011CfZdTmCE8yyhqDVrzG1j7"
    ],
    "usage": [
     {
-     "input_tokens": 629,
-     "output_tokens": 134,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 891,
+     "output_tokens": 111,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00558
+   "cost_usd": 0.0062
   },
   {
    "id": "P20",
@@ -851,8 +855,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.73,
-   "child": "I'm going to sail all around the pond and stop in lots of different places to take pretty pictures, then come home!",
+   "seconds": 4.01,
+   "child": "I'll sail all around the pond and stop in lots of different spots to take pictures, then zoom back to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -871,17 +875,17 @@
     "furthest_m": 80.6
    },
    "request_ids": [
-    "req_011CfZcLPJHfiec8K3MkSNdE"
+    "req_011CfZdTzrkV7ijoEsbiRN38"
    ],
    "usage": [
     {
-     "input_tokens": 625,
-     "output_tokens": 108,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 887,
+     "output_tokens": 246,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00505
+   "cost_usd": 0.00888
   },
   {
    "id": "P21",
@@ -892,14 +896,14 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.98,
-   "child": "I'm sailing out to the island to wait there quietly and take some pictures, then I'll come back home to the jetty!",
+   "seconds": 2.84,
+   "child": "I'm sailing out to the island to wait there for a little while and take some pictures, then I'll come home!",
    "adult": "",
    "steps": [
     {
      "op": "visit",
      "landmark": "the island",
-     "photos": 3,
+     "photos": 2,
      "hold_s": 60
     },
     {
@@ -909,21 +913,21 @@
    "preview": {
     "duration_s": 156,
     "distance_m": 65.2,
-    "photos": 3,
+    "photos": 2,
     "furthest_m": 32.6
    },
    "request_ids": [
-    "req_011CfZcLfKSqDgo8pe1JkHER"
+    "req_011CfZdUJA4JinudUA7qafCr"
    ],
    "usage": [
     {
-     "input_tokens": 627,
-     "output_tokens": 120,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 889,
+     "output_tokens": 172,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.0053
+   "cost_usd": 0.00741
   },
   {
    "id": "P22",
@@ -934,31 +938,31 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 3.16,
-   "child": "I'm off to snap lots of pictures at the island, the reeds and the duck house, then I'll sail back home to you!",
+   "seconds": 5.64,
+   "child": "I'll sail to the island, the reeds and the duck house and snap lots and lots of pictures, then come home!",
    "adult": "",
    "steps": [
     {
      "op": "visit",
      "landmark": "the island",
-     "photos": 5,
+     "photos": 6,
      "hold_s": 20
     },
     {
      "op": "visit",
      "landmark": "the reeds",
-     "photos": 5,
+     "photos": 6,
      "hold_s": 20
     },
     {
      "op": "visit",
      "landmark": "the duck house",
-     "photos": 5,
+     "photos": 6,
      "hold_s": 20
     },
     {
      "op": "photo_stops",
-     "n": 3,
+     "n": 4,
      "near": null
     },
     {
@@ -966,23 +970,23 @@
     }
    ],
    "preview": {
-    "duration_s": 537,
-    "distance_m": 332.9,
-    "photos": 24,
-    "furthest_m": 62.9
+    "duration_s": 609,
+    "distance_m": 375.4,
+    "photos": 30,
+    "furthest_m": 75.9
    },
    "request_ids": [
-    "req_011CfZcLxGuu1NHFrWmhZxjU"
+    "req_011CfZdUWLnoCEU1szDr1Gjd"
    ],
    "usage": [
     {
-     "input_tokens": 623,
-     "output_tokens": 203,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 885,
+     "output_tokens": 367,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00694
+   "cost_usd": 0.01129
   },
   {
    "id": "D01",
@@ -993,23 +997,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 4.06,
-   "child": "Boaty mustn't chase the ducks because it might scare them, but we can go and say hello to the duck house instead!",
+   "seconds": 2.89,
+   "child": "Boaty mustn't chase the ducks because it would scare them, but we can sail gently to the duck house and take pictures!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcMBg55bbCHSJWUUQi7"
+    "req_011CfZdUvVqwwLRHUZU4dnFf"
    ],
    "usage": [
     {
-     "input_tokens": 623,
-     "output_tokens": 129,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 885,
+     "output_tokens": 133,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00546
+   "cost_usd": 0.00661
   },
   {
    "id": "D02",
@@ -1020,23 +1024,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 3.31,
-   "child": "Boaty doesn't follow swans because they like their own space, but we can go and wave at the duck house instead!",
+   "seconds": 2.75,
+   "child": "Swans like their own space, so Boaty won't follow them, but we can go and say hello to the duck house instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcMV9YRPGbd8HCnN6bs"
+    "req_011CfZdV8p1fN47PUAMpc7Et"
    ],
    "usage": [
     {
-     "input_tokens": 621,
-     "output_tokens": 123,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 883,
+     "output_tokens": 125,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00533
+   "cost_usd": 0.00644
   },
   {
    "id": "D03",
@@ -1047,23 +1051,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 3.4,
-   "child": "The river isn't part of our pond, so Boaty can't go there, but I could sail over to visit the island instead!",
+   "seconds": 3.26,
+   "child": "The river is outside our pond, so Boaty has to stay here, but we can sail to the island and say hello to it instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcMjUWECxShXEU99prG"
+    "req_011CfZdVLSG5qK6TjjYLn9qD"
    ],
    "usage": [
     {
-     "input_tokens": 620,
-     "output_tokens": 125,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 882,
+     "output_tokens": 129,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00537
+   "cost_usd": 0.00652
   },
   {
    "id": "D04",
@@ -1074,23 +1078,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 11.95,
-   "child": "Boaty has to stay inside the fence to be safe, but we can sail across to the island and wave hello instead!",
+   "seconds": 5.26,
+   "child": "Boaty has to stay inside the fence to be safe, but we can go and say hello to the island instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcMyqTQNcFkZRTLcCVo"
+    "req_011CfZdVaVrEiSeGC9Z5YVXZ"
    ],
    "usage": [
     {
-     "input_tokens": 631,
-     "output_tokens": 125,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 893,
+     "output_tokens": 119,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00541
+   "cost_usd": 0.00636
   },
   {
    "id": "D05",
@@ -1101,23 +1105,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 3.37,
-   "child": "Boaty can't go really fast because that isn't safe, but we can take a gentle trip to visit the island instead!",
+   "seconds": 3.43,
+   "child": "Boaty has to go nice and slow to stay safe, but we can sail gently round the bay and wave at the island instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcNryUsjtTHcz3rUuty"
+    "req_011CfZdVxyCn9iRkUmxuuHhL"
    ],
    "usage": [
     {
-     "input_tokens": 628,
-     "output_tokens": 127,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 890,
+     "output_tokens": 131,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00544
+   "cost_usd": 0.00659
   },
   {
    "id": "D06",
@@ -1128,23 +1132,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 3.41,
-   "child": "Boaty must not bump into the fishing man's things, but we can sail gently to the island and take some photos instead!",
+   "seconds": 3.38,
+   "child": "Boaty mustn't bump the fishing man's float because that would spoil his fishing, but we can sail over to say hello to the island!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcP7EyVKyvssjQguYm3"
+    "req_011CfZdWDVpUm6wcYj8SztXS"
    ],
    "usage": [
     {
-     "input_tokens": 626,
-     "output_tokens": 125,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 888,
+     "output_tokens": 139,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00539
+   "cost_usd": 0.00674
   },
   {
    "id": "D07",
@@ -1155,23 +1159,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 5.39,
-   "child": "Grafham Water is too far away for little Boaty, but I can sail out to the island on our pond instead!",
+   "seconds": 3.43,
+   "child": "Grafham Water is a different lake far away, so Boaty can't go there, but we could sail out to visit the island instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcPMwmAPu6AN1dBJj2d"
+    "req_011CfZdWU5R2bGqszKNRy8pu"
    ],
    "usage": [
     {
-     "input_tokens": 624,
-     "output_tokens": 121,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 886,
+     "output_tokens": 131,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.0053
+   "cost_usd": 0.00658
   },
   {
    "id": "D08",
@@ -1182,23 +1186,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 4.17,
-   "child": "The ducklings can find their mum by themselves, so Boaty won't push them, but we could sail to the island and take pictures instead!",
+   "seconds": 5.74,
+   "child": "Boaty mustn't push the ducklings, because their mum knows how to find them, but we can sail over to the island and take pictures!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcPkqv1jgtCiB21kuuZ"
+    "req_011CfZdWiqBAh3nSqGc8bkEi"
    ],
    "usage": [
     {
-     "input_tokens": 627,
-     "output_tokens": 209,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 889,
+     "output_tokens": 205,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00708
+   "cost_usd": 0.00807
   },
   {
    "id": "D09",
@@ -1209,23 +1213,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 3.64,
-   "child": "Boaty doesn't race because going fast isn't safe, but we can sail gently round the island and take photos instead!",
+   "seconds": 3.27,
+   "child": "Boaty doesn't race, because going fast can bump into things, but we can sail gently round the bay together instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcQ4vMEgMpe37GkJsec"
+    "req_011CfZdX9E8C1hJb76sHpwL7"
    ],
    "usage": [
     {
-     "input_tokens": 621,
-     "output_tokens": 127,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 883,
+     "output_tokens": 125,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00541
+   "cost_usd": 0.00644
   },
   {
    "id": "D10",
@@ -1236,23 +1240,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 6.84,
-   "child": "I can't tell the weather, but I can sail out to the island and take some pictures for you!",
+   "seconds": 3.83,
+   "child": "I'm a little boat, so I can't tell the weather, but I'd love to sail out to visit the island and take some photos!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcQLQWjY29UhQu8qYL6"
+    "req_011CfZdXPDW2UKSqytqvS3wd"
    ],
    "usage": [
     {
-     "input_tokens": 626,
-     "output_tokens": 109,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 888,
+     "output_tokens": 131,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00507
+   "cost_usd": 0.00658
   },
   {
    "id": "D11",
@@ -1263,23 +1267,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 3.31,
-   "child": "Boaty can't go to the car park because boats only sail on water, but we could sail over to the island and say hello!",
+   "seconds": 3.52,
+   "child": "Boaty can't go to the car park because it's not on the pond, but I could sail out to visit the island instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcQqSWrT9YNLd7KqjP4"
+    "req_011CfZdXfmQcqb1ATBkbYScg"
    ],
    "usage": [
     {
-     "input_tokens": 628,
+     "input_tokens": 890,
      "output_tokens": 123,
-     "cache_read_input_tokens": 1938,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00536
+   "cost_usd": 0.00643
   },
   {
    "id": "A01",
@@ -1290,23 +1294,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 2.68,
-   "child": "Boaty can only sail on the pond, not the car park, but we can go and say hello to the island instead!",
+   "seconds": 3.12,
+   "child": "The car park is not on the pond, so Boaty must stay on the water, but we can sail over to see the island instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcR5kjcFGwG8w3hey82"
+    "req_011CfZdXvc8ZVrP8f2Zs7AeW"
    ],
    "usage": [
     {
-     "input_tokens": 643,
-     "output_tokens": 119,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 905,
+     "output_tokens": 125,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00534
+   "cost_usd": 0.00653
   },
   {
    "id": "A02",
@@ -1317,23 +1321,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 4.01,
-   "child": "Boaty doesn't chase geese because it could scare them, but we can go say a quiet hello to the duck house and take pictures!",
+   "seconds": 11.38,
+   "child": "Boaty doesn't chase geese because it could scare them, but we can sail gently over to see the duck house instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcRHGn2DD4c5t9HGgsw"
+    "req_011CfZdYA8y1nqZoVbCLTZwt"
    ],
    "usage": [
     {
-     "input_tokens": 634,
-     "output_tokens": 137,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 896,
+     "output_tokens": 127,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00566
+   "cost_usd": 0.00654
   },
   {
    "id": "A03",
@@ -1344,23 +1348,23 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 3.79,
-   "child": "I can only sail to places I know by name, so let's sail over to visit the island instead!",
+   "seconds": 5.14,
+   "child": "I can only sail to places I know by name, so let's sail over to the island and say hello instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcRaEVehaT2Bkaqpgrm"
+    "req_011CfZdYzq9thBhqjK8yw1GE"
    ],
    "usage": [
     {
-     "input_tokens": 646,
-     "output_tokens": 155,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 908,
+     "output_tokens": 180,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00607
+   "cost_usd": 0.00764
   },
   {
    "id": "A04",
@@ -1371,8 +1375,8 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 5.95,
-   "child": "I'll sail to the island a few times and snap lots and lots of photos, then zoom gently home to the jetty!",
+   "seconds": 6.9,
+   "child": "I'll sail to the island, go round and round it snapping lots and lots of pictures, then come back home to the jetty!",
    "adult": "",
    "steps": [
     {
@@ -1403,17 +1407,17 @@
     "furthest_m": 60.1
    },
    "request_ids": [
-    "req_011CfZcRrwaeNLT8dKqJWgqp"
+    "req_011CfZdZNnGAoZT5XnU7UEBM"
    ],
    "usage": [
     {
-     "input_tokens": 632,
-     "output_tokens": 458,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 894,
+     "output_tokens": 419,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.01208
+   "cost_usd": 0.01237
   },
   {
    "id": "A05",
@@ -1424,38 +1428,38 @@
    "attempts": [
     "ok"
    ],
-   "seconds": 9.38,
-   "child": "Quack quack! I'll sail over to say hello to the duck house, take some pictures, and then come back home!",
+   "seconds": 5.6,
+   "child": "Quack quack! I'll sail over to the duck house, wait quietly, take some pictures, and then come home to the jetty!",
    "adult": "",
    "steps": [
     {
      "op": "visit",
      "landmark": "the duck house",
      "photos": 3,
-     "hold_s": 20
+     "hold_s": 15
     },
     {
      "op": "return_home"
     }
    ],
    "preview": {
-    "duration_s": 175,
+    "duration_s": 169,
     "distance_m": 121.4,
     "photos": 3,
     "furthest_m": 60.7
    },
    "request_ids": [
-    "req_011CfZcSJBNdimxYch9E2cCN"
+    "req_011CfZdZtD4vF32rf3Ltq6hs"
    ],
    "usage": [
     {
-     "input_tokens": 623,
-     "output_tokens": 314,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 885,
+     "output_tokens": 298,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00916
+   "cost_usd": 0.00991
   },
   {
    "id": "A06",
@@ -1466,23 +1470,112 @@
    "attempts": [
     "declined"
    ],
-   "seconds": 4.21,
-   "child": "Boaty has to stay inside the fence to keep safe, but we could sail over to the island and take pictures instead!",
+   "seconds": 4.31,
+   "child": "Boaty has to stay inside the fence to be safe, but we could sail round the island instead!",
    "adult": "Declined (NLI-006).",
    "steps": [],
    "preview": null,
    "request_ids": [
-    "req_011CfZcSz9SnSVr5LMiyxsLV"
+    "req_011CfZdaJChhoRrmU42eDdWw"
    ],
    "usage": [
     {
-     "input_tokens": 640,
-     "output_tokens": 205,
-     "cache_read_input_tokens": 1938,
+     "input_tokens": 902,
+     "output_tokens": 178,
+     "cache_read_input_tokens": 2056,
      "cache_creation_input_tokens": 0
     }
    ],
-   "cost_usd": 0.00705
+   "cost_usd": 0.00758
+  },
+  {
+   "id": "S01",
+   "text": "Just a quick go before lunch",
+   "expect": "plan",
+   "passed": true,
+   "why": "validated plan",
+   "attempts": [
+    "ok"
+   ],
+   "seconds": 5.82,
+   "child": "Let's pop over to the island for some photos, peek around the bay, then head home for lunch!",
+   "adult": "",
+   "steps": [
+    {
+     "op": "visit",
+     "landmark": "the island",
+     "photos": 3,
+     "hold_s": 10
+    },
+    {
+     "op": "explore",
+     "area": "home bay",
+     "coverage": "light"
+    },
+    {
+     "op": "return_home"
+    }
+   ],
+   "preview": {
+    "duration_s": 249,
+    "distance_m": 185.3,
+    "photos": 27,
+    "furthest_m": 44.4
+   },
+   "request_ids": [
+    "req_011CfZdacbVbz6DE5k3asnCV"
+   ],
+   "usage": [
+    {
+     "input_tokens": 887,
+     "output_tokens": 295,
+     "cache_read_input_tokens": 2056,
+     "cache_creation_input_tokens": 0
+    }
+   ],
+   "cost_usd": 0.00986
+  },
+  {
+   "id": "S02",
+   "text": "Only a tiny trip, she's sleepy",
+   "expect": "plan",
+   "passed": true,
+   "why": "validated plan",
+   "attempts": [
+    "ok"
+   ],
+   "seconds": 3.54,
+   "child": "I'll float gently out to the island, say a sleepy hello, take a picture, and come right back home to the jetty!",
+   "adult": "",
+   "steps": [
+    {
+     "op": "visit",
+     "landmark": "the island",
+     "photos": 2,
+     "hold_s": 10
+    },
+    {
+     "op": "return_home"
+    }
+   ],
+   "preview": {
+    "duration_s": 148,
+    "distance_m": 65.2,
+    "photos": 2,
+    "furthest_m": 32.6
+   },
+   "request_ids": [
+    "req_011CfZdb3RjZMsNd9pZ4DLSt"
+   ],
+   "usage": [
+    {
+     "input_tokens": 892,
+     "output_tokens": 119,
+     "cache_read_input_tokens": 2056,
+     "cache_creation_input_tokens": 0
+    }
+   ],
+   "cost_usd": 0.00636
   }
  ]
 }
