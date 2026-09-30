@@ -30,7 +30,8 @@ from pathlib import Path
 
 from pymavlink import mavutil
 
-from .client import EVENT_PREFIX, ServiceClient
+from . import events as E
+from .client import ServiceClient
 from .geometry import FenceGeometry
 from .policy import AUTO, GUIDED, HOLD, RTL
 
@@ -42,6 +43,10 @@ CONFIG = Path(__file__).resolve().parents[2] / "params" / "boat-services.json"
 
 def load_config(path: Path = CONFIG) -> dict:
     return json.loads(Path(path).read_text())
+
+
+SEVERITY = {"warning": mav.MAV_SEVERITY_WARNING,
+            "critical": mav.MAV_SEVERITY_CRITICAL}
 
 
 def angdiff(a: float, b: float) -> float:
@@ -81,17 +86,16 @@ class Service:
     def tick(self, now: float) -> None:
         raise NotImplementedError
 
-    def act(self, mode: int, text: str,
-            severity: int = mav.MAV_SEVERITY_WARNING) -> bool:
+    def act(self, mode: int, ev: E.Event, **fields) -> bool:
         ok = self.c.set_mode(mode)
+        text = ev.format(**fields)
         self.actions.append((self.clock.now(), text, ok))
-        self.c.event(text, severity)
+        self.say(ev, **fields)
         return ok
 
-    def events_since(self, t: float, key: str) -> list:
-        """BOATY events from boat services (component 191) since t."""
-        return [(tm, x) for tm, comp, x in self.v.texts
-                if tm >= t and comp == 191 and x.startswith(EVENT_PREFIX + key)]
+    def say(self, ev: E.Event, **fields) -> None:
+        """Send one IF-04 event (events.py is the vocabulary)."""
+        self.c.event(ev.format(**fields), SEVERITY[ev.severity])
 
     def shedding(self) -> bool:
         """True while B5 is between SHED START and SHED END."""
@@ -99,9 +103,10 @@ class Service:
         for _, comp, x in self.v.texts:
             if comp != 191:
                 continue
-            if x.startswith(EVENT_PREFIX + "B5 SHED START"):
+            ev = E.match(x)
+            if ev is E.B5_SHED_START:
                 state = True
-            elif x.startswith(EVENT_PREFIX + "B5 SHED END"):
+            elif ev is E.B5_SHED_END:
                 state = False
         return state
 
@@ -122,12 +127,12 @@ class LinkWatchdog(Service):
             return
         lost = now - hb
         if v.mode == AUTO and lost >= c["auto_rtl_after_s"]:
-            if self.act(RTL, "B4 LINK LOST 60S: RTL"):
+            if self.act(RTL, E.B4_LINK_LOST_AUTO):
                 self.acted_for = hb
         elif v.mode == HOLD and lost >= c["manual_rtl_after_s"]:
             at = v.mode_at(hb)
             if at and at[1] == STEERING:
-                if self.act(RTL, "B4 LINK LOST IN MANUAL: RTL"):
+                if self.act(RTL, E.B4_LINK_LOST_MANUAL):
                     self.acted_for = hb
 
 
@@ -177,10 +182,9 @@ class Health(Service):
                 j[0] != self.jump_acted_t:
             self.jump_hold, self.jump_acted_t = True, j[0]
             if v.mode != HOLD:
-                self.act(HOLD, "B6 POSITION JUMP: HOLD",
-                         mav.MAV_SEVERITY_CRITICAL)
+                self.act(HOLD, E.B6_POSITION_JUMP)
             else:
-                self.c.event("B6 POSITION JUMP", mav.MAV_SEVERITY_CRITICAL)
+                self.say(E.B6_POSITION_JUMP_HELD)
         if self.jump_hold and v.mode != HOLD:
             self.jump_hold = False              # an adult has taken over
 
@@ -192,9 +196,9 @@ class Health(Service):
                     c["position_bad_hold_s"]:
                 self.pos_hold = True
                 if v.mode != HOLD:
-                    self.act(HOLD, "B6 POSITION LOST: HOLD")
+                    self.act(HOLD, E.B6_POSITION_LOST)
                 else:
-                    self.c.event("B6 POSITION LOST")
+                    self.say(E.B6_POSITION_LOST_HELD)
         else:
             self.bad_since = None
             if self.pos_hold:
@@ -205,7 +209,7 @@ class Health(Service):
                     if now - self.good_since >= c["position_good_rtl_s"] \
                             and not self.jump_hold:
                         self.pos_hold = False
-                        self.act(RTL, "B6 POSITION OK: RTL")
+                        self.act(RTL, E.B6_POSITION_OK)
 
         # FS-010 / A-11: water or heat in the box -> RTL (HOLD wins if the
         # position is bad: FS-011).
@@ -214,11 +218,10 @@ class Health(Service):
         wet = self.moisture and c["moisture_rtl"]
         if (wet or hot) and not self.hazard_acted:
             self.hazard_acted = True
-            what = "WATER IN BOX" if wet else "BOX HOT"
             if healthy and v.mode not in (RTL,):
-                self.act(RTL, f"B6 {what}: RTL", mav.MAV_SEVERITY_CRITICAL)
+                self.act(RTL, E.B6_WATER if wet else E.B6_BOX_HOT)
             else:
-                self.c.event(f"B6 {what}", mav.MAV_SEVERITY_CRITICAL)
+                self.say(E.B6_WATER_NO_RTL if wet else E.B6_BOX_HOT_NO_RTL)
 
         # FS-001: at critical battery, continue RTL at reduced speed.
         crit = v.battery_pct <= c["critical_battery_pct"] or \
@@ -227,8 +230,7 @@ class Health(Service):
             if self.c.change_speed(c["critical_rtl_speed_mps"]):
                 self.slowed_for = v.mode_since
                 self.actions.append((now, "slow RTL", True))
-                self.c.event("B6 CRITICAL BATTERY: SLOW RTL",
-                             mav.MAV_SEVERITY_CRITICAL)
+                self.say(E.B6_CRITICAL_BATTERY)
 
     def snapshot(self) -> dict:
         """Fields of the IF-03 Health object that B6 owns."""
@@ -260,9 +262,9 @@ class NavMonitor(Service):
         finally:
             self._fetching = False
 
-    def hold(self, text: str) -> None:
+    def hold(self, ev: E.Event) -> None:
         if self.v.mode != HOLD:
-            self.act(HOLD, text)
+            self.act(HOLD, ev)
         self._reset()
 
     def tick(self, now: float) -> None:
@@ -280,12 +282,12 @@ class NavMonitor(Service):
         if m not in (HOLD,):
             if v.breached and v.breach_since is not None and \
                     now - v.breach_since >= c["breach_max_s"]:
-                self.hold("B7 OUTSIDE FENCE 30S: HOLD")
+                self.hold(E.B7_OUTSIDE_30S)
                 return
             if self.fence and v.lat is not None:
                 self.last_outside_m = self.fence.outside_by(v.lat, v.lon)
                 if self.last_outside_m > c["breach_max_outside_m"]:
-                    self.hold("B7 FAR OUTSIDE FENCE: HOLD")
+                    self.hold(E.B7_FAR_OUTSIDE)
                     return
 
         if self.shedding() or m not in (AUTO, RTL, STEERING):
@@ -305,7 +307,7 @@ class NavMonitor(Service):
                 self.fm_bad_since = now
             if self.fm_bad_since is not None and \
                     now - self.fm_bad_since >= c["first_motion_dwell_s"]:
-                self.hold("B7 HEADING CHECK FAILED: HOLD")
+                self.hold(E.B7_HEADING)
                 return
         else:
             self.fm_bad_since = None
@@ -326,7 +328,7 @@ class NavMonitor(Service):
                 prog < c["stuck_max_progress_mps"]:
             self.stuck_since = self.stuck_since or now
             if now - self.stuck_since >= c["stuck_dwell_s"]:
-                self.hold("B7 STUCK")
+                self.hold(E.B7_STUCK)
                 return
         else:
             self.stuck_since = None
@@ -345,7 +347,7 @@ class NavMonitor(Service):
             frac = sum(1 for s in self.samples if s[1]) / n
             all_xt = all(s[2] for s in self.samples)
             if frac >= c["divergence_fraction"] or all_xt:
-                self.hold("B7 OFF COURSE: HOLD")
+                self.hold(E.B7_OFF_COURSE)
 
 
 # ---------------------------------------------------------------------------
@@ -369,7 +371,7 @@ class WeedShedder(Service):
             if tm <= since:
                 continue
             if (comp == 1 and x.startswith("Crash")) or \
-                    (comp == 191 and x.startswith(EVENT_PREFIX + "B7 STUCK")):
+                    (comp == 191 and E.match(x) is E.B7_STUCK):
                 out.append(tm)
         return out
 
@@ -388,8 +390,7 @@ class WeedShedder(Service):
                 self.episodes.clear()
                 self.actions.append((now, "repeatedly stuck", True))
                 self.c.set_mode(HOLD)
-                self.c.event("B5 REPEATEDLY STUCK: HOLD",
-                             mav.MAV_SEVERITY_CRITICAL)
+                self.say(E.B5_REPEATEDLY_STUCK)
                 return
             self.active = True
             threading.Thread(target=self._shed, args=(trig[0],),
@@ -440,16 +441,15 @@ class WeedShedder(Service):
         try:
             prev = self._prev_mode(t_trigger)
             if prev not in (AUTO, RTL):
-                self.c.event("B5 STUCK: HOLD", mav.MAV_SEVERITY_CRITICAL)
+                self.say(E.B5_STUCK_NOT_AUTO)
                 return
-            self.c.event("B5 SHED START")
+            self.say(E.B5_SHED_START)
             for burst in range(1, c["max_bursts"] + 1):
                 self.bursts = burst
                 self.actions.append((clk.now(), f"burst {burst}", True))
                 if not self._take_control():
                     self.actions.append((clk.now(), "no control", False))
-                    self.c.event(f"B5 NO CONTROL ({self.why}): HOLD",
-                                 mav.MAV_SEVERITY_CRITICAL)
+                    self.say(E.B5_NO_CONTROL, why=self.why)
                     self.c.set_mode(HOLD)
                     return
                 for _ in range(int(c["burst_s"] * c["target_hz"])):
@@ -488,13 +488,13 @@ class WeedShedder(Service):
                                            ended=why if ok else "no resume"))
                 if free:
                     self.actions.append((clk.now(), "free", True))
-                    self.c.event(f"B5 FREE AFTER {burst}: RESUMED")
+                    self.say(E.B5_FREE, burst=burst)
                     return
                 self.c.set_mode(HOLD)
             self.actions.append((clk.now(), "still stuck", True))
-            self.c.event("B5 STILL STUCK: HOLD", mav.MAV_SEVERITY_CRITICAL)
+            self.say(E.B5_STILL_STUCK)
         finally:
-            self.c.event("B5 SHED END")
+            self.say(E.B5_SHED_END)
             self.seen_until = clk.now() + 1.0
             self.active = False
 

@@ -16,4 +16,5 @@ test = ["pytest>=8", "hypothesis>=6", "coverage>=7"]
 testpaths = ["tests"]
 markers = [
     "sitl: needs a built ArduPilot SITL binary (set ARDUPILOT_HOME or BOATY_ARDUROVER)",
+    "verifies(*ids): SRS requirements this test verifies (collected into the VCRM by tools/vcrm.py)",
 ]

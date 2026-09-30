@@ -109,6 +109,7 @@ def test_valid_photo_point_and_speed():
                                        ("explore", "duck_watch", "lap")
                                        for a in ("home bay", "north pond")
                                        if (t, a) != ("lap", "north pond")])
+@pytest.mark.verifies("MIS-005")
 def test_templates_validate(name, area):
     from boaty.mcn.planner import Planner
     m = Planner(SITE).template(name, area, now_utc=T)
@@ -135,10 +136,12 @@ def test_lap_refused_where_nest_standoff_crowds_area():
     (-15, 76),           # 14 m from the duck house (nest stand-off)
     (58, 21),            # 2 m from the fishing platform
 ])
+@pytest.mark.verifies("VAL-002")
 def test_val002_bad_points(pt):
     assert "VAL-002" in rules(mk([pt]))
 
 
+@pytest.mark.verifies("VAL-002")
 def test_val002_leg_crosses_island():
     # both ends clear, straight line through the island
     assert "VAL-002" in rules(mk([(10, 25), (10, 65)]))
@@ -148,6 +151,7 @@ def test_val002_leg_crosses_reeds():
     assert "VAL-002" in rules(mk([(-45, 18), (-45, 55)]))
 
 
+@pytest.mark.verifies("VAL-002")
 def test_val002_rtl_leg_crosses_island():
     m = mk([(35, 45), (10, 65)])           # straight home from (10,65)
     r, _ = validate(m, SITE, now_utc=T)
@@ -155,6 +159,7 @@ def test_val002_rtl_leg_crosses_island():
     assert bad and bad[0].item_seq == m.items[-1].seq      # names the RTL
 
 
+@pytest.mark.verifies("VAL-002")
 def test_val002_concave_fence_leg_cuts_corner():
     s = small_site()
     assert rules(mk([(0, 25), (25, 0)], site=s), site=s) == ["VAL-002"]
@@ -174,6 +179,7 @@ def test_val002_concave_fence_around_corner_ok():
     assert rules(mk([(0, 25), (0, 0), (25, 0)], site=s), site=s) == []
 
 
+@pytest.mark.verifies("VAL-002")
 def test_val002_backstop_circle():
     s = small_site(max_distance_from_home_m=20)
     assert "VAL-002" in rules(mk([(0, 22)], site=s), site=s)
@@ -198,11 +204,13 @@ def test_val002_margin_edge_to_zone(d, ok):
     assert ("VAL-002" not in rules(mk([(x, 15)]))) == ok
 
 
+@pytest.mark.verifies("VAL-007")
 def test_val002_one_message_per_leg():
     r, _ = validate(mk([(0, -40)]), SITE, now_utc=T)
     assert sum(v.rule == "VAL-002" for v in r.violations) <= 4
 
 
+@pytest.mark.verifies("VAL-007")
 def test_val002_violations_have_location():
     r, _ = validate(mk([(10, 45)]), SITE, now_utc=T)
     for v in r.violations:
@@ -211,12 +219,14 @@ def test_val002_violations_have_location():
 
 
 # ---------------------------------------------------------------- VAL-003
+@pytest.mark.verifies("VAL-003")
 def test_val003_too_long_zigzag():
     zig = [(x, 10 + (i % 2) * 15) for i, x in
            enumerate(range(-30, 40, 2))] * 6
     assert "VAL-003" in rules(mk(zig))
 
 
+@pytest.mark.verifies("VAL-003")
 def test_val003_understated_estimate_is_not_trusted():
     zig = [(x, 10 + (i % 2) * 15) for i, x in
            enumerate(range(-30, 40, 2))] * 6
@@ -231,6 +241,7 @@ def test_val003_overstated_estimate_counts():
     assert "VAL-003" in rules(m)
 
 
+@pytest.mark.verifies("VAL-003", "MIS-003")
 def test_val003_low_battery_energy():
     m = mk([(-30, 20), (40, 20), (-30, 5), (40, 5)])
     assert rules(m, battery_pct=100) == []
@@ -245,6 +256,7 @@ def test_val003_negative_battery_clamped():
     assert "VAL-003" in rules(mk([(0, 20)]), battery_pct=-5)
 
 
+@pytest.mark.verifies("MIS-003", "VAL-003")
 def test_val003_cap_at_30_min_even_if_configured_longer():
     lim = Limits(max_duration_s=3600)
     m = mk([(0, 20)], estimates=Estimates(distance_m=40, duration_s=1900,
@@ -252,6 +264,7 @@ def test_val003_cap_at_30_min_even_if_configured_longer():
     assert "VAL-003" in rules(m, limits=lim)
 
 
+@pytest.mark.verifies("MIS-003", "VAL-003")
 def test_val003_configured_25_min_allows_22():
     lim = Limits(max_duration_s=1500)
     m = mk([(0, 20)], estimates=Estimates(distance_m=40, duration_s=1320,
@@ -266,10 +279,12 @@ def test_val003_slow_speed_makes_it_longer():
 
 
 # ---------------------------------------------------------------- VAL-004
+@pytest.mark.verifies("MIS-002")
 def test_val004_no_rtl():
     assert "VAL-004" in rules(mk([(0, 20)], rtl=False))
 
 
+@pytest.mark.verifies("MIS-002")
 def test_val004_rtl_in_middle():
     m = mk([(0, 20)])
     items = [Item(seq=1, kind="rtl")] + [i.model_copy(update={"seq": i.seq +
@@ -300,6 +315,7 @@ def test_val004_boat_near_home_ok():
 # ---------------------------------------------------------------- VAL-005
 @pytest.mark.parametrize("s", [2.0, 1.51, 0.0, 0.1, -1.0, float("nan"),
                                float("inf"), None])
+@pytest.mark.verifies("VAL-005")
 def test_val005_bad_speed(s):
     m = mk([(0, 20)])
     # model_construct: what a caller could do by bypassing the schema
@@ -316,6 +332,7 @@ def test_val005_max_speed_ok():
 
 
 @pytest.mark.parametrize("hold", [61, 0, -5, None, 3600])
+@pytest.mark.verifies("VAL-005")
 def test_val005_bad_hold(hold):
     assert "VAL-005" in rules(mk([(0, 20, "photo_point", hold, 3)]))
 
@@ -361,6 +378,7 @@ def test_val005_duplicate_seq():
     assert "VAL-005" in rules(m)
 
 
+@pytest.mark.verifies("VAL-005")
 def test_val005_photos_exceed_storage():
     m = mk([(0, 20, "photo_point", 10, 10), (10, 20, "photo_point", 10, 10)])
     assert rules(m, photo_capacity=25) == []
@@ -381,6 +399,7 @@ def test_edit_after_planning_breaks_checksum():
     assert "VAL-SUM" in rules(m)
 
 
+@pytest.mark.verifies("SAF-004")
 def test_forged_checksum():
     assert "VAL-SUM" in rules(mk([(0, 20)], checksum="sha256:" + "0" * 64))
 
@@ -401,6 +420,7 @@ def test_many_rules_at_once():
 
 
 # ---------------------------------------------------------------- schema
+@pytest.mark.verifies("MIS-004")
 def test_unknown_major_version_rejected():
     d = mk([(0, 20)]).to_json()
     d["schema"] = "boaty.mission/2"
@@ -408,6 +428,7 @@ def test_unknown_major_version_rejected():
         Mission.model_validate(d)
 
 
+@pytest.mark.verifies("MIS-004")
 def test_extra_fields_rejected():
     d = mk([(0, 20)]).to_json()
     d["items"][0]["altitude"] = 50
@@ -429,6 +450,7 @@ def test_nan_rejected_at_parse():
         Mission.model_validate(d)
 
 
+@pytest.mark.verifies("MIS-004")
 def test_round_trip_keeps_checksum():
     m = mk([(0, 20, "photo_point", 10, 2)], speed=0.8)
     m2 = Mission.model_validate(json.loads(json.dumps(m.to_json())))
@@ -443,6 +465,7 @@ def test_checksum_ignores_float_noise():
 
 
 # ---------------------------------------------------------------- VAL-006
+@pytest.mark.verifies("VAL-006")
 def test_deterministic():
     m = mk([(10, 45), (0, 20, "photo_point", 90, 11)])
     a = validate(m, SITE, now_utc=T)[0].model_dump()
@@ -450,6 +473,7 @@ def test_deterministic():
     assert a == b
 
 
+@pytest.mark.verifies("VAL-006")
 def test_no_io_or_randomness_in_validator():
     src = inspect.getsource(V)
     for bad in ("import random", "import time", "import socket", "open(",
@@ -457,6 +481,7 @@ def test_no_io_or_randomness_in_validator():
         assert bad not in src, bad
 
 
+@pytest.mark.verifies("SAF-004")
 def test_validated_mission_only_from_validator():
     m = mk([(0, 20)])
     r, vm = validate(m, SITE, now_utc=T)

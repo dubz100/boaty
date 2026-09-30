@@ -24,6 +24,7 @@ def errors(d, ref=REF):
     return [i for i in blocking(lint(d, ref))]
 
 
+@pytest.mark.verifies("FEN-002")
 def test_milton_is_clean():
     assert lint(DOC, REF) == []
 
@@ -86,6 +87,7 @@ def test_home_outside_inclusion():
     assert any("outside the inclusion" in i.message for i in errors(d))
 
 
+@pytest.mark.verifies("FEN-003")
 def test_home_in_guide_is_warning():
     d = doc()
     feature(d, "home")["geometry"]["coordinates"][1] -= 0.00006  # ~7 m S
@@ -129,6 +131,7 @@ def test_bow_tie_inclusion():
     assert any("crosses itself" in i.message for i in errors(d))
 
 
+@pytest.mark.verifies("FEN-001")
 def test_too_many_vertices():
     d = doc()
     ring = feature(d, "fence_inclusion")["geometry"]["coordinates"][0]
@@ -139,6 +142,7 @@ def test_too_many_vertices():
     assert any("vertices" in i.message for i in errors(d))
 
 
+@pytest.mark.verifies("FEN-001")
 def test_exclusion_outside_inclusion():
     d = doc()
     d["features"].append({"type": "Feature", "properties": {
@@ -147,6 +151,7 @@ def test_exclusion_outside_inclusion():
     assert any(i.rule == "OPS-005" for i in errors(d))
 
 
+@pytest.mark.verifies("FEN-001")
 def test_eleven_exclusions():
     d = doc()
     for k in range(7):
@@ -157,6 +162,7 @@ def test_eleven_exclusions():
     assert any("exclusions (max 10)" in i.message for i in errors(d))
 
 
+@pytest.mark.verifies("FEN-001")
 def test_circle_without_radius():
     d = doc()
     d["features"].append({"type": "Feature", "properties": {
@@ -170,6 +176,7 @@ def nest(d):
                 if f["properties"].get("wildlife") == "nest")
 
 
+@pytest.mark.verifies("OPS-005")
 def test_nest_under_standoff_blocks():
     # OPS-005 (CR-07): nests are photographed from 15 m, never closer.
     d = doc()

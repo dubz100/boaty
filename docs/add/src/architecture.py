@@ -529,6 +529,13 @@ DECISIONS = [
      "(Rover's default stop stalled the boat on the planned path). The "
      "HDOP arming gate moves to Mission Control, since Rover has none",
      "SDR RID-01, RID-11; SC-27", "No hardware cost"),
+    ("DD-27", "Security assumption: the web UI is plain HTTP and its "
+     "panel and instruction endpoints trust the Pi 5's own access point, "
+     "which is WPA2 or better with a unique passphrase (COM-006) and "
+     "forwards nothing inbound from the phone tether. The adult PIN guards "
+     "approval, arming, resume and parameters. Acceptable for a closed, "
+     "family-run network; revisit if the UI is ever reachable elsewhere",
+     "SDR RID-15", "No hardware cost"),
 ]
 
 # Results of the early checks (simulator slices 1-2, software/results).

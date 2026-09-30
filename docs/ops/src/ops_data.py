@@ -243,6 +243,11 @@ PROCEDURES = [
               "storage-charge it (≈ 3.7 V/cell).", ["OPS-010"]),
              ("Download logs. Note anything odd as an incident (OP-14).",
               ["LOG-003"]),
+             ("The session log holds what was said to Boaty. It stays on "
+              "Mission Control and is never uploaded. Delete a session's "
+              "folder when it is no longer useful (the only thing that "
+              "ever left the bank was each instruction's text, to plan the "
+              "trip; ICD IF-11).", ["LOG-002", "LOG-004"]),
          ], notes=None),
     dict(id="OP-13", title="Maintenance", when="See table", who="Operator",
          purpose="Catch wear before it catches us.", steps=[], notes=None),

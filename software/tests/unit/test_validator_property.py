@@ -7,6 +7,7 @@ no accepted route may leave the fence or enter a no-go zone, and every
 accepted route keeps at least 2.9 m clear (3 m margin less sampling
 tolerance). Derandomised, so the run is repeatable.
 """
+import pytest
 import math
 
 from hypothesis import HealthCheck, given, settings, strategies as st
@@ -88,6 +89,7 @@ pts = st.lists(st.tuples(st.floats(-70, 80), st.floats(-20, 90)),
 @settings(max_examples=400, derandomize=True, deadline=None,
           suppress_health_check=[HealthCheck.too_slow])
 @given(pts)
+@pytest.mark.verifies("VAL-002", "VAL-006")
 def test_accepted_missions_never_cross_a_boundary(points):
     m = mk([(x, y) for x, y in points])
     r, vm = validate(m, SITE, now_utc=T)

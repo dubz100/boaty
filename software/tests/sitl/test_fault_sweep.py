@@ -87,6 +87,7 @@ FAULTS = {"gnss-loss": _gnss_loss, "gnss-offset-20m": _gnss_offset,
 
 @pytest.mark.parametrize("phase", list(PHASES))
 @pytest.mark.parametrize("fault", list(FAULTS))
+@pytest.mark.verifies("SAF-002")
 def test_sc13_single_fault_sweep(helm, sim, services, companion, evidence,
                                  fault, phase):
     evidence("SC-13", f"Single fault: {fault} while {phase.replace('-', ' ')}",

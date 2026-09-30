@@ -4,6 +4,7 @@ Each scenario runs the helm (ArduPilot SITL), the boat model, the B1 router
 stand-in and the services on the simulated Pi Zero. Mission Control is
 played by ArduPilotHelm on the far side of the simulated radio.
 """
+import pytest
 import math
 import time
 
@@ -180,6 +181,7 @@ def test_sc06b_weed_never_clears(helm, sim, services, companion, evidence):
     helm.stop()
 
 
+@pytest.mark.verifies("SAF-002")
 def test_sc07_mission_computer_dies(helm, sim, services, companion, evidence):
     evidence("SC-07", "Kill the whole mission computer mid-mission",
              ["FS-007", "SC-07", "FM-26", "MOD-005"],

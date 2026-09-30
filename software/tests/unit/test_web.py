@@ -49,6 +49,7 @@ def test_page_and_state(ui):
     assert code == 200 and st["state"] == "IDLE"
 
 
+@pytest.mark.verifies("VAL-008", "MC-008")
 def test_adult_actions_need_pin(ui):
     w, s = ui
     call(w, "/api/template", {"id": "lap", "area": "home bay"})
@@ -81,6 +82,7 @@ def test_bad_json(ui):
     assert e.value.code == 400
 
 
+@pytest.mark.verifies("MC-005")
 def test_websocket_pushes_state(ui):
     w, s = ui
     key = base64.b64encode(os.urandom(16)).decode()

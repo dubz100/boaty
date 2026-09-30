@@ -118,6 +118,7 @@ def site_xy(site, lat, lon):
 
 
 # ---------------------------------------------------------------------------
+@pytest.mark.verifies("SWE-003", "LOG-002")
 def test_e2e_explore_photos_home(sim, helm, services, companion, mc_factory,
                                  evidence):
     evidence("MC-E2E", "Explore the pond, take photos, come home",
@@ -564,6 +565,7 @@ FAILSAFES = {
 
 
 @pytest.mark.parametrize("kind", list(FAILSAFES))
+@pytest.mark.verifies("LOG-002", "MC-007")
 def test_sc12_failsafe_logged_and_announced(sim, helm, services, companion,
                                             mc_factory, evidence, kind):
     inject, clear, ref = FAILSAFES[kind]

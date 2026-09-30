@@ -167,6 +167,7 @@ def said(speaker):
 
 
 # ---------------------------------------------------------------- happy path
+@pytest.mark.verifies("MC-010", "SWE-003")
 def test_full_flow(env):
     s, helm, panel, clock, sp = env
     assert s.state is State.IDLE
@@ -183,6 +184,7 @@ def test_full_flow(env):
     assert tok
 
 
+@pytest.mark.verifies("MC-003")
 def test_leds_follow_state(env):
     s, *_ = env
     assert s.leds()[Button.TALK] and not s.leds()[Button.GO]
@@ -196,6 +198,7 @@ def test_leds_follow_state(env):
     ("IDLE", "Not yet!"), ("DEBRIEF", "Not yet!"),
     ("PLAN_READY", "Ask a grown-up to arm."),
     ("APPROVED", "Ask a grown-up to arm.")])
+@pytest.mark.verifies("VAL-008", "MC-003")
 def test_go_before_armed(env, state, phrase):
     s, helm, panel, _, sp = env
     s.state = State[state]
@@ -203,6 +206,7 @@ def test_go_before_armed(env, state, phrase):
     assert said(sp)[-1] == phrase and "auto" not in helm.calls
 
 
+@pytest.mark.verifies("MC-003")
 def test_go_needs_hold(env):
     s, helm, panel, *_ = env
     armed(env)
@@ -231,6 +235,7 @@ def test_come_home_ignored(env, state):
 
 
 @pytest.mark.parametrize("state", ["ARMED", "MISSION", "MANUAL"])
+@pytest.mark.verifies("MOD-006", "MC-003")
 def test_come_home_works(env, state):
     s, helm, panel, *_ = env
     armed(env)
@@ -240,6 +245,7 @@ def test_come_home_works(env, state):
 
 
 @pytest.mark.parametrize("state", ["ARMED", "MISSION", "RETURNING", "MANUAL"])
+@pytest.mark.verifies("MOD-006", "FS-009")
 def test_stop_from_every_armed_state(env, state):
     s, helm, panel, clock, sp = env
     armed(env)
@@ -257,6 +263,7 @@ def test_stop_ignored_when_disarmed(env):
     assert said(sp)[-1] == "Not now."
 
 
+@pytest.mark.verifies("MC-003")
 def test_stop_not_blocked_by_lock(env):
     """STOP must not wait behind a long operation holding the lock."""
     import threading
@@ -277,6 +284,7 @@ def test_stop_not_blocked_by_lock(env):
     t.join(2)
 
 
+@pytest.mark.verifies("NLI-002")
 def test_talk_plans_from_voice(env):
     s, helm, panel, _, sp = env
     s.listener.queue.append("explore the bay")
@@ -296,6 +304,7 @@ def test_talk_ignored_while_armed(env):
 
 
 # ---------------------------------------------------------------- approval
+@pytest.mark.verifies("VAL-008", "MC-008")
 def test_approval_needs_pin(env):
     s, *_ = env
     s.choose_template("lap", "home bay")
@@ -303,6 +312,7 @@ def test_approval_needs_pin(env):
         s.approve("guess")
 
 
+@pytest.mark.verifies("PRE-005", "VAL-010")
 def test_approval_uploads_and_verifies(env):
     s, helm, *_ = env
     s.choose_template("lap", "home bay")
@@ -311,6 +321,7 @@ def test_approval_uploads_and_verifies(env):
     assert s.approved_checksum == s.plan.mission.checksum
 
 
+@pytest.mark.verifies("PRE-005", "VAL-010")
 def test_readback_mismatch_blocks_approval(env):
     s, helm, *_ = env
     helm.corrupt_readback = True
@@ -319,6 +330,7 @@ def test_readback_mismatch_blocks_approval(env):
     assert not ok and s.state is State.PLAN_READY and not s.approved_checksum
 
 
+@pytest.mark.verifies("VAL-009")
 def test_new_plan_voids_approval(env):
     s, helm, *_ = env
     s.choose_template("lap", "home bay")
@@ -330,6 +342,7 @@ def test_new_plan_voids_approval(env):
     assert s.log.of("approval_void")
 
 
+@pytest.mark.verifies("SAF-004", "VAL-009")
 def test_edited_mission_is_revalidated(env):
     s, *_ = env
     s.choose_template("lap", "home bay")
@@ -344,6 +357,7 @@ def test_edited_mission_is_revalidated(env):
     assert any(v.rule == "VAL-002" for v in out.result.violations)
 
 
+@pytest.mark.verifies("PRE-005", "MC-003")
 def test_go_refused_if_boat_copy_not_verified(env):
     s, helm, panel, _, sp = env
     armed(env)
@@ -354,6 +368,7 @@ def test_go_refused_if_boat_copy_not_verified(env):
 
 
 # ---------------------------------------------------------------- arming
+@pytest.mark.verifies("MOD-004", "MC-010")
 def test_arm_blocked_until_checklist(env):
     s, *_ = env
     s.choose_template("lap", "home bay")
@@ -363,6 +378,7 @@ def test_arm_blocked_until_checklist(env):
     assert not ok and any("checklist" in w for w in why)
 
 
+@pytest.mark.verifies("MOD-004", "PRE-001")
 def test_arm_blocked_by_few_satellites(env):
     s, helm, *_ = env
     s.choose_template("lap", "home bay")
@@ -374,6 +390,7 @@ def test_arm_blocked_by_few_satellites(env):
     assert not ok and any("satellites" in w for w in why)
 
 
+@pytest.mark.verifies("MOD-004", "PRE-001")
 def test_arm_blocked_by_poor_hdop(env):
     """PRE-001 / MCN-D15: HDOP > 1.5 blocks arming (Rover has no native
     HDOP gate; SDR RID-11)."""
@@ -387,6 +404,7 @@ def test_arm_blocked_by_poor_hdop(env):
     assert not ok and any("HDOP" in w for w in why)
 
 
+@pytest.mark.verifies("MOD-004")
 def test_arm_blocked_by_param_mismatch(env):
     """MCN-D45 / SC-24 (unit level)."""
     s, helm, *_ = env
@@ -466,6 +484,7 @@ def go(env):
     s.tick()
 
 
+@pytest.mark.verifies("MC-007")
 def test_failsafe_rtl_is_announced(env):
     s, helm, panel, clock, sp = env
     go(env)
@@ -497,6 +516,7 @@ def test_rtl_item_inside_auto_means_returning(env):
     assert s.state is State.RETURNING and said(sp)[-1] == "Coming home!"
 
 
+@pytest.mark.verifies("MC-007")
 def test_photo_point_announced_on_arrival(env):
     s, helm, panel, clock, sp = env
     s.state = State.IDLE
@@ -561,6 +581,7 @@ def test_unexplained_hold_declared_after_grace(env):
     assert s.held_reason == "helm HOLD" and said(sp)[-1] == PHRASES["held"]
 
 
+@pytest.mark.verifies("MOD-008")
 def test_arrival_then_auto_disarm_after_60s(env):
     s, helm, panel, clock, sp = env
     go(env)
@@ -604,6 +625,7 @@ def test_breach_10m_halts_at_once(env):
     assert helm.calls.count("halt") == 1                # once per breach
 
 
+@pytest.mark.verifies("MC-009")
 def test_link_loss_keeps_last_position(env):
     s, helm, panel, clock, sp = env
     go(env)
@@ -616,6 +638,7 @@ def test_link_loss_keeps_last_position(env):
     assert any("Link to the boat lost" in a for _, a in s.alerts)
 
 
+@pytest.mark.verifies("MOD-006")
 def test_adult_manual_and_drive(env):
     s, helm, panel, clock, sp = env
     tok = armed(env)
@@ -663,6 +686,7 @@ def test_pin_format_and_change(tmp_path):
     assert PinLock.load(c, f).unlock("135790").ok
 
 
+@pytest.mark.verifies("LOG-002", "MC-008")
 def test_pin_never_logged(env, tmp_path):
     s, *_ = env
     s.unlock(PIN)
@@ -671,6 +695,7 @@ def test_pin_never_logged(env, tmp_path):
     assert PIN not in text and "111111" not in text
 
 
+@pytest.mark.verifies("LOG-002")
 def test_session_log_is_json_lines(env, tmp_path):
     import json
     s, *_ = env
@@ -682,6 +707,7 @@ def test_session_log_is_json_lines(env, tmp_path):
     assert all(r["t_utc"].endswith("+00:00") for r in rows)
 
 
+@pytest.mark.verifies("MC-005")
 def test_snapshot_has_what_the_map_needs(env):
     import json
     s, *_ = env

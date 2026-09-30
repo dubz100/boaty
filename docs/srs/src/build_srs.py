@@ -19,6 +19,7 @@ from reportlab.platypus.frames import Frame
 from reportlab.platypus.tableofcontents import TableOfContents
 
 import requirements as REQ
+import vcrm as VCRM
 
 HERE = Path(__file__).resolve().parent
 FIG = HERE.parent / "figures"
@@ -778,6 +779,43 @@ def build():
                  [16, 78, 19, 19, 19, 19],
                  style_extra=[("ALIGN", (2, 0), (-1, -1), "CENTER")]),
            ]
+
+    # Appendix C: verification cross-reference matrix (SDR RID-07)
+    vrows = VCRM.build()
+    probs = VCRM.check(vrows)
+    assert not probs, "VCRM check failed:\n  " + "\n  ".join(probs)
+    counts = Counter(r["status"].split(";")[0].split(" (")[0]
+                     .replace("Open to", "Open").split(" to ")[0]
+                     for r in vrows)
+    colour = {"Verified": colors.HexColor("#e3f5ec"),
+              "Partly": colors.HexColor("#fff6dc"),
+              "Open": colors.HexColor("#fdf0ea")}
+    trows = [["ID", "Pri", "Method", "Stage", "Evidence", "Status"]]
+    style = []
+    for i, r in enumerate(vrows, start=1):
+        ev = "; ".join(r["evidence"]) or "-"
+        if r["open"]:
+            ev += f"<br/><i>Open: {r['open']}</i>"
+        trows.append([r["id"], r["pri"], r["ver"], r["stage"], ev,
+                      r["status"]])
+        key = r["status"].split(";")[0].split(" ")[0]
+        if key in colour:
+            style.append(("BACKGROUND", (5, i), (5, i), colour[key]))
+    st += [PageBreak(), H1("Appendix C. Verification cross-reference "
+                           "matrix"),
+           P("Every requirement against its evidence, generated at build "
+             "time from the tests themselves: unit tests tagged "
+             "<font name='DVB'>@pytest.mark.verifies</font>, SITL evidence "
+             "records and the SSS-SIM catalogue (software/tools/vcrm.py), "
+             "plus inspection and analysis evidence and declared open items "
+             "(docs/srs/src/verification.py). The build fails if any "
+             "evidence is failing, or if a Must requirement due at the "
+             "SIM stage has neither passing evidence nor a declared open "
+             "item with its gate. 'Planned' = verified at a later stage "
+             "(bench, pool, lake) by the tests in SSS-SIM."),
+           P(", ".join(f"{k}: {v}" for k, v in sorted(counts.items())),
+             "small"),
+           table(trows, [16, 9, 13, 14, 88, 30], style_extra=style)]
 
     doc = Doc(OUT)
     doc.multiBuild(st)

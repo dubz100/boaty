@@ -235,6 +235,7 @@ def test_v12_skid_steer_boat_behaves(helm, sim, evidence):
     helm.stop()
 
 
+@pytest.mark.verifies("MOD-004")
 def test_v13_rail_voltage_gates_arming(helm, sim, evidence):
     evidence("V-13", "Second voltage input gates arming (key in/out)",
              ["MOD-003", "PRE-007", "V-13"], "Rail reads < 9 V: arming "
@@ -283,6 +284,29 @@ def test_v14_persistent_breach(helm, sim, companion, evidence):
                                 "(slice 2)." if running else
                                 "ArduPilot stopped the motors itself."))
     sim.boat.faults.wind_speed = 0
+    helm.stop()
+
+
+@pytest.mark.verifies("FEN-005")
+def test_fen005_breach_rtl_within_1s(helm, sim, companion, evidence):
+    evidence("FEN-005", "Fence breach puts the boat in RTL within 1 s",
+             ["FEN-005", "FM-14"], "A gale pushes the boat over the fence "
+             "line in AUTO: the helm is in RTL <= 1 s after the boat "
+             "(truth) crosses it")
+    half = 25.0
+    launch(helm, sim, fence=Fence(square(*helm.home(), half)))
+    sim.wait(5)
+    t0 = sim.t
+    sim.boat.faults.wind_speed, sim.boat.faults.wind_from_deg = 15.0, 180.0
+    t_out = sim.wait_until(lambda: outside_by(sim, half) > 0.0, 120)
+    assert t_out, "gale did not push the boat out"
+    sim.wait(5)
+    t_rtl = companion.first_mode_after(t0, RoverMode.RTL)
+    sim.boat.faults.wind_speed = 0
+    evidence.measure(rtl_after_breach_s=(t_rtl - t_out) if t_rtl else None,
+                     texts=[x for x in companion.texts_after(t0)
+                            if "ence" in x][:3])
+    assert t_rtl is not None and t_rtl - t_out <= 1.0
     helm.stop()
 
 

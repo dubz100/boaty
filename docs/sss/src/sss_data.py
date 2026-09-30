@@ -781,7 +781,9 @@ n = subsystem(
              ["E", "30 September 2026", "SDR decisions (CR-07): MCN-D65 "
               "nest stand-off in the site linter; MCN-D66 planner routes "
               "round large exclusions. WP2: MCN-D15 adds the HDOP ≤ 1.5 "
-              "arming check; MCN-D59 trigger 8 m.", "Claude, owner decision"]],
+              "arming check; MCN-D59 trigger 8 m. WP4: MCN-D67 web UI "
+              "network assumption; MCN-D60 classifies boat events by the "
+              "IF-04 vocabulary.", "Claude, owner decision"]],
 
     purpose="Be the only place people interact with Boaty: turn words into "
             "safe, approved missions, and show, say and record what the "
@@ -1029,6 +1031,12 @@ D(n, "MCN-D66", "The planner shall route round exclusions by the shortest "
   "clear path through candidate points around them, with as many hops as "
   "needed, and shall refuse a plan it cannot route.", "M", "T", "SIM",
   ["VAL-002"])
+D(n, "MCN-D67", "The web UI shall be reachable only on the Pi 5's own "
+  "access point (WPA2 or better, unique passphrase, no inbound "
+  "forwarding from the phone tether). Its panel and instruction "
+  "endpoints rely on that; approval, arming, resume and parameter "
+  "changes also need the adult PIN (ADD DD-27, SDR RID-15).", "M", "I",
+  "BENCH", ["COM-006", "MC-008"])
 
 # ======================================================================
 # REC  Recovery & signalling

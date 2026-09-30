@@ -43,7 +43,7 @@ def test_sc20_gnss_jump_near_fence(helm, sim, services, companion, evidence,
                                    jump_m, dur_s):
     where = "outwards" if jump_m > 0 else "inwards"
     evidence("SC-20", f"GNSS jump of {abs(jump_m):g} m {where} for {dur_s} s, "
-             "7 m from the fence", ["FM-02", "FS-013", "FEN-005", "SC-20"],
+             "7 m from the fence", ["FM-02", "FS-013", "SC-20"],
              "No uncommanded exit: the boat is never outside the fence "
              "under power (truth), and afterwards it is in AUTO, RTL or "
              "HOLD and inside the fence")

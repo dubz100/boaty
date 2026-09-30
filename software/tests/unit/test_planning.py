@@ -75,6 +75,7 @@ def planning(*replies, log=None):
 
 
 # ---------------------------------------------------------------- IF-11
+@pytest.mark.verifies("NLI-003")
 def test_request_shape():
     p, fake = planning(reply(EXPLORE_ISLAND))
     out = p.from_text("go and see the island", source="text", now_utc=T)
@@ -91,6 +92,7 @@ def test_request_shape():
     assert "temperature" not in req and "budget_tokens" not in str(req)
 
 
+@pytest.mark.verifies("NLI-003")
 def test_request_carries_no_coordinates():
     """IF-11 data minimisation (inspection item, automated)."""
     p, fake = planning(reply(EXPLORE_ISLAND))
@@ -102,6 +104,7 @@ def test_request_carries_no_coordinates():
         assert s not in body, s
 
 
+@pytest.mark.verifies("NLI-003")
 def test_context_carries_trip_lengths():
     """The model gets rough trip times so it can judge 'a short trip'."""
     p, fake = planning(reply(EXPLORE_ISLAND))
@@ -154,6 +157,7 @@ def test_sdk_serialises_the_request():
     assert "betas" not in b
 
 
+@pytest.mark.verifies("MC-011")
 def test_sdk_http_error_goes_to_templates():
     import anthropic
 
@@ -168,6 +172,7 @@ def test_sdk_http_error_goes_to_templates():
     assert not out.ok and out.offer_templates and "templates" in out.adult
 
 
+@pytest.mark.verifies("MC-011")
 def test_connection_error_goes_to_templates():
     import anthropic
 
@@ -181,6 +186,7 @@ def test_connection_error_goes_to_templates():
     assert out.offer_templates and "No internet" in out.adult
 
 
+@pytest.mark.verifies("NLI-004")
 def test_schema_is_structured_outputs_friendly():
     """Only keywords structured outputs accept; ranges are re-checked by
     pydantic instead."""
@@ -202,6 +208,7 @@ def test_schema_is_structured_outputs_friendly():
 
 
 # ---------------------------------------------------------------- responses
+@pytest.mark.verifies("NLI-006")
 def test_decline_is_passed_to_the_child():
     p, _ = planning(reply(DECLINE))
     out = p.from_text("chase the ducks!", source="voice", now_utc=T)
@@ -216,6 +223,7 @@ def test_refusal_after_fallbacks():
     assert out.attempts == ["refused"]
 
 
+@pytest.mark.verifies("NLI-004")
 def test_invalid_reply_retried_once_with_the_error():
     bad = intent({"op": "visit", "landmark": "island", "photos": 50,
                   "hold_s": 10}, {"op": "return_home"})
@@ -226,6 +234,7 @@ def test_invalid_reply_retried_once_with_the_error():
     assert "<previous_attempt_problem>" in note and "photos" in note
 
 
+@pytest.mark.verifies("NLI-004")
 def test_gives_up_after_one_retry():
     p, fake = planning(reply("not json"), reply("{}"), reply(EXPLORE_ISLAND))
     out = p.from_text("x", source="text", now_utc=T)
@@ -260,11 +269,13 @@ def test_return_home_must_be_last():
                                      {"op": "lap", "area": "home bay"}))
 
 
+@pytest.mark.verifies("MIS-005", "MC-011")
 def test_no_llm_means_templates():
     out = Planning(SITE, None).from_text("x", source="text", now_utc=T)
     assert out.offer_templates and "templates only" in out.adult
 
 
+@pytest.mark.verifies("LOG-002")
 def test_log_records_llm_io():
     rows = []
     p, _ = planning(reply(EXPLORE_ISLAND),
@@ -278,6 +289,7 @@ def test_log_records_llm_io():
 
 
 # ---------------------------------------------------------------- key file
+@pytest.mark.verifies("NLI-008")
 def test_key_file_rules(tmp_path, monkeypatch):
     k = tmp_path / "key"
     with pytest.raises(NoApiKey):
@@ -304,6 +316,7 @@ def test_no_key_file_means_templates(tmp_path):
     assert out.offer_templates
 
 
+@pytest.mark.verifies("NLI-008")
 def test_no_key_committed():
     """MCN-D33 / NLI-008: a cheap secret scan of the repository."""
     import re
@@ -325,6 +338,7 @@ def P():
 
 @pytest.mark.parametrize("cov,lanes", [("light", 1), ("medium", 2),
                                        ("thorough", 3)])
+@pytest.mark.verifies("MIS-001")
 def test_lane_spacing(cov, lanes):
     """home bay is 26 m deep; 4 m inset each side leaves 18 m for lanes."""
     pl = P()
@@ -337,11 +351,13 @@ def test_lane_spacing(cov, lanes):
                for a, b in zip(ys, ys[1:]))
 
 
+@pytest.mark.verifies("MIS-003")
 def test_whole_pond_medium_is_too_long():
     with pytest.raises(PlanError, match="min"):
         P().template("explore", "whole pond", now_utc=T)
 
 
+@pytest.mark.verifies("MIS-001")
 def test_visit_respects_keep_out():
     m = P().from_intent(Intent.model_validate(intent(
         {"op": "visit", "landmark": "the island", "photos": 4, "hold_s": 15},
@@ -352,6 +368,7 @@ def test_visit_respects_keep_out():
     assert pp.photos == 4 and pp.hold_s == 15
 
 
+@pytest.mark.verifies("MIS-001", "OPS-005")
 def test_photo_stops_near_duck_house():
     m = P().from_intent(Intent.model_validate(intent(
         {"op": "photo_stops", "n": 3, "near": "duck house"},
@@ -365,6 +382,7 @@ def test_photo_stops_near_duck_house():
     assert min(geo.dist(a, b) for a in stops for b in stops if a != b) > 4
 
 
+@pytest.mark.verifies("MIS-002")
 def test_ends_with_rtl_and_starts_with_speed():
     m = P().template("lap", "home bay", now_utc=T)
     assert m.items[-1].kind == "rtl" and m.items[0].kind == "speed"
@@ -410,12 +428,14 @@ def test_unknown_area():
         P().template("lap", "the sea", now_utc=T)
 
 
+@pytest.mark.verifies("NLI-006")
 def test_declined_intent_cannot_be_planned():
     with pytest.raises(PlanError):
         P().from_intent(Intent.model_validate(DECLINE), source="text",
                         now_utc=T)
 
 
+@pytest.mark.verifies("MIS-001", "MIS-005")
 def test_templates_listed_for_every_area():
     t = Planning(SITE).templates()
     assert {x["name"] for x in t} == {"Explore the bay", "Duck watch",

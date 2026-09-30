@@ -15,8 +15,10 @@ HERE = Path(__file__).resolve().parent
 DOCS = HERE.parents[1]
 sys.path.insert(0, str(DOCS / "common"))
 sys.path.insert(0, str(DOCS / "add" / "src"))
+sys.path.insert(0, str(DOCS.parent / "software"))
 
 import architecture as A  # noqa: E402
+from boaty.mcp import events as EV  # noqa: E402  IF-04 event vocabulary
 from pdfdoc import (BLUE_T, GREEN_T, ORANGE, ORANGE_T, H1, H2, INK2,  # noqa
                     TINT, Doc, KeepTogether, PageBreak, Paragraph, S, Spacer,
                     bullets, callout, colors, control_and_contents, cover,
@@ -358,13 +360,15 @@ Port = 14560
                    "DO_CHANGE_SPEED (178) ≤ 1.0 m/s; STATUSTEXT",
                    "RTL on moisture or box > 60 °C. HOLD when the position "
                    "is unhealthy for 1 s (FS-004), RTL after 10 s healthy. "
+                   "HOLD, latched, on a position jump (MCP-D35). "
                    "Speed change only in RTL, only downwards (critical "
                    "battery, FS-001)"],
                   ["B7 navigation monitor", "DO_SET_MODE → HOLD (4); "
                    "STATUSTEXT", "First-motion heading error > 45°; "
                    "no progress along track at high throttle for 10 s; "
                    "cross-track > 10 m or heading error > 60° over 20 s; "
-                   "outside the fence 30 s or 10 m (FEN-006)"],
+                   "outside the fence 30 s, or more than 8 m (so the motors "
+                   "are off by FEN-006's 10 m)"],
                   ["B2 camera", "None (listens only)", "Reads "
                    "GLOBAL_POSITION_INT, MISSION_ITEM_REACHED"],
                   ["All", "HEARTBEAT; STATUSTEXT events starting 'BOATY '; "
@@ -376,14 +380,38 @@ Port = 14560
                    "(MCP-D19), fuzz-tested (SC-30)"]],
                  [26, 72, 72]),
            P("A boat-side request that the helm rejects is logged and not "
-             "retried more than twice.", "small")]
+             "retried more than twice.", "small"),
+           sub("Event vocabulary (Issue G, SDR RID-05)"),
+           P("Every event a boat service sends is one of the texts below, "
+             "after the prefix 'BOATY ', as a STATUSTEXT from component 191 "
+             "(≤ 50 characters). The table is generated from the code that "
+             "sends and parses them (software/boaty/mcp/events.py). A unit "
+             "test fails if a service sends anything else. Mission Control "
+             "treats an event by its class: <b>held</b> = the boat stopped "
+             "itself, shown and spoken, PIN to resume (MCN-D60); "
+             "<b>shed</b> = weed-shedding episode; <b>alert</b> = adult "
+             "screen; <b>info</b> = logged (a mode change it causes is "
+             "announced separately). An event not in the table is shown "
+             "as 'unrecognised' and logged."),
+           table([["Text after 'BOATY '", "Svc", "Boat action", "MC",
+                   "Meaning", "Refs"]] +
+                 [[ev.text.replace("{", "&lt;").replace("}", "&gt;"),
+                   ev.service, ev.action, ev.mc, ev.meaning,
+                   ", ".join(ev.refs)] for ev in EV.EVENTS],
+                 [44, 10, 24, 12, 52, 28]),
+           P("Severity: critical for water, heat, critical battery, "
+             "position jump and B5 stops; warning otherwise.", "small")]
     st += verify("IF-04", [
         ("Inspection", "BENCH", "Wiring and serial settings against this "
          "section; loopback test at 115200 with no errors over 10 min"),
         ("Simulation", "SIM", "B4, B5 and B6 behaviours in SITL, including "
          "killing B5 mid-burst (V-11)"),
         ("Test", "SIM", "The filter library refuses every forbidden command "
-         "(unit tests)")])
+         "(unit tests)"),
+        ("Test", "SIM", "Event vocabulary: every event fits a STATUSTEXT, "
+         "matches exactly one entry, and the services send nothing else "
+         "(tests/unit/test_events.py); Mission Control classifies by it "
+         "(SC-12, MCN-D60)")])
 
     # ---------------- IF-03
     st += header("IF-03")
@@ -530,6 +558,26 @@ Error   = {"error": "bad_request"|"not_found"|"busy"|"storage_full",
                "on-device heuristics only.",
                "Each request's ID, token usage and cost estimate are logged "
                "(LOG-002).",
+           ]),
+           sub("Data statement (SDR RID-14)"),
+           P("Boaty is used by a young child, so what leaves the bank is "
+             "stated plainly:"),
+           *bullets([
+               "<b>Sent to the Claude API per plan:</b> the instruction as "
+               "text (typed, or transcribed on the Pi 5 from the child's "
+               "words), the site's area and landmark names with rough sizes "
+               "and directions, the battery level, the time and energy "
+               "limits, and the mission schema. No audio, no coordinates, "
+               "no names of people, no device or account identifiers of "
+               "the family, and no photos unless cloud analysis is on.",
+               "<b>Held by the provider:</b> requests are handled under the "
+               "API provider's commercial data terms. The owner checks "
+               "these before first use; Boaty sends nothing that would "
+               "matter if retained.",
+               "<b>Kept locally:</b> the session log on the Pi 5 holds each "
+               "transcript, the model's reply and the plan (LOG-002). It is "
+               "never uploaded. The operations manual (OP-12) says how to "
+               "delete a session.",
            ])]
     st += verify("IF-11", [
         ("Test", "SIM", "Recorded evaluation set of ≥ 30 instructions "

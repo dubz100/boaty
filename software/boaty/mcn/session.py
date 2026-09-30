@@ -20,6 +20,7 @@ import time
 from dataclasses import dataclass, field
 
 from ..helm.api import HelmError, PreArmFailed, SrsMode
+from ..mcp import events as E
 from . import geo
 from .helm_guard import GuardedHelm, Refused
 from .log import SessionLog, utc_now
@@ -629,23 +630,26 @@ class Session:
         the text, not the mode change, carries the reason."""
         active = self.state in (State.MISSION, State.RETURNING)
         for t in texts:
-            u = t.upper()
-            if not u.startswith("BOATY"):
+            if not t.startswith(E.PREFIX):
                 continue
-            self.log("boat_event", text=t)
+            ev = E.match(t)
+            self.log("boat_event", text=t,
+                     event=ev.text if ev else "UNKNOWN (not in IF-04)")
             if not active:
                 continue
-            if "B5 SHED START" in u:
+            if ev is None:
+                self.alert(f"Unrecognised boat event: {t}")
+            elif ev is E.B5_SHED_START:
                 if not self._shedding:
                     self.say("stuck")
                 self._shedding = True
-            elif "B5 SHED END" in u:
+            elif ev is E.B5_SHED_END:
                 self._shedding = False
-            if "STILL STUCK" in u or "REPEATEDLY STUCK" in u or \
-                    "NO CONTROL" in u or u.startswith("BOATY B7") or \
-                    ("BOATY B6" in u and "HOLD" in u):
+            elif ev.mc == "held":
                 self._shedding = False
                 self._declare_held(t)
+            elif ev.mc == "alert":
+                self.alert(f"Boat: {ev.meaning} ({t})")
         if st.mode is not SrsMode.HOLD:
             self._hold_seen_t = None
         elif active and self._hold_seen_t is not None and \

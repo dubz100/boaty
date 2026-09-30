@@ -11,6 +11,7 @@ from .conftest import (SPEEDUP, Watch, drive_for, launch, motors_off,
                        outputs_neutral, standard_fence, triangle)
 
 
+@pytest.mark.verifies("SWE-002")
 def test_status_after_connect(helm, evidence):
     evidence("IF-14-01", "Status snapshot after connect", ["IF-14", "IF-02"],
              "Link up, disarmed, 3D fix, EKF healthy, home set")
@@ -35,6 +36,7 @@ def test_parameter_baseline_is_loaded(helm, sim, evidence):
     assert not diff, diff
 
 
+@pytest.mark.verifies("SWE-002")
 def test_fence_and_mission_round_trip(helm, evidence):
     evidence("IF-14-03", "Fence and mission upload, read-back and verify",
              ["IF-14", "VAL-010", "SC-32"], "Read-back equals what was sent; "
@@ -68,6 +70,7 @@ def test_uploads_refused_while_armed(helm, sim, evidence):
     helm.stop()
 
 
+@pytest.mark.verifies("SWE-002", "MOD-001")
 def test_arms_into_hold(helm, sim, evidence):
     evidence("IF-14-05", "Arming lands in HOLD, never MANUAL",
              ["MOD-003", "INITIAL_MODE"], "After arm(): armed, SRS mode HOLD, "
@@ -82,6 +85,7 @@ def test_arms_into_hold(helm, sim, evidence):
     helm.stop()
 
 
+@pytest.mark.verifies("MOD-001", "SWE-002")
 def test_mode_commands_map_to_srs_modes(helm, sim, evidence):
     evidence("IF-14-06", "hold/return_home/manual/start_mission map to the "
              "IF-02 mode table", ["IF-02", "IF-14"], "Each call reaches the "
@@ -115,6 +119,7 @@ def test_manual_drive_moves_the_boat(helm, sim, evidence):
     helm.stop()
 
 
+@pytest.mark.verifies("SWE-002")
 def test_stop_stops_motors_within_one_second(helm, sim, evidence):
     evidence("SC-09a", "STOP from AUTO: motors off and disarmed",
              ["FS-009", "IF-14"], "Helm commands the motors to neutral <= 1 s "

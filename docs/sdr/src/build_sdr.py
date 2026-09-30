@@ -51,6 +51,16 @@ CLOSURES = {
                "(MCP-D35, A-30); FM-02 after-action RPN 72 (FMEA F)."),
     "RID-13": ("Closed", "WP3: S ≥ 9 rule text states the D ≤ 3 test "
                "exemption; FM-60 (home reset by re-arm) added (FMEA F)."),
+    "RID-05": ("Closed", "WP4: vocabulary in software/boaty/mcp/events.py; "
+               "services send only it, Mission Control classifies by it, "
+               "ICD G IF-04 table generated from it; unit tests."),
+    "RID-07": ("Closed", "WP4: VCRM generated into SRS G Appendix C from "
+               "tagged tests, SITL records and the catalogue "
+               "(tools/vcrm.py); the SRS build fails on a Must SIM gap."),
+    "RID-14": ("Closed", "WP4: ICD G IF-11 data statement; OPS D OP-12 "
+               "step on deleting session logs."),
+    "RID-15": ("Closed", "WP4: ADD G DD-27 security assumption; MCN-D67 "
+               "(SSS-MCN E); WPA2 already required by COM-006."),
     "RID-11": ("Closed", "WP2: Rover has no GPS_HDOP_GOOD, so the HDOP ≤ 1.5 "
                "gate is in Mission Control (MCN-D15, unit test); HLM-D09 "
                "re-allocated (SSS-HLM E)."),
@@ -451,7 +461,8 @@ def build():
          ["B", DATE, "WP1 owner decisions recorded (CR-06, CR-07, CR-08): "
           "RID log updated. RID-12 corrected: the pole kit that breaches "
           "the cap is the antenna pole, not a recovery pole. WP2 closes "
-          "RID-01 and RID-11; WP3 closes RID-02, RID-03 and RID-13.",
+          "RID-01 and RID-11; WP3 closes RID-02, RID-03 and RID-13; "
+          "WP4 closes RID-05, RID-07, RID-14 and RID-15.",
           "Claude, owner decisions"]],
         "How to use this report: section 2 gives the decision. Section 6 "
         "lists every review item discrepancy (RID) with its evidence and "
