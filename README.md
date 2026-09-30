@@ -38,6 +38,8 @@ python3 figures.py && python3 build_srs.py
 
 - [`docs/kcl/Boaty_Key_Component_List.pdf`](docs/kcl/Boaty_Key_Component_List.pdf): key component list (BOATY-KCL-001). It covers the parts whose numbers feed the software, the ArduPilot parameters and the simulator. Every value is tagged with its source. The document also includes a cost reconciliation, a supply-sag analysis, the helm pin and parameter allocation, the simulator model parameters and a datasheet register. ArduPilot and AM32 source files it relies on are archived in `docs/kcl/sources/`. Build with `cd docs/kcl/src && python3 build_kcl.py`. Fetch vendor datasheets with `python3 fetch_datasheets.py`, which needs ordinary internet access.
 
+- [`docs/sdr/Boaty_System_Design_Review.pdf`](docs/sdr/Boaty_System_Design_Review.pdf): System Design Review / PDR report (BOATY-SDR-001), gate 1 of 4. It is an independent-style review of the whole documentation baseline. It covers entry criteria, compliance by area, 15 review item discrepancies (9 Major, 6 Minor) plus 7 observations carried to later gates, and the gap-closure plan to freeze. The recommendation is Conditional GO. Counts are computed from the same source data as the other documents, so rebuilding after fixes updates the picture. Build with `python3 docs/sdr/src/build_sdr.py`.
+
 ## Software
 
 - [`software/`](software/): the Python code and the simulator. ArduPilot Rover 4.7.1 SITL flies a model of the boat, the real mission-computer services run on a simulated Pi Zero, and Mission Control drives it all as it will on the Pi 5. See [`software/README.md`](software/README.md). Results are in [`software/results/`](software/results/): `FINDINGS.md` summarises what the simulator showed, and `SITL_REPORT.md` gives the evidence for every scenario.
