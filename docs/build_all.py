@@ -27,6 +27,7 @@ STEPS = [
     ("kcl/src", "build_kcl.py"),
     ("budgets", "build_power.py"),
     ("sdr/src", "build_sdr.py"),
+    ("mdd/src", "build_mdd.py"),        # reads mechanical/results
 ]
 
 

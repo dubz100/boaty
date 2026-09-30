@@ -21,7 +21,6 @@ from . import pod as Q
 from . import structure as S
 
 RHO_W = 1.0e-3            # g/mm³, fresh water
-DEBUG = False
 
 
 def printed_volume(solid: cq.Shape) -> float:
@@ -241,7 +240,6 @@ def equilibrium(body, mass: float, cg: np.ndarray, heel: float = 0.0,
         b1, b2, _ = resid(z0, trim + dt)
         J = np.array([[(a1 - r1) / dz, (b1 - r1) / dt],
                       [(a2 - r2) / dz, (b2 - r2) / dt]])
-        print("it", round(z0,2), round(trim,3), round(r1), round(r2,2), J.round(2)) if DEBUG else None
         step = np.linalg.solve(J, -np.array([r1, r2]))
         step = np.clip(step, [-15, -3], [15, 3])
         z0, trim = z0 + step[0], trim + step[1]

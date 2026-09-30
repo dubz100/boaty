@@ -124,12 +124,14 @@ def rear_guard() -> cq.Workplane:
 def guard_openings() -> dict[str, float]:
     """Inscribed-circle size of every opening a probe could enter."""
     bar = 1.5
-    arc_outer = 2 * math.pi * R_IN / 8 - bar
+    # a cell between two bars and two rings admits a circle no larger
+    # than the smaller of its radial depth and its narrowest chord
+    inner = min(11.75 - 6.0, 2 * math.pi * 6.0 / 8 - bar)
+    outer = min(R_IN - 13.25, 2 * math.pi * 13.25 / 8 - bar)
     return {
         "inlet annulus (nacelle to duct)": R_IN - P.NACELLE_D / 2,
-        "guard, hub to ring": 11.75 - 6.0,
-        "guard, ring to duct": R_IN - 13.25,
-        "guard cell width at the duct wall": arc_outer,
+        "guard cells, hub to ring": inner,
+        "guard cells, ring to duct": outer,
     }
 
 

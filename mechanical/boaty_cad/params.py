@@ -7,15 +7,17 @@ hydrostatics in analysis.py find it from the computed mass.
 """
 from __future__ import annotations
 
+PRINT_MAX = 197.0       # MEC-005 200 mm cube, less 3 mm for skirt/tolerance
+
 # ---------------------------------------------------------------- hull
 HULL_Y = 135.0          # hull centreline offset; spacing 270 (HUL-D04)
 B = 84.0                # hull beam at the deck (HUL-D01 beam ≤ 360)
 D = 90.0                # hull depth, keel to deck (HUL-D07, HUL-D16)
 R_BILGE = 18.0          # bottom corner radius
 R_DECK = 6.0            # deck edge radius (HUL-D23, rain shedding D13)
-T_SHELL = 1.2           # shell wall; HUL-D10 says 1.6: see CR-07
+T_SHELL = 1.2           # shell wall; HUL-D10 says 1.6: see CR-11
 T_END = 2.0             # stem and transom wall
-L_STERN, L_MID, L_BOW = 175.0, 200.0, 200.0     # HUL-D02 ≤ 200 each
+L_STERN, L_MID, L_BOW = 177.0, 196.0, 196.0     # HUL-D02 ≤ 200 each
 X_J1 = L_STERN                  # stern/mid joint
 X_J2 = L_STERN + L_MID          # mid/bow joint
 X_STEM = X_J2 + L_BOW
@@ -68,12 +70,12 @@ RAIL_HOLE = 3.2
 # Clip-lock food box (IF-18: internal ≥ 180 × 110 × 70). Modelled as a
 # generic box; the saddle is sized from BOX_* so a chosen box only changes
 # these numbers (TBC-13).
-BOX_L, BOX_W, BOX_H = 200.0, 130.0, 82.0   # external, with lid
+BOX_L, BOX_W, BOX_H = 200.0, 130.0, 86.0   # external, with lid
 BOX_LID_H = 14.0
 BOX_WALL = 1.6
 BOX_X0 = BEAM_X[0] + 38.0  # aft face: 38 mm behind it for glands, cables
 TRAY_T = 3.0
-TRAY_X = (BEAM_X[0] - 10.0, BEAM_X[0] + 188.0)   # 198 long (MEC-005)
+TRAY_X = (BEAM_X[0] - 10.0, BEAM_X[0] + 184.0)   # 194 long (MEC-005)
 TRAY_WALL_H = 12.0
 GLAND_PITCH = 25.0          # 4 × PG7 on the aft face (IF-18)
 GLAND_HOLE = 12.7
@@ -106,11 +108,11 @@ MASTHEAD_H = 32.0               # LED ring 10 + GNSS dome 22
 GRIP_D = 22.0
 GRIP_Z = D + BEAM_H + 52.0      # grip axis
 HANDLE_SPAN = 95.0              # uprights at y = ± 95
-COLLAR_Z = 176.0
+COLLAR_Z = 188.0
 HOOP_ID = 64.0                  # REC-D06 ≥ 60
-HOOP_SECTION = 9.0
+HOOP_SECTION = 11.0
 STAFF_D = 8.0
-STAFF_L = 200.0
+STAFF_L = 190.0
 STAFF_SOCKET_Z = COLLAR_Z
 FLAG = (120.0, 80.0)            # REC-D02 ≥ 120 × 80
 

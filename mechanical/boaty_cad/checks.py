@@ -12,7 +12,6 @@ from __future__ import annotations
 import math
 from functools import lru_cache
 
-import cadquery as cq
 import numpy as np
 
 from . import analysis as N
@@ -86,7 +85,7 @@ def run() -> Results:
     D["cg"] = [_r(c) for c in cg]
     R.add("M-01", "MEC-002", "Ready-to-sail mass, excluding payload",
           f"{m:.0f} g", "≤ 1800 g", "PASS" if m <= 1800 else "FAIL",
-          f"{m - 1800:+.0f} g against the limit", "CR-07")
+          f"{m - 1800:+.0f} g against the limit", "CR-09")
     hul_groups = ("Hull segments, foam, joints", "Crossbeams",
                   "Box, tray, latches, glands", "Deck, mast step, handle, "
                   "tube", "Camera hood and window", "Fasteners")
@@ -94,7 +93,7 @@ def run() -> Results:
     D["mass_hul"] = _r(m_hul)
     R.add("M-02", "HUL-D03", "Hull and structure mass", f"{m_hul:.0f} g",
           "≤ 1000 g", "PASS" if m_hul <= 1000 else "FAIL",
-          "segments, beams, deck, box, mast, fasteners", "CR-07")
+          "segments, beams, deck, box, mast, fasteners", "CR-09")
     pod = next(i for i in items if i.name == "Thruster pod body").mass
     guard = next(i for i in items if i.name == "Rear guard").mass
     prop = next(i for i in items if i.name.startswith("Propeller")).mass
@@ -142,9 +141,15 @@ def run() -> Results:
     big = worst[0]
     R.add("G-07", "MEC-005, HUL-D02", "Largest printed part (fits the "
           "200 mm cube)", f"{big[2]}: {big[3][2]:.0f} × {big[3][1]:.0f} × "
-          f"{big[3][0]:.0f}", "every side ≤ 200",
-          "PASS" if big[0] <= 200 else "FAIL",
+          f"{big[3][0]:.0f}", f"every side ≤ {P.PRINT_MAX:.0f} (200 less "
+          "3 mm margin)", "PASS" if big[0] <= P.PRINT_MAX else "FAIL",
           f"{len(worst)} printed part designs checked")
+
+    R.add("G-08", "HUL-D10, MEC-006", "Hull shell: material, "
+          "perimeters, wall", f"ASA; 3 perimeters; {P.T_SHELL} mm",
+          "PETG/ASA; ≥ 3; ≥ 1.6 mm", "PASS" if P.T_SHELL >= 1.6 else
+          "FAIL", "the foam core carries the skin; 1.6 mm adds ≈ 150 g",
+          "CR-11")
 
     # -------------------------------------------------- foam
     fills = {}
@@ -283,8 +288,8 @@ def run() -> Results:
     Fh = P.SF * W
     Mb = Fh / 2 * P.HULL_Y / 1000                   # N·m, beam at the grip
     b_, h_, t_ = P.BEAM_W, P.BEAM_H, P.BEAM_T
-    I = (b_ * h_ ** 3 - (b_ - 2 * t_) * (h_ - 2 * t_) ** 3) / 12
-    sig = Mb * 1000 * (h_ / 2) / I
+    I_b = (b_ * h_ ** 3 - (b_ - 2 * t_) * (h_ - 2 * t_) ** 3) / 12
+    sig = Mb * 1000 * (h_ / 2) / I_b
     D["beam_stress"] = _r(sig)
     handle_dx = abs(P.MAST_X - cg[0])
     grip_y = (P.SOCKET_OD / 2 + M.UPRIGHT_Y - 6) / 2
@@ -381,7 +386,7 @@ def run() -> Results:
     R.add("E-02", "IF-19", "Masthead top above the water (design mass)",
           f"{top_wl:.0f} mm", "≈ 450, total height ≤ 500",
           "FAIL" if abs(top_wl - 450) > 15 else "PASS",
-          "the ≤ 500 mm height from the pod bottom sets it", "CR-08")
+          "the ≤ 500 mm height from the pod bottom sets it", "CR-10")
     flag_top = M.staff_top_z() - 12 - des.z0
     R.add("E-03", "REC-D02, REC-003", "Flag size; flag top above the "
           "water; below the GNSS", f"{P.FLAG[0]:.0f} × {P.FLAG[1]:.0f}; "

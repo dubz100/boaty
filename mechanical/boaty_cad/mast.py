@@ -23,13 +23,13 @@ def step_and_handle() -> cq.Workplane:
     finger clearance, within ± 50 mm of the centre of gravity (HUL-D21)."""
     base = cq.Workplane()
     for y in (0.0, UPRIGHT_Y, -UPRIGHT_Y):
-        base = base.union(cq.Workplane().box(P.BEAM_W + 8, 30, 4,
+        base = base.union(cq.Workplane().box(P.BEAM_W + 8, 20, 4,
                                              centered=(True, True, False))
                           .edges("|Z").fillet(3.0).translate((X, y, Z0)))
     cheeks = cq.Workplane()
     for dx in (-(P.BEAM_W / 2 + 2), P.BEAM_W / 2 + 2):
         for y in (0.0, UPRIGHT_Y, -UPRIGHT_Y):
-            cheeks = cheeks.union(cq.Workplane().box(4, 20, 8).translate(
+            cheeks = cheeks.union(cq.Workplane().box(4, 16, 8).translate(
                 (X + dx, y, Z0 - 4)))
     tower = (cq.Workplane().circle(P.SOCKET_OD / 2)
              .extrude(SOCKET_TOP - Z0).translate((X, 0, Z0)))
@@ -91,7 +91,7 @@ def collar_hoop() -> cq.Workplane:
     """REC-D06: collar pinned to the tube by one M4 A4 cross-bolt, the
     Ø64 internal hoop behind the mast (horizontal, so a pole hook drops
     in from above), and the flag-staff socket on the port side. Round
-    9 mm hoop section: no edge under 0.6 mm (REC-D08)."""
+    11 mm hoop section: no edge under 0.6 mm (REC-D08)."""
     z = P.COLLAR_Z
     col = (cq.Workplane().circle(13).extrude(24).translate((X, 0, z - 12)))
     hoop = (cq.Workplane().circle(HOOP_R + P.HOOP_SECTION / 2)
@@ -114,7 +114,7 @@ def collar_hoop() -> cq.Workplane:
 
 
 def flag_staff() -> cq.Workplane:
-    """Ø8 printed staff with a Ø16 ball cap (REC-D08), 200 long."""
+    """Ø8 printed staff with a Ø16 ball cap (REC-D08), 190 long."""
     z0 = P.COLLAR_Z - 10
     rod = cq.Workplane().circle(P.STAFF_D / 2).extrude(P.STAFF_L - 8)
     cap = cq.Workplane().sphere(8).translate((0, 0, P.STAFF_L - 8))

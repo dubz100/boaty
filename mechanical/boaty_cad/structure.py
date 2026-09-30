@@ -3,7 +3,6 @@ tray with over-centre latches, camera hood and window, DUPLO deck plate,
 arming key and key dock. All in the boat frame."""
 from __future__ import annotations
 
-import math
 
 import cadquery as cq
 

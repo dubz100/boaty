@@ -27,8 +27,7 @@ def view_matrix(azim: float, elev: float) -> np.ndarray:
     up0 = np.array([0, 0, 1.0])
     right = np.cross(up0, fwd)
     if np.linalg.norm(right) < 1e-6:
-        right = np.array([0, -1.0, 0]) if fwd[2] > 0 else np.array(
-            [0, 1.0, 0])
+        right = np.array([1.0, 0, 0])         # plan: bow to the right
     right /= np.linalg.norm(right)
     up = np.cross(fwd, right)
     return np.array([right, up, fwd])
@@ -36,7 +35,7 @@ def view_matrix(azim: float, elev: float) -> np.ndarray:
 
 def render(parts: list[tuple[np.ndarray, str]], azim: float, elev: float,
            px: float = 0.5, pad: int = 20, light=(0.4, -0.3, 0.85),
-           ids: bool = False):
+           ids: bool = False, meta: dict | None = None):
     """parts: [(triangles (n,3,3), colour name)]. Returns an RGB image
     (and the per-pixel part index if ids)."""
     R = view_matrix(azim, elev)
@@ -47,6 +46,8 @@ def render(parts: list[tuple[np.ndarray, str]], azim: float, elev: float,
     lo, hi = s.min(0), s.max(0)
     W = int((hi[0] - lo[0]) / px) + 2 * pad
     H = int((hi[1] - lo[1]) / px) + 2 * pad
+    if meta is not None:
+        meta.update(R=R, lo=lo, hi=hi, px=px, pad=pad, W=W, H=H)
     depth = np.full((H, W), -np.inf)
     col = np.ones((H, W, 3))
     pid = np.full((H, W), -1, int)
@@ -103,3 +104,10 @@ def render(parts: list[tuple[np.ndarray, str]], azim: float, elev: float,
             edge[:, 1:] |= e
     col[edge] = col[edge] * 0.25
     return (col, pid) if ids else col
+
+
+def to_px(meta: dict, p) -> tuple[float, float]:
+    """Pixel position of a boat-frame point in an image from render()."""
+    s = np.asarray(p, float) @ meta["R"].T
+    return ((s[0] - meta["lo"][0]) / meta["px"] + meta["pad"],
+            (meta["hi"][1] - s[1]) / meta["px"] + meta["pad"])

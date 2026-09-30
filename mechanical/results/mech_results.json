@@ -1,0 +1,2466 @@
+{
+ "commit": "23a4e04",
+ "cadquery": "2.8.0",
+ "rows": [
+  {
+   "id": "M-01",
+   "refs": "MEC-002",
+   "text": "Ready-to-sail mass, excluding payload",
+   "value": "2165 g",
+   "limit": "\u2264 1800 g",
+   "status": "FAIL",
+   "note": "+365 g against the limit",
+   "cr": "CR-09"
+  },
+  {
+   "id": "M-02",
+   "refs": "HUL-D03",
+   "text": "Hull and structure mass",
+   "value": "1551 g",
+   "limit": "\u2264 1000 g",
+   "status": "FAIL",
+   "note": "segments, beams, deck, box, mast, fasteners",
+   "cr": "CR-09"
+  },
+  {
+   "id": "M-03",
+   "refs": "PRP-D13",
+   "text": "Pod mass including the motor",
+   "value": "73 g",
+   "limit": "\u2264 75 g",
+   "status": "PASS",
+   "note": "body, guard, prop, 28 g motor; lead and connector excluded",
+   "cr": ""
+  },
+  {
+   "id": "G-01",
+   "refs": "HUL-D01, MEC-001",
+   "text": "Overall length (hull bow to pod guard)",
+   "value": "615 mm",
+   "limit": "\u2264 620 (HUL) / 650 (SRS)",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "G-02",
+   "refs": "HUL-D01, MEC-001",
+   "text": "Overall beam",
+   "value": "354 mm",
+   "limit": "\u2264 360 / 400",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "G-03",
+   "refs": "HUL-D01, MEC-001",
+   "text": "Height, pod bottom to masthead",
+   "value": "492 mm",
+   "limit": "\u2264 500",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "G-04",
+   "refs": "HUL-D21, MEC-014",
+   "text": "Envelope with the mast removed",
+   "value": "615 \u00d7 354 \u00d7 247",
+   "limit": "\u2264 650 \u00d7 400 \u00d7 250",
+   "status": "PASS",
+   "note": "pods fitted",
+   "cr": ""
+  },
+  {
+   "id": "G-05",
+   "refs": "HUL-D04",
+   "text": "Hull centreline spacing",
+   "value": "270 mm",
+   "limit": "\u2265 270",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "G-06",
+   "refs": "HUL-D02",
+   "text": "Segments per hull and length",
+   "value": "3; 177, 196, 196 mm",
+   "limit": "3; \u2264 200",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "G-07",
+   "refs": "MEC-005, HUL-D02",
+   "text": "Largest printed part (fits the 200 mm cube)",
+   "value": "Bow segment: 196 \u00d7 119 \u00d7 84",
+   "limit": "every side \u2264 197 (200 less 3 mm margin)",
+   "status": "PASS",
+   "note": "22 printed part designs checked",
+   "cr": ""
+  },
+  {
+   "id": "G-08",
+   "refs": "HUL-D10, MEC-006",
+   "text": "Hull shell: material, perimeters, wall",
+   "value": "ASA; 3 perimeters; 1.2 mm",
+   "limit": "PETG/ASA; \u2265 3; \u2265 1.6 mm",
+   "status": "FAIL",
+   "note": "the foam core carries the skin; 1.6 mm adds \u2248 150 g",
+   "cr": "CR-11"
+  },
+  {
+   "id": "B-01",
+   "refs": "HUL-D05, MEC-006",
+   "text": "Closed-cell foam fill of each segment cavity",
+   "value": "100% modelled (XPS, profiled blocks)",
+   "limit": "\u2265 90%",
+   "status": "TEST",
+   "note": "The CAD fills the cavity; the as-built fill is checked by weighing each filled segment (V-item M-V1)",
+   "cr": ""
+  },
+  {
+   "id": "H-01",
+   "refs": "HUL-D07",
+   "text": "Hull draft at design mass (boat + 300 g on the deck)",
+   "value": "34.4 mm at 2465 g",
+   "limit": "\u2264 35",
+   "status": "PASS",
+   "note": "pods reach 78 mm below the water",
+   "cr": ""
+  },
+  {
+   "id": "H-02",
+   "refs": "HUL-D07, MEC-003",
+   "text": "Least freeboard at design mass",
+   "value": "50.7 mm",
+   "limit": "\u2265 50",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-03",
+   "refs": "HUL-D20",
+   "text": "Trim (camera level) light / design",
+   "value": "-0.8\u00b0 / -1.7\u00b0",
+   "limit": "\u00b1 3\u00b0",
+   "status": "PASS",
+   "note": "negative = bow down; lens axis is parallel to the keel",
+   "cr": ""
+  },
+  {
+   "id": "H-04",
+   "refs": "HUL-D20",
+   "text": "Lens height above the water at design mass",
+   "value": "123 mm",
+   "limit": "\u2265 120",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-05",
+   "refs": "HUL-D16",
+   "text": "Box lid above the water at design mass",
+   "value": "153 mm",
+   "limit": "\u2265 150",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-06",
+   "refs": "HUL-D06, REC-001",
+   "text": "Buoyancy with two segments breached, box flooded",
+   "value": "7587 g",
+   "limit": "\u2265 1.5 \u00d7 2100 = 3150 g (and \u2265 1.5 \u00d7 2465 = 3697 g)",
+   "status": "PASS",
+   "note": "the two largest segments breached, 10% void each",
+   "cr": ""
+  },
+  {
+   "id": "H-07",
+   "refs": "HUL-D08, MEC-004",
+   "text": "Static heel, 300 g at the deck edge",
+   "value": "2.1\u00b0",
+   "limit": "\u2264 10\u00b0",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "H-08",
+   "refs": "HUL-D09, MEC-004",
+   "text": "Stability: max righting arm; angle of vanishing stability",
+   "value": "GZ 110 mm at 15\u00b0; vanishes at 65\u00b0",
+   "limit": "vanishing > wave slope 17\u00b0 + edge heel 2\u00b0",
+   "status": "PASS",
+   "note": "turn at 1.5 m/s, R 1 m heels < 5\u00b0; confirmed in the pool (V-item)",
+   "cr": ""
+  },
+  {
+   "id": "H-09",
+   "refs": "REC-005, REC-D06",
+   "text": "Tow by the hoop without capsize (sideways, worst case)",
+   "value": "capsizes at 15 N side pull",
+   "limit": "> side drag at 0.5 m/s \u2248 4.7 N",
+   "status": "PASS",
+   "note": "a 50 N pull is a strength case; towed, the pull equals the drag",
+   "cr": ""
+  },
+  {
+   "id": "S-01",
+   "refs": "HUL-D21, MEC-014",
+   "text": "Carry handle from the centre of gravity (x; y of the grip centre)",
+   "value": "39 mm; 48 mm",
+   "limit": "\u2264 50",
+   "status": "PASS",
+   "note": "each grip either side of the mast socket",
+   "cr": ""
+  },
+  {
+   "id": "S-02",
+   "refs": "HUL-D21",
+   "text": "Aft beam at 3 \u00d7 design weight on the handle",
+   "value": "21 MPa",
+   "limit": "6063-T6 yield 160 MPa",
+   "status": "PASS",
+   "note": "73 N at the grip, hulls hanging from the beam ends",
+   "cr": ""
+  },
+  {
+   "id": "S-03",
+   "refs": "IF-16, HUL-D14, HUL-D25",
+   "text": "Segment joint: bending before it opens (hand-tight), vs 3 \u00d7 design weight, bow and stern supported",
+   "value": "15.5 N\u00b7m",
+   "limit": "\u2265 3.4 N\u00b7m",
+   "status": "PASS",
+   "note": "2 \u00d7 M12 at 97 N each from 20 N at the \u00d835 knob (K = 0.3); load test B-item",
+   "cr": ""
+  },
+  {
+   "id": "S-04",
+   "refs": "IF-19, REC-D06",
+   "text": "Moment at the mast socket, 50 N on the hoop",
+   "value": "4.3 N\u00b7m",
+   "limit": "design 30 N\u00b7m (IF-19)",
+   "status": "PASS",
+   "note": "the hoop is low on the mast: 5 \u00d7 lower than the ICD's 15 N\u00b7m",
+   "cr": ""
+  },
+  {
+   "id": "S-05",
+   "refs": "REC-005, REC-D06",
+   "text": "Hoop: internal size; 50 N pull",
+   "value": "\u00d864 mm; 29 MPa (cantilever, conservative)",
+   "limit": "\u2265 \u00d860; PETG \u2248 50 MPa",
+   "status": "PASS",
+   "note": "the ring shares the load round both sides; pull test B-item",
+   "cr": ""
+  },
+  {
+   "id": "P-01",
+   "refs": "MEC-010, PRP-D09",
+   "text": "Largest opening a probe could enter (inlet annulus and rear guard)",
+   "value": "5.75 mm",
+   "limit": "< 8 mm",
+   "status": "PASS",
+   "note": "the duct is solid; the prop sits between inlet and guard; B-01 probe test",
+   "cr": ""
+  },
+  {
+   "id": "P-02",
+   "refs": "PRP-D10",
+   "text": "Strut sweep; inlet vane angle",
+   "value": "32\u00b0; 45\u00b0",
+   "limit": "\u2265 30\u00b0; \u2265 45\u00b0",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "P-03",
+   "refs": "IF-17, PRP-D12",
+   "text": "Pod mount: dovetail angle, size, clearance; tool-free latch",
+   "value": "60\u00b0, 20 \u00d7 40, 0.3 mm; tongue and detent",
+   "limit": "60\u00b0, 20 \u00d7 40, 0.3 mm",
+   "status": "PASS",
+   "note": "swap time is a bench test",
+   "cr": ""
+  },
+  {
+   "id": "P-04",
+   "refs": "PRP-D14, CHD-003",
+   "text": "Prop unreachable fitted or unfitted",
+   "value": "guard is on the pod; screws need a tool",
+   "limit": "adult action only",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "E-01",
+   "refs": "MEC-013, HUL-D18, IF-19",
+   "text": "GNSS to power wiring, box and motor leads",
+   "value": "252 mm",
+   "limit": "\u2265 150",
+   "status": "PASS",
+   "note": "motor leads run down from the glands, along the aft beam and the hull decks",
+   "cr": ""
+  },
+  {
+   "id": "E-02",
+   "refs": "IF-19",
+   "text": "Masthead top above the water (design mass)",
+   "value": "415 mm",
+   "limit": "\u2248 450, total height \u2264 500",
+   "status": "FAIL",
+   "note": "the \u2264 500 mm height from the pod bottom sets it",
+   "cr": "CR-10"
+  },
+  {
+   "id": "E-03",
+   "refs": "REC-D02, REC-003",
+   "text": "Flag size; flag top above the water; below the GNSS",
+   "value": "120 \u00d7 80; 326 mm",
+   "limit": "\u2265 120 \u00d7 80; \u2265 320 mm",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "I-01",
+   "refs": "IF-18, HUL-D15",
+   "text": "Box inside size; glands; key dock",
+   "value": "197 \u00d7 127 \u00d7 83; 4 \u00d7 PG7 at 25 mm on the aft face; cup on the lid",
+   "limit": "\u2265 180 \u00d7 110 \u00d7 70",
+   "status": "PASS",
+   "note": "the chosen box fixes these (TBC-13); submersion test B-item",
+   "cr": ""
+  },
+  {
+   "id": "I-02",
+   "refs": "IF-20, HUL-D17, MEC-009",
+   "text": "DUPLO grid",
+   "value": "6 \u00d7 8 at 16 mm, \u00d89.4 \u00d7 4.5",
+   "limit": "6 \u00d7 8 at 16 mm",
+   "status": "PASS",
+   "note": "stud size by test print against genuine bricks (TBC-14)",
+   "cr": ""
+  },
+  {
+   "id": "I-03",
+   "refs": "HUL-D19",
+   "text": "Camera hood overhang beyond the window",
+   "value": "22 mm",
+   "limit": "\u2265 15",
+   "status": "PASS",
+   "note": "",
+   "cr": ""
+  },
+  {
+   "id": "I-04",
+   "refs": "HUL-D24",
+   "text": "Box and battery bay open only by an adult",
+   "value": "2 over-centre latches, detent \u2265 40 N; box clips under them",
+   "limit": "\u2265 40 N or two hands",
+   "status": "TEST",
+   "note": "force measured on the bench",
+   "cr": ""
+  },
+  {
+   "id": "C-01",
+   "refs": "CHD-001, HUL-D22",
+   "text": "Child-handled parts that fit the small-parts cylinder",
+   "value": "none",
+   "limit": "none",
+   "status": "PASS",
+   "note": "parts that do fit are bonded, captive or behind a tool: Joint dowel \u00d88 \u00d7 20 (bonded); Beam end cap (bonded); Over-centre latch; Latch keeper (bonded to box); PG7 cable gland; Propeller \u00d835, 3 blades; Camera OV5647 (reference)",
+   "cr": ""
+  },
+  {
+   "id": "C-02",
+   "refs": "CHD-002, HUL-D23",
+   "text": "Edges and finger traps",
+   "value": "child-handled edges filleted or chamfered \u2265 0.6 mm; joints close face to face",
+   "limit": "\u2265 0.6 mm",
+   "status": "TEST",
+   "note": "check on the first prints (inspection)",
+   "cr": ""
+  },
+  {
+   "id": "V-01",
+   "refs": "REC-D01, REC-002",
+   "text": "Fluorescent share of the top view",
+   "value": "64%",
+   "limit": "\u2265 50%",
+   "status": "PASS",
+   "note": "segments printed in fluorescent orange; DUPLO plate green (bricks cover it)",
+   "cr": ""
+  }
+ ],
+ "data": {
+  "mass_items": [
+   {
+    "name": "Bow segment",
+    "key": "HUL-101-P1",
+    "mass": 116.4,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 79.7 cm\u00b3 + foam 1.04 L",
+    "cg": [
+     438.6,
+     135.0,
+     53.6
+    ]
+   },
+   {
+    "name": "Bow segment",
+    "key": "HUL-101-S1",
+    "mass": 116.4,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 79.7 cm\u00b3 + foam 1.04 L",
+    "cg": [
+     438.6,
+     -135.0,
+     53.6
+    ]
+   },
+   {
+    "name": "Mid segment",
+    "key": "HUL-102-P1",
+    "mass": 146.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 99.0 cm\u00b3 + foam 1.34 L",
+    "cg": [
+     274.0,
+     135.0,
+     54.7
+    ]
+   },
+   {
+    "name": "Mid segment",
+    "key": "HUL-102-S1",
+    "mass": 146.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 99.0 cm\u00b3 + foam 1.34 L",
+    "cg": [
+     274.0,
+     -135.0,
+     54.7
+    ]
+   },
+   {
+    "name": "Stern segment",
+    "key": "HUL-103-P1",
+    "mass": 156.8,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 113.2 cm\u00b3 + foam 1.19 L",
+    "cg": [
+     77.8,
+     135.0,
+     53.2
+    ]
+   },
+   {
+    "name": "Stern segment",
+    "key": "HUL-103-S1",
+    "mass": 156.8,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 113.2 cm\u00b3 + foam 1.19 L",
+    "cg": [
+     77.8,
+     -135.0,
+     53.2
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-P1",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     163.5,
+     156.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-P2",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     163.5,
+     114.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-P3",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     386.5,
+     156.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-P4",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     386.5,
+     114.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-S1",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     163.5,
+     -114.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-S2",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     163.5,
+     -156.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-S3",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     386.5,
+     -114.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint thumb-screw M12",
+    "key": "HUL-104-S4",
+    "mass": 8.7,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 6.9 cm\u00b3",
+    "cg": [
+     386.5,
+     -156.0,
+     109.5
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-P1",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     176.9,
+     157.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-P2",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     176.9,
+     113.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-P3",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     372.9,
+     157.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-P4",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     372.9,
+     113.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-S1",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     176.9,
+     -113.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-S2",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     176.9,
+     -157.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-S3",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     372.9,
+     -113.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    "key": "HUL-105-S4",
+    "mass": 1.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 0.8 cm\u00b3",
+    "cg": [
+     372.9,
+     -157.0,
+     16.0
+    ]
+   },
+   {
+    "name": "Tracker pocket cap",
+    "key": "HUL-106-P1",
+    "mass": 7.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 5.5 cm\u00b3",
+    "cg": [
+     257.0,
+     135.0,
+     91.5
+    ]
+   },
+   {
+    "name": "Tracker pocket cap",
+    "key": "HUL-106-S1",
+    "mass": 7.0,
+    "group": "Hull segments, foam, joints",
+    "basis": "CAD, printed 5.5 cm\u00b3",
+    "cg": [
+     257.0,
+     -135.0,
+     91.5
+    ]
+   },
+   {
+    "name": "Crossbeam 20 \u00d7 10 \u00d7 1.5 Al tube, 300 long",
+    "key": "HUL-201-1",
+    "mass": 63.7,
+    "group": "Crossbeams",
+    "basis": "CAD 23.6 cm\u00b3",
+    "cg": [
+     212.0,
+     0.0,
+     94.9
+    ]
+   },
+   {
+    "name": "Crossbeam 20 \u00d7 10 \u00d7 1.5 Al tube, 300 long",
+    "key": "HUL-201-2",
+    "mass": 63.7,
+    "group": "Crossbeams",
+    "basis": "CAD 23.6 cm\u00b3",
+    "cg": [
+     302.0,
+     0.0,
+     94.9
+    ]
+   },
+   {
+    "name": "Beam end cap (bonded)",
+    "key": "HUL-202-1",
+    "mass": 2.0,
+    "group": "Crossbeams",
+    "basis": "CAD, printed 1.6 cm\u00b3",
+    "cg": [
+     212.0,
+     149.2,
+     95.0
+    ]
+   },
+   {
+    "name": "Beam end cap (bonded)",
+    "key": "HUL-202-2",
+    "mass": 2.0,
+    "group": "Crossbeams",
+    "basis": "CAD, printed 1.6 cm\u00b3",
+    "cg": [
+     212.0,
+     -149.2,
+     95.0
+    ]
+   },
+   {
+    "name": "Beam end cap (bonded)",
+    "key": "HUL-202-3",
+    "mass": 2.0,
+    "group": "Crossbeams",
+    "basis": "CAD, printed 1.6 cm\u00b3",
+    "cg": [
+     302.0,
+     149.2,
+     95.0
+    ]
+   },
+   {
+    "name": "Beam end cap (bonded)",
+    "key": "HUL-202-4",
+    "mass": 2.0,
+    "group": "Crossbeams",
+    "basis": "CAD, printed 1.6 cm\u00b3",
+    "cg": [
+     302.0,
+     -149.2,
+     95.0
+    ]
+   },
+   {
+    "name": "Electronics box body (clip-lock, modified)",
+    "key": "HUL-301-1",
+    "mass": 95.0,
+    "group": "Box, tray, latches, glands",
+    "basis": "catalogue",
+    "cg": [
+     349.7,
+     -0.0,
+     126.2
+    ]
+   },
+   {
+    "name": "Electronics box lid",
+    "key": "HUL-302-1",
+    "mass": 40.0,
+    "group": "Box, tray, latches, glands",
+    "basis": "catalogue",
+    "cg": [
+     350.0,
+     -0.0,
+     183.9
+    ]
+   },
+   {
+    "name": "Saddle tray",
+    "key": "HUL-303-1",
+    "mass": 62.2,
+    "group": "Box, tray, latches, glands",
+    "basis": "CAD, printed 49.0 cm\u00b3",
+    "cg": [
+     292.0,
+     0.0,
+     103.7
+    ]
+   },
+   {
+    "name": "Over-centre latch",
+    "key": "HUL-304-1",
+    "mass": 4.6,
+    "group": "Box, tray, latches, glands",
+    "basis": "CAD, printed 3.6 cm\u00b3",
+    "cg": [
+     350.0,
+     77.5,
+     136.9
+    ]
+   },
+   {
+    "name": "Over-centre latch",
+    "key": "HUL-304-2",
+    "mass": 4.6,
+    "group": "Box, tray, latches, glands",
+    "basis": "CAD, printed 3.6 cm\u00b3",
+    "cg": [
+     350.0,
+     -77.5,
+     136.9
+    ]
+   },
+   {
+    "name": "Latch keeper (bonded to box)",
+    "key": "HUL-305-1",
+    "mass": 0.7,
+    "group": "Box, tray, latches, glands",
+    "basis": "CAD, printed 0.6 cm\u00b3",
+    "cg": [
+     350.0,
+     67.0,
+     153.0
+    ]
+   },
+   {
+    "name": "Latch keeper (bonded to box)",
+    "key": "HUL-305-2",
+    "mass": 0.7,
+    "group": "Box, tray, latches, glands",
+    "basis": "CAD, printed 0.6 cm\u00b3",
+    "cg": [
+     350.0,
+     -67.0,
+     153.0
+    ]
+   },
+   {
+    "name": "PG7 cable gland",
+    "key": "HUL-306-1",
+    "mass": 4.0,
+    "group": "Box, tray, latches, glands",
+    "basis": "catalogue",
+    "cg": [
+     240.7,
+     -37.5,
+     141.0
+    ]
+   },
+   {
+    "name": "PG7 cable gland",
+    "key": "HUL-306-2",
+    "mass": 4.0,
+    "group": "Box, tray, latches, glands",
+    "basis": "catalogue",
+    "cg": [
+     240.7,
+     -12.5,
+     141.0
+    ]
+   },
+   {
+    "name": "PG7 cable gland",
+    "key": "HUL-306-3",
+    "mass": 4.0,
+    "group": "Box, tray, latches, glands",
+    "basis": "catalogue",
+    "cg": [
+     240.7,
+     12.5,
+     141.0
+    ]
+   },
+   {
+    "name": "PG7 cable gland",
+    "key": "HUL-306-4",
+    "mass": 4.0,
+    "group": "Box, tray, latches, glands",
+    "basis": "catalogue",
+    "cg": [
+     240.7,
+     37.5,
+     141.0
+    ]
+   },
+   {
+    "name": "Key dock (bonded to lid)",
+    "key": "HUL-307-1",
+    "mass": 4.5,
+    "group": "Box, tray, latches, glands",
+    "basis": "CAD, printed 3.5 cm\u00b3",
+    "cg": [
+     275.9,
+     -0.0,
+     190.6
+    ]
+   },
+   {
+    "name": "Arming key fob (magnet bonded in)",
+    "key": "HUL-308-1",
+    "mass": 8.3,
+    "group": "Box, tray, latches, glands",
+    "basis": "CAD, printed 6.6 cm\u00b3",
+    "cg": [
+     275.5,
+     0.0,
+     195.3
+    ]
+   },
+   {
+    "name": "DUPLO deck plate",
+    "key": "HUL-401-1",
+    "mass": 58.1,
+    "group": "Deck, mast step, handle, tube",
+    "basis": "CAD, printed 45.7 cm\u00b3",
+    "cg": [
+     372.1,
+     0.0,
+     190.0
+    ]
+   },
+   {
+    "name": "Mast step and carry handle",
+    "key": "HUL-402-1",
+    "mass": 73.3,
+    "group": "Deck, mast step, handle, tube",
+    "basis": "CAD, printed 57.7 cm\u00b3",
+    "cg": [
+     211.8,
+     -0.0,
+     138.5
+    ]
+   },
+   {
+    "name": "Mast tube \u00d816 \u00d7 1 Al, 311 long",
+    "key": "HUL-403-1",
+    "mass": 40.8,
+    "group": "Deck, mast step, handle, tube",
+    "basis": "CAD 15.1 cm\u00b3",
+    "cg": [
+     212.0,
+     0.0,
+     262.5
+    ]
+   },
+   {
+    "name": "Mast thumb-screw M8 (captive)",
+    "key": "HUL-404-1",
+    "mass": 3.5,
+    "group": "Deck, mast step, handle, tube",
+    "basis": "CAD, printed 2.7 cm\u00b3",
+    "cg": [
+     181.9,
+     0.0,
+     130.0
+    ]
+   },
+   {
+    "name": "Camera hood",
+    "key": "HUL-501-1",
+    "mass": 13.3,
+    "group": "Camera hood and window",
+    "basis": "CAD, printed 10.4 cm\u00b3",
+    "cg": [
+     458.9,
+     -0.0,
+     165.1
+    ]
+   },
+   {
+    "name": "Camera window, 2 mm acrylic",
+    "key": "HUL-502-1",
+    "mass": 3.0,
+    "group": "Camera hood and window",
+    "basis": "CAD 2.5 cm\u00b3",
+    "cg": [
+     451.0,
+     0.0,
+     159.0
+    ]
+   },
+   {
+    "name": "Collar and recovery hoop",
+    "key": "REC-101-1",
+    "mass": 26.7,
+    "group": "Recovery: hoop, flag, masthead",
+    "basis": "CAD, printed 21.1 cm\u00b3",
+    "cg": [
+     178.9,
+     2.1,
+     187.9
+    ]
+   },
+   {
+    "name": "Flag staff with ball cap",
+    "key": "REC-102-1",
+    "mass": 9.4,
+    "group": "Recovery: hoop, flag, masthead",
+    "basis": "CAD, printed 7.4 cm\u00b3",
+    "cg": [
+     212.0,
+     20.0,
+     283.9
+    ]
+   },
+   {
+    "name": "Flag, fluorescent ripstop 120 \u00d7 80",
+    "key": "REC-103-1",
+    "mass": 3.0,
+    "group": "Recovery: hoop, flag, masthead",
+    "basis": "catalogue",
+    "cg": [
+     148.0,
+     19.8,
+     316.0
+    ]
+   },
+   {
+    "name": "Masthead: GNSS dome and LED diffuser",
+    "key": "REC-104-1",
+    "mass": 22.9,
+    "group": "Recovery: hoop, flag, masthead",
+    "basis": "CAD, printed 18.0 cm\u00b3",
+    "cg": [
+     212.0,
+     -0.0,
+     424.6
+    ]
+   },
+   {
+    "name": "Thruster pod body",
+    "key": "PRP-101-P1",
+    "mass": 41.0,
+    "group": "Thruster pods",
+    "basis": "CAD, printed 32.3 cm\u00b3",
+    "cg": [
+     -10.4,
+     135.0,
+     1.2
+    ]
+   },
+   {
+    "name": "Thruster pod body",
+    "key": "PRP-101-S1",
+    "mass": 41.0,
+    "group": "Thruster pods",
+    "basis": "CAD, printed 32.3 cm\u00b3",
+    "cg": [
+     -10.4,
+     -135.0,
+     1.2
+    ]
+   },
+   {
+    "name": "Rear guard",
+    "key": "PRP-102-P1",
+    "mass": 2.8,
+    "group": "Thruster pods",
+    "basis": "CAD, printed 2.2 cm\u00b3",
+    "cg": [
+     -43.5,
+     135.0,
+     -26.0
+    ]
+   },
+   {
+    "name": "Rear guard",
+    "key": "PRP-102-S1",
+    "mass": 2.8,
+    "group": "Thruster pods",
+    "basis": "CAD, printed 2.2 cm\u00b3",
+    "cg": [
+     -43.5,
+     -135.0,
+     -26.0
+    ]
+   },
+   {
+    "name": "Propeller \u00d835, 3 blades",
+    "key": "PRP-103-P1",
+    "mass": 1.4,
+    "group": "Thruster pods",
+    "basis": "CAD, printed 1.1 cm\u00b3",
+    "cg": [
+     -27.5,
+     135.0,
+     -26.0
+    ]
+   },
+   {
+    "name": "Propeller \u00d835, 3 blades",
+    "key": "PRP-103-S1",
+    "mass": 1.4,
+    "group": "Thruster pods",
+    "basis": "CAD, printed 1.1 cm\u00b3",
+    "cg": [
+     -27.5,
+     -135.0,
+     -26.0
+    ]
+   },
+   {
+    "name": "Motor 2205 (reference)",
+    "key": "KC-04-P1",
+    "mass": 28.0,
+    "group": "Thruster pods",
+    "basis": "catalogue",
+    "cg": [
+     -13.8,
+     135.0,
+     -26.0
+    ]
+   },
+   {
+    "name": "Motor 2205 (reference)",
+    "key": "KC-04-S1",
+    "mass": 28.0,
+    "group": "Thruster pods",
+    "basis": "catalogue",
+    "cg": [
+     -13.8,
+     -135.0,
+     -26.0
+    ]
+   },
+   {
+    "name": "Camera OV5647 (reference)",
+    "key": "KC-11-1",
+    "mass": 8.0,
+    "group": "Electronics (box contents)",
+    "basis": "catalogue",
+    "cg": [
+     440.6,
+     -0.0,
+     156.6
+    ]
+   },
+   {
+    "name": "Battery 3S 18650 + BMS",
+    "key": "KCL",
+    "mass": 160.0,
+    "group": "Electronics (box contents)",
+    "basis": "ADD A.MASS",
+    "cg": [
+     291.6,
+     0.0,
+     114.6
+    ]
+   },
+   {
+    "name": "Flight controller + PDB",
+    "key": "KCL",
+    "mass": 25.0,
+    "group": "Electronics (box contents)",
+    "basis": "ADD A.MASS",
+    "cg": [
+     361.6,
+     25.0,
+     112.6
+    ]
+   },
+   {
+    "name": "Pi Zero 2 W + SD",
+    "key": "KCL",
+    "mass": 22.0,
+    "group": "Electronics (box contents)",
+    "basis": "ADD A.MASS",
+    "cg": [
+     371.6,
+     -30.0,
+     134.6
+    ]
+   },
+   {
+    "name": "ESCs (2)",
+    "key": "KCL",
+    "mass": 30.0,
+    "group": "Electronics (box contents)",
+    "basis": "ADD A.MASS",
+    "cg": [
+     331.6,
+     30.0,
+     134.6
+    ]
+   },
+   {
+    "name": "Power module, buck, key switch",
+    "key": "KCL",
+    "mass": 30.0,
+    "group": "Electronics (box contents)",
+    "basis": "ADD A.MASS",
+    "cg": [
+     341.6,
+     -25.0,
+     112.6
+    ]
+   },
+   {
+    "name": "Wiring and connectors",
+    "key": "KCL",
+    "mass": 60.0,
+    "group": "Electronics (box contents)",
+    "basis": "ADD A.MASS",
+    "cg": [
+     311.6,
+     0.0,
+     129.6
+    ]
+   },
+   {
+    "name": "GNSS + compass board, LED ring, mast cable",
+    "key": "est",
+    "mass": 25.0,
+    "group": "Recovery: hoop, flag, masthead",
+    "basis": "estimate",
+    "cg": [
+     212.0,
+     0.0,
+     431.0
+    ]
+   },
+   {
+    "name": "Stainless fasteners, inserts, pins (count in MDD)",
+    "key": "est",
+    "mass": 50.0,
+    "group": "Fasteners",
+    "basis": "estimate",
+    "cg": [
+     300.0,
+     0.0,
+     95.0
+    ]
+   },
+   {
+    "name": "Magnet (arming key) \u00d820 \u00d7 3",
+    "key": "est",
+    "mass": 7.0,
+    "group": "Box, tray, latches, glands",
+    "basis": "estimate",
+    "cg": [
+     276.0,
+     0.0,
+     192.0
+    ]
+   },
+   {
+    "name": "Labels, hi-vis tape, O-rings, sealant",
+    "key": "est",
+    "mass": 15.0,
+    "group": "Recovery: hoop, flag, masthead",
+    "basis": "estimate",
+    "cg": [
+     300.0,
+     0.0,
+     90.0
+    ]
+   },
+   {
+    "name": "Pod connectors (2 pairs) and motor leads",
+    "key": "est",
+    "mass": 30.0,
+    "group": "Thruster pods",
+    "basis": "estimate",
+    "cg": [
+     120.0,
+     0.0,
+     95.0
+    ]
+   }
+  ],
+  "mass_groups": {
+   "Hull segments, foam, joints": 930.2,
+   "Crossbeams": 135.6,
+   "Box, tray, latches, glands": 243.7,
+   "Deck, mast step, handle, tube": 175.7,
+   "Camera hood and window": 16.2,
+   "Recovery: hoop, flag, masthead": 102.0,
+   "Thruster pods": 176.2,
+   "Electronics (box contents)": 335.0,
+   "Fasteners": 50.0
+  },
+  "mass": 2164.6,
+  "cg": [
+   251.1,
+   0.2,
+   98.2
+  ],
+  "mass_hul": 1551.4,
+  "mass_pod": 73.1,
+  "envelope": [
+   615.2,
+   354.0,
+   492.4
+  ],
+  "envelope_lo": [
+   -46.2,
+   -177.0,
+   -47.4
+  ],
+  "envelope_mast_off": [
+   615.2,
+   354.0,
+   246.9
+  ],
+  "print_sizes": [
+   [
+    "HUL-101",
+    "Bow segment",
+    [
+     84.0,
+     118.5,
+     196.0
+    ]
+   ],
+   [
+    "HUL-102",
+    "Mid segment",
+    [
+     84.0,
+     118.5,
+     196.0
+    ]
+   ],
+   [
+    "HUL-402",
+    "Mast step and carry handle",
+    [
+     34.0,
+     71.0,
+     196.0
+    ]
+   ],
+   [
+    "HUL-303",
+    "Saddle tray",
+    [
+     16.0,
+     149.6,
+     194.0
+    ]
+   ],
+   [
+    "REC-102",
+    "Flag staff with ball cap",
+    [
+     16.0,
+     16.0,
+     190.0
+    ]
+   ],
+   [
+    "HUL-103",
+    "Stern segment",
+    [
+     84.0,
+     118.5,
+     185.0
+    ]
+   ],
+   [
+    "HUL-401",
+    "DUPLO deck plate",
+    [
+     18.7,
+     136.0,
+     140.0
+    ]
+   ],
+   [
+    "PRP-101",
+    "Thruster pod body",
+    [
+     53.8,
+     65.2,
+     123.4
+    ]
+   ],
+   [
+    "REC-101",
+    "Collar and recovery hoop",
+    [
+     28.0,
+     86.0,
+     104.5
+    ]
+   ],
+   [
+    "HUL-501",
+    "Camera hood",
+    [
+     25.0,
+     54.0,
+     68.0
+    ]
+   ],
+   [
+    "HUL-304",
+    "Over-centre latch",
+    [
+     12.0,
+     20.0,
+     57.0
+    ]
+   ],
+   [
+    "PRP-102",
+    "Rear guard",
+    [
+     3.0,
+     42.8,
+     53.8
+    ]
+   ],
+   [
+    "REC-104",
+    "Masthead: GNSS dome and LED diffuser",
+    [
+     32.0,
+     50.0,
+     50.0
+    ]
+   ],
+   [
+    "HUL-106",
+    "Tracker pocket cap",
+    [
+     3.0,
+     50.0,
+     50.0
+    ]
+   ],
+   [
+    "HUL-307",
+    "Key dock (bonded to lid)",
+    [
+     5.0,
+     42.0,
+     46.0
+    ]
+   ],
+   [
+    "HUL-308",
+    "Arming key fob (magnet bonded in)",
+    [
+     9.0,
+     36.0,
+     40.0
+    ]
+   ],
+   [
+    "HUL-104",
+    "Joint thumb-screw M12",
+    [
+     34.9,
+     35.0,
+     37.0
+    ]
+   ],
+   [
+    "PRP-103",
+    "Propeller \u00d835, 3 blades",
+    [
+     10.4,
+     29.5,
+     32.0
+    ]
+   ],
+   [
+    "HUL-404",
+    "Mast thumb-screw M8 (captive)",
+    [
+     23.8,
+     24.0,
+     25.0
+    ]
+   ],
+   [
+    "HUL-202",
+    "Beam end cap (bonded)",
+    [
+     11.0,
+     15.9,
+     21.0
+    ]
+   ],
+   [
+    "HUL-105",
+    "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    [
+     8.0,
+     8.0,
+     20.0
+    ]
+   ],
+   [
+    "HUL-305",
+    "Latch keeper (bonded to box)",
+    [
+     4.0,
+     8.0,
+     18.0
+    ]
+   ]
+  ],
+  "foam_l": {
+   "Bow segment": 1.039,
+   "Mid segment": 1.338,
+   "Stern segment": 1.19
+  },
+  "hull_volume_l": 7.854,
+  "float_light": {
+   "mass": 2164.6,
+   "sinkage": 26.68,
+   "trim": -0.81,
+   "draft": 28.8,
+   "freeboard": 58.8,
+   "xref": 251.1,
+   "wl_aft": 23.1,
+   "wl_fwd": 31.2
+  },
+  "float_design": {
+   "mass": 2464.6,
+   "sinkage": 30.17,
+   "trim": -1.72,
+   "draft": 34.4,
+   "freeboard": 50.7,
+   "xref": 265.8,
+   "wl_aft": 22.2,
+   "wl_fwd": 39.3
+  },
+  "reserve_g": 7586.6,
+  "heel_edge": 2.07,
+  "gz": [
+   [
+    0,
+    -0.17
+   ],
+   [
+    5,
+    51.49
+   ],
+   [
+    10,
+    98.61
+   ],
+   [
+    15,
+    109.71
+   ],
+   [
+    20,
+    102.68
+   ],
+   [
+    25,
+    92.7
+   ],
+   [
+    30,
+    82.17
+   ],
+   [
+    35,
+    71.19
+   ],
+   [
+    40,
+    59.86
+   ],
+   [
+    45,
+    48.17
+   ],
+   [
+    50,
+    36.11
+   ],
+   [
+    55,
+    23.7
+   ],
+   [
+    60,
+    11.03
+   ],
+   [
+    65,
+    -1.82
+   ],
+   [
+    70,
+    -14.76
+   ],
+   [
+    75,
+    -29.9
+   ],
+   [
+    80,
+    -43.73
+   ],
+   [
+    85,
+    -45.21
+   ],
+   [
+    90,
+    -46.77
+   ]
+  ],
+  "gz_max": [
+   15.0,
+   109.71
+  ],
+  "vanish": 65.0,
+  "rm_max": 2.65,
+  "turn_moment": 0.542,
+  "wave_slope": 17.4,
+  "tow": {
+   "capsize_force": 15.2,
+   "drag_side": 4.7,
+   "lever": 175.0
+  },
+  "beam_stress": 20.7,
+  "joint": {
+   "preload": 97.2,
+   "m_cap": 15.46,
+   "m_dem": 3.44
+  },
+  "socket_moment": 4.3,
+  "hoop_stress": 28.7,
+  "openings": {
+   "inlet annulus (nacelle to duct)": 5.0,
+   "guard cells, hub to ring": 3.21,
+   "guard cells, ring to duct": 5.75
+  },
+  "gnss_sep": 251.5,
+  "gnss_top_above_wl": 414.8,
+  "small_parts": [
+   [
+    "HUL-105",
+    "Joint dowel \u00d88 \u00d7 20 (bonded)",
+    false
+   ],
+   [
+    "HUL-202",
+    "Beam end cap (bonded)",
+    false
+   ],
+   [
+    "HUL-304",
+    "Over-centre latch",
+    false
+   ],
+   [
+    "HUL-305",
+    "Latch keeper (bonded to box)",
+    false
+   ],
+   [
+    "HUL-306",
+    "PG7 cable gland",
+    false
+   ],
+   [
+    "PRP-103",
+    "Propeller \u00d835, 3 blades",
+    false
+   ],
+   [
+    "KC-11",
+    "Camera OV5647 (reference)",
+    false
+   ]
+  ],
+  "hivis_share": 63.7
+ },
+ "params": {
+  "B": 84.0,
+  "BEAM_BOLT_DY": 20.0,
+  "BEAM_H": 10.0,
+  "BEAM_L": 300.0,
+  "BEAM_T": 1.5,
+  "BEAM_W": 20.0,
+  "BEAM_X": [
+   212.0,
+   302.0
+  ],
+  "BOW_FLAT": 30.0,
+  "BOW_KEEL_RISE": 28.0,
+  "BOX_H": 86.0,
+  "BOX_L": 200.0,
+  "BOX_LID_H": 14.0,
+  "BOX_W": 130.0,
+  "BOX_WALL": 1.6,
+  "BOX_X0": 250.0,
+  "COLLAR_Z": 188.0,
+  "D": 90.0,
+  "DESIGN_MASS": 2100.0,
+  "DOVE_ANGLE": 60.0,
+  "DOVE_CLEAR": 0.3,
+  "DOVE_H": 8.0,
+  "DOVE_L": 40.0,
+  "DOVE_W": 20.0,
+  "DOVE_Z": 62.0,
+  "DOWEL_BOSS_D": 15.0,
+  "DOWEL_CLEAR": 0.3,
+  "DOWEL_D": 8.0,
+  "DOWEL_ENG": 10.0,
+  "DOWEL_POS": [
+   [
+    22.0,
+    16.0
+   ],
+   [
+    -22.0,
+    16.0
+   ]
+  ],
+  "DUCT_ID": 38.0,
+  "DUCT_OD": 42.8,
+  "DUCT_X": [
+   -42.0,
+   8.0
+  ],
+  "FLAG": [
+   120.0,
+   80.0
+  ],
+  "FLANGE_DEPTH": 6.0,
+  "FLANGE_WALL": 4.0,
+  "G": 0.00981,
+  "GLAND_HOLE": 12.7,
+  "GLAND_PITCH": 25.0,
+  "GLAND_Z": 38.0,
+  "GRIP_D": 22.0,
+  "GRIP_Z": 152.0,
+  "HANDLE_SPAN": 95.0,
+  "HOOD_OVERHANG": 22.0,
+  "HOOP_ID": 64.0,
+  "HOOP_SECTION": 11.0,
+  "HULL_Y": 135.0,
+  "INFILL": 0.25,
+  "INSERT_BOSS_D": 11.0,
+  "INSERT_D": 5.6,
+  "INSERT_DEPTH": 10.0,
+  "KEY_X": 276.0,
+  "KNOB_D": 35.0,
+  "KNOB_H": 11.0,
+  "LABEL": [
+   70.0,
+   24.0,
+   0.6
+  ],
+  "LATCH_FORCE_MIN": 40.0,
+  "LATCH_X": 350.0,
+  "LENS_Z_ABOVE_BOX": 56.0,
+  "LUG_L": 12.0,
+  "LUG_W": 22.0,
+  "L_BOW": 196.0,
+  "L_MID": 196.0,
+  "L_STERN": 177.0,
+  "MASTHEAD_H": 32.0,
+  "MAST_BOTTOM_Z": 102.0,
+  "MAST_D": 16.0,
+  "MAST_T": 1.0,
+  "MAST_TOP_Z": 423.0,
+  "MAST_X": 212.0,
+  "MOTOR_BELL_D": 27.9,
+  "MOTOR_L": 17.0,
+  "NACELLE_D": 28.0,
+  "NECK_D": 9.0,
+  "NECK_L": 13.0,
+  "PAYLOAD": 300.0,
+  "PLATE_T": 2.4,
+  "PLATE_X0": 308.0,
+  "POCKET_CAP_D": 50.0,
+  "POCKET_D": 36.0,
+  "POCKET_DEPTH": 12.0,
+  "POCKET_X": 257.0,
+  "POD_AXIS_Z": -26.0,
+  "PRINT_MAX": 197.0,
+  "PROBE_D": 8.0,
+  "PROP_D": 35.0,
+  "PROP_HUB": 12.0,
+  "RAIL_HOLE": 3.2,
+  "RAIL_PITCH": 10.0,
+  "R_BILGE": 18.0,
+  "R_DECK": 6.0,
+  "SCREW_CLEAR": 0.45,
+  "SCREW_D": 12.0,
+  "SCREW_P": 1.75,
+  "SCREW_Y": 21.0,
+  "SCREW_Z": 109.5,
+  "SF": 3.0,
+  "SOCKET_DEPTH": 50.0,
+  "SOCKET_OD": 28.0,
+  "STAFF_D": 8.0,
+  "STAFF_L": 190.0,
+  "STAFF_SOCKET_Z": 188.0,
+  "STEM_HALF": 5.0,
+  "STRUT_SWEEP": 32.0,
+  "STUD_BORE": 6.6,
+  "STUD_D": 9.4,
+  "STUD_H": 4.5,
+  "STUD_NX": 8,
+  "STUD_NY": 6,
+  "STUD_PITCH": 16.0,
+  "THREAD_L": 12.0,
+  "TRAY_T": 3.0,
+  "TRAY_WALL_H": 12.0,
+  "TRAY_X": [
+   202.0,
+   396.0
+  ],
+  "T_END": 2.0,
+  "T_SHELL": 1.2,
+  "VANE_ANGLE": 45.0,
+  "WALL": 1.2,
+  "WINDOW_D": 30.0,
+  "X_J1": 177.0,
+  "X_J2": 373.0,
+  "X_STEM": 569.0
+ },
+ "parts": [
+  {
+   "key": "HUL-101",
+   "name": "Bow segment",
+   "kind": "printed",
+   "material": "ASA",
+   "qty": 2,
+   "child": true,
+   "refs": [
+    "HUL-D02",
+    "IF-16"
+   ],
+   "files": [
+    "parts/HUL-101_bow_segment.step",
+    "parts/HUL-101_bow_segment.stl"
+   ],
+   "size": [
+    204.1,
+    88.4,
+    120.4
+   ]
+  },
+  {
+   "key": "HUL-102",
+   "name": "Mid segment",
+   "kind": "printed",
+   "material": "ASA",
+   "qty": 2,
+   "child": true,
+   "refs": [
+    "HUL-D02",
+    "REC-D04/D05"
+   ],
+   "files": [
+    "parts/HUL-102_mid_segment.step",
+    "parts/HUL-102_mid_segment.stl"
+   ],
+   "size": [
+    196.1,
+    84.1,
+    118.6
+   ]
+  },
+  {
+   "key": "HUL-103",
+   "name": "Stern segment",
+   "kind": "printed",
+   "material": "ASA",
+   "qty": 2,
+   "child": true,
+   "refs": [
+    "HUL-D02",
+    "IF-17"
+   ],
+   "files": [
+    "parts/HUL-103_stern_segment.step",
+    "parts/HUL-103_stern_segment.stl"
+   ],
+   "size": [
+    185.0,
+    84.1,
+    118.6
+   ]
+  },
+  {
+   "key": "HUL-104",
+   "name": "Joint thumb-screw M12",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 8,
+   "child": true,
+   "refs": [
+    "IF-16",
+    "HUL-D22"
+   ],
+   "files": [
+    "parts/HUL-104_joint_thumb_screw_m12.step",
+    "parts/HUL-104_joint_thumb_screw_m12.stl"
+   ],
+   "size": [
+    34.9,
+    35.0,
+    37.0
+   ]
+  },
+  {
+   "key": "HUL-105",
+   "name": "Joint dowel \u00d88 \u00d7 20 (bonded)",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 8,
+   "child": false,
+   "refs": [
+    "IF-16"
+   ],
+   "files": [
+    "parts/HUL-105_joint_dowel_8_20_bonded.step",
+    "parts/HUL-105_joint_dowel_8_20_bonded.stl"
+   ],
+   "size": [
+    8.0,
+    8.0,
+    20.0
+   ]
+  },
+  {
+   "key": "HUL-106",
+   "name": "Tracker pocket cap",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 2,
+   "child": false,
+   "refs": [
+    "REC-D05"
+   ],
+   "files": [
+    "parts/HUL-106_tracker_pocket_cap.step",
+    "parts/HUL-106_tracker_pocket_cap.stl"
+   ],
+   "size": [
+    50.0,
+    50.0,
+    3.0
+   ]
+  },
+  {
+   "key": "HUL-201",
+   "name": "Crossbeam 20 \u00d7 10 \u00d7 1.5 Al tube, 300 long",
+   "kind": "stock",
+   "material": "Al 6063",
+   "qty": 2,
+   "child": false,
+   "refs": [
+    "HUL-2"
+   ],
+   "files": [
+    "parts/HUL-201_crossbeam_20_10_1_5_al_tube_300_long.step"
+   ],
+   "size": [
+    20.0,
+    300.0,
+    10.0
+   ]
+  },
+  {
+   "key": "HUL-202",
+   "name": "Beam end cap (bonded)",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 4,
+   "child": false,
+   "refs": [
+    "HUL-D23"
+   ],
+   "files": [
+    "parts/HUL-202_beam_end_cap_bonded.step",
+    "parts/HUL-202_beam_end_cap_bonded.stl"
+   ],
+   "size": [
+    21.0,
+    15.9,
+    11.0
+   ]
+  },
+  {
+   "key": "HUL-301",
+   "name": "Electronics box body (clip-lock, modified)",
+   "kind": "bought",
+   "material": "PP",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-18"
+   ],
+   "files": [
+    "parts/HUL-301_electronics_box_body_clip_lock_modified.step"
+   ],
+   "size": [
+    200.0,
+    130.0,
+    72.0
+   ]
+  },
+  {
+   "key": "HUL-302",
+   "name": "Electronics box lid",
+   "kind": "bought",
+   "material": "PP",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-18"
+   ],
+   "files": [
+    "parts/HUL-302_electronics_box_lid.step"
+   ],
+   "size": [
+    200.0,
+    136.0,
+    29.0
+   ]
+  },
+  {
+   "key": "HUL-303",
+   "name": "Saddle tray",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-18",
+    "HUL-D16"
+   ],
+   "files": [
+    "parts/HUL-303_saddle_tray.step",
+    "parts/HUL-303_saddle_tray.stl"
+   ],
+   "size": [
+    194.0,
+    149.6,
+    16.0
+   ]
+  },
+  {
+   "key": "HUL-304",
+   "name": "Over-centre latch",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 2,
+   "child": false,
+   "refs": [
+    "HUL-D24"
+   ],
+   "files": [
+    "parts/HUL-304_over_centre_latch.step",
+    "parts/HUL-304_over_centre_latch.stl"
+   ],
+   "size": [
+    20.0,
+    12.0,
+    57.0
+   ]
+  },
+  {
+   "key": "HUL-305",
+   "name": "Latch keeper (bonded to box)",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 2,
+   "child": false,
+   "refs": [
+    "HUL-D24"
+   ],
+   "files": [
+    "parts/HUL-305_latch_keeper_bonded_to_box.step",
+    "parts/HUL-305_latch_keeper_bonded_to_box.stl"
+   ],
+   "size": [
+    18.0,
+    4.0,
+    8.0
+   ]
+  },
+  {
+   "key": "HUL-306",
+   "name": "PG7 cable gland",
+   "kind": "bought",
+   "material": "PA",
+   "qty": 4,
+   "child": false,
+   "refs": [
+    "IF-18",
+    "MEC-012"
+   ],
+   "files": [
+    "parts/HUL-306_pg7_cable_gland.step"
+   ],
+   "size": [
+    17.0,
+    17.3,
+    15.0
+   ]
+  },
+  {
+   "key": "HUL-307",
+   "name": "Key dock (bonded to lid)",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-18"
+   ],
+   "files": [
+    "parts/HUL-307_key_dock_bonded_to_lid.step",
+    "parts/HUL-307_key_dock_bonded_to_lid.stl"
+   ],
+   "size": [
+    46.0,
+    42.0,
+    5.0
+   ]
+  },
+  {
+   "key": "HUL-308",
+   "name": "Arming key fob (magnet bonded in)",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-18",
+    "CHD-003"
+   ],
+   "files": [
+    "parts/HUL-308_arming_key_fob_magnet_bonded_in.step",
+    "parts/HUL-308_arming_key_fob_magnet_bonded_in.stl"
+   ],
+   "size": [
+    40.0,
+    36.0,
+    9.0
+   ]
+  },
+  {
+   "key": "HUL-401",
+   "name": "DUPLO deck plate",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": true,
+   "refs": [
+    "IF-20",
+    "MEC-009"
+   ],
+   "files": [
+    "parts/HUL-401_duplo_deck_plate.step",
+    "parts/HUL-401_duplo_deck_plate.stl"
+   ],
+   "size": [
+    140.0,
+    136.0,
+    18.7
+   ]
+  },
+  {
+   "key": "HUL-402",
+   "name": "Mast step and carry handle",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-19",
+    "HUL-D21"
+   ],
+   "files": [
+    "parts/HUL-402_mast_step_and_carry_handle.step",
+    "parts/HUL-402_mast_step_and_carry_handle.stl"
+   ],
+   "size": [
+    34.0,
+    196.0,
+    71.0
+   ]
+  },
+  {
+   "key": "HUL-403",
+   "name": "Mast tube \u00d816 \u00d7 1 Al, 311 long",
+   "kind": "stock",
+   "material": "Al 6063",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-19"
+   ],
+   "files": [
+    "parts/HUL-403_mast_tube_16_1_al_311_long.step"
+   ],
+   "size": [
+    16.0,
+    16.0,
+    321.0
+   ]
+  },
+  {
+   "key": "HUL-404",
+   "name": "Mast thumb-screw M8 (captive)",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-19"
+   ],
+   "files": [
+    "parts/HUL-404_mast_thumb_screw_m8_captive.step",
+    "parts/HUL-404_mast_thumb_screw_m8_captive.stl"
+   ],
+   "size": [
+    25.0,
+    24.0,
+    23.8
+   ]
+  },
+  {
+   "key": "HUL-501",
+   "name": "Camera hood",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "HUL-D19"
+   ],
+   "files": [
+    "parts/HUL-501_camera_hood.step",
+    "parts/HUL-501_camera_hood.stl"
+   ],
+   "size": [
+    25.0,
+    68.0,
+    54.0
+   ]
+  },
+  {
+   "key": "HUL-502",
+   "name": "Camera window, 2 mm acrylic",
+   "kind": "stock",
+   "material": "acrylic",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "HUL-D19"
+   ],
+   "files": [
+    "parts/HUL-502_camera_window_2_mm_acrylic.step"
+   ],
+   "size": [
+    2.0,
+    40.0,
+    40.0
+   ]
+  },
+  {
+   "key": "REC-101",
+   "name": "Collar and recovery hoop",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "REC-D06",
+    "REC-005"
+   ],
+   "files": [
+    "parts/REC-101_collar_and_recovery_hoop.step",
+    "parts/REC-101_collar_and_recovery_hoop.stl"
+   ],
+   "size": [
+    104.5,
+    86.0,
+    28.0
+   ]
+  },
+  {
+   "key": "REC-102",
+   "name": "Flag staff with ball cap",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": true,
+   "refs": [
+    "REC-D02",
+    "REC-D08"
+   ],
+   "files": [
+    "parts/REC-102_flag_staff_with_ball_cap.step",
+    "parts/REC-102_flag_staff_with_ball_cap.stl"
+   ],
+   "size": [
+    16.0,
+    16.0,
+    190.0
+   ]
+  },
+  {
+   "key": "REC-103",
+   "name": "Flag, fluorescent ripstop 120 \u00d7 80",
+   "kind": "bought",
+   "material": "ripstop",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "REC-D02"
+   ],
+   "files": [
+    "parts/REC-103_flag_fluorescent_ripstop_120_80.step"
+   ],
+   "size": [
+    120.0,
+    0.3,
+    80.0
+   ]
+  },
+  {
+   "key": "REC-104",
+   "name": "Masthead: GNSS dome and LED diffuser",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "IF-19",
+    "REC-D03"
+   ],
+   "files": [
+    "parts/REC-104_masthead_gnss_dome_and_led_diffuser.step",
+    "parts/REC-104_masthead_gnss_dome_and_led_diffuser.stl"
+   ],
+   "size": [
+    50.0,
+    50.0,
+    32.0
+   ]
+  },
+  {
+   "key": "PRP-101",
+   "name": "Thruster pod body",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 2,
+   "child": true,
+   "refs": [
+    "IF-17",
+    "PRP-D09/10"
+   ],
+   "files": [
+    "parts/PRP-101_thruster_pod_body.step",
+    "parts/PRP-101_thruster_pod_body.stl"
+   ],
+   "size": [
+    65.2,
+    53.8,
+    123.4
+   ]
+  },
+  {
+   "key": "PRP-102",
+   "name": "Rear guard",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 2,
+   "child": false,
+   "refs": [
+    "MEC-010",
+    "PRP-D09"
+   ],
+   "files": [
+    "parts/PRP-102_rear_guard.step",
+    "parts/PRP-102_rear_guard.stl"
+   ],
+   "size": [
+    3.0,
+    53.8,
+    42.8
+   ]
+  },
+  {
+   "key": "PRP-103",
+   "name": "Propeller \u00d835, 3 blades",
+   "kind": "printed",
+   "material": "PETG",
+   "qty": 2,
+   "child": false,
+   "refs": [
+    "PRP-D10"
+   ],
+   "files": [
+    "parts/PRP-103_propeller_35_3_blades.step",
+    "parts/PRP-103_propeller_35_3_blades.stl"
+   ],
+   "size": [
+    10.4,
+    29.5,
+    32.0
+   ]
+  },
+  {
+   "key": "KC-04",
+   "name": "Motor 2205 (reference)",
+   "kind": "ref",
+   "material": "-",
+   "qty": 2,
+   "child": false,
+   "refs": [
+    "KC-04"
+   ],
+   "files": [
+    "parts/KC-04_motor_2205_reference.step"
+   ],
+   "size": [
+    29.0,
+    27.9,
+    27.9
+   ]
+  },
+  {
+   "key": "KC-11",
+   "name": "Camera OV5647 (reference)",
+   "kind": "ref",
+   "material": "-",
+   "qty": 1,
+   "child": false,
+   "refs": [
+    "KC-11"
+   ],
+   "files": [
+    "parts/KC-11_camera_ov5647_reference.step"
+   ],
+   "size": [
+    12.0,
+    25.0,
+    24.0
+   ]
+  }
+ ]
+}

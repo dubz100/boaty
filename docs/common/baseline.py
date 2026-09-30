@@ -46,9 +46,16 @@ REGISTER = {
     "SDR": ("BOATY-SDR-001", "System Design Review", "D"),
 }
 
+# Detailed-design documents: registered so builds take their issue from
+# here, but not part of the SDR baseline (they are CDR candidates).
+DETAIL = {
+    "MDD": ("BOATY-MDD-001", "Mechanical Design Description", "A"),
+}
+ALL = {**REGISTER, **DETAIL}
+
 
 def letter(key: str) -> str:
-    return REGISTER[key][2]
+    return ALL[key][2]
 
 
 def issue(key: str, status: str = STATUS) -> str:
@@ -64,9 +71,9 @@ def ref(key: str) -> str:
 
 def full(key: str) -> str:
     """Full reference, e.g. 'BOATY-SRS-001 Issue H'."""
-    doc = REGISTER[key][0]
+    doc = ALL[key][0]
     return f"{doc} Issue {letter(key)}" if doc != "-" else \
-        f"{REGISTER[key][1]} {letter(key)}"
+        f"{ALL[key][1]} {letter(key)}"
 
 
 def refs(*keys: str) -> str:
@@ -83,7 +90,7 @@ BUILDS = {
     "SRS": "srs/src/build_srs.py", "ADD": "add/src/build_add.py",
     "ICD": "icd/src/build_icd.py", "FMEA": "fmea/src/build_fmea.py",
     "OPS": "ops/src/build_ops.py", "KCL": "kcl/src/build_kcl.py",
-    "SDR": "sdr/src/build_sdr.py",
+    "SDR": "sdr/src/build_sdr.py", "MDD": "mdd/src/build_mdd.py",
 }
 # A typed issue letter in a field that names current parents.
 TYPED = re.compile(r'(parents=|\["(Basis|Parent|Parents)",|\["\[\d\]",)'
@@ -116,6 +123,7 @@ if __name__ == "__main__":
     p = check()
     for x in p:
         print("FAIL", x)
-    print(f"baseline register: {len(REGISTER)} documents, "
+    print(f"baseline register: {len(REGISTER)} documents "
+          f"(+{len(DETAIL)} detailed design), "
           f"{'consistent' if not p else f'{len(p)} problems'}")
     sys.exit(1 if p else 0)
