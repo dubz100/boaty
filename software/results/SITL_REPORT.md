@@ -1,6 +1,6 @@
 # Boaty simulator results (slices 1-3)
 
-Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. ArduPilot Rover 4.7.1 SITL on the Boaty boat model, speed-up 5x.
+Generated 2026-09-30T18:45:38.963895+00:00 from `results/sitl_results.json`. ArduPilot Rover 4.7.1 SITL on the Boaty boat model, speed-up 5x.
 
 **80 passed, 3 known gaps (requirement not met natively; finding recorded), 0 failed, 0 errors** out of 83 scenarios.
 
@@ -98,12 +98,12 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 - `burst`: 3
 - `interval`: 18
 - `first_burst_after_reached_s`: 0.001
-- `worst_geotag_error_m`: 0.26
+- `worst_geotag_error_m`: 0.274
 - `untagged`: 0
 
 ### FEN-005: Fence breach puts the boat in RTL within 1 s (PASS)
 
-- `rtl_after_breach_s`: 0.123
+- `rtl_after_breach_s`: 0.171
 - `texts`: -
 
 ### FS-001b: Reduced RTL speed at critical battery (PASS)
@@ -147,23 +147,23 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### IF-14-07: drive() moves the boat in MANUAL (PASS)
 
-- `moved_m`: 3.592
+- `moved_m`: 3.591
 
 ### MC-E2E: Explore the pond, take photos, come home (PASS)
 
 - `items`: 5
 - `planned_s`: 249
-- `flown_s`: 168.296
-- `total_s`: 274.639
+- `flown_s`: 168.665
+- `total_s`: 275.707
 - `readback_checksum_equal`: True
-- `min_fence_clearance_m`: 8.772
-- `min_zone_clearance_m`: 5.187
+- `min_fence_clearance_m`: 8.783
+- `min_zone_clearance_m`: 5.189
 - `photos`: 31
 - `photo_point_photos`: 3
 - `synced`: 31
 - `acked`: 31
 - `bad_hash`: 0
-- `home_to_disarm_s`: 60.713
+- `home_to_disarm_s`: 61.084
 - `captains_log`: True
 - `llm_logged`: 1
 - `spoken`: Let's explore the bay and take pictures of the island!; Ask a grown-up to check it.; Off we go!; Taking pictures!; Coming home!; I'm back! Let's look at the pictures.
@@ -171,61 +171,62 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### MCN-D59: C1 stops the motors on a persistent breach (PASS)
 
-- `halt_after_s`: 8.829
-- `outside_at_halt_m`: 8.36
-- `motors_running_next_20s`: 0.8
+- `halt_after_s`: 8.782
+- `outside_at_halt_m`: 8.26
+- `motors_running_next_20s`: 0.85
 - `spoken`: True
 - `helm_mode`: HOLD
 
 ### MCN-D60: B7 hold is shown and spoken; resuming needs the PIN (PASS)
 
-- `held_after_s`: 75.407
-- `final_helm_hold_after_s`: 75.301
-- `said_after_final_hold_s`: 0.089
+- `held_after_s`: 85.361
+- `final_helm_hold_after_s`: 85.208
+- `said_after_final_hold_s`: 0.111
 - `spoken`: I'm stuck in some weed, trying to wiggle free.; I'm stuck in some weed, trying to wiggle free.; I'm stuck in some weed, trying to wiggle free.; I've stopped. A grown-up needs to check me.
-- `reason`: BOATY B5 STILL STUCK: HOLD
-- `alerts`: The boat stopped itself: BOATY B5 STILL STUCK: HOLD. Check it, then Resume (PIN) or Come home.
+- `reason`: BOATY B5 REPEATEDLY STUCK: HOLD
+- `alerts`: The boat stopped itself: BOATY B5 REPEATEDLY STUCK: HOLD. Check it, then Resume (PIN) or Come home.
 - `resumed`: True
 - `mode_after_resume`: AUTO
-- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 1: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 FREE AFTER 3: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 STILL STUCK: HOLD; BOATY B5 SHED END
+- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 REPEATEDLY STUCK: HOLD
 
 ### SC-01: Battery drain to 35% then 15% (PASS)
 
 - `battery_pct_at_rtl`: 35
-- `distance_home_m`: 2.951
+- `distance_home_m`: 2.956
 - `texts`: Battery 1 is low 10.89V used 1625 mAh; Battery 1 is critical 10.43V used 2126 mAh
 - Note: Reduced speed at 15% is not native (see V-15); it belongs to the mission computer in slice 2.
 
 ### SC-02a: Link cut in STEERING: helm part (PASS)
 
-- `hold_after_cut_s`: 3.078
+- `hold_after_cut_s`: 3.137
+- `motors_off_after_cut_s`: 3.634
 - `native_minimum_s`: FS_GCS_TIMEOUT 2 + FS_TIMEOUT 1
 
 ### SC-02b: Link cut in STEERING: B4 RTL at 10 s (PASS)
 
-- `hold_after_s`: 3.12
-- `rtl_after_s`: 10.089
-- `dist_home_at_cut_m`: 9.562
-- `dist_home_15s_after_rtl_m`: 7.245
+- `hold_after_s`: 3.147
+- `rtl_after_s`: 10.072
+- `dist_home_at_cut_m`: 9.525
+- `dist_home_15s_after_rtl_m`: 7.444
 - `events`: BOATY B4 LINK LOST IN MANUAL: RTL
 
 ### SC-03: Link cut in AUTO (PASS)
 
 - `mode_30s_after_cut`: AUTO
-- `rtl_after_s`: 59.65
+- `rtl_after_s`: 59.897
 - `events`: BOATY B4 LINK LOST 60S: RTL
 
 ### SC-04: GNSS failure 5 s then restore (PASS)
 
-- `outputs_neutral_after_s`: 2.127
-- `thrust_gone_after_s`: 2.225
-- `rtl_after_restore_s`: 10.387
+- `outputs_neutral_after_s`: 2.445
+- `thrust_gone_after_s`: 2.526
+- `rtl_after_restore_s`: 10.705
 - `events`: BOATY B6 POSITION LOST: HOLD; BOATY B6 POSITION OK: RTL
 - Note: RTL comes 10 s after B6 sees a healthy position, which includes the EKF's own recovery after the fix returns.
 
 ### SC-04: GNSS failure 5 s then restore (KNOWN GAP)
 
-- `motors_off_after_s`: 9.204
+- `motors_off_after_s`: 9.214
 - `modes`: [8.2, 'HOLD']
 - `texts`: EKF variance; EKF failsafe; EKF failsafe cleared
 - **Known gap:** Finding: EKF failsafe stops motors ~9 s after GNSS loss; FS-004 asks 3 s. Needs B6 fix-loss HOLD.
@@ -233,11 +234,11 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-06: Drag released after burst 2 (PASS)
 
-- `watch`: {'burst': 1, 'resume_ack': True, 'mode': 4, 'peak_mps': 0.0, 'after_s': 7.8, 'ended': 'helm HOLD'}; {'burst': 2, 'resume_ack': True, 'mode': 10, 'peak_mps': 0.71, 'after_s': 2.9, 'ended': 'moving forward'}
+- `watch`: {'burst': 1, 'resume_ack': True, 'mode': 4, 'peak_mps': 0.0, 'after_s': 7.9, 'ended': 'helm HOLD'}; {'burst': 2, 'resume_ack': True, 'mode': 10, 'peak_mps': 0.82, 'after_s': 2.5, 'ended': 'moving forward'}
 - `bursts`: 2
-- `min_speed_during_burst_m_s`: 0.009
+- `min_speed_during_burst_m_s`: 0.013
 - `mode_after`: AUTO
-- `speed_after_m_s`: 1.002
+- `speed_after_m_s`: 0.989
 - `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END
 
 ### SC-06b: Permanent weed: three bursts then HOLD + alarm (PASS)
@@ -249,35 +250,35 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-07: Kill the whole mission computer mid-mission (PASS)
 
-- `home_after_s`: 250.242
-- `final_distance_m`: 1.202
+- `home_after_s`: 248.261
+- `final_distance_m`: 1.215
 
 ### SC-09: STOP in every state (PASS)
 
-- `ARMED`: edge_to_call_ms=0.0; outputs_neutral_s=0.0008333333333325754; disarmed=True; after=IDLE
-- `MISSION`: edge_to_call_ms=0.0; outputs_neutral_s=0.3766666666663241; disarmed=True; after=DEBRIEF
-- `RETURNING`: edge_to_call_ms=0.0; outputs_neutral_s=0.031666666666637866; disarmed=True; after=DEBRIEF
-- `MANUAL`: edge_to_call_ms=0.0; outputs_neutral_s=0.40249999999963393; disarmed=True; after=DEBRIEF
+- `ARMED`: edge_to_call_ms=0.0; outputs_neutral_s=0.0016666666666651508; disarmed=True; after=IDLE
+- `MISSION`: edge_to_call_ms=0.0; outputs_neutral_s=0.3008333333330597; disarmed=True; after=DEBRIEF
+- `RETURNING`: edge_to_call_ms=0.0; outputs_neutral_s=0.037499999999965894; disarmed=True; after=DEBRIEF
+- `MANUAL`: edge_to_call_ms=0.0; outputs_neutral_s=0.3116666666663832; disarmed=True; after=DEBRIEF
 
 ### SC-09a: STOP from AUTO: motors off and disarmed (PASS)
 
 - `outputs_neutral_s`: 0.062
-- `thrust_below_0_05N_s`: 0.356
+- `thrust_below_0_05N_s`: 0.365
 - Note: Measured at 5x speed-up, so wall-clock latency in the test harness counts 5 times over; spin-down is the model's 0.1 s motor time constant.
 
 ### SC-10: Moisture flagged (PASS)
 
-- `rtl_after_s`: 0.077
+- `rtl_after_s`: 0.08
 - `health_status`: fault
 - `events`: BOATY B6 WATER IN BOX: RTL
 
 ### SC-11: GNSS loss and battery failsafe together (rtl then gnss) (PASS)
 
-- `motors_off_after_loss_s`: 2.38
+- `motors_off_after_loss_s`: 2.007
 - `powered_from_3s_until_fix_back_s`: 0.0
 - `battery_pct_at_restore`: 34
 - `home_after_restore`: True
-- `modes`: [-4.0, 'RTL']; [1.9, 'HOLD']; [35.9, 'RTL']
+- `modes`: [-4.0, 'RTL']; [1.8, 'HOLD']; [35.7, 'RTL']
 - `events`: BOATY B6 POSITION LOST: HOLD; BOATY B6 POSITION OK: RTL
 - `texts`: EKF failsafe cleared
 
@@ -293,17 +294,17 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-12: Failsafe logged and announced (battery, FS-001) (PASS)
 
-- `boat_acted_after_s`: 115.952
-- `announced_after_action_s`: 0.032
+- `boat_acted_after_s`: 115.817
+- `announced_after_action_s`: 0.176
 - `spoken`: I need to come home now.
-- `alerts`: Failsafe: the boat is coming home. Flight plan received | Throttle armed | Mission: 1 ChangeSpeed | Mission: 2 WP | Battery 1 is low 10.89V used 1626 mAh
+- `alerts`: Failsafe: the boat is coming home. Battery 1 is low 10.89V used 1625 mAh
 - `log_kinds`: alert; helm_mode
 - `events`: -
 
 ### SC-12: Failsafe logged and announced (gnss, FS-004) (PASS)
 
-- `boat_acted_after_s`: 1.736
-- `announced_after_action_s`: 0.034
+- `boat_acted_after_s`: 1.922
+- `announced_after_action_s`: 0.06
 - `spoken`: I've stopped. A grown-up needs to check me.
 - `alerts`: The boat stopped itself: BOATY B6 POSITION LOST: HOLD. Check it, then Resume (PIN) or Come home.
 - `log_kinds`: alert; boat_event; helm_mode
@@ -311,8 +312,8 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-12: Failsafe logged and announced (water, FS-010) (PASS)
 
-- `boat_acted_after_s`: 0.067
-- `announced_after_action_s`: 0.074
+- `boat_acted_after_s`: 0.137
+- `announced_after_action_s`: 0.182
 - `spoken`: I need to come home now.
 - `alerts`: Failsafe: the boat is coming home. Flight plan received | Throttle armed | Mission: 1 ChangeSpeed | Mission: 2 WP | BOATY B6 WATER IN BOX: RTL
 - `log_kinds`: alert; boat_event; helm_mode
@@ -320,12 +321,12 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-12: Failsafe logged and announced (weed, FS-005/006) (PASS)
 
-- `boat_acted_after_s`: 12.952
-- `announced_after_action_s`: 0.057
-- `spoken`: I've stopped. A grown-up needs to check me.; I'm stuck in some weed, trying to wiggle free.
-- `alerts`: The boat stopped itself: BOATY B7 STUCK. Check it, then Resume (PIN) or Come home.
-- `log_kinds`: alert; boat_event; helm_mode
-- `events`: BOATY B7 STUCK; BOATY B5 SHED START
+- `boat_acted_after_s`: 5.032
+- `announced_after_action_s`: 0.102
+- `spoken`: I'm stuck in some weed, trying to wiggle free.
+- `alerts`: -
+- `log_kinds`: boat_event; helm_mode
+- `events`: BOATY B5 SHED START
 
 ### SC-13: Single fault: gnss-loss while along fence (PASS)
 
@@ -395,21 +396,21 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
 - `modes`: HOLD; GUIDED; HOLD; AUTO; HOLD; GUIDED; HOLD; AUTO
-- `events`: BOATY B5 SHED START; BOATY B5 STILL STUCK: HOLD; BOATY B5 SHED END
+- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START
 
 ### SC-13: Single fault: motor-dead while towards fence (PASS)
 
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
 - `modes`: HOLD; GUIDED; HOLD; AUTO; HOLD; GUIDED; HOLD; AUTO
-- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 1: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START
+- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START
 
 ### SC-13: Single fault: motor-dead while rtl from corner (PASS)
 
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
 - `modes`: HOLD; GUIDED; HOLD; RTL; HOLD; GUIDED; HOLD; RTL
-- `events`: BOATY B5 SHED START; BOATY B5 STILL STUCK: HOLD; BOATY B5 SHED END
+- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 1: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END
 
 ### SC-13: Single fault: link-cut while along fence (PASS)
 
@@ -465,20 +466,20 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
 - `modes`: HOLD; GUIDED; HOLD; AUTO; HOLD; GUIDED; HOLD; AUTO
-- `events`: BOATY B5 SHED START; BOATY B5 STILL STUCK: HOLD; BOATY B5 SHED END
+- `events`: BOATY B5 SHED START
 
 ### SC-13: Single fault: weed while rtl from corner (PASS)
 
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
 - `modes`: HOLD; GUIDED; HOLD; RTL; HOLD; GUIDED; HOLD; RTL
-- `events`: BOATY B5 SHED START; BOATY B5 STILL STUCK: HOLD; BOATY B5 SHED END
+- `events`: BOATY B5 SHED START
 
 ### SC-20: GNSS jump of 20 m outwards for 2 s, 7 m from the fence (PASS)
 
 - `jump_m`: 20.0
-- `raw_gps_jump_seen_m`: 20.061
-- `ekf_worst_error_m`: 0.326
+- `raw_gps_jump_seen_m`: 20.06
+- `ekf_worst_error_m`: 0.323
 - `duration_s`: 2
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
@@ -491,8 +492,8 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### SC-20: GNSS jump of 50 m outwards for 2 s, 7 m from the fence (PASS)
 
 - `jump_m`: 50.0
-- `raw_gps_jump_seen_m`: 50.052
-- `ekf_worst_error_m`: 0.317
+- `raw_gps_jump_seen_m`: 50.044
+- `ekf_worst_error_m`: 0.321
 - `duration_s`: 2
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
@@ -505,8 +506,8 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### SC-20: GNSS jump of 20 m inwards for 2 s, 7 m from the fence (PASS)
 
 - `jump_m`: -20.0
-- `raw_gps_jump_seen_m`: 20.004
-- `ekf_worst_error_m`: 0.322
+- `raw_gps_jump_seen_m`: 19.997
+- `ekf_worst_error_m`: 0.315
 - `duration_s`: 2
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
@@ -519,7 +520,7 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### SC-20: GNSS jump of 50 m inwards for 2 s, 7 m from the fence (PASS)
 
 - `jump_m`: -50.0
-- `raw_gps_jump_seen_m`: 49.995
+- `raw_gps_jump_seen_m`: 49.998
 - `ekf_worst_error_m`: 0.325
 - `duration_s`: 2
 - `worst_outside_powered_m`: 0.0
@@ -533,8 +534,8 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### SC-20: GNSS jump of 20 m inwards for 10 s, 7 m from the fence (PASS)
 
 - `jump_m`: -20.0
-- `raw_gps_jump_seen_m`: 20.068
-- `ekf_worst_error_m`: 20.01
+- `raw_gps_jump_seen_m`: 20.07
+- `ekf_worst_error_m`: 20.011
 - `duration_s`: 10
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
@@ -547,8 +548,8 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### SC-20: GNSS jump of 20 m inwards for 30 s, 7 m from the fence (PASS)
 
 - `jump_m`: -20.0
-- `raw_gps_jump_seen_m`: 20.072
-- `ekf_worst_error_m`: 20.024
+- `raw_gps_jump_seen_m`: 20.073
+- `ekf_worst_error_m`: 20.019
 - `duration_s`: 30
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
@@ -561,15 +562,15 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### SC-20: GNSS jump of 20 m outwards for 30 s, 7 m from the fence (PASS)
 
 - `jump_m`: 20.0
-- `raw_gps_jump_seen_m`: 20.065
-- `ekf_worst_error_m`: 20.0
+- `raw_gps_jump_seen_m`: 20.06
+- `ekf_worst_error_m`: 20.009
 - `duration_s`: 30
 - `worst_outside_powered_m`: 0.0
 - `worst_outside_m`: 0.0
 - `modes_after`: HOLD
 - `mode_at_end`: HOLD
-- `texts`: Flight mode change failed; BOATY B6 POSITION JUMP; Manual recovery started; BOATY B6 POSITION JUMP
-- `events`: BOATY B6 POSITION JUMP; BOATY B6 POSITION JUMP
+- `texts`: Flight mode change failed; Manual recovery started; BOATY B6 POSITION JUMP; BOATY B7 FAR OUTSIDE FENCE: HOLD; BOATY B6 POSITION JUMP
+- `events`: BOATY B6 POSITION JUMP; BOATY B7 FAR OUTSIDE FENCE: HOLD; BOATY B6 POSITION JUMP
 - `b6_actions`: -
 
 ### SC-24: Parameter differs from baseline (PASS)
@@ -596,36 +597,36 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-27: RTL from the far side of the island avoids it (PASS)
 
-- `rtl_to_home_s`: 83.252
+- `rtl_to_home_s`: 83.225
 - `closest_to_any_zone_m`: 2.617
 - `closest_zone`: island
 - `closest_to_island_edge_m`: 2.617
-- `closest_to_inclusion_edge_m`: 8.67
+- `closest_to_inclusion_edge_m`: 8.685
 - `wind_mps`: 0.0
 - `modes`: RTL
 - `texts`: Reached destination
-- `track`: [0, 15.4, 67.2, 1.0]; [5, 14.5, 68.0, 0.58]; [10, 15.9, 63.5, 1.01]; [15, 17.4, 58.6, 1.01]; [20, 17.8, 54.5, 0.95]; [25, 18.6, 50.3, 0.82]; [30, 19.6, 46.2, 0.88]; [35, 19.0, 41.6, 0.98]; [40, 18.1, 36.7, 1.0]; [45, 17.8, 31.9, 0.64]; [50, 15.6, 27.9, 0.98]; [55, 13.1, 23.6, 1.0]; [60, 10.7, 19.2, 1.01]; [65, 8.2, 14.8, 1.0]; [70, 5.8, 10.4, 1.0]; [75, 3.4, 6.0, 1.0]; [80, 1.0, 1.6, 1.0]
+- `track`: [0, 15.3, 67.4, 0.98]; [5, 14.5, 68.0, 0.57]; [10, 15.9, 63.4, 1.01]; [15, 17.4, 58.7, 1.01]; [20, 17.8, 54.5, 0.95]; [25, 18.6, 50.2, 0.82]; [30, 19.6, 46.2, 0.88]; [35, 19.0, 41.6, 0.98]; [40, 18.1, 36.7, 1.0]; [45, 17.8, 31.9, 0.64]; [50, 15.6, 27.9, 0.98]; [55, 13.1, 23.6, 1.0]; [60, 10.7, 19.2, 1.01]; [65, 8.2, 14.8, 1.0]; [70, 5.8, 10.4, 1.0]; [75, 3.4, 6.0, 1.0]; [80, 1.0, 1.6, 1.0]
 - Note: Needs OA_TYPE 2 (Dijkstra) and AVOID_BEHAVE 0 (slide): with Rover's default 'stop' behaviour the planner's legs, which may pass close to a zone, stalled the boat.
 - Note: Every RTL trigger (COME HOME, fence breach, battery, link loss) uses the same RTL mode, so this path planning applies to all of them.
 
 ### SC-27: RTL from the far side of the island avoids it (3 m/s wind from the east, pushing towards it) (PASS)
 
-- `rtl_to_home_s`: 83.965
+- `rtl_to_home_s`: 83.833
 - `closest_to_any_zone_m`: 2.619
 - `closest_zone`: island
 - `closest_to_island_edge_m`: 2.619
-- `closest_to_inclusion_edge_m`: 8.736
+- `closest_to_inclusion_edge_m`: 8.727
 - `wind_mps`: 3.0
 - `modes`: RTL
 - `texts`: Reached destination
-- `track`: [0, 15.3, 67.4, 0.98]; [5, 14.2, 68.1, 0.42]; [10, 15.6, 63.9, 0.99]; [15, 17.2, 59.1, 1.0]; [20, 17.6, 54.7, 0.96]; [25, 18.5, 50.5, 0.8]; [30, 19.5, 46.6, 0.87]; [35, 19.1, 42.0, 0.99]; [40, 18.1, 37.1, 1.0]; [45, 17.8, 32.1, 0.9]; [50, 16.0, 28.5, 0.98]; [55, 13.6, 24.1, 1.0]; [60, 11.1, 19.7, 1.01]; [65, 8.7, 15.3, 1.01]; [70, 6.2, 10.9, 1.0]; [75, 3.8, 6.6, 1.0]; [80, 1.4, 2.2, 1.0]
+- `track`: [0, 15.3, 67.4, 0.99]; [5, 14.2, 68.1, 0.44]; [10, 15.6, 63.9, 0.99]; [15, 17.2, 59.1, 1.0]; [20, 17.6, 54.7, 0.96]; [25, 18.5, 50.5, 0.8]; [30, 19.5, 46.5, 0.87]; [35, 19.1, 41.9, 0.99]; [40, 18.1, 37.0, 1.0]; [45, 17.8, 32.1, 0.89]; [50, 15.9, 28.4, 0.98]; [55, 13.5, 24.0, 1.0]; [60, 11.1, 19.6, 1.01]; [65, 8.6, 15.3, 1.01]; [70, 6.2, 10.8, 1.0]; [75, 3.7, 6.5, 1.0]; [80, 1.3, 2.1, 1.0]
 - Note: Needs OA_TYPE 2 (Dijkstra) and AVOID_BEHAVE 0 (slide): with Rover's default 'stop' behaviour the planner's legs, which may pass close to a zone, stalled the boat.
 - Note: Every RTL trigger (COME HOME, fence breach, battery, link loss) uses the same RTL mode, so this path planning applies to all of them.
 
 ### SC-28: Persistent breach (wind pushing out) (PASS)
 
-- `hold_after_breach_s`: 5.347
-- `outside_at_hold_m`: 8.531
+- `hold_after_breach_s`: 5.325
+- `outside_at_hold_m`: 8.6
 - `detector`: B7 FAR OUTSIDE FENCE: HOLD
 - `motors_running_in_next_30s_s`: 0.0
 - `b7_actions`: B7 FAR OUTSIDE FENCE: HOLD
@@ -634,11 +635,11 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-29: Single motor failure (PASS)
 
-- `first_hold_after_s`: 8.9
+- `first_hold_after_s`: 8.906
 - `first_detector`: helm crash check
 - `worst_outside_m`: 0.0
 - `final_mode`: HOLD
-- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 STILL STUCK: HOLD; BOATY B5 SHED END
+- `events`: BOATY B5 SHED START; BOATY B5 FREE AFTER 1: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 SHED START; BOATY B5 FREE AFTER 2: RESUMED; BOATY B5 SHED END; BOATY B5 REPEATEDLY STUCK: HOLD
 - Note: A dead motor looks like 'stuck' to the helm's crash check, so B5 tries its astern bursts before giving up. Safe, but B5 cannot tell weed from a dead motor.
 
 ### SC-32: Read-back corruption (PASS)
@@ -656,18 +657,18 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### SC-37: Foreign GCS heartbeat (PASS)
 
-- `detect_s`: 0.329
+- `detect_s`: 0.777
 - `go_refused`: True
 - `alarm`: True
 - `spoken`: True
-- `clear_s`: 2.721
+- `clear_s`: 3.037
 - `go_after_clear`: True
 
 ### SC-38: First-motion heading check (PASS)
 
-- `hold_after_s`: 9.719
-- `first_motion_after_s`: 4.717
-- `hold_after_first_motion_s`: 5.002
+- `hold_after_s`: 10.512
+- `first_motion_after_s`: 5.474
+- `hold_after_first_motion_s`: 5.037
 - `detector`: B7 HEADING CHECK FAILED: HOLD
 - `worst_outside_m`: 0.0
 - `events`: BOATY B7 HEADING CHECK FAILED: HOLD
@@ -675,7 +676,7 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### V-02: Fence is enforced in the mode used for MANUAL (PASS)
 
-- `max_north_m`: 23.559
+- `max_north_m`: 23.56
 - `fence_line_north_m`: 25.0
 - `worst_outside_m`: 0.0
 - `fence_action`: none needed
@@ -685,26 +686,26 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### V-03: GCS failsafe can 'continue in AUTO' (PASS)
 
 - `modes_during_cut`: AUTO (unchanged)
-- `progress_m`: 19.867
+- `progress_m`: 19.868
 - `failsafe_texts`: GCS Failsafe; Failsafe - Continuing Auto Mode
 
 ### V-04: Boat loiters at home at the end of RTL (PASS)
 
-- `max_drift_m`: 1.853
+- `max_drift_m`: 1.845
 - `mode_at_end`: RTL
 - Note: ArduPilot stays in RTL and station-keeps for boats; Mission Control must show 'arrived' as HOLD (MOD-005).
 
 ### V-05: Crash check can meet FS-005 (stuck detection) (KNOWN GAP)
 
-- `stuck_after_weed_s`: 0.039
-- `hold_after_stuck_s`: 13.208
+- `stuck_after_weed_s`: 0.064
+- `hold_after_stuck_s`: 13.207
 - `crash_text`: Crash: Going to HOLD
 - **Known gap:** Finding: native crash check resets on any noisy GNSS speed sample; stuck-to-HOLD varies 4.9-20 s. Needs B7 second stuck detector (A-07).
-- Failure: `assert (66.71499999994745 - 53.506666666626124) <= (5.0 + 1.0)`
+- Failure: `assert (67.0333333332805 - 53.8258333332925) <= (5.0 + 1.0)`
 
 ### V-06: Helm counts only Mission Control heartbeats as GCS (PASS)
 
-- `failsafe_after_s`: 3.033
+- `failsafe_after_s`: 3.128
 
 ### V-06b: A second system-255 heartbeat masks the GCS failsafe (PASS)
 
@@ -714,17 +715,17 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 ### V-11: GUIDED stops within 3 s if velocity targets stop (KNOWN GAP)
 
 - `speed_before_m_s`: 1.028
-- `motors_off_after_s`: 3.922
+- `motors_off_after_s`: 3.937
 - Note: Rover 4.7.1 mode_guided.cpp: 3 s timeout, then a decelerating stop (ATC_DECEL_MAX).
 - **Known gap:** Finding: GUIDED times out after 3 s then decelerates; motors off ~3.9 s.
-- Failure: `assert (53.769166666625885 is not None and (53.769166666625885 - 49.847499999962785) <= 3.0)`
+- Failure: `assert (53.59249999995938 is not None and (53.59249999995938 - 49.65499999996296) <= 3.0)`
 
 ### V-12: Skid-steer boat frame behaves plausibly (PASS)
 
-- `cross_track_rms_m`: 0.143
-- `cross_track_max_m`: 0.337
+- `cross_track_rms_m`: 0.145
+- `cross_track_max_m`: 0.348
 - `mean_speed_m_s`: 1.005
-- `samples`: 296
+- `samples`: 295
 
 ### V-13: Second voltage input gates arming (key in/out) (PASS)
 
@@ -735,15 +736,15 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ### V-14: Native mechanism to stop motors on persistent breach (PASS)
 
-- `outside_after_40s_m`: 61.96
+- `outside_after_40s_m`: 61.87
 - `motors_running`: False
 - `mode`: RTL
 - Note: Answer: ArduPilot stopped the motors itself.
 
 ### V-15: Reduced speed during RTL on critical battery (PASS)
 
-- `rtl_speed_after_critical_m_s`: 0.999
-- `distance_home_m`: 42.176
+- `rtl_speed_after_critical_m_s`: 1.0
+- `distance_home_m`: 42.044
 - `mode`: RTL
 - `texts`: Battery 1 is low 10.89V used 1626 mAh; Battery 1 is critical 10.21V used 2126 mAh
 - Note: Answer: NO native speed reduction: FS-001's reduced speed at 15% must come from the mission computer (slice 2).
@@ -752,8 +753,8 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 - `sim_mag1_orient`: 2.0
 - `worst_outside_m`: 0.0
-- `worst_heading_error_deg`: 99.185
-- `heading_error_last_20s_deg`: 95.238
+- `worst_heading_error_deg`: 99.739
+- `heading_error_last_20s_deg`: 95.834
 - `mission_seq_at_end`: 3
 - `mission_total`: 3
 - `texts`: -
@@ -767,8 +768,8 @@ Generated 2026-09-30T17:24:51.719637+00:00 from `results/sitl_results.json`. Ard
 
 ## Unit-level evidence (no simulator)
 
-Generated 2026-09-30T14:03:44.207954+00:00 by `tools/unit_evidence.py`.
+Generated 2026-09-30T17:26:05.121668+00:00 by `tools/unit_evidence.py`.
 
 - **Validator suite (VAL-006, MCN-D40)**: result=91 passed in 2.85s; branch_coverage_pct=100.0; branches=76; missing_branches=0
 - **SC-31 property-based validator check**: missions=400; accepted=118; rejected=282; closest_accepted_route_to_a_boundary_m=3.273; criterion=no accepted route crosses a boundary; >= 2.9 m clear
-- **Unit suite**: 299 passed in 47.56s
+- **Unit suite**: 308 passed in 47.25s
