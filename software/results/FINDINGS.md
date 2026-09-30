@@ -116,6 +116,47 @@ Evidence for each item is in `SITL_REPORT.md`. These findings feed ADD Issue F, 
     (`fallbacks: "default"`, beta `server-side-fallback-2026-07-01`). A
     refusal that survives the fallback offers the templates.
 
+## System Design Review WP3: the missing failsafe scenarios
+
+- **SC-20: GNSS position jump near the fence.**
+  - **Short jumps are fine.** Jumps of 20 m and 50 m, in and out, lasting
+    2 s, were rejected by the EKF (position error stayed about 0.3 m).
+  - **A sustained offset was not.** An inward 20 m offset held for 30 s
+    took the boat 12 m outside the fence under power, and nothing noticed.
+    After a few seconds the EKF gives up rejecting GNSS and resets onto it.
+    That breaks FS-013 for one plausible failure (multipath).
+  - **Fix: B6 position-jump HOLD (MCP-D35, A-30).** An EKF reset shows up
+    as a position step the boat could not have made. B6 now holds on one
+    and latches: there is no automatic RTL, because home may be wrong too.
+    Resets just after a position loss are ignored, so SC-04 still recovers
+    by RTL. The 10 s and 30 s offsets, inward and outward, now end in HOLD
+    inside the fence.
+- **SC-11: GNSS loss plus battery failsafe.**
+  - **Both orders tested.** Either the battery RTL was already running, or
+    the battery crossed 35% during the outage.
+  - **Motors off first.** The motors were off within 2.5 s and stayed off
+    until the fix came back. ArduPilot did not override B6's HOLD.
+  - **Home afterwards.** The boat then came home.
+- **SC-12: failsafes are logged and announced.** Battery, GNSS, water and
+  weed failsafes were each logged, and Mission Control spoke or showed
+  them within 0.15 s of the boat acting.
+- **SC-13: single-fault sweep.** 7 faults across 3 phases near the fence:
+  21 cases, all passing. The boat was never outside the fence under power.
+  - **GNSS offset:** now caught by the jump HOLD.
+  - **Dead motor:** handled by B5, then HOLD.
+  - **Link loss and a dead mission computer:** the mission carries on, as
+    designed.
+  - **Compass reversed mid-mission:** no effect. The EKF keeps heading from
+    the GNSS course while moving.
+- **SC-08** is not simulated, because the behaviour is in the ESC
+  firmware. It is verified on rig L2, and SWE-005 now records this as a
+  deviation.
+- **Weakness noted, not fixed:** B6 treats any mode change during a
+  position-loss HOLD as an adult taking over. In SC-11 ArduPilot refused
+  the battery RTL, so no harm was done, but a native failsafe that did
+  switch mode would end B6's hold. It is carried to CDR as a design review
+  item.
+
 ## System Design Review WP2: RTL round exclusions (SC-27)
 
 The SDR found RTL was not fence-aware (RID-01): with no path planning

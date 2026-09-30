@@ -242,7 +242,8 @@ def build():
                    "only from outside a 15 m nest stand-off; 'Duck patrol' "
                    "renamed 'Duck watch'; TBD-09 (breeding season) opened. "
                    "CR-08: CON-001 cap scope and price rule; STK-05 "
-                   "wording.", "Claude, owner decisions"]],
+                   "wording. WP3: SWE-005 deviation for FS-008 (rig L2).",
+                   "Claude, owner decisions"]],
                  [16, 32, 90, 32]),
            Spacer(1, 4 * mm),
            table([["Role", "Name", "Signature / date"],

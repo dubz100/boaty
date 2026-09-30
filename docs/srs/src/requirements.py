@@ -537,7 +537,9 @@ R("SWE-004", "The whole system shall run in simulation (helm simulator and "
   "simulated camera) on the Pi 5 or a laptop, with Mission Control "
   "software unchanged.", "M", "D", "SIM", ["STK-08", "STK-01"])
 R("SWE-005", "Each failsafe requirement (FS-001 to FS-013) shall have an "
-  "automated simulation scenario.", "M", "T", "SIM", ["STK-01"])
+  "automated simulation scenario. Deviation: FS-008 (ESCs stop when the "
+  "helm's signal stops) lives in the ESC firmware, which the simulator "
+  "does not run, so it is verified on rig L2 (L2-10) instead (SDR WP3).", "M", "T", "SIM", ["STK-01"])
 R("SWE-006", "Source, configuration and safety parameters shall live in "
   "this git repository, with a tagged release for each lake trial.",
   "M", "I", "SIM", ["STK-08"])

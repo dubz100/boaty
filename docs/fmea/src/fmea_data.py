@@ -38,7 +38,9 @@ DETECTION = [
     (7, "Low: likely to show only in pool or lake use"),
     (9, "Very low: unlikely to be found before use"),
     (10, "None")]
-RULES = ["Action required if S ≥ 9 (whatever O and D are)",
+RULES = ["Action required if S ≥ 9, whatever O and D are, unless a "
+         "direct test verifies the control (D ≤ 3): then the test stands "
+         "in for the action (the rule the build checks; SDR RID-13)",
          "Action required if RPN = S × O × D ≥ 100",
          "Action required if D ≥ 7 and S ≥ 7",
          "Every row with S ≥ 8 must have at least one test"]
@@ -53,8 +55,9 @@ ROWS = [
      3, ["SC-04", "L2-03"], []),
     ("FM-02", "HLM", "GNSS position", "Position jump (glitch)", "False "
      "breach, or wrong steering near the fence", 9, "Multipath off water, "
-     "reflections", 4, "EKF glitch rejection", "EKF innovation checks", 5,
-     ["SC-20"], ["A-01"]),
+     "reflections", 4, "EKF glitch rejection; B6 position-jump HOLD "
+     "(MCP-D35)", "EKF innovation checks; B6 jump detector", 5,
+     ["SC-20", "SC-13"], ["A-01", "A-30"]),
     ("FM-03", "HLM", "GNSS position", "Frozen but reported valid", "Helm "
      "navigates blind; could leave the fence", 9, "Receiver hang, data line "
      "fault", 2, "GNSS data-age checks", "EKF failsafe", 5, ["SC-21",
@@ -280,6 +283,12 @@ ROWS = [
      "path", 2, "AVOID_BEHAVE slide; OA_MARGIN_MAX > FENCE_MARGIN + corner "
      "cut (HLM-D19)", "Mission Control shows RTL with no progress; "
      "operator", 3, ["SC-27"], []),
+    ("FM-60", "MCN", "Home", "Boat re-armed away from the launch point",
+     "Home resets to where it was re-armed, maybe mid-lake; RTL goes "
+     "there", 7, "Adult disarms and re-arms on the water (e.g. after a "
+     "STOP)", 3, "Arm at the jetty (CL-13); VAL-004 home sanity check "
+     "before approval", "Mission Control refuses the plan and says why",
+     2, ["SC-35", "SC-09"], []),
 ]
 
 ACTIONS = [
@@ -360,6 +369,10 @@ ACTIONS += [
      "within 8 s; more than 3 episodes in 2 min: HOLD + 'repeatedly "
      "stuck'; a failed mode switch is reported as 'no control'", "MCP",
      "SSS-MCP Issue D", ["FM-58"]),
+    ("A-30", "B6 holds (latched, no automatic RTL) when the helm's position "
+     "jumps further than the boat could move: a sustained GNSS offset "
+     "otherwise took the boat 12 m outside the fence (SC-20)", "MCP",
+     "SSS-MCP Issue E", ["FM-02"]),
 ]
 # A-12 intentionally unused (merged into A-13 during review).
 
@@ -455,10 +468,11 @@ STATUS = {
     "A-27": ("Incorporated", ["MCN-D60"]),
     "A-28": ("Incorporated", ["MCN-D62"]),
     "A-29": ("Incorporated", ["MCP-D34"]),
+    "A-30": ("Incorporated", ["MCP-D35"]),
 }
 # FM id -> (O, D) after incorporated actions (S unchanged)
 POST = {
-    "FM-02": (4, 3), "FM-03": (2, 3), "FM-04": (4, 3), "FM-05": (2, 2),
+    "FM-02": (4, 2), "FM-03": (2, 3), "FM-04": (4, 3), "FM-05": (2, 2),
     "FM-11": (2, 3), "FM-14": (3, 2), "FM-15": (2, 3), "FM-16": (4, 3),
     "FM-17": (4, 2), "FM-18": (3, 2), "FM-22": (2, 3), "FM-23": (1, 5),
     "FM-32": (1, 3), "FM-12": (2, 5), "FM-21": (1, 5), "FM-45": (1, 5),

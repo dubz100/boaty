@@ -43,6 +43,14 @@ CLOSURES = {
     "RID-01": ("Closed", "WP2: OA_TYPE 2 + AVOID_BEHAVE 0, FENCE_MARGIN 2 "
                "(params); SC-27 passes calm and in wind; FM-13 re-rated, "
                "FM-59 added (FMEA F); HLM-D19 (SSS-HLM E); ADD G DD-26."),
+    "RID-02": ("Closed", "WP3: SC-11 (2 orders), SC-12 (4 failsafes) and "
+               "SC-13 (21-case sweep) built and pass; FS-008 recorded as "
+               "an SWE-005 deviation, verified on rig L2 (SRS G)."),
+    "RID-03": ("Closed", "WP3: SC-20 found a sustained 20 m GNSS offset "
+               "took the boat 12 m out; B6 position-jump HOLD added "
+               "(MCP-D35, A-30); FM-02 after-action RPN 72 (FMEA F)."),
+    "RID-13": ("Closed", "WP3: S ≥ 9 rule text states the D ≤ 3 test "
+               "exemption; FM-60 (home reset by re-arm) added (FMEA F)."),
     "RID-11": ("Closed", "WP2: Rover has no GPS_HDOP_GOOD, so the HDOP ≤ 1.5 "
                "gate is in Mission Control (MCN-D15, unit test); HLM-D09 "
                "re-allocated (SSS-HLM E)."),
@@ -398,6 +406,16 @@ RIDS = [
      "Their FMEA detection ratings assume the tests will exist.",
      "Carry. Gate: TRR. None is needed to freeze the system design.",
      "Pass records"),
+    ("OBS-08", OBS, "Safety", "B6 lets go of a position-loss HOLD on any "
+     "mode change", "SSS-MCP MCP-D15/26; SC-11",
+     "Found during WP3. B6 takes any mode change during its HOLD to mean "
+     "an adult has taken over. A native failsafe that switched mode (for "
+     "example a battery RTL while the position is lost) would end the hold "
+     "while the position is still bad. In SC-11 ArduPilot refused that "
+     "RTL, so no harm was seen.",
+     "Carry. Gate: CDR. Decide how B6 tells an adult command from a "
+     "native failsafe (e.g. Mission Control marks its own commands), then "
+     "add an SC-11 case that forces the switch.", "CDR design note; test"),
 ]
 
 
@@ -433,7 +451,8 @@ def build():
          ["B", DATE, "WP1 owner decisions recorded (CR-06, CR-07, CR-08): "
           "RID log updated. RID-12 corrected: the pole kit that breaches "
           "the cap is the antenna pole, not a recovery pole. WP2 closes "
-          "RID-01 and RID-11.", "Claude, owner decisions"]],
+          "RID-01 and RID-11; WP3 closes RID-02, RID-03 and RID-13.",
+          "Claude, owner decisions"]],
         "How to use this report: section 2 gives the decision. Section 6 "
         "lists every review item discrepancy (RID) with its evidence and "
         "recommended closure. Section 8 is the plan to freeze. Close a "

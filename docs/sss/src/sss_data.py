@@ -595,7 +595,9 @@ c = subsystem(
               "trigger 10 → 8 m so the motors are off by FEN-006's 10 m "
               "(SC-28 failed at 10.2-10.6 m once the path planner's start "
               "pause changed which detector fired first). Event text now "
-              "'B7 FAR OUTSIDE FENCE: HOLD'.", "Claude"]],
+              "'B7 FAR OUTSIDE FENCE: HOLD'. WP3: MCP-D35 position-jump "
+              "HOLD (SC-20 showed a sustained 20 m GNSS offset took the "
+              "boat 12 m outside the fence).", "Claude"]],
 
     purpose="Take and geotag photos, relay MAVLink to the bank, and run the "
             "small boat-side watchdogs, without ever being needed for "
@@ -751,6 +753,13 @@ D(c, "MCP-D34", "B5 shall judge the boat free only on forward speed (along "
   "'repeatedly stuck' alarm (a dead motor looks like weed). A refused or "
   "unconfirmed GUIDED switch is retried once, then reported as 'no "
   "control', never as 'still stuck'. Each watch is logged.", "M", "T", "SIM", ["FS-006", "FM-58"])
+D(c, "MCP-D35", "B6 shall request HOLD when the helm's position jumps "
+  "further than the boat could have moved (by more than 5 m beyond speed + "
+  "1 m/s times the interval), after at least 5 s of healthy position. The "
+  "hold is latched: no automatic RTL, since home may be wrong too. An "
+  "adult resumes or brings the boat home. A reset just after a position "
+  "loss is expected and ignored (SC-04).", "M", "T", "SIM",
+  ["FS-013", "FM-02", "A-30"])
 
 # ======================================================================
 # MCN  Mission Control
@@ -1075,7 +1084,7 @@ D(r, "REC-D08", "The flag staff shall be capped, and hoop and flag edges "
 # ======================================================================
 s = subsystem(
     "SIM", title="Simulation & test",
-    issue="Issue E (for review)",
+    issue="Issue F (for review)",
     history=[["B", "28 September 2026", "Hardware-in-the-loop rigs L1-L3 "
               "added (SIM-D13 to D24). Test catalogue rebuilt with IDs and "
               "extended with FMEA-derived scenarios (BOATY-FMEA-001).",
@@ -1092,7 +1101,11 @@ s = subsystem(
              ["E", "29 September 2026", "Slice 3: Mission Control in the "
               "loop. SC-41 to SC-43 added; SIM-D29 and D30 added; SC-31 "
               "and SC-33 evidence sources named. SC-33 run against the live "
-              "Claude API (39 cases).", "Claude, owner request"]],
+              "Claude API (39 cases).", "Claude, owner request"],
+             ["F", "30 September 2026", "SDR WP2/WP3: SC-27 built; SC-11, "
+              "SC-12, SC-13 and SC-20 built and redefined as run; SC-08 "
+              "recorded as an SWE-005 deviation (verified on rig L2).",
+              "Claude, SDR"]],
     purpose="Let the whole system be exercised, failed on purpose and "
             "rehearsed at home, first against a simulated boat and then "
             "with more and more real hardware in the loop, with the same "
@@ -1362,22 +1375,27 @@ TESTS = [
     ("SC-07", "SIM", "Kill all MCP services mid-mission", "Stop stub and "
      "B-services", "Mission completes; RTL; HOLD at home", ["FS-007",
                                                             "FM-26"]),
-    ("SC-08", "SIM", "Helm signal loss to ESCs", "Covered by L2-10",
-     "See L2-10", ["FS-008"]),
+    ("SC-08", "SIM", "Helm signal loss to ESCs", "Not simulated: the "
+     "behaviour is in the ESC firmware. Verified on rig L2 (L2-10); SWE-005 "
+     "deviation", "See L2-10", ["FS-008"]),
     ("SC-09", "SIM", "STOP in every state", "Panel emulation",
      "Motors stop ≤ 1 s", ["FS-009"]),
     ("SC-10", "SIM", "Moisture flagged", "Stub health = moisture",
      "RTL ≤ 2 s", ["FS-010", "FM-24"]),
-    ("SC-11", "SIM", "GNSS loss during battery RTL", "Combined",
-     "Motors-stopped (HOLD) wins", ["FS-011"]),
-    ("SC-12", "SIM", "Log and announce audit", "Log inspection over SC-01 "
-     "to SC-11", "Every event logged, announced ≤ 2 s", ["FS-012"]),
-    ("SC-13", "SIM", "Single-fault sweep across mission phases", "Scripted "
-     "matrix of SC-20 to SC-39 faults", "Never leaves the fence under "
+    ("SC-11", "SIM", "GNSS loss and battery failsafe together", "GNSS off "
+     "25 s during a battery RTL, and before the battery crosses 35%",
+     "Motors off ≤ 3 s and stay off until the fix is back; then home",
+     ["FS-011"]),
+    ("SC-12", "SIM", "Log and announce audit", "Mission Control in the "
+     "loop; battery, GNSS, water and weed failsafes", "Each logged and "
+     "announced ≤ 2 s after the boat acts", ["FS-012"]),
+    ("SC-13", "SIM", "Single-fault sweep across mission phases", "7 faults "
+     "(GNSS loss, 20 m GNSS offset, compass, motor, link, mission computer, "
+     "weed) × 3 phases near the fence", "Never outside the fence under "
      "power", ["FS-013"]),
-    ("SC-20", "SIM", "GNSS glitch: 20-50 m jump for 2 s near the fence",
-     "SITL GPS glitch", "No uncommanded exit; glitch rejected or HOLD",
-     ["FM-02"]),
+    ("SC-20", "SIM", "GNSS glitch: 20-50 m jump near the fence", "SITL GPS "
+     "glitch, in and out, 2 s; 20 m for 10 s and 30 s", "No uncommanded "
+     "exit; glitch rejected or HOLD", ["FM-02"]),
     ("SC-21", "SIM", "GNSS frozen: stale position while moving", "SITL GPS "
      "freeze", "Detected; motors stop ≤ 3 s", ["FM-03"]),
     ("SC-22", "SIM", "Compass offset 30° and 90°", "SITL compass offset",

@@ -145,7 +145,10 @@ class Health(Service):
 
     def _reset(self) -> None:
         self.bad_since = self.good_since = None
+        self.healthy_since = None
         self.pos_hold = False
+        self.jump_hold = False
+        self.jump_acted_t = None
         self.hazard_acted = False
         self.slowed_for = None
 
@@ -156,6 +159,30 @@ class Health(Service):
             self._reset()
             return
         healthy = v.position_healthy(c["max_hdop"]) and now - v.pos_t < 2.0
+
+        # FM-02 / SC-20: a position jump the boat could not have made means
+        # the helm's position can't be trusted (e.g. the EKF has reset onto
+        # a sustained GNSS offset). HOLD and stay held: no automatic RTL,
+        # as home may be in the wrong place too. An adult resumes or brings
+        # it home. A reset just after a position loss is expected, so only
+        # jumps after a settled healthy spell count.
+        if healthy:
+            self.healthy_since = self.healthy_since or now
+        else:
+            self.healthy_since = None
+        j = v.jump
+        if j and j[1] > c["position_jump_m"] and now - j[0] < 2.0 and \
+                self.healthy_since is not None and \
+                j[0] - self.healthy_since > c["position_jump_settle_s"] and \
+                j[0] != self.jump_acted_t:
+            self.jump_hold, self.jump_acted_t = True, j[0]
+            if v.mode != HOLD:
+                self.act(HOLD, "B6 POSITION JUMP: HOLD",
+                         mav.MAV_SEVERITY_CRITICAL)
+            else:
+                self.c.event("B6 POSITION JUMP", mav.MAV_SEVERITY_CRITICAL)
+        if self.jump_hold and v.mode != HOLD:
+            self.jump_hold = False              # an adult has taken over
 
         # FS-004: position loss -> HOLD after 3 s; healthy 10 s -> RTL.
         if not healthy:
@@ -175,7 +202,8 @@ class Health(Service):
                     self.pos_hold = False       # an adult has taken over
                 else:
                     self.good_since = self.good_since or now
-                    if now - self.good_since >= c["position_good_rtl_s"]:
+                    if now - self.good_since >= c["position_good_rtl_s"] \
+                            and not self.jump_hold:
                         self.pos_hold = False
                         self.act(RTL, "B6 POSITION OK: RTL")
 

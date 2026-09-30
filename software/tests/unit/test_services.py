@@ -167,6 +167,55 @@ def test_b6_position_loss_hold_then_rtl(env):
     assert rtl and 10.0 <= rtl[0] - t_ok <= 10.2
 
 
+def _pos_msg(lat, lon, vn=1.0):
+    from pymavlink.dialects.v20 import ardupilotmega as m
+    msg = m.MAVLink_global_position_int_message(0, int(lat * 1e7),
+                                                int(lon * 1e7), 0, 0,
+                                                int(vn * 100), 0, 0, 65535)
+    msg._header = m.MAVLink_header(msg.id, srcSystem=1, srcComponent=1)
+    return msg
+
+
+def test_view_records_impossible_position_jump():
+    v = HelmView()
+    v.update(_pos_msg(52.2448, 0.1597), 0.0)
+    v.update(_pos_msg(52.244809, 0.1597), 1.0)      # 1 m in 1 s: normal
+    assert v.jump is None
+    v.update(_pos_msg(52.244989, 0.1597), 1.2)      # 20 m in 0.2 s
+    assert v.jump and 19 < v.jump[1] < 20
+
+
+def test_b6_position_jump_holds_and_stays_held(env):
+    """FM-02 / SC-20: an EKF reset onto a sustained GNSS offset."""
+    clock, c, v = env
+    b6 = Health(c, load_config(), SimSensors())
+    c.set_helm(True, AUTO)
+    run(b6, clock, 8, keep_fresh(v, clock))
+    v.jump = (clock.t, 20.0)
+    run(b6, clock, 1, keep_fresh(v, clock))
+    assert v.mode == HOLD and any("JUMP" in e for e in c.events)
+    run(b6, clock, 20, keep_fresh(v, clock))
+    assert v.mode == HOLD                     # no automatic RTL
+    c.set_helm(True, AUTO)                    # adult resumes (PIN)
+    run(b6, clock, 3, keep_fresh(v, clock))
+    assert v.mode == AUTO                     # the same jump is not re-acted
+
+
+def test_b6_ignores_reset_just_after_position_loss(env):
+    clock, c, v = env
+    b6 = Health(c, load_config(), SimSensors())
+    c.set_helm(True, AUTO)
+    run(b6, clock, 8, keep_fresh(v, clock))
+    v.fix = 1
+    run(b6, clock, 3, keep_fresh(v, clock))
+    v.fix = 6
+    run(b6, clock, 1, keep_fresh(v, clock))
+    v.jump = (clock.t, 20.0)                  # EKF reset on fix return
+    run(b6, clock, 11, keep_fresh(v, clock))
+    assert not any("JUMP" in e for e in c.events)
+    assert v.mode == RTL                      # FS-004 recovery unchanged
+
+
 def test_b6_high_hdop_counts_as_loss(env):
     clock, c, v = env
     b6 = Health(c, load_config(), SimSensors())

@@ -19,13 +19,15 @@
     "episode_window_s": 120
   },
   "b6_health": {
-    "_refs": "FS-004, FS-010, FS-001, MCP-D15, MCP-D26, SC-04, SC-10",
+    "_refs": "FS-004, FS-010, FS-001, MCP-D15, MCP-D26, MCP-D35, SC-04, SC-10, SC-20",
     "_position_note": "The helm takes ~1.5 s to report a lost fix, so 1.0 s here meets FS-004's 3 s from the loss itself (SC-04).",
     "moisture_rtl": true,
     "box_temp_rtl_c": 60.0,
     "position_bad_hold_s": 1.0,
     "max_hdop": 2.5,
     "position_good_rtl_s": 10.0,
+    "position_jump_m": 5.0,
+    "position_jump_settle_s": 5.0,
     "critical_battery_pct": 15,
     "critical_rtl_speed_mps": 0.6
   },

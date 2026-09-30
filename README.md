@@ -30,9 +30,9 @@ python3 figures.py && python3 build_srs.py
 
 - [`docs/icd/Boaty_Interface_Control_Document.pdf`](docs/icd/Boaty_Interface_Control_Document.pdf): interface control document (BOATY-ICD-001): all 22 interfaces with owners, definitions, timing, error handling, verification, and a register of items still to be confirmed. Interface identities come from the ADD source, so the two can't drift. Build with `cd docs/icd/src && python3 figures.py && python3 build_icd.py`.
 
-- [`docs/sss/`](docs/sss/): subsystem specifications BOATY-SSS-HUL, PRP, PWR, HLM, MCP, MCN, REC and SIM (one PDF each), plus `Boaty_Subsystem_Specifications_Volume.pdf` with all eight. 245 derived requirements, all generated from `docs/sss/src/sss_data.py`. The helm parameter table is generated from `software/params/`, and the SIM test catalogue shows results read from `software/results/sitl_results.json`, so neither can drift from the code. The build fails if any SRS requirement allocated to a subsystem isn't covered, or any trace reference doesn't exist. Build with `cd docs/sss/src && python3 build_sss.py` (needs `pymupdf` for the combined volume).
+- [`docs/sss/`](docs/sss/): subsystem specifications BOATY-SSS-HUL, PRP, PWR, HLM, MCP, MCN, REC and SIM (one PDF each), plus `Boaty_Subsystem_Specifications_Volume.pdf` with all eight. 246 derived requirements, all generated from `docs/sss/src/sss_data.py`. The helm parameter table is generated from `software/params/`, and the SIM test catalogue shows results read from `software/results/sitl_results.json`, so neither can drift from the code. The build fails if any SRS requirement allocated to a subsystem isn't covered, or any trace reference doesn't exist. Build with `cd docs/sss/src && python3 build_sss.py` (needs `pymupdf` for the combined volume).
 
-- [`docs/fmea/Boaty_Design_FMEA.pdf`](docs/fmea/Boaty_Design_FMEA.pdf): design FMEA (BOATY-FMEA-001): 59 failure modes rated for severity, occurrence and detection, with 28 actions and residual risks. Issues D and E add what the simulator found. The build checks that every failure mode of severity ≥ 8 is exercised by a test in the SSS-SIM catalogue. Build with `cd docs/fmea/src && python3 build_fmea.py`.
+- [`docs/fmea/Boaty_Design_FMEA.pdf`](docs/fmea/Boaty_Design_FMEA.pdf): design FMEA (BOATY-FMEA-001): 60 failure modes rated for severity, occurrence and detection, with 28 actions and residual risks. Issues D and E add what the simulator found. The build checks that every failure mode of severity ≥ 8 is exercised by a test in the SSS-SIM catalogue. Build with `cd docs/fmea/src && python3 build_fmea.py`.
 
 - [`docs/ops/Boaty_Operations_Manual.pdf`](docs/ops/Boaty_Operations_Manual.pdf): operations manual (BOATY-OPS-001): golden rules, kit lists, 14 procedures, the 18-item pre-launch checklist (the same list Mission Control shows), 12 contingency cards, a printable crew card and a quick reference. The build checks it covers every OPS requirement and procedural FMEA action, and that every reference exists. Build with `cd docs/ops/src && python3 build_ops.py`.
 
@@ -49,7 +49,7 @@ python3 figures.py && python3 build_srs.py
 - SRS G
 - ADD G
 - ICD G
-- SSS: HLM E, MCP E, MCN E, PWR C, PRP B, SIM E (the others are unchanged)
+- SSS: HLM E, MCP E, MCN E, PWR C, PRP B, SIM F (the others are unchanged)
 - FMEA F
 - Operations manual D
 - KCL C

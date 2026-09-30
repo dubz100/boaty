@@ -206,6 +206,8 @@ class ArduPilotHelm:
         elif t == "GPS_RAW_INT":
             s["fix"], s["sats"] = msg.fix_type, msg.satellites_visible
             s["hdop"] = msg.eph / 100 if msg.eph != 65535 else 99.9
+            if msg.fix_type >= 3:           # raw fix, for test evidence only
+                s["gps_raw"] = (msg.lat / 1e7, msg.lon / 1e7)
         elif t == "BATTERY_STATUS":
             v = msg.voltages[0] / 1000 if msg.voltages[0] != 65535 else 0.0
             if msg.id == 0:

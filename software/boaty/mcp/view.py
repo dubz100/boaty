@@ -43,6 +43,10 @@ class HelmView:
     helm_heartbeat_t: float | None = None
     reached: list = field(default_factory=list)    # (t, seq)
     texts: list = field(default_factory=list)      # (t, comp, text)
+    # Largest position step beyond what the boat could have moved
+    # (FM-02, SC-20): (t, metres). An EKF reset onto a false GNSS
+    # position shows up here as an instant jump.
+    jump: tuple | None = None
 
     # ------------------------------------------------------------------
     @property
@@ -99,7 +103,19 @@ class HelmView:
         if comp != 1:
             return
         if t == "GLOBAL_POSITION_INT":
-            self.lat, self.lon, self.pos_t = msg.lat / 1e7, msg.lon / 1e7, now
+            lat, lon = msg.lat / 1e7, msg.lon / 1e7
+            if self.lat is not None and now > self.pos_t:
+                dn = math.radians(lat - self.lat) * 6_371_000
+                de = math.radians(lon - self.lon) * 6_371_000 * \
+                    math.cos(math.radians(lat))
+                reach = (max(self.groundspeed,
+                             math.hypot(msg.vx, msg.vy) / 100) + 1.0) * \
+                    (now - self.pos_t)
+                excess = math.hypot(dn, de) - reach
+                if excess > 0 and (self.jump is None or excess >
+                                   self.jump[1] or now - self.jump[0] > 5):
+                    self.jump = (now, excess)
+            self.lat, self.lon, self.pos_t = lat, lon, now
             self.heading = None if msg.hdg == 65535 else msg.hdg / 100
             self.vn, self.ve = msg.vx / 100, msg.vy / 100
         elif t == "GPS_RAW_INT":

@@ -109,7 +109,11 @@ def build():
           "15 m nest stand-off enforced by the site linter (MCN-D65); "
           "SC-26 added to its tests. SDR WP2: FM-13 re-rated (O 3 → 2, "
           "D 3 → 2) now path planning is configured and SC-27 passes; "
-          "FM-59 (RTL stalls near a zone) added from what SC-27 found.",
+          "FM-59 (RTL stalls near a zone) added from what SC-27 found. "
+          "WP3: A-30 (B6 position-jump HOLD) after SC-20 found a sustained "
+          "GNSS offset leaves the fence; FM-02 after-action RPN 108 → 72; "
+          "FM-60 (home reset by re-arming on the water); S ≥ 9 rule text "
+          "matches the build check.",
           "Claude, owner decision"]],
         "Review guidance: challenge the ratings, especially occurrence, "
         "which is a judgement before any hardware exists. And look for "

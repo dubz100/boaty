@@ -534,3 +534,80 @@ def test_mcn_d60_b7_hold_spoken_and_pin_resume(sim, helm, services,
     assert [x for _, x in said].count(PHRASES["stuck"]) == episodes
     assert ok and mode_after in (SrsMode.AUTO, SrsMode.RTL)
     helm.stop()
+
+
+# ---------------------------------------------------------------------------
+# SC-12 (FS-012): every failsafe is logged and announced within 2 s.
+
+def _gnss_off(helm, sim, services):
+    helm.set_param_sim("SIM_GPS1_ENABLE", 0)
+
+
+def _gnss_on(helm, sim, services):
+    helm.set_param_sim("SIM_GPS1_ENABLE", 1)
+
+
+FAILSAFES = {
+    "battery": (lambda h, s, sv: setattr(s.boat.faults,
+                                         "phantom_current_a", 50.0),
+                lambda h, s, sv: setattr(s.boat.faults,
+                                         "phantom_current_a", 0.0),
+                "FS-001"),
+    "gnss": (_gnss_off, _gnss_on, "FS-004"),
+    "water": (lambda h, s, sv: setattr(sv.sensors, "moisture", True),
+              lambda h, s, sv: setattr(sv.sensors, "moisture", False),
+              "FS-010"),
+    "weed": (lambda h, s, sv: setattr(s.boat.faults, "extra_drag", 3000.0),
+             lambda h, s, sv: setattr(s.boat.faults, "extra_drag", 0.0),
+             "FS-005/006"),
+}
+
+
+@pytest.mark.parametrize("kind", list(FAILSAFES))
+def test_sc12_failsafe_logged_and_announced(sim, helm, services, companion,
+                                            mc_factory, evidence, kind):
+    inject, clear, ref = FAILSAFES[kind]
+    evidence("SC-12", f"Failsafe logged and announced ({kind}, {ref})",
+             ["FS-012", "SC-12", ref.split("/")[0]],
+             "The boat's failsafe action (helm mode change away from AUTO, "
+             "or a BOATY event) is in the session log, and Mission Control "
+             "speaks or shows it within 2 s")
+    mc = mc_factory(services=services)
+    s = mc.session
+    s.choose_template("explore", "home bay")
+    mc.approve_and_arm()
+    mc.panel.press(Button.GO, hold_s=1.05)
+    sim.wait(10)
+    t0 = sim.t
+    n_log = len(mc.log.rows)
+    inject(helm, sim, services)
+    # The boat's own action: first mode change after the fault (helm or
+    # boat service), or its first BOATY event text.
+    def boat_acted():
+        m = [tm for tm, a, mo in companion.modes if tm >= t0 and
+             mo != RoverMode.AUTO]
+        e = [tm for tm, x in companion.texts if tm >= t0 and
+             x.startswith("BOATY")]
+        return min(m + e) if m or e else None
+    t_act = sim.wait_until(lambda: boat_acted() is not None, 400)
+    t_act = boat_acted()
+    sim.wait(4)
+    clear(helm, sim, services)
+    told = sorted([ts for ts, x in mc.speaker.said if ts >= t0] +
+                  [ts for ts, x in s.alerts if ts >= t0])
+    t_told = next((ts for ts in told if t_act is not None and
+                   ts >= t_act - 0.5), None)
+    new = mc.log.rows[n_log:]
+    kinds = sorted({r["kind"] for r in new if r["kind"] in
+                    ("helm_mode", "boat_event", "alert")})
+    evidence.measure(boat_acted_after_s=(t_act - t0) if t_act else None,
+                     announced_after_action_s=(t_told - t_act)
+                     if t_told and t_act else None,
+                     spoken=[x for ts, x in mc.speaker.said if ts >= t0][:4],
+                     alerts=[a for ts, a in s.alerts if ts >= t0][:3],
+                     log_kinds=kinds,
+                     events=boaty_events(companion, t0))
+    assert t_act is not None, "the boat never acted on the fault"
+    assert t_told is not None and t_told - t_act <= 2.0
+    assert kinds, "nothing in the session log"
+    helm.stop()
