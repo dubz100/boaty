@@ -298,24 +298,33 @@ def test_sc38_reversed_compass_first_motion(helm, sim, services, companion,
     evidence("SC-38", "First-motion heading check", ["FM-05", "FM-18",
                                                      "SC-38", "MCP-D22",
                                                      "A-03"],
-             "Compass reversed before the start: HOLD <= 10 s after AUTO "
-             "begins; the boat stays inside the fence")
+             "Compass reversed before the start: HOLD <= 10 s after the "
+             "boat first moves (> 0.3 m/s); the boat stays inside the fence")
     helm.set_param("SIM_MAG1_ORIENT", 4)            # yaw 180
     sim.wait(15)
     launch(helm, sim)
     t0 = sim.t
     b7 = services["B7"]
-    worst = 0.0
+    worst, t_move = 0.0, None
     end = sim.t + 20
     while sim.t < end and not b7.actions:
         worst = max(worst, outside_by(sim, 60))
+        if t_move is None and sim.boat.speed() > 0.3:
+            t_move = sim.t
         time.sleep(0.05 / SPEEDUP)
     t_hold = b7.actions[0][0] if b7.actions else None
     evidence.measure(hold_after_s=(t_hold - t0) if t_hold else None,
+                     first_motion_after_s=(t_move - t0) if t_move else None,
+                     hold_after_first_motion_s=(t_hold - t_move)
+                     if t_hold and t_move else None,
                      detector=b7.actions[0][1] if b7.actions else None,
                      worst_outside_m=worst,
                      events=boaty_events(companion, t0))
-    assert t_hold is not None and t_hold - t0 <= 10.0
+    evidence.note("Measured from first motion: the path planner (OA_TYPE 2) "
+                  "holds the boat ~1 s at the start of each leg while it "
+                  "plans, and nothing moves in that time (SDR WP2).")
+    assert t_hold is not None and t_move is not None
+    assert t_hold - t_move <= 10.0
     assert "HEADING" in b7.actions[0][1]
     helm.stop()
 

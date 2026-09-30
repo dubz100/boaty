@@ -257,7 +257,7 @@ class NavMonitor(Service):
             if self.fence and v.lat is not None:
                 self.last_outside_m = self.fence.outside_by(v.lat, v.lon)
                 if self.last_outside_m > c["breach_max_outside_m"]:
-                    self.hold("B7 10M OUTSIDE FENCE: HOLD")
+                    self.hold("B7 FAR OUTSIDE FENCE: HOLD")
                     return
 
         if self.shedding() or m not in (AUTO, RTL, STEERING):

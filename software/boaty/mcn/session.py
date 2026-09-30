@@ -64,7 +64,7 @@ class Config:
     auto_disarm_home_s: float = 60.0         # MCN-D12
     home_radius_m: float = 5.0
     breach_max_s: float = 30.0               # MCN-D59
-    breach_max_outside_m: float = 10.0
+    breach_max_outside_m: float = 8.0         # acts by FEN-006's 10 m
     min_sats: int = 8                        # MCN-D15
     max_hdop: float = 1.5                    # PRE-001, MCN-D15: Rover has
                                              # no native HDOP arming gate

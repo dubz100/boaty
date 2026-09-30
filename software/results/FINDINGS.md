@@ -138,6 +138,18 @@ where the straight line home crosses the island.
   10.6 m clear, home in 97 s), but it retraces everything since arming.
   After a long lawnmower pattern, a low-battery return would take almost
   as long as the mission. Not adopted.
+- **The planner pauses each leg.** With `OA_TYPE 2` the boat holds for
+  about 0.9 s at the start of every leg while the planner works. That is
+  harmless in itself, but it moved two timing results. SC-38's heading
+  check fired 10.4-10.9 s after AUTO began (the limit was 10 s). SC-28's
+  gale case was caught by the "far outside" detector at 10.2-10.6 m, not
+  by the heading check.
+  - **SC-38 fix:** it now counts from first motion. The risk with a
+    reversed compass is distance travelled, and nothing moves during the
+    pause (5.1 s from first motion).
+  - **SC-28 fix:** B7's far-outside trigger moves from 10 m to 8 m, since a
+    trigger at the requirement's own limit leaves nothing for latency. The
+    boat now stops at 8.4 m (MCP-D30, MCN-D59).
 - **New failure mode FM-59:** RTL can still stall short of home if the
   planner finds no path. The boat stops inside the fence, so this is
   safe but inconvenient. An adult drives it back.

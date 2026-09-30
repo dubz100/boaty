@@ -575,8 +575,8 @@ D(m, "HLM-D44", "The helm shall have exactly one MAVLink command path: "
 # ======================================================================
 c = subsystem(
     "MCP", title="Mission computer",
-    issue="Issue D (for review)",
-    parents="SRS Issue F, ADD Issue F, ICD Issue F, FMEA Issue E",
+    issue="Issue E (for review)",
+    parents="SRS Issue G, ADD Issue G, ICD Issue G, FMEA Issue F",
     history=[["B", "28 September 2026", "FMEA actions A-03, A-07, A-08, A-11: navigation monitor B7 "
               "(MCP-D22 to D25, D27) and box temperature (MCP-D26).", "Claude, owner decisions "
               "(CR-02, FMEA actions)"],
@@ -590,7 +590,12 @@ c = subsystem(
              ["D", "29 September 2026", "SC-06 intermittent failure traced "
               "to B5's free test (astern drift counted as moving): MCP-D34 "
               "added (FMEA FM-58, A-29).",
-              "Claude"]],
+              "Claude"],
+             ["E", "30 September 2026", "SDR WP2: MCP-D30 far-outside "
+              "trigger 10 → 8 m so the motors are off by FEN-006's 10 m "
+              "(SC-28 failed at 10.2-10.6 m once the path planner's start "
+              "pause changed which detector fired first). Event text now "
+              "'B7 FAR OUTSIDE FENCE: HOLD'.", "Claude"]],
 
     purpose="Take and geotag photos, relay MAVLink to the bank, and run the "
             "small boat-side watchdogs, without ever being needed for "
@@ -722,8 +727,10 @@ D(c, "MCP-D29", "At critical battery (≤ 15% or the helm's critical alarm), "
   "an alarm. It may only reduce speed, and only in RTL.", "M", "T", "SIM",
   ["FS-001", "V-15", "DD-21"])
 D(c, "MCP-D30", "B7 shall request HOLD when the boat has been outside the "
-  "fence for 30 s or is more than 10 m outside it (distance computed from "
-  "the fence read back from the helm), in any powered mode.", "M", "T",
+  "fence for 30 s or is more than 8 m outside it (distance computed from "
+  "the fence read back from the helm), in any powered mode. The 8 m "
+  "trigger leaves room for detection latency so the motors are off by "
+  "FEN-006's 10 m (SC-28, SDR WP2).", "M", "T",
   "SIM", ["FEN-006", "V-14", "DD-21", "FM-14"])
 group(c, "Found in integration (Issue C)")
 D(c, "MCP-D31", "B7's stuck and divergence checks shall be suspended within "
@@ -765,7 +772,7 @@ n = subsystem(
              ["E", "30 September 2026", "SDR decisions (CR-07): MCN-D65 "
               "nest stand-off in the site linter; MCN-D66 planner routes "
               "round large exclusions. WP2: MCN-D15 adds the HDOP ≤ 1.5 "
-              "arming check.", "Claude, owner decision"]],
+              "arming check; MCN-D59 trigger 8 m.", "Claude, owner decision"]],
 
     purpose="Be the only place people interact with Boaty: turn words into "
             "safe, approved missions, and show, say and record what the "
@@ -978,7 +985,8 @@ D(n, "MCN-D58", "Site files list launch points with suitable wind "
   "us?' and suggests a launch point. 'No' blocks arming.", "S", "D", "SIM",
   ["OPS-001", "IF-15", "A-19", "FM-42"])
 D(n, "MCN-D59", "C1 shall command HOLD if a fence breach persists > 30 s "
-  "or the boat is > 10 m outside (interim path of HLM-D24).", "M", "S",
+  "or the boat is > 8 m outside, so it acts by FEN-006's 10 m (interim "
+  "path of HLM-D24).", "M", "S",
   "SIM", ["FEN-006", "A-18", "FM-14"])
 D(n, "MCN-D60", "Boat-service holds (B5, B6, B7) shall be shown and spoken "
   "with the reason, which comes from the service's event text (the mode "
@@ -1420,7 +1428,8 @@ TESTS = [
      "equal, flown inside the fence, home, auto-disarm at 60 s, photos "
      "sha256-verified before ack", ["SWE-004", "VAL-010", "MCN-D47"]),
     ("SC-42", "SIM", "Persistent breach with B7 absent", "Gale; boat "
-     "services not running", "C1 stops motors before 30 s or 10 m outside",
+     "services not running", "C1 stops motors before 30 s or 10 m outside "
+     "(trigger 8 m)",
      ["FM-14", "MCN-D59"]),
     ("SC-43", "SIM", "Boat stops itself", "Dead motor mid-mission",
      "Reason spoken ≤ 2 s after HOLD; resume needs the PIN", ["MCN-D60"]),

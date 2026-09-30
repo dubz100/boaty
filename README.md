@@ -49,7 +49,7 @@ python3 figures.py && python3 build_srs.py
 - SRS G
 - ADD G
 - ICD G
-- SSS: HLM D, MCP D, MCN E, PWR C, PRP B, SIM E (the others are unchanged)
+- SSS: HLM E, MCP E, MCN E, PWR C, PRP B, SIM E (the others are unchanged)
 - FMEA F
 - Operations manual D
 - KCL C

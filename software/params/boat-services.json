@@ -44,6 +44,6 @@
     "divergence_fraction": 0.75,
     "near_target_m": 5.0,
     "breach_max_s": 30.0,
-    "breach_max_outside_m": 10.0
+    "breach_max_outside_m": 8.0
   }
 }
