@@ -24,6 +24,10 @@ from boaty.sim.sitl import (ARDUPILOT_COMMIT, SimConfig, SimulatedBoat,
 SPEEDUP = int(os.environ.get("BOATY_SIM_SPEEDUP", "5"))
 RESULTS = Path(__file__).resolve().parents[2] / "results"
 _records: dict[str, dict] = {}
+# Opt-in: BOATY_TRACE_DIR=<dir> records each test's truth track (for
+# figures); the evidence file then goes there too, never over results/.
+TRACE_DIR = (Path(os.environ["BOATY_TRACE_DIR"])
+             if os.environ.get("BOATY_TRACE_DIR") else None)
 
 pytestmark = pytest.mark.sitl
 
@@ -85,23 +89,86 @@ def pytest_runtest_makereport(item, call):
 def pytest_sessionfinish(session, exitstatus):
     if not _records:
         return
-    RESULTS.mkdir(exist_ok=True)
+    if TRACE_DIR:                       # a tracing run is not the evidence run
+        out_dir = TRACE_DIR
+    else:
+        out_dir = RESULTS
+    out_dir.mkdir(parents=True, exist_ok=True)
     commit = ardupilot_commit()
     out = dict(generated=datetime.now(timezone.utc).isoformat(),
                speedup=SPEEDUP, ardupilot_commit=commit,
                ardupilot_commit_is_baseline=commit == ARDUPILOT_COMMIT,
                records=list(_records.values()))
-    (RESULTS / "sitl_results.json").write_text(json.dumps(out, indent=2))
+    (out_dir / "sitl_results.json").write_text(json.dumps(out, indent=2))
 
 
 # ---------------------------------------------------------------------------
 
 
 @pytest.fixture
-def sim():
+def sim(request):
     s = SimulatedBoat(SimConfig(speedup=SPEEDUP)).start()
+    tracer = _Tracer(s, request.node.nodeid) if TRACE_DIR else None
     yield s
+    if tracer:
+        tracer.save()
     s.stop()
+
+
+class _Tracer:
+    """Sample the simulated boat's true state and capture the fence and
+    mission the test uploads (BOATY_TRACE_DIR only)."""
+
+    def __init__(self, sim, nodeid):
+        import threading
+        from boaty.sim.geo import ne_of
+        self.sim, self.nodeid, self.rows = sim, nodeid, []
+        self.geo = {}
+        lat0, lon0 = sim.cfg.home[0], sim.cfg.home[1]
+
+        def ne(p):
+            return ne_of(lat0, lon0, p[0], p[1])
+        tr = self
+        self._orig = (ArduPilotHelm.upload_fence, ArduPilotHelm.upload_mission)
+        of, om = self._orig
+
+        def up_fence(h, fence):
+            tr.geo["fence"] = [ne(p) for p in fence.inclusion]
+            tr.geo["exclusions"] = [[ne(p) for p in poly]
+                                    for poly in fence.exclusions]
+            tr.geo["circles"] = [list(ne(c[:2])) + [c[2]]
+                                 for c in fence.exclusion_circles]
+            return of(h, fence)
+
+        def up_mission(h, m):
+            tr.geo["mission"] = [ne((it.lat, it.lon)) for it in m.items
+                                 if it.lat or it.lon]
+            return om(h, m)
+        ArduPilotHelm.upload_fence = up_fence
+        ArduPilotHelm.upload_mission = up_mission
+        self._stop = threading.Event()
+
+        def run():
+            while not self._stop.is_set():
+                b = sim.boat
+                pwm = sim.bridge.last_pwm or []
+                self.rows.append([round(sim.t, 2), round(b.n, 2),
+                                  round(b.e, 2), round(b.psi, 3),
+                                  [round(x, 2) for x in b.thrust],
+                                  [pwm[0], pwm[3]] if len(pwm) > 3 else []])
+                time.sleep(0.04)
+        import threading as _t
+        self._th = _t.Thread(target=run, daemon=True)
+        self._th.start()
+
+    def save(self):
+        self._stop.set()
+        self._th.join(1)
+        ArduPilotHelm.upload_fence, ArduPilotHelm.upload_mission = self._orig
+        TRACE_DIR.mkdir(parents=True, exist_ok=True)
+        name = self.nodeid.split("::")[-1].replace("/", "_")
+        (TRACE_DIR / f"{name}.json").write_text(json.dumps(dict(
+            nodeid=self.nodeid, geo=self.geo, rows=self.rows)))
 
 
 @pytest.fixture

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import time
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -26,8 +27,8 @@ from boaty.mcn.session import CHECKLIST, Config, Session, State
 from boaty.mcn.site import SITES, Site
 from boaty.mcn.voice import PHRASES, RecordingSpeaker
 
-from .conftest import SPEEDUP, Watch, boaty_events, motors_off, \
-    outputs_neutral
+from .conftest import SPEEDUP, TRACE_DIR, Watch, boaty_events, \
+    motors_off, outputs_neutral
 
 PIN = "271828"
 T_FMT = "%Y-%m-%dT%H:%M:%SZ"
@@ -99,15 +100,64 @@ def make_mc(sim, helm, tmp_path, services=None, claude=None, site=None,
               site=site, api=api, claude=claude)
 
 
+class _Screens:
+    """Opt-in (BOATY_TRACE_DIR): serve the C3 web UI for the session and
+    screenshot it in Chromium on every state change and every 15 s of sim
+    time while the boat is out. Report pictures only; asserts nothing."""
+
+    def __init__(self, sim, session, name):
+        import threading
+        from boaty.mcn.web import WebUI
+        self.sim, self.s, self.name = sim, session, name
+        self.ui = WebUI(session, host="127.0.0.1", port=0).start()
+        self.stop = threading.Event()
+        self.th = threading.Thread(target=self._run, daemon=True)
+        self.th.start()
+
+    def _run(self):
+        from playwright.sync_api import sync_playwright
+        out = TRACE_DIR / "screens"
+        out.mkdir(parents=True, exist_ok=True)
+        last, t_last, k = None, -1e9, 0
+        with sync_playwright() as pw:
+            exe = Path("/opt/pw-browsers/chromium")
+            br = pw.chromium.launch(
+                executable_path=str(exe) if exe.exists() else None)
+            pg = br.new_page(viewport={"width": 1280, "height": 800})
+            pg.goto(f"http://127.0.0.1:{self.ui.port}/")
+            while not self.stop.is_set():
+                st = self.s.state.value
+                due = st in ("MISSION", "RETURNING") and \
+                    self.sim.t - t_last >= 15
+                if st != last or due:
+                    pg.wait_for_timeout(700)
+                    k += 1
+                    pg.screenshot(path=str(
+                        out / f"{self.name}_{k:02d}_{st}_"
+                        f"{self.sim.t:05.0f}.png"))
+                    last, t_last = st, self.sim.t
+                time.sleep(0.1)
+            br.close()
+
+    def close(self):
+        self.stop.set()
+        self.th.join(10)
+        self.ui.stop()
+
+
 @pytest.fixture
-def mc_factory(sim, helm, tmp_path):
-    made = []
+def mc_factory(sim, helm, tmp_path, request):
+    made, screens = [], []
 
     def f(**kw):
         m = make_mc(sim, helm, tmp_path, **kw)
         made.append(m)
+        if TRACE_DIR is not None:
+            screens.append(_Screens(sim, m.session, request.node.name))
         return m
     yield f
+    for sc in screens:
+        sc.close()
     for m in made:
         m.session.close()
 
